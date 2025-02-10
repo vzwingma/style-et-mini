@@ -36,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "de53bf6c-a64b-43f6-9d6a-374c27522c7c"
+      }
+    },
+    "owner": "vzwingma"
   }
 }
