@@ -7,14 +7,13 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
-import { ThemedView } from '@/components/ThemedView';
-import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
+import { ThemedView } from '@/app/components/ThemedView';
 import { AppStatus } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const HEADER_HEIGHT = 250;
+const HEADER_HEIGHT = 100;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
@@ -33,7 +32,7 @@ export default function ParallaxScrollView({
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
+  const bottom = 0;
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -81,7 +80,7 @@ export default function ParallaxScrollView({
  * Retourne l'icône de connexion en fonction du statut de connexion
  * @param connexionStatus Le statut de connexion
  * @returns L'icône de connexion
- * @see DomoticzStatus
+ * @see AppStatus
  * @see MaterialCommunityIcons
  * @see MaterialCommunityIconsProps
  * @see Colors

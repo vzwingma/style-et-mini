@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
+import ParallaxScrollView from '@/app/components/ParallaxScrollView';
+import { ThemedView } from '@/app/components/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { AppStatus } from '@/constants/AppEnum';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/app/components/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
-import { TabBarItems } from '@/components/navigation/TabBarItem';
-import { getHeaderIcon } from '@/components/navigation/TabHeaderIcon';
+import { TabBarItems } from '@/app/components/navigation/TabBarItem';
+import { getHeaderIcon } from '@/app/components/navigation/TabHeaderIcon';
+import BackendConfig from '@/app/components/models/appConfig.model';
+import { AppContext } from '@/app/services/AppContextProvider';
+import connectToBackend from '../controllers/index.controller';
 
 export default function TabLayout() {
 
@@ -17,6 +20,10 @@ export default function TabLayout() {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
+
+  const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
+
+
   const [error, setError] = useState<Error | null>(null);
   const [tab, setTab] = useState(Tabs.INDEX);
   /**
@@ -36,6 +43,25 @@ export default function TabLayout() {
   function selectNewTab(newTab: Tabs) {
     setRefreshing(!refreshing);
     setTab(newTab);
+  }
+
+    /**
+   *  A l'initialisation, lance la connexion à Domoticz
+   * et à changement d'onglet
+   * */
+    useEffect(() => {
+      console.log("(Re)Chargement de l'application...");
+      connectToBackend({ setIsLoading, storeConnexionData, setError });
+    }, [refreshing])
+
+    
+  /**
+   * Fonction de callback pour stocker les données de connexion et charger les appareils
+   * @param data Les données de connexion à Domoticz
+   */
+  function storeConnexionData(data: BackendConfig) {
+    setBackendConnexionData(data);
+    setIsLoading(false);
   }
   /**
    * Récupère le contenu du panneau, suivant l'état de chargement et les erreurs
