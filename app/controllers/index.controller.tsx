@@ -1,6 +1,7 @@
 import BackendConfig from "@/app/components/models/appConfig.model";
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
+import { showToast, ToastDuration } from "@/hooks/AndroidToast";
 
 // Propriétés de l'écran des équipements
 type FunctionConnectToDomoticzProps = {
@@ -35,8 +36,8 @@ export function connectToBackend({setIsLoading, storeConnexionData, setError}: F
       .catch((e) => {
           setIsLoading(false);
           setError(e);
-          console.error('Une erreur s\'est produite lors de la connexion à Domoticz', e);
-     //     showToast("Erreur de connexion à Domoticz", ToastDuration.SHORT);
+          console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+          showToast("Erreur de connexion au backend", ToastDuration.SHORT);
       });
 }
 
