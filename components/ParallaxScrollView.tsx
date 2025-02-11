@@ -9,21 +9,28 @@ import Animated, {
 
 import { ThemedView } from '@/components/ThemedView';
 import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { AppStatus } from '@/constants/AppEnum';
+import { Colors } from '@/constants/Colors';
+import { ThemedText } from './ThemedText';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const HEADER_HEIGHT = 250;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
-  headerBackgroundColor: { dark: string; light: string };
+  headerTitle: string;
+  connexionStatus?: AppStatus;
+  setRefreshing: React.Dispatch<React.SetStateAction<boolean>>;
 }>;
 
 export default function ParallaxScrollView({
   children,
   headerImage,
-  headerBackgroundColor,
+  headerTitle,  
+  connexionStatus,
+  setRefreshing
 }: Props) {
-  const colorScheme = useColorScheme() ?? 'light';
+
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const bottom = useBottomTabOverflow();
@@ -54,10 +61,14 @@ export default function ParallaxScrollView({
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: headerBackgroundColor[colorScheme] },
+            { backgroundColor: Colors.dark.titlebackground },
             headerAnimatedStyle,
           ]}>
           {headerImage}
+          <ThemedView style={styles.titleHeader}>
+            {connexionStatus && getConnexionStatusIcon(connexionStatus)}
+            <ThemedText type="title" style={styles.domoticzColor}>{headerTitle}</ThemedText>
+          </ThemedView>
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>
@@ -65,18 +76,51 @@ export default function ParallaxScrollView({
   );
 }
 
+
+/**
+ * Retourne l'icône de connexion en fonction du statut de connexion
+ * @param connexionStatus Le statut de connexion
+ * @returns L'icône de connexion
+ * @see DomoticzStatus
+ * @see MaterialCommunityIcons
+ * @see MaterialCommunityIconsProps
+ * @see Colors
+ */
+function getConnexionStatusIcon(connexionStatus: AppStatus) {
+  switch (connexionStatus) {
+    case AppStatus.CONNECTE:
+      return <MaterialCommunityIcons name="check-circle" size={24} color="green" style={{padding: 5}} />;
+    case AppStatus.DECONNECTE:
+      return <MaterialCommunityIcons name="alert-circle" size={24} color="red" style={{padding: 5}}/>;
+    default:
+      return <MaterialCommunityIcons name="help-circle" size={24} color="grey" style={{padding: 5}}/>;
+  }
+}
+
+
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   header: {
     height: HEADER_HEIGHT,
+    width: '100%',
     overflow: 'hidden',
   },
   content: {
     flex: 1,
-    padding: 32,
-    gap: 16,
+    padding: 10,
+    gap: 10,
     overflow: 'hidden',
   },
+  titleHeader: {
+    alignItems: 'flex-end',
+    flexDirection: 'row-reverse',
+    top: 30,
+    right: 8,
+  },
+  domoticzColor: {
+    color: Colors.app.color
+  }
 });
