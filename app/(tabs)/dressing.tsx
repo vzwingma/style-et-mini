@@ -42,7 +42,7 @@ export default function DressingScreen() {
       let items: JSX.Element[] = [];
       if(typeVetements !== undefined){
         typeVetements.forEach((item, idx) => {
-        items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
+        items.push(<TypeVetementListItem key={item.id} typeVetements={item} />);
       });
       }
       panel = <>{items}</>;
@@ -73,12 +73,5 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  }
 });

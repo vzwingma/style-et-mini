@@ -34,7 +34,7 @@ export default function TabLayout() {
    */
   function getConnexionStatus(): AppStatus {
     if (isLoading) return AppStatus.INCONNU;
-    return AppStatus.CONNECTE ; // domoticzConnexionData?.status === "OK" ? AppStatus.CONNECTE : AppStatus.DECONNECTE;
+    return (backendConnexionData?.status?.indexOf("OK") ?? -1) > 0 ? AppStatus.CONNECTE : AppStatus.DECONNECTE;
   }
 
   /**
@@ -61,6 +61,7 @@ export default function TabLayout() {
    * @param data Les données de connexion à Domoticz
    */
   function storeConnexionData(data: BackendConfigModel) {
+    console.log("Données de connexion : ", data);
     setBackendConnexionData(data);
     setIsLoading(false);
   }

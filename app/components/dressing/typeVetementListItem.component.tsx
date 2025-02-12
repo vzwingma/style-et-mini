@@ -18,7 +18,7 @@ export type TypeVetementListItemProps = {
 export const TypeVetementListItem = ({ typeVetements }: TypeVetementListItemProps) => {
 
     return (
-        <View key={typeVetements._id}>
+        <View key={typeVetements.id}>
             <ThemedText type="subtitle">{typeVetements.libelle}</ThemedText> 
         </View>
     );
