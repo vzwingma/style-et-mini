@@ -16,14 +16,7 @@ export function callApiTypeVetements({setIsLoading, setTypeVetements, setError}:
     setIsLoading(true);
     // Appel du service externe de connexion à Domoticz
     callBackend(SERVICES_URL.GET_TYPE_VETEMENTS)
-      .then(data => {
-        let typeVetements: TypeVetementsModel[];
-        console.log(data);
-        typeVetements = data;
-        return typeVetements;
-      })
-      .then(typeVetements => {
-        console.log(typeVetements);
+      .then((typeVetements : TypeVetementsModel[]) => {
         setIsLoading(false);
         setTypeVetements(typeVetements);
       })
