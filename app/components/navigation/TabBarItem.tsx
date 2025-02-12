@@ -35,9 +35,9 @@ export function TabBarItems({ activeTab, thisTab, selectNewTab}: Readonly<TabBar
   function getTabIconName(tab: Tabs): string {
     switch (tab) {
       case Tabs.INDEX:
-        return 'star';
+        return 'home';
       case Tabs.DRESSING:
-        return 'bulb';
+        return 'shirt';
       default:
         return '';
     }

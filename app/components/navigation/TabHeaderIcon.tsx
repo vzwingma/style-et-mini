@@ -13,9 +13,9 @@ export function getHeaderIcon(tab: Tabs) {
     const iconSize = 110;
     switch (tab) {
       case Tabs.INDEX:
-        return <Image source={require('@/assets/images/partial-react-logo.png')} style={tabStyles.domoticzLogo} />
+        return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
       case Tabs.DRESSING:
-        return <Ionicons size={iconSize} name="bulb" style={tabStyles.headerImage} />
+        return <Ionicons size={iconSize} name="shirt" style={tabStyles.headerImage} />
       default:
         return <></>;
     }

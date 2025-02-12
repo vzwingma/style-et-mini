@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BackendConfig from "../components/models/appConfig.model";
+import BackendConfig from "../models/backendConfig.model";
 
 
 /**

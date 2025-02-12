@@ -1,5 +1,5 @@
   // Enumération des onglets
   export enum Tabs {
-    INDEX = 'Favoris',
+    INDEX = 'Index',
     DRESSING = 'Dressing',
   }

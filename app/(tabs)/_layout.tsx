@@ -10,9 +10,10 @@ import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
 import { TabBarItems } from '@/app/components/navigation/TabBarItem';
 import { getHeaderIcon } from '@/app/components/navigation/TabHeaderIcon';
-import BackendConfig from '@/app/components/models/appConfig.model';
+import BackendConfig from '@/app/models/backendConfig.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import connectToBackend from '../controllers/index.controller';
+import DressingScreen from './dressing';
 
 export default function TabLayout() {
 
@@ -113,7 +114,7 @@ function showPanel(tab: Tabs): JSX.Element {
     case Tabs.INDEX:
       return <HomeScreen />
     case Tabs.DRESSING:
-      return <HomeScreen/>
+      return <DressingScreen/>
       default:
       return <ThemedText type="title" style={{ color: 'red' }}>404 - Page non définie</ThemedText>
   }

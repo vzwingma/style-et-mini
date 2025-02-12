@@ -3,14 +3,14 @@ import { StyleSheet, Platform } from 'react-native';
 import { ThemedText } from '@/app/components/ThemedText';
 import { ThemedView } from '@/app/components/ThemedView';
 
-export default function HomeScreen() {
+export default function DressingScreen() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">Dressing!</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        
+        DDD
       </ThemedView>
     </>
   );
