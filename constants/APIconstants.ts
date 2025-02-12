@@ -3,7 +3,7 @@
 /**
  * L'URL de l'API.
  */
-export const API_URL = process.env.BACKEND_URL ?? process.env.EXPO_PUBLIC_BACKEND_URL ?? "http://localhost:8091/";
+export const API_URL = process.env.BACKEND_URL ?? process.env.EXPO_PUBLIC_BACKEND_URL ?? "http://localhost:5000/";
 export const API_AUTH = process.env.BACKEND_AUTH ?? process.env.EXPO_PUBLIC_BACKEND_AUTH;
 
 /**
@@ -17,7 +17,7 @@ export const enum SERVICES_PARAMS {
 /**
  * L'URI racine pour les requêtes API.
  */
-export const ROOT_URI = "api";
+export const ROOT_URI = "api/v1";
 
 
 /**
