@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import { ThemedText } from '@/app/components/ThemedText';
-import { ThemedView } from '@/app/components/ThemedView';
+import { ThemedText } from '@/app/components/commons/ThemedText';
+import { ThemedView } from '@/app/components/commons/ThemedView';
 
 export default function HomeScreen() {
   return (

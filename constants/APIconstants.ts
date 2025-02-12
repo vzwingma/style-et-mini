@@ -25,6 +25,7 @@ export const ROOT_URI = "api/v1";
  */
 export enum SERVICES_URL {
     GET_CONFIG = ROOT_URI+"/status",
+    GET_TYPE_VETEMENTS = ROOT_URI+"/typeVetements",
 }
 
 

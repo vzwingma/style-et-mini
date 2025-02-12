@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import ParallaxScrollView from '@/app/components/ParallaxScrollView';
-import { ThemedView } from '@/app/components/ThemedView';
+import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
+import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { AppStatus } from '@/constants/AppEnum';
-import { ThemedText } from '@/app/components/ThemedText';
+import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
-import { TabBarItems } from '@/app/components/navigation/TabBarItem';
-import { getHeaderIcon } from '@/app/components/navigation/TabHeaderIcon';
-import BackendConfig from '@/app/models/backendConfig.model';
+import { getHeaderIcon } from '@/app/components/commons/tab/TabHeaderIcon';
+import BackendConfigModel from '@/app/models/backendConfig.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import connectToBackend from '../controllers/index.controller';
 import DressingScreen from './dressing';
+import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
 
 export default function TabLayout() {
 
@@ -60,7 +60,7 @@ export default function TabLayout() {
    * Fonction de callback pour stocker les données de connexion et charger les appareils
    * @param data Les données de connexion à Domoticz
    */
-  function storeConnexionData(data: BackendConfig) {
+  function storeConnexionData(data: BackendConfigModel) {
     setBackendConnexionData(data);
     setIsLoading(false);
   }

@@ -1,14 +1,14 @@
 /**
  * Modèle représentant la configuration du backend.
  */
-class BackendConfig {
+class BackendConfigModel {
     readonly status: string;
 
     /**
      * Constructeur
      */
-    constructor({ status}: BackendConfig) {
+    constructor({ status}: BackendConfigModel) {
         this.status = status;
     }
 }
-export default BackendConfig;
+export default BackendConfigModel;

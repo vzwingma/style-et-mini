@@ -1,4 +1,4 @@
-import BackendConfig from "@/app/models/backendConfig.model";
+import BackendConfigModel from "@/app/models/backendConfig.model";
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/hooks/AndroidToast";
@@ -23,7 +23,7 @@ export function connectToBackend({setIsLoading, storeConnexionData, setError}: F
     // Appel du service externe de connexion à Domoticz
     callBackend(SERVICES_URL.GET_CONFIG)
       .then(data => {
-        let config: BackendConfig;
+        let config: BackendConfigModel;
         config = {
           status: data.status,
         };

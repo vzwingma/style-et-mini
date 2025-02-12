@@ -1,37 +1,31 @@
-import BackendConfig from "@/app/models/backendConfig.model";
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/hooks/AndroidToast";
+import TypeVetementsModel from "../models/typeVetements.model";
 
 // Propriétés de l'écran des équipements
-type FunctionConnectToDomoticzProps = {
+type FunctionCallAPITypeVetementsProps = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  storeConnexionData: Function
+  setTypeVetements: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 
 
-/**
- * Connecte l'application à Domoticz.
- * @param setIsLoading - Fonction pour définir l'état de chargement.
- * @param storeConfigData - Fonction pour stocker les données de configuration dans l'état.
- * @param storeError - Fonction pour stocker les erreurs dans l'état.
- */
-export function connectToBackend({setIsLoading, storeConnexionData, setError}: FunctionConnectToDomoticzProps) {
+export function callApiTypeVetements({setIsLoading, setTypeVetements, setError}: FunctionCallAPITypeVetementsProps) {
 
     setIsLoading(true);
     // Appel du service externe de connexion à Domoticz
-    callBackend(SERVICES_URL.GET_CONFIG)
+    callBackend(SERVICES_URL.GET_TYPE_VETEMENTS)
       .then(data => {
-        let config: BackendConfig;
-        config = {
-          status: data.status,
-        };
-        return config;
+        let typeVetements: TypeVetementsModel[];
+        console.log(data);
+        typeVetements = data;
+        return typeVetements;
       })
-      .then(config => {
+      .then(typeVetements => {
+        console.log(typeVetements);
         setIsLoading(false);
-        storeConnexionData(config);
+        setTypeVetements(typeVetements);
       })
       .catch((e) => {
           setIsLoading(false);
@@ -41,4 +35,4 @@ export function connectToBackend({setIsLoading, storeConnexionData, setError}: F
       });
 }
 
-export default connectToBackend;
+export default callApiTypeVetements;
