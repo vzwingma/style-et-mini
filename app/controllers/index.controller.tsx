@@ -22,14 +22,7 @@ export function connectToBackend({setIsLoading, storeConnexionData, setError}: F
     setIsLoading(true);
     // Appel du service externe de connexion à Domoticz
     callBackend(SERVICES_URL.GET_CONFIG)
-      .then(data => {
-        let config: BackendConfigModel;
-        config = {
-          status: data.status,
-        };
-        return config;
-      })
-      .then(config => {
+      .then((config : BackendConfigModel) => {
         setIsLoading(false);
         storeConnexionData(config);
       })

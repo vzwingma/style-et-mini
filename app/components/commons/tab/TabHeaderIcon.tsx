@@ -1,9 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { Tabs } from "@/constants/TabsEnums";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, StyleSheet } from "react-native";
-
-
+import { StyleSheet } from "react-native";
 
 
 /**

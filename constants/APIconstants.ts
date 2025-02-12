@@ -10,8 +10,7 @@ export const API_AUTH = process.env.BACKEND_AUTH ?? process.env.EXPO_PUBLIC_BACK
  * Paramètres pour les services.
  */
 export const enum SERVICES_PARAMS {
-    IDX         = "<IDX>",
-    DRESSING    = "<CMD>"
+    IDX         = "<IDX>"
 }
 
 /**

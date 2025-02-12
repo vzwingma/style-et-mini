@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';

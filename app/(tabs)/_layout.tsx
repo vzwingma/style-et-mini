@@ -61,7 +61,6 @@ export default function TabLayout() {
    * @param data Les données de connexion à Domoticz
    */
   function storeConnexionData(data: BackendConfigModel) {
-    console.log("Données de connexion : ", data);
     setBackendConnexionData(data);
     setIsLoading(false);
   }
