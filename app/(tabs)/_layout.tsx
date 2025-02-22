@@ -14,6 +14,7 @@ import { AppContext } from '@/app/services/AppContextProvider';
 import connectToBackend from '../controllers/index.controller';
 import DressingScreen from './dressing';
 import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
+import ReglageScreen from './reglages';
 
 export default function TabLayout() {
 
@@ -96,6 +97,7 @@ export default function TabLayout() {
             <>
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} />
+              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
             </> : <></>
         }
       </View>
@@ -115,6 +117,8 @@ function showPanel(tab: Tabs): JSX.Element {
       return <HomeScreen />
     case Tabs.DRESSING:
       return <DressingScreen/>
+      case Tabs.REGLAGES:
+        return <ReglageScreen/>      
       default:
       return <ThemedText type="title" style={{ color: 'red' }}>404 - Page non définie</ThemedText>
   }

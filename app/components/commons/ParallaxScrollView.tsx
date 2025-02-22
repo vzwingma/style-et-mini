@@ -66,7 +66,7 @@ export default function ParallaxScrollView({
           {headerImage}
           <ThemedView style={styles.titleHeader}>
             {connexionStatus && getConnexionStatusIcon(connexionStatus)}
-            <ThemedText type="title" style={styles.domoticzColor}>{headerTitle}</ThemedText>
+            <ThemedText type="title" style={styles.appColor}>{headerTitle}</ThemedText>
           </ThemedView>
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
@@ -118,8 +118,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     top: 30,
     right: 8,
+    backgroundColor: ''
   },
-  domoticzColor: {
+  appColor: {
     color: Colors.app.color
   }
 });

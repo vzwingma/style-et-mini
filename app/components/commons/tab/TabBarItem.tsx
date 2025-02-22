@@ -38,6 +38,8 @@ export function TabBarItems({ activeTab, thisTab, selectNewTab}: Readonly<TabBar
         return 'home';
       case Tabs.DRESSING:
         return 'shirt';
+        case Tabs.REGLAGES:
+          return 'options';        
       default:
         return '';
     }

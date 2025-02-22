@@ -14,6 +14,8 @@ export function getHeaderIcon(tab: Tabs) {
         return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
       case Tabs.DRESSING:
         return <Ionicons size={iconSize} name="shirt" style={tabStyles.headerImage} />
+        case Tabs.REGLAGES:
+          return <Ionicons size={iconSize} name="options" style={tabStyles.headerImage} />        
       default:
         return <></>;
     }
