@@ -4,10 +4,9 @@ import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
-import { TypeVetementListItem } from '../components/dressing/typeVetementListItem.component';
 import DressingModel from '../models/dressing.model';
-import callApiDressing from '../controllers/dressing.controller';
-import DressingVetementModel from '../models/dressing.vetements.model';
+import loadDressing from '../controllers/dressing.controller';
+import DressingComponent from '../components/dressing/dressing.component';
 
 
 interface DressingScreenProps {
@@ -20,9 +19,7 @@ interface DressingScreenProps {
  */
 export default function DressingScreen({ idDressing }: DressingScreenProps) {
 
-
   const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const [dressing, setDressing] = useState<DressingModel>();
@@ -31,8 +28,8 @@ export default function DressingScreen({ idDressing }: DressingScreenProps) {
  * */
   useEffect(() => {
     console.log("(Re)Chargement du dressing [", { idDressing }, "]");
-    callApiDressing({ idDressing, setIsLoading, setDressing, setError });
-  }, [refreshing])
+    loadDressing({ idDressing, setIsLoading, setDressing, setError });
+  }, [setIsLoading, idDressing])
 
 
   /**
@@ -48,10 +45,8 @@ export default function DressingScreen({ idDressing }: DressingScreenProps) {
       return <ActivityIndicator size={'large'} color={Colors.app.color} />
     } else if (error !== null || dressing === undefined) {
       return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error?.message}</ThemedText>
-    } else if (dressing.vetements === undefined || dressing.vetements.length === 0) {
-      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Dressing vide !</ThemedText>
     } else {
-      return showPanelVetements(dressing?.vetements);
+      return <DressingComponent dressing={dressing} />;
     }
   }
 
@@ -62,7 +57,7 @@ export default function DressingScreen({ idDressing }: DressingScreenProps) {
    *
    * @param {DressingVetementModel[] | undefined} vetements - La liste des vêtements à afficher. Peut être indéfinie.
    * @returns {React.JSX.Element} Un élément JSX contenant la liste des éléments de type vêtement.
-   */
+  
   function showPanelVetements(vetements: DressingVetementModel[] | undefined): React.JSX.Element {
     let panel: JSX.Element;
     let items: JSX.Element[] = [];
@@ -74,7 +69,7 @@ export default function DressingScreen({ idDressing }: DressingScreenProps) {
     panel = <>{items}</>;
     return panel;
   }
-
+ */
 
   return (
     <>

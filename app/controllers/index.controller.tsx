@@ -42,6 +42,23 @@ export function connectToBackend({setIsLoading, storeConnexionData, setError}: F
       });
 }
 
+/**
+ * Récupère les dressings depuis le backend et met à jour l'état de l'application.
+ *
+ * @param {Object} props - Les propriétés de la fonction.
+ * @param {Function} props.setIsLoading - Fonction pour définir l'état de chargement.
+ * @param {Function} props.setDressings - Fonction pour définir les dressings récupérés.
+ * @param {Function} props.setError - Fonction pour définir l'erreur en cas d'échec.
+ *
+ * @returns {void}
+ *
+ * @example
+ * getDressings({
+ *   setIsLoading: (isLoading) => setLoadingState(isLoading),
+ *   setDressings: (dressings) => updateDressings(dressings),
+ *   setError: (error) => handleError(error)
+ * });
+ */
 export function getDressings({setIsLoading, setDressings, setError}: FunctionGetDressingsProps) {
 
   setIsLoading(true);

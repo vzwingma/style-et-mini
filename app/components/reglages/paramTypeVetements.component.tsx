@@ -5,26 +5,29 @@ import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { TailleVetementListItem, TypeVetementListItem } from '../dressing/typeVetementListItem.component';
-import { callApiParamsTaillesVetements } from '@/app/controllers/parametrages.controller';
-import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
+import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
+import { TypeVetementListItem } from '../dressing/typeVetementListItem.component';
+import { getParamsTypeVetements } from '@/app/controllers/parametrages.controller';
 
 
-export default function ParamTaillesMesures() {
+/**
+ * 
+ * @returns Ecran de gestion des types de vêtements
+ */
+export default function ParamTypesVetements() {
 
 
   const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const {taillesMesures, setTaillesMesures} = useContext(AppContext)!;
+    const [error, setError] = useState<Error | null>(null);
+  const {typeVetements, setTypeVetements} = useContext(AppContext)!;
     /**
    *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
    * et à changement d'onglet
    * */
     useEffect(() => {
-      console.log("(Re)Chargement des paramètres de Tailles et Mesures...");
-      callApiParamsTaillesVetements({setIsLoading, setTaillesMesures, setError});
-    }, [refreshing])
+      console.log("(Re)Chargement des paramètres de type de vêtements..");
+      getParamsTypeVetements({setIsLoading, setTypeVetements, setError});
+    }, [setTypeVetements])
   
 
     function getPanelContent() : React.JSX.Element{
@@ -33,17 +36,17 @@ export default function ParamTaillesMesures() {
       } else if (error !== null) {
         return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
       } else {
-        return showPanelTaillesMesures(taillesMesures)
+        return showPanel(typeVetements)
       }
     }
 
 
-    function showPanelTaillesMesures(tailleVetements: ParamTailleVetementsModel[] | undefined) : React.JSX.Element{
+    function showPanel(typeVetements: ParamTypeVetementsModel[] | undefined) : React.JSX.Element{
       let panel: JSX.Element;
       let items: JSX.Element[] = [];
-      if(tailleVetements !== undefined){
-        tailleVetements.forEach((item, idx) => {
-        items.push(<TailleVetementListItem key={item._id} tailleVetements={item} />);
+      if(typeVetements !== undefined){
+        typeVetements.forEach((item, idx) => {
+        items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
       });
       }
       panel = <>{items}</>;
@@ -54,7 +57,7 @@ export default function ParamTaillesMesures() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Tailles et mesures!</ThemedText>
+        <ThemedText type="title">Types de vêtements!</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>

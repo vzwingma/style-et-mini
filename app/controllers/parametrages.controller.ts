@@ -36,7 +36,7 @@ type FunctionCallAPITaillVetementsProps = {
  *   setError: (error) => { ... }
  * });
  */
-export function callApiParamsTypeVetements({setIsLoading, setTypeVetements, setError}: FunctionCallAPITypeVetementsProps) {
+export function getParamsTypeVetements({setIsLoading, setTypeVetements, setError}: FunctionCallAPITypeVetementsProps) {
 
   setIsLoading(true);
   // Appel du backend
@@ -72,7 +72,7 @@ export function callApiParamsTypeVetements({setIsLoading, setTypeVetements, setE
  *   setError: (error) => { ... }
  * });
  */
-export function callApiParamsTaillesVetements({setIsLoading, setTaillesMesures, setError}: FunctionCallAPITaillVetementsProps) {
+export function getParamsTaillesVetements({setIsLoading, setTaillesMesures, setError}: FunctionCallAPITaillVetementsProps) {
 
   setIsLoading(true);
   // Appel du service externe de connexion à Domoticz

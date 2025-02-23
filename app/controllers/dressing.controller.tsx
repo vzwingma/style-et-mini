@@ -30,7 +30,7 @@ type FunctionCallAPIDressingProps = {
  * et met à jour les données du dressing ou l'erreur en fonction du résultat de la requête.
  * En cas d'erreur, un message toast est affiché pour informer l'utilisateur.
  */
-export function callApiDressing({ idDressing, setIsLoading, setDressing, setError }: FunctionCallAPIDressingProps) {
+export function loadDressing({ idDressing, setIsLoading, setDressing, setError }: FunctionCallAPIDressingProps) {
 
   let params = [{ key: SERVICES_PARAMS.IDX, value: String(idDressing) }];
 
@@ -50,4 +50,4 @@ export function callApiDressing({ idDressing, setIsLoading, setDressing, setErro
     });
 }
 
-export default callApiDressing;
+export default loadDressing;

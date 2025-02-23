@@ -1,4 +1,3 @@
-import { DressingType } from "@/constants/AppEnum";
 import ParamTypeVetementsModel from "./paramTypeVetements.model";
 import ParamTailleVetementsModel from "./paramTailleVetements.model";
 
