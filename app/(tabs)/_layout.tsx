@@ -4,7 +4,7 @@ import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { AppStatus } from '@/constants/AppEnum';
+import { AppStatus, DressingType } from '@/constants/AppEnum';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
@@ -96,7 +96,8 @@ export default function TabLayout() {
           (!isLoading && error === null) ?
             <>
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
-              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} />
+              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING_B} />
+              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING_A} />              
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
             </> : <></>
         }
@@ -115,11 +116,13 @@ function showPanel(tab: Tabs): JSX.Element {
   switch (tab) {
     case Tabs.INDEX:
       return <HomeScreen />
-    case Tabs.DRESSING:
-      return <DressingScreen/>
-      case Tabs.REGLAGES:
+    case Tabs.DRESSING_A:
+      return <DressingScreen type={DressingType.ADULTE}/>
+    case Tabs.DRESSING_B:
+       return <DressingScreen type={DressingType.ENFANT}/>
+    case Tabs.REGLAGES:
         return <ReglageScreen/>      
-      default:
+    default:
       return <ThemedText type="title" style={{ color: 'red' }}>404 - Page non définie</ThemedText>
   }
 }

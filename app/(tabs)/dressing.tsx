@@ -8,8 +8,14 @@ import callApiTypeVetements from '../controllers/dressing.controller';
 import { Colors } from '@/constants/Colors';
 import TypeVetementsModel from '../models/typeVetements.model';
 import { TypeVetementListItem } from '../components/dressing/typeVetementListItem.component';
+import { DressingType } from '@/constants/AppEnum';
 
-export default function DressingScreen() {
+
+interface DressingScreenProps {
+  type: DressingType;
+}
+
+export default function DressingScreen({ type }: DressingScreenProps) {
 
 
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +59,7 @@ export default function DressingScreen() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dressing!</ThemedText>
+        <ThemedText type="title">Dressing {type}</ThemedText>
       </ThemedView>
 
 

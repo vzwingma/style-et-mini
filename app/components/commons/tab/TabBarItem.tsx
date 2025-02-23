@@ -36,10 +36,12 @@ export function TabBarItems({ activeTab, thisTab, selectNewTab}: Readonly<TabBar
     switch (tab) {
       case Tabs.INDEX:
         return 'home';
-      case Tabs.DRESSING:
+      case Tabs.DRESSING_A:
         return 'shirt';
-        case Tabs.REGLAGES:
-          return 'options';        
+      case Tabs.DRESSING_B:
+        return 'shirt';
+      case Tabs.REGLAGES:
+        return 'construct';        
       default:
         return '';
     }

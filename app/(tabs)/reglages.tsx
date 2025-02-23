@@ -7,6 +7,7 @@ import { ThemedView } from '../components/commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import ParamTypesVetements from '../components/reglages/paramTypeVetements';
 import ParamTaillesMesures from '../components/reglages/paramTaillesMesures';
+import { MenuParametrages } from '@/constants/AppEnum';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -26,12 +27,8 @@ import ParamTaillesMesures from '../components/reglages/paramTaillesMesures';
 export default function ReglageScreen() {
   
   const [open, setOpen] = useState(true);
-  const [menu, setMenu] = useState<Menu | null>(null);
+  const [menu, setMenu] = useState<MenuParametrages | null>(null);
 
-  enum Menu {
-    MENU_TYPE_VETEMENTS = 'Type de vêtements',
-    MENU_TAILLES = 'Tailles et Mesures' 
-  }
 
     /** Ouverture/Fermeture du menu */
     function toggleOpen(item:any) : void {
@@ -42,9 +39,9 @@ export default function ReglageScreen() {
     const drawerContent = () => {
       return (
         <TouchableOpacity onPress={() => toggleOpen(null)} style={styles.animatedBox}>
-          <ThemedView style={styles.body}>
+          <ThemedView>
           {
-            menu === Menu.MENU_TYPE_VETEMENTS ? 
+            menu === MenuParametrages.MENU_TYPE_VETEMENTS ? 
             <ParamTypesVetements /> : <ParamTaillesMesures />
           }
           </ThemedView>
@@ -54,22 +51,23 @@ export default function ReglageScreen() {
 
     
   return (
-    <View style={styles.container}>
-      
+    <ThemedView style={styles.container}>
+      <ThemedText type="title">Paramétrages</ThemedText>
+
       <SectionList
         sections={[
-          {title: 'Paramétrages', data: [Menu.MENU_TYPE_VETEMENTS, Menu.MENU_TAILLES]},
+          {title: 'Paramétrages généraux', data: [MenuParametrages.MENU_TYPE_VETEMENTS, MenuParametrages.MENU_TAILLES]},
         ]}
         renderItem={({item}) => <ThemedView style={styles.menuItem} >
                                   <ThemedText type='default' onPress={() => toggleOpen({item})}>{item}</ThemedText>
                                 </ThemedView>}
         renderSectionHeader={({section}) => (
           <ThemedView style={styles.menuHeader}>
-            <ThemedText type="title">{section.title}</ThemedText>
+            <ThemedText type="subtitle">{section.title}</ThemedText>
           </ThemedView>
         )}
         keyExtractor={item => `basicListEntry-${item}`}
-        style={{width: '100%', height: 700}}
+        style={{width: '100%', height: 685}}
       />
       
         <MenuDrawer
@@ -81,7 +79,7 @@ export default function ReglageScreen() {
           overlay={true}
           opacity={0.3}
         />
-      </View>
+      </ThemedView>
   );
 }
 
@@ -96,7 +94,13 @@ const styles = StyleSheet.create({
   animatedBox: {
     flex: 1,
     zIndex: 1,
-    width: '100%'    
+    top: 130,
+    left: 15,
+    width: '100%',
+    backgroundColor: Colors.dark.background,
+    borderColor: 'red',
+    borderWidth: 1
+
   },
   body: {
     flex: 1,
@@ -119,7 +123,5 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 2,
     fontWeight: 'bold',
-    color: Colors.app.color,
-    backgroundColor: Colors.dark.background,
   },
 });

@@ -55,7 +55,6 @@ export default function ParamTypesVetements() {
         <ThemedText type="title">Types de vêtements!</ThemedText>
       </ThemedView>
 
-
       <ThemedView style={styles.stepContainer}>
         {getPanelContent()}
       </ThemedView>
