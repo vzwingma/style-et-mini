@@ -50,31 +50,10 @@ export default function DressingScreen({ idDressing }: DressingScreenProps) {
     }
   }
 
-
-
-  /**
-   * Affiche un panneau de vêtements.
-   *
-   * @param {DressingVetementModel[] | undefined} vetements - La liste des vêtements à afficher. Peut être indéfinie.
-   * @returns {React.JSX.Element} Un élément JSX contenant la liste des éléments de type vêtement.
-  
-  function showPanelVetements(vetements: DressingVetementModel[] | undefined): React.JSX.Element {
-    let panel: JSX.Element;
-    let items: JSX.Element[] = [];
-    if (vetements !== undefined) {
-      vetements.forEach((item) => {
-        items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
-      });
-    }
-    panel = <>{items}</>;
-    return panel;
-  }
- */
-
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dressing {dressing?.libelle} ({dressing?.type})</ThemedText>
+        <ThemedText type="title">Le dressing de {dressing?.libelle}</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>
@@ -87,11 +66,10 @@ export default function DressingScreen({ idDressing }: DressingScreenProps) {
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    alignItems: 'center'
   },
   stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+    width: '100%',
+    padding: 1
   }
 });
