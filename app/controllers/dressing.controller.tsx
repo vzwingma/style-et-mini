@@ -4,18 +4,18 @@ import { showToast, ToastDuration } from "@/hooks/AndroidToast";
 import TypeVetementsModel from "../models/typeVetements.model";
 
 // Propriétés de l'écran des équipements
-type FunctionCallAPITypeVetementsProps = {
+type FunctionCallAPIListVetementsProps = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   setTypeVetements: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 
 
-export function callApiTypeVetements({setIsLoading, setTypeVetements, setError}: FunctionCallAPITypeVetementsProps) {
+export function callApiListeVetements({setIsLoading, setTypeVetements, setError}: FunctionCallAPIListVetementsProps) {
 
     setIsLoading(true);
     // Appel du service externe de connexion à Domoticz
-    callBackend(SERVICES_URL.GET_TYPE_VETEMENTS)
+    callBackend(SERVICES_URL.GET_PARAM_TYPE_VETEMENTS)
       .then((typeVetements : TypeVetementsModel[]) => {
         setIsLoading(false);
         setTypeVetements(typeVetements);
@@ -28,4 +28,4 @@ export function callApiTypeVetements({setIsLoading, setTypeVetements, setError}:
       });
 }
 
-export default callApiTypeVetements;
+export default callApiListeVetements;

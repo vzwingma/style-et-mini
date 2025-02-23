@@ -3,26 +3,27 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../services/AppContextProvider';
-import callApiTypeVetements from '../controllers/dressing.controller';
 import { Colors } from '@/constants/Colors';
-import TypeVetementsModel from '../models/typeVetements.model';
-import { TypeVetementListItem } from '../components/dressing/typeVetementListItem.component';
+import { AppContext } from '@/app/services/AppContextProvider';
+import { TailleVetementListItem, TypeVetementListItem } from '../dressing/typeVetementListItem.component';
+import { callApiParamsTaillesVetements } from '@/app/controllers/parametrages.controller';
+import TailleVetementsModel from '@/app/models/tailleVetements.model';
 
-export default function DressingScreen() {
+
+export default function ParamTaillesMesures() {
 
 
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const {typeVetements, setTypeVetements} = useContext(AppContext)!;
+  const {taillesMesures, setTaillesMesures} = useContext(AppContext)!;
     /**
    *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
    * et à changement d'onglet
    * */
     useEffect(() => {
-      console.log("(Re)Chargement du dressing...");
-      callApiTypeVetements({setIsLoading, setTypeVetements, setError});
+      console.log("(Re)Chargement des paramètres de Tailles et Mesures...");
+      callApiParamsTaillesVetements({setIsLoading, setTaillesMesures, setError});
     }, [refreshing])
   
 
@@ -32,17 +33,17 @@ export default function DressingScreen() {
       } else if (error !== null) {
         return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
       } else {
-        return showPanel(typeVetements)
+        return showPanelTaillesMesures(taillesMesures)
       }
     }
 
 
-    function showPanel(typeVetements: TypeVetementsModel[] | undefined) : React.JSX.Element{
+    function showPanelTaillesMesures(tailleVetements: TailleVetementsModel[] | undefined) : React.JSX.Element{
       let panel: JSX.Element;
       let items: JSX.Element[] = [];
-      if(typeVetements !== undefined){
-        typeVetements.forEach((item, idx) => {
-        items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
+      if(tailleVetements !== undefined){
+        tailleVetements.forEach((item, idx) => {
+        items.push(<TailleVetementListItem key={item._id} tailleVetements={item} />);
       });
       }
       panel = <>{items}</>;
@@ -53,9 +54,8 @@ export default function DressingScreen() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dressing!</ThemedText>
+        <ThemedText type="title">Tailles et mesures!</ThemedText>
       </ThemedView>
-
 
       <ThemedView style={styles.stepContainer}>
         {getPanelContent()}

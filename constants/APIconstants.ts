@@ -16,15 +16,16 @@ export const enum SERVICES_PARAMS {
 /**
  * L'URI racine pour les requêtes API.
  */
-export const ROOT_URI = "api/v1";
-
+const ROOT_URI = "api/v1";
+const GET_PARAMS = ROOT_URI+"/params";
 
 /**
  * URLs pour différents services.
  */
 export enum SERVICES_URL {
     GET_CONFIG = ROOT_URI+"/status",
-    GET_TYPE_VETEMENTS = ROOT_URI+"/typeVetements",
+    GET_PARAM_TYPE_VETEMENTS = GET_PARAMS+"/typeVetements",
+    GET_PARAM_TAILLES_MESURES = GET_PARAMS+"/taillesMesures",
 }
 
 

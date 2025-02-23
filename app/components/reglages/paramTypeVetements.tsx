@@ -3,13 +3,12 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../services/AppContextProvider';
-import callApiTypeVetements from '../controllers/dressing.controller';
 import { Colors } from '@/constants/Colors';
-import TypeVetementsModel from '../models/typeVetements.model';
-import { TypeVetementListItem } from '../components/dressing/typeVetementListItem.component';
-
-export default function DressingScreen() {
+import { AppContext } from '@/app/services/AppContextProvider';
+import TypeVetementsModel from '@/app/models/typeVetements.model';
+import { TypeVetementListItem } from '../dressing/typeVetementListItem.component';
+import { callApiParamsTypeVetements } from '@/app/controllers/parametrages.controller';
+export default function ParamTypesVetements() {
 
 
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +20,8 @@ export default function DressingScreen() {
    * et à changement d'onglet
    * */
     useEffect(() => {
-      console.log("(Re)Chargement du dressing...");
-      callApiTypeVetements({setIsLoading, setTypeVetements, setError});
+      console.log("(Re)Chargement des paramètres de type de vêtements..");
+      callApiParamsTypeVetements({setIsLoading, setTypeVetements, setError});
     }, [refreshing])
   
 
@@ -53,7 +52,7 @@ export default function DressingScreen() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dressing!</ThemedText>
+        <ThemedText type="title">Types de vêtements!</ThemedText>
       </ThemedView>
 
 
