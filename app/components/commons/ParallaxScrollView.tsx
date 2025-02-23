@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -12,6 +12,7 @@ import { AppStatus } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
 
 const HEADER_HEIGHT = 100;
 
@@ -32,6 +33,7 @@ export default function ParallaxScrollView({
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+  let refreshing = false;
   const bottom = 0;
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -50,11 +52,20 @@ export default function ParallaxScrollView({
     };
   });
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(!refreshing);
+    refreshing = !refreshing;
+  }, [refreshing, setRefreshing]);
+
+
   return (
     <ThemedView style={styles.container}>
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         scrollIndicatorInsets={{ bottom }}
         contentContainerStyle={{ paddingBottom: bottom }}>
         <Animated.View

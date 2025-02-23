@@ -55,7 +55,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
       return (
         <ThemedView style={styles.body}>
           <ThemedText type="subtitle">Nombre de vêtements : {dressing.vetements?.length}</ThemedText>
-          <TouchableOpacity onPress={toggleOpen} style={styles.menuItem}>
+          <TouchableOpacity onPress={toggleOpen}>
             <ThemedText type="subtitle">Ajouter un vêtement</ThemedText>
           </TouchableOpacity>
         </ThemedView>
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
   animatedBox: {
     flex: 1,
     zIndex: 1,
-    width: '100%',
     backgroundColor: Colors.dark.background,
     borderColor: 'red',
     borderWidth: 1
@@ -128,19 +127,5 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: 'red',
     borderWidth: 1
-  },
-
-
-  menuItem: {
-    padding: 10,
-    height: 44,
-    cursor: 'pointer',
-  },
-  menuHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontWeight: 'bold',
   },
 });

@@ -8,5 +8,5 @@ export default interface DressingModel {
     readonly _id: string;
     readonly libelle: string;
     readonly type: DressingType;
-    readonly vetements: DressingVetementModel[];
+    vetements: DressingVetementModel[];
 }

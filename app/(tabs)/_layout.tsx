@@ -142,7 +142,8 @@ export default function TabLayout() {
 export const tabStyles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
-    gap: 8
+    gap: 8,
+    height: 715
   },
 
   tabsViewbox: {
