@@ -125,7 +125,12 @@ function showPanel(tab: Tabs, _id?: string): JSX.Element {
     case Tabs.INDEX:
       return <HomeScreen />
     case Tabs.DRESSING:
-      return <DressingScreen id={_id}/>
+      if(_id === undefined){
+        return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
+      }
+      else{
+        return <DressingScreen idDressing={_id}/>
+      }
     case Tabs.REGLAGES:
         return <ReglageScreen/>      
     default:
