@@ -7,7 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { TailleVetementListItem, TypeVetementListItem } from '../dressing/typeVetementListItem.component';
 import { callApiParamsTaillesVetements } from '@/app/controllers/parametrages.controller';
-import TailleVetementsModel from '@/app/models/paramTailleVetements.model';
+import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
 
 
 export default function ParamTaillesMesures() {
@@ -38,7 +38,7 @@ export default function ParamTaillesMesures() {
     }
 
 
-    function showPanelTaillesMesures(tailleVetements: TailleVetementsModel[] | undefined) : React.JSX.Element{
+    function showPanelTaillesMesures(tailleVetements: ParamTailleVetementsModel[] | undefined) : React.JSX.Element{
       let panel: JSX.Element;
       let items: JSX.Element[] = [];
       if(tailleVetements !== undefined){

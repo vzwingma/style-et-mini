@@ -21,7 +21,7 @@ export default function TabLayout() {
   // État pour vérifier si l'utilisateur est connecté au backend
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  
+
   const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
   const { dressings, setDressings } = useContext(AppContext)!;
 
@@ -46,22 +46,22 @@ export default function TabLayout() {
   function selectNewTab(newTab: Tabs, _id?: string) {
     setRefreshing(!refreshing);
     setTab(newTab);
-    if(_id){
+    if (_id) {
       setIdDressing(_id);
     }
   }
 
-    /**
-   *  A l'initialisation, lance la connexion à Domoticz
-   * et à changement d'onglet
-   * */
-    useEffect(() => {
-      console.log("(Re)Chargement de l'application...");
-      connectToBackend({ setIsLoading, storeConnexionData, setError });
-      getDressings({setIsLoading, setDressings, setError});
-    }, [refreshing])
+  /**
+ *  A l'initialisation, lance la connexion à Domoticz
+ * et à changement d'onglet
+ * */
+  useEffect(() => {
+    console.log("(Re)Chargement de l'application...");
+    connectToBackend({ setIsLoading, storeConnexionData, setError });
+    getDressings({ setIsLoading, setDressings, setError });
+  }, [refreshing])
 
-    
+
   /**
    * Fonction de callback pour stocker les données de connexion et charger les appareils
    * @param data Les données de connexion à Domoticz
@@ -113,30 +113,30 @@ export default function TabLayout() {
     </>
   );
 
-  
-/**
- * Affiche le panneau de l'onglet sélectionné
- *
- * @param tab L'onglet sélectionné
- */
-function showPanel(tab: Tabs, _id?: string): JSX.Element {
 
-  switch (tab) {
-    case Tabs.INDEX:
-      return <HomeScreen />
-    case Tabs.DRESSING:
-      if(_id === undefined){
-        return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
-      }
-      else{
-        return <DressingScreen idDressing={_id}/>
-      }
-    case Tabs.REGLAGES:
-        return <ReglageScreen/>      
-    default:
-      return <ThemedText type="title" style={{ color: 'red' }}>404 - Page non définie</ThemedText>
+  /**
+   * Affiche le panneau de l'onglet sélectionné
+   *
+   * @param tab L'onglet sélectionné
+   */
+  function showPanel(tab: Tabs, _id?: string): JSX.Element {
+
+    switch (tab) {
+      case Tabs.INDEX:
+        return <HomeScreen />
+      case Tabs.DRESSING:
+        if (_id === undefined) {
+          return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
+        }
+        else {
+          return <DressingScreen idDressing={_id} />
+        }
+      case Tabs.REGLAGES:
+        return <ReglageScreen />
+      default:
+        return <ThemedText type="title" style={{ color: 'red' }}>404 - Page non définie</ThemedText>
+    }
   }
-}
 }
 
 export const tabStyles = StyleSheet.create({

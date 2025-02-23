@@ -2,7 +2,7 @@ import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/hooks/AndroidToast";
 import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
-import TailleVetementsModel from "../models/paramTailleVetements.model";
+import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPITypeVetementsProps = {
@@ -77,7 +77,7 @@ export function callApiParamsTaillesVetements({setIsLoading, setTaillesMesures, 
   setIsLoading(true);
   // Appel du service externe de connexion à Domoticz
   callBackend(SERVICES_URL.GET_PARAM_TAILLES_MESURES)
-    .then((tailleVetements : TailleVetementsModel[]) => {
+    .then((tailleVetements : ParamTailleVetementsModel[]) => {
       setIsLoading(false);
       setTaillesMesures(tailleVetements);
     })

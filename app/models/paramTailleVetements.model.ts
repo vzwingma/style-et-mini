@@ -1,7 +1,7 @@
 /**
  * Modèle représentant une taille de vetements
  */
-export default interface TailleVetementsModel {
+export default interface ParamTailleVetementsModel {
     readonly _id: string;
     readonly libelle: string;
 }

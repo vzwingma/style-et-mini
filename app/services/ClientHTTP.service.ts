@@ -68,8 +68,8 @@ function callBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any
         headers: new Headers({
             'Content-Type': 'application/json',
             'Authorization': 'Basic ' + API_AUTH
-            }),
-        })
+        }),
+    })
         .then(res => {
             // Fin du watch
             stopWatch(traceId, res);
@@ -79,12 +79,13 @@ function callBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any
                 throw new Error(res.statusText);
             }
         })
-        .then(data => { 
+        .then(data => {
             // console.log("[WS traceId=" + traceId + "] < [data]", data);
-            if(data.status === "ERR") {
+            if (data.status === "ERR") {
                 throw new Error(data.message);
             }
-            return data; })
+            return data;
+        })
         .catch(e => {
             console.error("[WS traceId=" + traceId + "] < Erreur lors de l'appel HTTP [" + fullURL + "]", e);
             throw new Error(e);

@@ -1,7 +1,7 @@
 import ParamTypeVetementsModel from "@/app/models/paramTypeVetements.model";
 import { View } from "react-native";
 import { ThemedText } from "../commons/ThemedText";
-import TailleVetementsModel from "@/app/models/paramTailleVetements.model";
+import ParamTailleVetementsModel from "@/app/models/paramTailleVetements.model";
 
 
 // Définition des propriétés du composant
@@ -10,7 +10,7 @@ export type TypeVetementListItemProps = {
 };
 
 export type TailleVetementListItemProps = {
-    tailleVetements: TailleVetementsModel;
+    tailleVetements: ParamTailleVetementsModel;
 };
 
 
