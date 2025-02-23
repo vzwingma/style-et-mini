@@ -5,7 +5,7 @@ import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
-import TypeVetementsModel from '@/app/models/typeVetements.model';
+import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
 import { TypeVetementListItem } from '../dressing/typeVetementListItem.component';
 import { callApiParamsTypeVetements } from '@/app/controllers/parametrages.controller';
 export default function ParamTypesVetements() {
@@ -36,7 +36,7 @@ export default function ParamTypesVetements() {
     }
 
 
-    function showPanel(typeVetements: TypeVetementsModel[] | undefined) : React.JSX.Element{
+    function showPanel(typeVetements: ParamTypeVetementsModel[] | undefined) : React.JSX.Element{
       let panel: JSX.Element;
       let items: JSX.Element[] = [];
       if(typeVetements !== undefined){

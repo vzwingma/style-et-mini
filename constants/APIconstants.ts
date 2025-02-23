@@ -10,7 +10,8 @@ export const API_AUTH = process.env.BACKEND_AUTH ?? process.env.EXPO_PUBLIC_BACK
  * Paramètres pour les services.
  */
 export const enum SERVICES_PARAMS {
-    IDX         = "<IDX>"
+    IDX         = "<IDX>",
+    TYPE        = "<TYPE>"
 }
 
 /**
@@ -19,15 +20,20 @@ export const enum SERVICES_PARAMS {
 const ROOT_URI = "api/v1";
 const GET_PARAMS = ROOT_URI+"/params";
 
+
 /**
  * URLs pour différents services.
  */
 export enum SERVICES_URL {
     GET_CONFIG = ROOT_URI+"/status",
+    
     GET_PARAM_TYPE_VETEMENTS = GET_PARAMS+"/typeVetements",
     GET_PARAM_TAILLES_MESURES = GET_PARAMS+"/taillesMesures",
+    
+    GET_DRESSINGS = ROOT_URI+"/dressing",
+    GET_DRESSING = GET_DRESSINGS+"/"+SERVICES_PARAMS.IDX,
+    GET_VETEMENTS_DRESSING = GET_DRESSING+"/vetements",
 }
-
 
 
 /**

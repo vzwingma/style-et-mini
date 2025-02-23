@@ -4,14 +4,14 @@ import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { AppStatus, DressingType } from '@/constants/AppEnum';
+import { AppStatus } from '@/constants/AppEnum';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
 import { getHeaderIcon } from '@/app/components/commons/tab/TabHeaderIcon';
 import BackendConfigModel from '@/app/models/backendConfig.model';
 import { AppContext } from '@/app/services/AppContextProvider';
-import connectToBackend from '../controllers/index.controller';
+import connectToBackend, { getDressings } from '../controllers/index.controller';
 import DressingScreen from './dressing';
 import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
 import ReglageScreen from './reglages';
@@ -22,12 +22,13 @@ export default function TabLayout() {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
-
   const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
+  const { dressings, setDressings } = useContext(AppContext)!;
 
 
   const [error, setError] = useState<Error | null>(null);
   const [tab, setTab] = useState(Tabs.INDEX);
+  const [idDressing, setIdDressing] = useState<string | undefined>(undefined);
   /**
    * Récupère le statut de connexion au backend
    *
@@ -42,9 +43,12 @@ export default function TabLayout() {
    * Fonction pour changer d'onglet
    * @param newTab Le nouvel onglet sélectionné
    */
-  function selectNewTab(newTab: Tabs) {
+  function selectNewTab(newTab: Tabs, _id?: string) {
     setRefreshing(!refreshing);
     setTab(newTab);
+    if(_id){
+      setIdDressing(_id);
+    }
   }
 
     /**
@@ -54,6 +58,7 @@ export default function TabLayout() {
     useEffect(() => {
       console.log("(Re)Chargement de l'application...");
       connectToBackend({ setIsLoading, storeConnexionData, setError });
+      getDressings({setIsLoading, setDressings, setError});
     }, [refreshing])
 
     
@@ -74,7 +79,7 @@ export default function TabLayout() {
     } else if (error !== null) {
       return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
     } else {
-      return showPanel(tab)
+      return showPanel(tab, idDressing)
     }
   }
 
@@ -96,8 +101,11 @@ export default function TabLayout() {
           (!isLoading && error === null) ?
             <>
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
-              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING_B} />
-              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING_A} />              
+              {
+                dressings?.map((dressing, idx) => {
+                  return <TabBarItems key={idx} activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing._id} />
+                })
+              }
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
             </> : <></>
         }
@@ -111,15 +119,13 @@ export default function TabLayout() {
  *
  * @param tab L'onglet sélectionné
  */
-function showPanel(tab: Tabs): JSX.Element {
+function showPanel(tab: Tabs, _id?: string): JSX.Element {
 
   switch (tab) {
     case Tabs.INDEX:
       return <HomeScreen />
-    case Tabs.DRESSING_A:
-      return <DressingScreen type={DressingType.ADULTE}/>
-    case Tabs.DRESSING_B:
-       return <DressingScreen type={DressingType.ENFANT}/>
+    case Tabs.DRESSING:
+      return <DressingScreen id={_id}/>
     case Tabs.REGLAGES:
         return <ReglageScreen/>      
     default:

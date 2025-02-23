@@ -1,8 +1,8 @@
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/hooks/AndroidToast";
-import TypeVetementsModel from "../models/typeVetements.model";
-import TailleVetementsModel from "../models/tailleVetements.model";
+import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
+import TailleVetementsModel from "../models/paramTailleVetements.model";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPITypeVetementsProps = {
@@ -41,7 +41,7 @@ export function callApiParamsTypeVetements({setIsLoading, setTypeVetements, setE
   setIsLoading(true);
   // Appel du backend
   callBackend(SERVICES_URL.GET_PARAM_TYPE_VETEMENTS)
-    .then((typeVetements : TypeVetementsModel[]) => {
+    .then((typeVetements : ParamTypeVetementsModel[]) => {
       setIsLoading(false);
       setTypeVetements(typeVetements);
     })

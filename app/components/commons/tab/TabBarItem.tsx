@@ -9,7 +9,9 @@ import { ThemedText } from "../ThemedText";
 interface TabBarItemsProps {
     activeTab: Tabs; // active tab
     thisTab: Tabs; // this tab name
-    selectNewTab: (tab: Tabs) => void; // set active tab
+    libelleTab?: string; // this tab label
+    _id?: string; // this tab id
+    selectNewTab: (tab: Tabs, _id?: string) => void; // set active tab
 }
 
 /**
@@ -19,11 +21,11 @@ interface TabBarItemsProps {
  * @param thisTab this tab name
  * @param setTab fonction pour définir l'onglet actif
  */
-export function TabBarItems({ activeTab, thisTab, selectNewTab}: Readonly<TabBarItemsProps>) : JSX.Element {
-    return <ThemedView style={tabStyles.tabsItem} onPointerDown={() => selectNewTab(thisTab)} onTouchEnd={() => selectNewTab(thisTab)}>
+export function TabBarItems({ activeTab, thisTab, selectNewTab, libelleTab, _id}: Readonly<TabBarItemsProps>) : JSX.Element {
+    return <ThemedView style={tabStyles.tabsItem} onPointerDown={() => selectNewTab(thisTab, _id)} onTouchEnd={() => selectNewTab(thisTab, _id)}>
                 <TabBarIcon name={getTabIconName(thisTab) + (activeTab === thisTab ? "" : "-outline")} 
                             color={activeTab === thisTab ? Colors.app.color : '#ffffff'} />
-                <ThemedText type='tab'>{thisTab.toString()}</ThemedText>
+                <ThemedText type='tab'>{libelleTab? libelleTab : thisTab.toString()}</ThemedText>
             </ThemedView>;
   }
 
@@ -36,9 +38,7 @@ export function TabBarItems({ activeTab, thisTab, selectNewTab}: Readonly<TabBar
     switch (tab) {
       case Tabs.INDEX:
         return 'home';
-      case Tabs.DRESSING_A:
-        return 'shirt';
-      case Tabs.DRESSING_B:
+      case Tabs.DRESSING:
         return 'shirt';
       case Tabs.REGLAGES:
         return 'construct';        

@@ -6,29 +6,31 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../services/AppContextProvider';
 import callApiTypeVetements from '../controllers/dressing.controller';
 import { Colors } from '@/constants/Colors';
-import TypeVetementsModel from '../models/typeVetements.model';
+import ParamTypeVetementsModel from '../models/paramTypeVetements.model';
 import { TypeVetementListItem } from '../components/dressing/typeVetementListItem.component';
 import { DressingType } from '@/constants/AppEnum';
 
 
 interface DressingScreenProps {
-  type: DressingType;
+  id: string | undefined;
 }
 
-export default function DressingScreen({ type }: DressingScreenProps) {
+export default function DressingScreen({ id }: DressingScreenProps) {
 
 
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const {typeVetements, setTypeVetements} = useContext(AppContext)!;
+
+  const [vetements, setVetements] = useState<ParamTypeVetementsModel[] | undefined>(undefined);
+
     /**
    *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
    * et à changement d'onglet
    * */
     useEffect(() => {
-      console.log("(Re)Chargement du dressing...");
-      callApiTypeVetements({setIsLoading, setTypeVetements, setError});
+      console.log("(Re)Chargement du dressing ["+{id}+"]...");
+    //  callApiDressing({setIsLoading, setVetements, setError});
     }, [refreshing])
   
 
@@ -38,12 +40,13 @@ export default function DressingScreen({ type }: DressingScreenProps) {
       } else if (error !== null) {
         return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
       } else {
-        return showPanel(typeVetements)
+      //  return showPanel(setVetements)
+        return <></>
       }
     }
 
 
-    function showPanel(typeVetements: TypeVetementsModel[] | undefined) : React.JSX.Element{
+    function showPanel(typeVetements: ParamTypeVetementsModel[] | undefined) : React.JSX.Element{
       let panel: JSX.Element;
       let items: JSX.Element[] = [];
       if(typeVetements !== undefined){
@@ -59,7 +62,7 @@ export default function DressingScreen({ type }: DressingScreenProps) {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dressing {type}</ThemedText>
+        <ThemedText type="title">Dressing {id}</ThemedText>
       </ThemedView>
 
 
