@@ -122,7 +122,6 @@ export function getParamsUsagesVetements({setIsLoading, setUsages, setError}: Fu
   // Appel du service externe 
   callBackend(SERVICES_URL.GET_PARAMS_USAGES)
     .then((usageVetements : ParamUsageVetementsModel[]) => {
-      console.log("Usages récupérés : ", usageVetements);
       setIsLoading(false);
       setUsages(usageVetements);
     })

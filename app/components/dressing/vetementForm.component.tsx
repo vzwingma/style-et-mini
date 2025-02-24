@@ -4,14 +4,18 @@ import React, { useContext, useState } from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
-import DressingVetementModel from '@/app/models/dressing.vetements.model';
+import VetementModel from '@/app/models/dressing.vetements.model';
 import { Ionicons } from '@expo/vector-icons';
-import { Dropdown } from 'react-native-element-dropdown';
+import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
+import DressingModel from '@/app/models/dressing.model';
+import FormVetementModel from '@/app/models/form.vetements.model';
+import { getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setTailleForm, setTypeForm, setUsages } from '@/app/controllers/vetementForm.controller';
 
 
 export type VetementFormComponentProps = {
-    vetement: DressingVetementModel | null;
+    dressing: DressingModel;
+    vetement: VetementModel | null;
     onCloseForm: () => void;
 };
 
@@ -22,18 +26,24 @@ export type VetementFormComponentProps = {
  *
  * @component
  **/
-export default function VetementFormComponent({ vetement, onCloseForm }: VetementFormComponentProps) {
+export default function VetementFormComponent({ dressing, vetement, onCloseForm }: VetementFormComponentProps) {
 
-    const [isFocus, setIsFocus] = useState(false);
-    const [value, setValue] = useState(null);
+    const [form, setForm] = useState<FormVetementModel| null>(null);
 
-    const {typeVetements} = useContext(AppContext)!;
+    const {typeVetements, taillesMesures, usages} = useContext(AppContext)!;
 
+
+    function validateForm() {
+        console.log("Validation du formulaire", form);
+        onCloseForm();
+    }
     /**
      * 
      * @returns Formulaire de vêtement
      */
     const getPanelFormContent = () => {
+
+        
         return (
             <View style={styles.body}>
                 <View style={{ flex: 1, backgroundColor: 'dark' }} />
@@ -47,25 +57,22 @@ export default function VetementFormComponent({ vetement, onCloseForm }: Vetemen
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Type de vêtement</ThemedText>
                         <Dropdown
-                            style={[styles.dropdown]}
-                            placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle} inputSearchStyle={styles.inputSearchStyle}
+                            style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle}
-                            data={typeVetements}
-                            search searchPlaceholder="Search..."
                             maxHeight={300}
-                            labelField="libelle" valueField="_id"
-                            placeholder={'Selectionnez un type'}
-                            value={value}
-                            onChange={item => {
-                                setValue(item);
-                                setIsFocus(false);
+                            data={getTypeVetementsForm(typeVetements, dressing)}
+                            labelField="libelle" valueField="id"                            
+                            placeholder={'Selectionnez un type de vêtements'} placeholderStyle={styles.placeholderStyle} 
+                            value={form?.type}                                selectedTextStyle={styles.selectedTextStyle} 
+                            onChange={type => {
+                                setTypeForm(type, setForm);
                             }}
                             renderLeftIcon={() => (
                                 <Ionicons
-                                style={styles.icon}
-                                color={isFocus ? 'white' : 'white'}
-                                name="triangle"
-                                size={20}
+                                    style={styles.icon}
+                                    color={'white'}
+                                    name="triangle"
+                                    size={20}
                                 />
                             )}
                         />
@@ -73,23 +80,44 @@ export default function VetementFormComponent({ vetement, onCloseForm }: Vetemen
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Taille</ThemedText>
                         <Dropdown
-                            style={[styles.dropdown]}
-                            placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle} inputSearchStyle={styles.inputSearchStyle}
+                            style={[styles.dropdown]} containerStyle={[styles.listStyle]}
                             iconStyle={styles.iconStyle}
-                            data={typeVetements}
-                            search searchPlaceholder="Search..."
                             maxHeight={300}
-                            labelField="libelle" valueField="_id"
-                            placeholder={'Selectionnez un type'}
-                            value={value}
-                            onChange={item => {
-                                setValue(item);
-                                setIsFocus(false);
+                            data={getTaillesMesuresForm(taillesMesures, dressing)}
+                            labelField="libelle" valueField="id"                            
+                            placeholder={'Selectionnez une taille'} placeholderStyle={styles.placeholderStyle} 
+                            value={form?.taille}                     selectedTextStyle={styles.selectedTextStyle} 
+                            onChange={taille => {
+                                setTailleForm(taille, setForm);
+                            }}
+                            renderLeftIcon={() => (
+                                <Ionicons
+                                    style={styles.icon}
+                                    color={'white'}
+                                    name="triangle"
+                                    size={20}
+                                />
+                            )}
+                        />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Usage</ThemedText>
+                        <MultiSelect
+                            style={[styles.dropdown]} containerStyle={[styles.listStyle]} iconStyle={styles.iconStyle}
+                            itemTextStyle={styles.selectedTextStyle}
+                            maxHeight={300}
+                            data={getUsagesForm(usages, dressing)}
+                            labelField="libelle" valueField="id"                            
+                            placeholder={'Selectionnez un ou plusieurs usages'} placeholderStyle={styles.placeholderStyle} 
+                            value={form?.usage}                                       selectedTextStyle={styles.selectedTextStyle} 
+                            onChange={usage => {
+                                setUsages(usage, setForm);
+                                console.log(usage);
                             }}
                             renderLeftIcon={() => (
                                 <Ionicons
                                 style={styles.icon}
-                                color={isFocus ? 'white' : 'white'}
+                                color={'white'}
                                 name="triangle"
                                 size={20}
                                 />
@@ -97,31 +125,9 @@ export default function VetementFormComponent({ vetement, onCloseForm }: Vetemen
                         />
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Usage</ThemedText>
-                        <Dropdown
-                            style={[styles.dropdown]}
-                            placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle} inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={typeVetements}
-                            search searchPlaceholder="Search..."
-                            maxHeight={300}
-                            labelField="libelle" valueField="_id"
-                            placeholder={'Selectionnez un type'}
-                            value={value}
-                            onChange={item => {
-                                setValue(item);
-                                setIsFocus(false);
-                            }}
-                            renderLeftIcon={() => (
-                                <Ionicons
-                                style={styles.icon}
-                                color={isFocus ? 'white' : 'white'}
-                                name="triangle"
-                                size={20}
-                                />
-                            )}
-                        />
-                    </View>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
+                        <TextInput style={styles.input} />
+                    </View>                    
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
                         <TextInput style={styles.input} multiline numberOfLines={3}/>
@@ -139,7 +145,7 @@ export default function VetementFormComponent({ vetement, onCloseForm }: Vetemen
                     <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                 </TouchableOpacity>
                 <ThemedText type="subtitle">{vetement === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
-                <TouchableOpacity onPress={onCloseForm}>
+                <TouchableOpacity onPress={validateForm}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </TouchableOpacity>
             </ThemedView>
@@ -207,19 +213,22 @@ const styles = StyleSheet.create({
       icon: {
         marginRight: 5,
       },
-      labelD: {
-        position: 'absolute',
-        left: 22,
-        top: 8,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
+      listStyle: {
+        backgroundColor: 'gray',
       },
+      listItemStyle: {
+        fontSize: 12,
+        margin: 0,
+        padding: 0,
+        height: 'auto',
+      },      
       placeholderStyle: {
         fontSize: 16,
+        color: 'gray',
       },
       selectedTextStyle: {
         fontSize: 16,
+        color: Colors.dark.text,
       },
       iconStyle: {
         width: 20,
@@ -228,5 +237,6 @@ const styles = StyleSheet.create({
       inputSearchStyle: {
         height: 40,
         fontSize: 16,
+        backgroundColor: 'red',
       },
 });

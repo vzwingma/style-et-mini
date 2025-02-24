@@ -67,7 +67,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
       <MenuDrawer
         open={!openVetementForm}
         position={'right'}
-        drawerContent={<VetementFormComponent vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>}
+        drawerContent={<VetementFormComponent dressing={dressing} vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>}
         drawerPercentage={98}
         animationTime={250}
         overlay={true}

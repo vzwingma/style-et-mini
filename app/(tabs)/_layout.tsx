@@ -15,6 +15,7 @@ import connectToBackend, { getDressings } from '../controllers/index.controller'
 import DressingScreen from './dressing';
 import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
 import ReglageScreen from './reglages';
+import { getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
 
 export default function TabLayout() {
 
@@ -26,10 +27,12 @@ export default function TabLayout() {
   const [tab, setTab] = useState(Tabs.INDEX);
 
   // Infos métiers
-  const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
+  const { backendConnexionData, setBackendConnexionData, 
+          dressings, setDressings,
+          typeVetements, setTypeVetements,
+          taillesMesures, setTaillesMesures,
+          usages, setUsages } = useContext(AppContext)!;
   const [ idDressing, setIdDressing ] = useState<string | undefined>(undefined);
-  const { dressings, setDressings } = useContext(AppContext)!;
-
 
   /**
    * Récupère le statut de connexion au backend
@@ -60,6 +63,11 @@ export default function TabLayout() {
   useEffect(() => {
     console.log("(Re)Chargement de l'application...");
     connectToBackend({ setIsLoading, storeConnexionData, setError });
+
+    getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
+    getParamsUsagesVetements({ setIsLoading, setUsages, setError });
+    getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
+
     getDressings({ setIsLoading, setDressings, setError });
   }, [refreshing])
 
