@@ -2,10 +2,10 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '../models/dressing.model';
-import loadDressing from '../controllers/dressing.controller';
+
 import DressingComponent from '../components/dressing/dressing.component';
 
 
@@ -19,12 +19,9 @@ interface DressingScreenProps {
  */
 export default function DressingScreen({ dressing }: DressingScreenProps) {
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  /**
- *  A l'initialisation, lance la connexion au backend pour récupérer le dressing et les vêtements associés
- * */
 
 
   /**
@@ -46,22 +43,19 @@ export default function DressingScreen({ dressing }: DressingScreenProps) {
   }
 
   return (
-    <>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Le dressing de {dressing?.libelle}</ThemedText>
-      </ThemedView>
-
-      <ThemedView style={styles.stepContainer}>
-        {getPanelContent()}
-      </ThemedView>
-    </>
+    <ThemedView style={styles.stepContainer}>
+      {getPanelContent()}
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderColor: 'red',
+    borderWidth: 1,
+    width: '100%',
   },
   stepContainer: {
     width: '100%',

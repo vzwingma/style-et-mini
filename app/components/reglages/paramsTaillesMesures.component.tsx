@@ -14,39 +14,39 @@ export default function ParamTaillesMesures() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const {taillesMesures, setTaillesMesures} = useContext(AppContext)!;
-    /**
-   *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
-   * et à changement d'onglet
-   * */
-    useEffect(() => {
-      console.log("(Re)Chargement des paramètres de Tailles et Mesures...");
-      getParamsTaillesVetements({setIsLoading, setTaillesMesures, setError});
-    }, [setTaillesMesures])
-  
+  const { taillesMesures, setTaillesMesures } = useContext(AppContext)!;
+  /**
+ *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
+ * et à changement d'onglet
+ * */
+  useEffect(() => {
+    console.log("(Re)Chargement des paramètres de Tailles et Mesures...");
+    getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
+  }, [setTaillesMesures])
 
-    function getPanelContent() : React.JSX.Element{
-      if (isLoading) {
-        return <ActivityIndicator size={'large'} color={Colors.app.color} />
-      } else if (error !== null) {
-        return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
-      } else {
-        return showPanelTaillesMesures(taillesMesures)
-      }
+
+  function getPanelContent(): React.JSX.Element {
+    if (isLoading) {
+      return <ActivityIndicator size={'large'} color={Colors.app.color} />
+    } else if (error !== null) {
+      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
+    } else {
+      return showPanelTaillesMesures(taillesMesures)
     }
+  }
 
 
-    function showPanelTaillesMesures(tailleVetements: ParamTailleVetementsModel[] | undefined) : React.JSX.Element{
-      let panel: JSX.Element;
-      let items: JSX.Element[] = [];
-      if(tailleVetements !== undefined){
-        tailleVetements.forEach((item, idx) => {
+  function showPanelTaillesMesures(tailleVetements: ParamTailleVetementsModel[] | undefined): React.JSX.Element {
+    let panel: JSX.Element;
+    let items: JSX.Element[] = [];
+    if (tailleVetements !== undefined) {
+      tailleVetements.forEach((item, idx) => {
         items.push(<TailleVetementListItem key={item._id} tailleVetements={item} />);
       });
-      }
-      panel = <>{items}</>;
-      return panel;
     }
+    panel = <>{items}</>;
+    return panel;
+  }
 
 
   return (

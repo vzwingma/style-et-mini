@@ -18,40 +18,40 @@ export default function ParamTypesVetements() {
 
 
   const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
-  const {typeVetements, setTypeVetements} = useContext(AppContext)!;
-    /**
-   *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
-   * et à changement d'onglet
-   * */
-    useEffect(() => {
-      console.log("(Re)Chargement des paramètres de type de vêtements..");
-      getParamsTypeVetements({setIsLoading, setTypeVetements, setError});
-    }, [setTypeVetements])
-  
+  const [error, setError] = useState<Error | null>(null);
+  const { typeVetements, setTypeVetements } = useContext(AppContext)!;
+  /**
+ *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
+ * et à changement d'onglet
+ * */
+  useEffect(() => {
+    console.log("(Re)Chargement des paramètres de type de vêtements..");
+    getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
+  }, [setTypeVetements])
 
-    function getPanelContent() : React.JSX.Element{
-      if (isLoading) {
-        return <ActivityIndicator size={'large'} color={Colors.app.color} />
-      } else if (error !== null) {
-        return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
-      } else {
-        return showPanel(typeVetements)
-      }
+
+  function getPanelContent(): React.JSX.Element {
+    if (isLoading) {
+      return <ActivityIndicator size={'large'} color={Colors.app.color} />
+    } else if (error !== null) {
+      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
+    } else {
+      return showPanel(typeVetements)
     }
+  }
 
 
-    function showPanel(typeVetements: ParamTypeVetementsModel[] | undefined) : React.JSX.Element{
-      let panel: JSX.Element;
-      let items: JSX.Element[] = [];
-      if(typeVetements !== undefined){
-        typeVetements.forEach((item, idx) => {
+  function showPanel(typeVetements: ParamTypeVetementsModel[] | undefined): React.JSX.Element {
+    let panel: JSX.Element;
+    let items: JSX.Element[] = [];
+    if (typeVetements !== undefined) {
+      typeVetements.forEach((item, idx) => {
         items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
       });
-      }
-      panel = <>{items}</>;
-      return panel;
     }
+    panel = <>{items}</>;
+    return panel;
+  }
 
 
   return (

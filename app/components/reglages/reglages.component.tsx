@@ -5,8 +5,8 @@ import MenuDrawer from 'react-native-side-drawer';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
-import ParamTypesVetements from './paramTypeVetements.component';
-import ParamTaillesMesures from './paramTaillesMesures.component';
+import ParamTypesVetements from './paramsTypeVetements.component';
+import ParamTaillesMesures from './paramsTaillesMesures.component';
 import { MenuParametrages } from '@/constants/AppEnum';
 
 /**

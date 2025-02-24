@@ -12,13 +12,13 @@ type AppContextType = {
     backendConnexionData: BackendConfigModel | undefined;
     setBackendConnexionData: React.Dispatch<React.SetStateAction<BackendConfigModel | undefined>>;
     
-    typeVetements: ParamTypeVetementsModel[] | undefined;
+    typeVetements: ParamTypeVetementsModel[];
     setTypeVetements: React.Dispatch<React.SetStateAction<ParamTypeVetementsModel[] | []>>;
 
-    taillesMesures: ParamTailleVetementsModel[] | undefined;
+    taillesMesures: ParamTailleVetementsModel[];
     setTaillesMesures: React.Dispatch<React.SetStateAction<ParamTailleVetementsModel[] | []>>;
 
-    dressings: DressingModel[] | undefined; 
+    dressings: DressingModel[] | []; 
     setDressings: React.Dispatch<React.SetStateAction<DressingModel[] | []>>;
 };
 

@@ -6,7 +6,8 @@ import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
-import DressingEmptyComponent from './dressing.empty.component';
+import DressingEmptyComponent from './dressingEmpty.component';
+import VetementFormComponent from './vetementForm.component';
 
 
 export type DressingComponentProps = {
@@ -29,33 +30,27 @@ export type DressingComponentProps = {
  **/
 export default function DressingComponent({ dressing }: DressingComponentProps) {
 
-  const [open, setOpen] = useState(true);
+  const [openVetementForm, setOpenVetementForm] = useState(true);
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpen(): void {
-    setOpen(!open);
-  };
-
-  const drawerContent = () => {
-    return (
-      <TouchableOpacity onPress={toggleOpen} style={styles.animatedBox}>
-        <ThemedView>
-          <ThemedText type="title">Ajouter un vêtement</ThemedText>
-        </ThemedView>
-      </TouchableOpacity>
-    );
+  function toggleOpenVetementForm(): void {
+    setOpenVetementForm(!openVetementForm);
   };
 
 
+  /**
+   * 
+   * @returns composant principal du dressing
+   */
   const getPanelContent = () => {
     if(dressing?.vetements === undefined || dressing?.vetements?.length === 0){
-      return <DressingEmptyComponent openAddVetement={toggleOpen}/>
+      return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm}/>
     }
     else{
       return (
         <ThemedView style={styles.body}>
           <ThemedText type="subtitle">Nombre de vêtements : {dressing.vetements?.length}</ThemedText>
-          <TouchableOpacity onPress={toggleOpen}>
+          <TouchableOpacity onPress={toggleOpenVetementForm}>
             <ThemedText type="subtitle">Ajouter un vêtement</ThemedText>
           </TouchableOpacity>
         </ThemedView>
@@ -68,10 +63,11 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     <ThemedView style={styles.container}>
 
       {getPanelContent()}
+
       <MenuDrawer
-        open={!open}
+        open={!openVetementForm}
         position={'right'}
-        drawerContent={drawerContent()}
+        drawerContent={<VetementFormComponent vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>}
         drawerPercentage={98}
         animationTime={250}
         overlay={true}
