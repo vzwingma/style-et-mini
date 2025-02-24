@@ -22,6 +22,30 @@ export function getHeaderIcon(tab: Tabs) {
   }
 
 
+/**
+ * Affiche le titre de l'onglet sélectionné
+ * @param tab L'onglet sélectionné
+ * @param dressingName Le nom du dressing sélectionné
+ * @returns Le titre de l'onglet
+ * @see Tabs
+ * @see Colors
+ */
+  export function getHeaderTitle(tab: Tabs, dressingName?: string) {
+    
+    switch (tab) {
+      case Tabs.INDEX:
+        return "Bienvenue";
+      case Tabs.DRESSING:
+        if (dressingName) {
+          return `Le dressing de ${dressingName}`;
+        }
+        return "Erreur : dressing non défini";
+      case Tabs.REGLAGES:
+        return "Paramètres de l'application";
+      default:
+        return "Erreur : Onglet non défini";
+    }
+  }
   
 
 export const tabStyles = StyleSheet.create({

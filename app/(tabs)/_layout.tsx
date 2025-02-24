@@ -8,7 +8,7 @@ import { AppStatus } from '@/constants/AppEnum';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
-import { getHeaderIcon } from '@/app/components/commons/tab/TabHeaderIcon';
+import { getHeaderIcon, getHeaderTitle } from '@/app/components/commons/tab/TabHeader';
 import BackendConfigModel from '@/app/models/backendConfig.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import connectToBackend, { getDressings } from '../controllers/index.controller';
@@ -21,14 +21,16 @@ export default function TabLayout() {
   // État pour vérifier si l'utilisateur est connecté au backend
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
-  const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
-  const { dressings, setDressings } = useContext(AppContext)!;
-
-
   const [error, setError] = useState<Error | null>(null);
+  // navigations
   const [tab, setTab] = useState(Tabs.INDEX);
+
+  // Infos métiers
+  const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
   const [idDressing, setIdDressing] = useState<string | undefined>(undefined);
+  const {dressings, setDressings } = useContext(AppContext)!;
+
+
   /**
    * Récupère le statut de connexion au backend
    *
@@ -87,7 +89,7 @@ export default function TabLayout() {
     <>
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab)}
-        headerTitle="Style & Mini"
+        headerTitle={getHeaderTitle(tab, dressings?.find(d => d._id === idDressing)?.libelle)}
         connexionStatus={getConnexionStatus()}
         setRefreshing={setRefreshing}>
 
@@ -96,6 +98,7 @@ export default function TabLayout() {
         </ThemedView>
 
       </ParallaxScrollView>
+
       <View style={tabStyles.tabsViewbox}>
         {
           (!isLoading && error === null) ?
@@ -129,7 +132,7 @@ export default function TabLayout() {
           return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
         }
         else {
-          return <DressingScreen idDressing={_id} />
+          return <DressingScreen dressing={dressings?.find(d => d._id === idDressing)} />
         }
       case Tabs.REGLAGES:
         return <ReglageScreen />

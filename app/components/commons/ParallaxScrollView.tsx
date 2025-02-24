@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/app/components/commons/ThemedView';
-import { AppStatus } from '@/constants/AppEnum';
+import { APP_MOBILE_NAME, APP_MOBILE_VERSION, AppStatus } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -76,9 +76,12 @@ export default function ParallaxScrollView({
           ]}>
           {headerImage}
           <ThemedView style={styles.titleHeader}>
-            {connexionStatus && getConnexionStatusIcon(connexionStatus)}
             <ThemedText type="title" style={styles.appColor}>{headerTitle}</ThemedText>
           </ThemedView>
+          <ThemedView style={styles.titleHeader}>
+            {connexionStatus && getConnexionStatusIcon(connexionStatus)}
+            <ThemedText type="italic" style={{color : 'grey', marginRight: 10, marginBottom: 5}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}</ThemedText>
+          </ThemedView>          
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>

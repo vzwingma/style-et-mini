@@ -10,26 +10,21 @@ import DressingComponent from '../components/dressing/dressing.component';
 
 
 interface DressingScreenProps {
-  idDressing: string;
+  dressing: DressingModel | undefined;
 }
 
 /**
  * Ecran de gestion du dressing
  * @param id id du dressing
  */
-export default function DressingScreen({ idDressing }: DressingScreenProps) {
+export default function DressingScreen({ dressing }: DressingScreenProps) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const [dressing, setDressing] = useState<DressingModel>();
   /**
  *  A l'initialisation, lance la connexion au backend pour récupérer le dressing et les vêtements associés
  * */
-  useEffect(() => {
-    console.log("(Re)Chargement du dressing [", { idDressing }, "]");
-    loadDressing({ idDressing, setIsLoading, setDressing, setError });
-  }, [setIsLoading, idDressing])
 
 
   /**
