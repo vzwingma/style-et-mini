@@ -18,7 +18,7 @@ export const enum SERVICES_PARAMS {
  * L'URI racine pour les requêtes API.
  */
 const ROOT_URI = "api/v1";
-const GET_PARAMS = ROOT_URI+"/params";
+const GET_PARAMS = ROOT_URI+"/params/vetements";
 
 
 /**
@@ -27,11 +27,12 @@ const GET_PARAMS = ROOT_URI+"/params";
 export enum SERVICES_URL {
     GET_CONFIG = ROOT_URI+"/status",
     
-    GET_PARAM_TYPE_VETEMENTS = GET_PARAMS+"/typeVetements",
-    GET_PARAM_TAILLES_MESURES = GET_PARAMS+"/taillesMesures",
+    GET_PARAMS_TYPE_VETEMENTS   = GET_PARAMS+"/types",
+    GET_PARAMS_TAILLES_MESURES  = GET_PARAMS+"/taillesMesures",
+    GET_PARAMS_USAGES           = GET_PARAMS+"/usages",
     
-    GET_DRESSINGS = ROOT_URI+"/dressing",
-    GET_DRESSING_BY_ID = GET_DRESSINGS+"/"+SERVICES_PARAMS.IDX
+    GET_DRESSINGS       = ROOT_URI+"/dressing",
+    GET_DRESSING_BY_ID  = GET_DRESSINGS+"/"+SERVICES_PARAMS.IDX
 }
 
 

@@ -7,7 +7,8 @@ import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import ParamTypesVetements from './paramsTypeVetements.component';
 import ParamTaillesMesures from './paramsTaillesMesures.component';
-import { MenuParametrages } from '@/constants/AppEnum';
+import { MenuParametragesEnum } from '@/constants/AppEnum';
+import ParamUsagesVetements from './paramsUsagesVetements.component';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -27,7 +28,7 @@ import { MenuParametrages } from '@/constants/AppEnum';
 export default function ReglagesComponent() {
   
   const [open, setOpen] = useState(true);
-  const [menu, setMenu] = useState<MenuParametrages | null>(null);
+  const [menu, setMenu] = useState<MenuParametragesEnum | null>(null);
 
 
     /** Ouverture/Fermeture du menu */
@@ -36,13 +37,25 @@ export default function ReglagesComponent() {
       setOpen(!open);
     };
 
+    const menuContent = (menu: MenuParametragesEnum) => {
+        switch(menu){
+          case MenuParametragesEnum.MENU_TYPE_VETEMENTS:
+            return <ParamTypesVetements />
+          case MenuParametragesEnum.MENU_TAILLES:
+            return <ParamTaillesMesures />
+            case MenuParametragesEnum.MENU_USAGES:
+              return <ParamUsagesVetements />            
+          default:
+            return <></>
+        }
+    };
+
     const drawerContent = () => {
       return (
         <TouchableOpacity onPress={() => toggleOpen(null)} style={styles.animatedBox}>
           <ThemedView>
           {
-            menu === MenuParametrages.MENU_TYPE_VETEMENTS ? 
-            <ParamTypesVetements /> : <ParamTaillesMesures />
+            menuContent(menu!)
           }
           </ThemedView>
         </TouchableOpacity>
@@ -52,18 +65,20 @@ export default function ReglagesComponent() {
     
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Paramétrages</ThemedText>
-
       <SectionList
         sections={[
-          {title: 'Paramétrages généraux', data: [MenuParametrages.MENU_TYPE_VETEMENTS, MenuParametrages.MENU_TAILLES]},
+          {title: 'Paramétrages de vêtements', data: 
+            [MenuParametragesEnum.MENU_TYPE_VETEMENTS, 
+              MenuParametragesEnum.MENU_TAILLES, 
+              MenuParametragesEnum.MENU_USAGES
+            ]},
         ]}
         renderItem={({item}) => <ThemedView style={styles.menuItem} >
                                   <ThemedText type='default' onPress={() => toggleOpen({item})}>{item}</ThemedText>
                                 </ThemedView>}
         renderSectionHeader={({section}) => (
           <ThemedView style={styles.menuHeader}>
-            <ThemedText type="subtitle">{section.title}</ThemedText>
+            <ThemedText type="title">{section.title}</ThemedText>
           </ThemedView>
         )}
         keyExtractor={item => `basicListEntry-${item}`}

@@ -6,23 +6,23 @@ import { useContext, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ParamListItem } from './typeParamsListItem.component';
-import { getParamsTaillesVetements } from '@/app/controllers/parametrages.controller';
-import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
+import { getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
+import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
 
 
-export default function ParamTaillesMesures() {
+export default function ParamUsagesVetements() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const { taillesMesures, setTaillesMesures } = useContext(AppContext)!;
+  const { usages, setUsages } = useContext(AppContext)!;
   /**
  *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
  * et à changement d'onglet
  * */
   useEffect(() => {
-    console.log("(Re)Chargement des paramètres de Tailles et Mesures...");
-    getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
-  }, [setTaillesMesures])
+    console.log("(Re)Chargement des paramètres d'usages...");
+    getParamsUsagesVetements({ setIsLoading, setUsages, setError });
+  }, [setUsages])
 
 
   function getPanelContent(): React.JSX.Element {
@@ -31,16 +31,16 @@ export default function ParamTaillesMesures() {
     } else if (error !== null) {
       return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
     } else {
-      return showPanelTaillesMesures(taillesMesures)
+      return showPanelUsages(usages)
     }
   }
 
 
-  function showPanelTaillesMesures(tailleVetements: ParamTailleVetementsModel[] | undefined): React.JSX.Element {
+  function showPanelUsages(usageVetements: ParamUsageVetementsModel[] | undefined): React.JSX.Element {
     let panel: JSX.Element;
     let items: JSX.Element[] = [];
-    if (tailleVetements !== undefined) {
-      tailleVetements.forEach((item, idx) => {
+    if (usageVetements !== undefined) {
+      usageVetements.forEach((item) => {
         items.push(<ParamListItem key={item.id} libelle={JSON.stringify(item)} />);
       });
     }
@@ -52,7 +52,7 @@ export default function ParamTaillesMesures() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Tailles et mesures!</ThemedText>
+        <ThemedText type="title">Usages!</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>

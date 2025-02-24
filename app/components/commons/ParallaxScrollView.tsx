@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/app/components/commons/ThemedView';
-import { APP_MOBILE_NAME, APP_MOBILE_VERSION, AppStatus } from '@/constants/AppEnum';
+import { APP_MOBILE_NAME, APP_MOBILE_VERSION, AppStatusEnum } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,7 +19,7 @@ const HEADER_HEIGHT = 100;
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerTitle: string;
-  connexionStatus?: AppStatus;
+  connexionStatus?: AppStatusEnum;
   setRefreshing: React.Dispatch<React.SetStateAction<boolean>>;
 }>;
 
@@ -94,16 +94,16 @@ export default function ParallaxScrollView({
  * Retourne l'icône de connexion en fonction du statut de connexion
  * @param connexionStatus Le statut de connexion
  * @returns L'icône de connexion
- * @see AppStatus
+ * @see AppStatusEnum
  * @see MaterialCommunityIcons
  * @see MaterialCommunityIconsProps
  * @see Colors
  */
-function getConnexionStatusIcon(connexionStatus: AppStatus) {
+function getConnexionStatusIcon(connexionStatus: AppStatusEnum) {
   switch (connexionStatus) {
-    case AppStatus.CONNECTE:
+    case AppStatusEnum.CONNECTE:
       return <MaterialCommunityIcons name="check-circle" size={24} color="green" style={{padding: 5}} />;
-    case AppStatus.DECONNECTE:
+    case AppStatusEnum.DECONNECTE:
       return <MaterialCommunityIcons name="alert-circle" size={24} color="red" style={{padding: 5}}/>;
     default:
       return <MaterialCommunityIcons name="help-circle" size={24} color="grey" style={{padding: 5}}/>;

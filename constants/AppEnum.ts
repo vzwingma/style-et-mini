@@ -2,7 +2,7 @@
 export const APP_MOBILE_VERSION = "0.0.1";
 export const APP_MOBILE_NAME = "Style et Mini";
 // Enumération des statuts de l'application
-export enum AppStatus {
+export enum AppStatusEnum {
     INCONNU = 'INCONNU',
     CONNECTE = 'CONNECTE',
     DECONNECTE = 'DECONNECTE',
@@ -10,14 +10,21 @@ export enum AppStatus {
 
 
 // Enumération des menus de l'application
-export enum MenuParametrages {
+export enum MenuParametragesEnum {
     MENU_TYPE_VETEMENTS = 'Type de vêtements',
-    MENU_TAILLES = 'Tailles et Mesures' 
+    MENU_TAILLES = 'Tailles et Mesures', 
+    MENU_USAGES = 'Usages',
   }
 
 
-// 
-export enum DressingType {
-    ENFANT = 'Enfant',
-    ADULTE = 'Adulte'
+// catégorie de dressing (enfant ou adulte)
+export enum CategorieDressingEnum {
+    BEBE    = 'Bébé',
+    ENFANT  = 'Enfant',
+    ADULTE  = 'Adulte'
+}
+
+export enum TypeTailleEnum {
+    TAILLE = 'Taille',
+    POINTURE = 'Pointure'
 }

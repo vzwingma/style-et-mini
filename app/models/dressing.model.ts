@@ -1,12 +1,12 @@
-import { DressingType } from "@/constants/AppEnum";
+import { CategorieDressingEnum as CategorieDressingEnum } from "@/constants/AppEnum";
 import DressingVetementModel from "./dressing.vetements.model";
 
 /**
  * Modèle représentant une taille de vetements
  */
 export default interface DressingModel {
-    readonly _id: string;
-    readonly libelle: string;
-    readonly type: DressingType;
-    vetements: DressingVetementModel[];
+    readonly id         : string;
+    readonly libelle    : string;
+    readonly categorie  : CategorieDressingEnum;
+    vetements           : DressingVetementModel[];
 }

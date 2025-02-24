@@ -4,7 +4,7 @@ import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { AppStatus } from '@/constants/AppEnum';
+import { AppStatusEnum } from '@/constants/AppEnum';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
@@ -27,8 +27,8 @@ export default function TabLayout() {
 
   // Infos métiers
   const { backendConnexionData, setBackendConnexionData } = useContext(AppContext)!;
-  const [idDressing, setIdDressing] = useState<string | undefined>(undefined);
-  const {dressings, setDressings } = useContext(AppContext)!;
+  const [ idDressing, setIdDressing ] = useState<string | undefined>(undefined);
+  const { dressings, setDressings } = useContext(AppContext)!;
 
 
   /**
@@ -36,9 +36,9 @@ export default function TabLayout() {
    *
    * @returns Le statut de connexion suivant l'énumération AppStatus
    */
-  function getConnexionStatus(): AppStatus {
-    if (isLoading) return AppStatus.INCONNU;
-    return (backendConnexionData?.status?.indexOf("OK") ?? -1) > 0 ? AppStatus.CONNECTE : AppStatus.DECONNECTE;
+  function getConnexionStatus(): AppStatusEnum {
+    if (isLoading) return AppStatusEnum.INCONNU;
+    return (backendConnexionData?.status?.indexOf("OK") ?? -1) > 0 ? AppStatusEnum.CONNECTE : AppStatusEnum.DECONNECTE;
   }
 
   /**
@@ -89,7 +89,7 @@ export default function TabLayout() {
     <>
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab)}
-        headerTitle={getHeaderTitle(tab, dressings?.find(d => d._id === idDressing)?.libelle)}
+        headerTitle={getHeaderTitle(tab, dressings?.find(d => d.id === idDressing)?.libelle)}
         connexionStatus={getConnexionStatus()}
         setRefreshing={setRefreshing}>
 
@@ -106,7 +106,7 @@ export default function TabLayout() {
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
               {
                 dressings?.map((dressing, idx) => {
-                  return <TabBarItems key={idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing._id} />
+                  return <TabBarItems key={idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} />
                 })
               }
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
@@ -132,7 +132,7 @@ export default function TabLayout() {
           return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
         }
         else {
-          return <DressingScreen dressing={dressings?.find(d => d._id === idDressing)} />
+          return <DressingScreen dressing={dressings?.find(d => d.id === idDressing)} />
         }
       case Tabs.REGLAGES:
         return <ReglageScreen />

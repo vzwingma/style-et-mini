@@ -5,8 +5,8 @@ import ParamTailleVetementsModel from "./paramTailleVetements.model";
  * Modèle représentant un vetement
  */
 export default interface DressingVetementModel {
-    readonly _id: string;
-    readonly libelle: string;
-    readonly taille: ParamTailleVetementsModel;
-    readonly type: ParamTypeVetementsModel;
+    readonly id         : string;
+    readonly libelle    : string;
+    readonly type       : ParamTypeVetementsModel;
+    readonly taille     : ParamTailleVetementsModel;
 }

@@ -6,8 +6,8 @@ import { useContext, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
-import { TypeVetementListItem } from '../dressing/typeVetementListItem.component';
 import { getParamsTypeVetements } from '@/app/controllers/parametrages.controller';
+import { ParamListItem } from './typeParamsListItem.component';
 
 
 /**
@@ -46,7 +46,7 @@ export default function ParamTypesVetements() {
     let items: JSX.Element[] = [];
     if (typeVetements !== undefined) {
       typeVetements.forEach((item, idx) => {
-        items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
+        items.push(<ParamListItem key={item.id} libelle={JSON.stringify(item)} />);
       });
     }
     panel = <>{items}</>;
