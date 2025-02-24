@@ -46,19 +46,22 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
         
         return (
             <View style={styles.body}>
-                <View style={{ flex: 1, backgroundColor: 'dark' }} />
+                <View style={{ flex: 1, backgroundColor: 'dark', alignItems: 'center', borderColor: 'black', borderWidth: 1 }} >
+                    <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />
+                </View>
                 <View style={styles.form}>
                     
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Nom</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Nom *</ThemedText>
                         <TextInput style={styles.input}/>
                     </View>
                     
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Type de vêtement</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Type de vêtement *</ThemedText>
                         <Dropdown
                             style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle}
+                            mode='modal'
                             maxHeight={300}
                             data={getTypeVetementsForm(typeVetements, dressing)}
                             labelField="libelle" valueField="id"                            
@@ -78,7 +81,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                         />
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Taille</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Taille *</ThemedText>
                         <Dropdown
                             style={[styles.dropdown]} containerStyle={[styles.listStyle]}
                             iconStyle={styles.iconStyle}
@@ -101,7 +104,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                         />
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Usage</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Usage *</ThemedText>
                         <MultiSelect
                             style={[styles.dropdown]} containerStyle={[styles.listStyle]} iconStyle={styles.iconStyle}
                             itemTextStyle={styles.selectedTextStyle}
@@ -183,8 +186,7 @@ const styles = StyleSheet.create({
     },
     // Label de formulaire
     label: {
-        flex: 1,
-        flexDirection: 'row',
+        width: 200,
         marginTop: 5,
         marginBottom: 5,
     },
