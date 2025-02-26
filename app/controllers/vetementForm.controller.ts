@@ -1,10 +1,13 @@
+import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
 import { alphanumSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
+import VetementModel from "../models/vetements.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
-import FormVetementModel from "../models/form.vetements.model";
+import FormVetementModel, { transformFormToVetementModel } from "../models/form.vetements.model";
 import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/paramUsageVetements.model";
+import { callPOSTBackend } from "../services/ClientHTTP.service";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -20,7 +23,7 @@ export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], d
 
 // Filtre les tailles de mesures en fonction de la catégorie du dressing
 export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamTailleVetementsModel[] {
-    if(form?.type === undefined || form?.type === null){
+    if (form?.type === undefined || form?.type === null) {
         return [];
     }
     return taillesMesures
@@ -38,6 +41,19 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
             .length > 0)
         .sort((a, b) => alphanumSort(a.libelle, b.libelle));
 }
+
+/**
+ * Met à jour le libellé du formulaire de vêtement.
+ *
+ * @param libelle - Le nouveau libellé à définir dans le formulaire.
+ * @param setForm - La fonction de mise à jour de l'état du formulaire.
+ */
+export function initForm(dressing: DressingModel, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, dressing: dressing }
+    });
+}
+
 
 
 /**
@@ -125,7 +141,7 @@ export function setDescriptionForm(description: string, setForm: Function) {
  */
 
 export function razAndcloseForm(setForm: React.Dispatch<React.SetStateAction<FormVetementModel | null>>,
-                          setErrorsForm: Function, onCloseForm:Function) {
+    setErrorsForm: Function, onCloseForm: Function) {
     setForm(null);
     setErrorsForm(null);
     onCloseForm();
@@ -141,72 +157,106 @@ export function razAndcloseForm(setForm: React.Dispatch<React.SetStateAction<For
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function validateForm(form: FormVetementModel | null, setForm: React.Dispatch<React.SetStateAction<FormVetementModel | null>>, 
-                             setErrorsForm: Function, 
-                             onCloseForm:Function) {
+export function validateForm(form: FormVetementModel | null, setForm: React.Dispatch<React.SetStateAction<FormVetementModel | null>>,
+    setErrorsForm: Function,
+    onCloseForm: Function) {
     console.log("Validation du formulaire", form);
     let errors = false;
-    if(form === null){
+    if (form === null) {
         console.error("Le formulaire est vide");
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire"
+            return {
+                ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire"
                 , typeInError: true, typeMessage: "Le type de vêtement est obligatoire"
                 , tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire"
                 , usageInError: true, usageMessage: "Au moins un usage est obligatoire"
-             } 
+            }
         });
         return;
     }
-    if(form.libelle === undefined || form.libelle === ""){
+    if (form.libelle === undefined || form.libelle === "") {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire" } 
+            return { ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire" }
         });
     }
-    else{
+    else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, libelleInError: false, libelleMessage: null } 
+            return { ...errors, libelleInError: false, libelleMessage: null }
         });
     }
 
-    if(form.type === undefined || form.type === null){
+    if (form.type === undefined || form.type === null) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, typeInError: true, typeMessage: "Le type de vêtement est obligatoire" } 
-        } );
-    }
-    else{
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, typeInError: false, typeMessage: null } 
+            return { ...errors, typeInError: true, typeMessage: "Le type de vêtement est obligatoire" }
         });
     }
-    
-    if(form.taille === undefined || form.taille === null){
+    else {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, typeInError: false, typeMessage: null }
+        });
+    }
+
+    if (form.taille === undefined || form.taille === null) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire" } 
+            return { ...errors, tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire" }
         });
     }
-    else{
+    else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, tailleInError: false, tailleMessage: null } 
+            return { ...errors, tailleInError: false, tailleMessage: null }
         });
     }
-    console.log("Usages : ", form.usagesListe, form.usages);   
-    if(form.usages === undefined || form.usages === null || form.usages.length === 0){
+    console.log("Usages : ", form.usagesListe, form.usages);
+    if (form.usages === undefined || form.usages === null || form.usages.length === 0) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, usageInError: true, usageMessage: "Au moins un usage est obligatoire" } 
+            return { ...errors, usageInError: true, usageMessage: "Au moins un usage est obligatoire" }
         });
     }
-    else{
+    else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, usageInError: false, usageMessage: null } 
+            return { ...errors, usageInError: false, usageMessage: null }
         });
     }
     console.log("Formulaire validé ? ", !errors);
-    if(!errors){
+    if (!errors) {
         // Enregistrement du formulaire 
-        razAndcloseForm(setForm, setErrorsForm, onCloseForm);
+        const resultatSave: boolean = saveVetement(form);
+        if (resultatSave) {
+            razAndcloseForm(setForm, setErrorsForm, onCloseForm);
+        }
+    }
+
+
+
+
+    function saveVetement(form: FormVetementModel): boolean {
+
+        console.log("Sauvegarde du vêtement", form);
+
+        let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
+                      { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
+        ];
+
+        const vetement: VetementModel = transformFormToVetementModel(form);
+        console.log("Sauvegarde du vêtement", vetement);
+        if (form.id !== null && form.id !== "" && form.id !== undefined) {
+            // TODO : Appel au backend pour mettre à jour le vêtement
+            callPOSTBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params, vetement)
+                .then((response) => {
+                    console.log("Vêtement mis à jour avec succès", response);
+                });
+        }
+        else {
+            // TODO : Appel au backend pour sauvegarder le vêtement
+            callPOSTBackend(SERVICES_URL.SERVICE_VETEMENTS, params, vetement)
+                .then((response) => {
+                    console.log("Vêtement mis à jour avec succès", response);
+                });
+        }
+        return true;
     }
 }

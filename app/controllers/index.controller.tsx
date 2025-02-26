@@ -1,8 +1,8 @@
 import BackendConfigModel from "@/app/models/backendConfig.model";
-import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
+import { callGETBackend } from "../services/ClientHTTP.service";
 
 // Propriétés de l'écran d'accueil'
 type FunctionConnectToDomoticzProps = {
@@ -29,7 +29,7 @@ export function connectToBackend({setIsLoading, storeConnexionData, setError}: F
 
     setIsLoading(true);
     // Appel du service externe de connexion au backend
-    callBackend(SERVICES_URL.GET_CONFIG)
+    callGETBackend(SERVICES_URL.SERVICE_CONFIG)
       .then((config : BackendConfigModel) => {
         setIsLoading(false);
         storeConnexionData(config);
@@ -63,7 +63,7 @@ export function getDressings({setIsLoading, setDressings, setError}: FunctionGet
 
   setIsLoading(true);
   // Appel du service externe des dressings
-  callBackend(SERVICES_URL.GET_DRESSINGS)
+  callGETBackend(SERVICES_URL.SERVICE_DRESSINGS)
     .then((dressings : DressingModel[]) => {
       setIsLoading(false);
       console.log("Dressings récupérés : ", dressings);

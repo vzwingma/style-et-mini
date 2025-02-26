@@ -1,7 +1,7 @@
-import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
+import { callGETBackend } from "../services/ClientHTTP.service";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPIDressingProps = {
@@ -32,11 +32,11 @@ type FunctionCallAPIDressingProps = {
  */
 export function loadDressing({ idDressing, setIsLoading, setDressing, setError }: FunctionCallAPIDressingProps) {
 
-  let params = [{ key: SERVICES_PARAMS.IDX, value: String(idDressing) }];
+  let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
 
   setIsLoading(true);
   // Appel du service externe de chargement du dressing
-  callBackend(SERVICES_URL.GET_DRESSING_BY_ID, params)
+  callGETBackend(SERVICES_URL.SERVICE_DRESSING_BY_ID, params)
     .then((dressing: DressingModel) => {
       console.log("Dressing chargé : ", dressing);
       setIsLoading(false);

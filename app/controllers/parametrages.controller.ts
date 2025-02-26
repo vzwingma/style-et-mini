@@ -1,4 +1,4 @@
-import callBackend from "../services/ClientHTTP.service";
+import { callGETBackend } from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
@@ -48,7 +48,7 @@ export function getParamsTypeVetements({setIsLoading, setTypeVetements, setError
 
   setIsLoading(true);
   // Appel du backend
-  callBackend(SERVICES_URL.GET_PARAMS_TYPE_VETEMENTS)
+  callGETBackend(SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS)
     .then((typeVetements : ParamTypeVetementsModel[]) => {
       setIsLoading(false);
       setTypeVetements(typeVetements);
@@ -84,7 +84,7 @@ export function getParamsTaillesVetements({setIsLoading, setTaillesMesures, setE
 
   setIsLoading(true);
   // Appel du service externe
-  callBackend(SERVICES_URL.GET_PARAMS_TAILLES_MESURES)
+  callGETBackend(SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES)
     .then((tailleVetements : ParamTailleVetementsModel[]) => {
       setIsLoading(false);
       setTaillesMesures(tailleVetements);
@@ -120,7 +120,7 @@ export function getParamsUsagesVetements({setIsLoading, setUsages, setError}: Fu
 
   setIsLoading(true);
   // Appel du service externe 
-  callBackend(SERVICES_URL.GET_PARAMS_USAGES)
+  callGETBackend(SERVICES_URL.SERVICE_PARAMS_USAGES)
     .then((usageVetements : ParamUsageVetementsModel[]) => {
       setIsLoading(false);
       setUsages(usageVetements);
