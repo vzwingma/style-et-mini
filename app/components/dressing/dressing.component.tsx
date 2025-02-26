@@ -9,6 +9,7 @@ import DressingModel from '@/app/models/dressing.model';
 import DressingEmptyComponent from './dressingEmpty.component';
 import VetementFormComponent from './vetementForm.component';
 import { loadVetementsDressing } from '@/app/controllers/dressing.controller';
+import DressingListComponent from './dressingList.component';
 
 
 export type DressingComponentProps = {
@@ -38,7 +39,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
   useEffect(() => {
     // Récupération des vêtements du dressing
     const idDressing = dressing.id;
-    loadVetementsDressing({idDressing, setIsLoading, setVetements} );
+    loadVetementsDressing({ idDressing, setIsLoading, setVetements });
   }, [dressing]);
 
 
@@ -53,20 +54,15 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
    * @returns composant principal du dressing
    */
   const getPanelContent = () => {
-    if (dressing === undefined) {
-          return <ActivityIndicator color={Colors.app.color} size="large" />;
-        }
-    else if(vetements === undefined || vetements?.length === 0){
-      return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm}/>
+    if (dressing === undefined || dressing === null || isLoading) {
+      return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else{
+    else if (vetements === undefined || vetements?.length === 0) {
+      return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
+    }
+    else {
       return (
-        <ThemedView style={styles.body}>
-          <ThemedText type="subtitle">Nombre de vêtements : {vetements?.length}</ThemedText>
-          <TouchableOpacity onPress={toggleOpenVetementForm}>
-            <ThemedText type="subtitle">Ajouter un vêtement</ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
+        <DressingListComponent vetements={vetements} openAddVetement={toggleOpenVetementForm} />
       );
     }
   }
@@ -91,31 +87,6 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 }
 
 
-
-
-
-
-
-
-
-/**
- * Affiche un panneau de vêtements.
- *
- * @param {DressingVetementModel[] | undefined} vetements - La liste des vêtements à afficher. Peut être indéfinie.
- * @returns {React.JSX.Element} Un élément JSX contenant la liste des éléments de type vêtement.
- 
-function showPanelVetements(vetements: DressingVetementModel[] | undefined): React.JSX.Element {
-  let panel: JSX.Element;
-  let items: JSX.Element[] = [];
-  if (vetements !== undefined) {
-    vetements.forEach((item) => {
-      items.push(<TypeVetementListItem key={item._id} typeVetements={item} />);
-    });
-  }
-  panel = <>{items}</>;
-  return panel;
-}
-*/
 
 const styles = StyleSheet.create({
   container: {
