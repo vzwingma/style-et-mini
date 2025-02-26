@@ -141,11 +141,13 @@ export function setDescriptionForm(description: string, setForm: Function) {
  * Validation du formulaire
  */
 
-export function razAndcloseForm(setForm: React.Dispatch<React.SetStateAction<FormVetementModel | null>>,
+export function razAndcloseForm(
+    form : FormVetementModel,
+    setForm: Function,
     setErrorsForm: Function, onCloseForm: Function) {
-    setForm(null);
-    setErrorsForm(null);
-    onCloseForm();
+        initForm(form?.dressing, setForm);
+        setErrorsForm(null);
+        onCloseForm();
 }
 
 
@@ -158,10 +160,13 @@ export function razAndcloseForm(setForm: React.Dispatch<React.SetStateAction<For
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function validateForm(form: FormVetementModel | null, setForm: React.Dispatch<React.SetStateAction<FormVetementModel | null>>,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
+export function validateForm(form: FormVetementModel | null, 
+                            setForm: Function,
+                            setErrorsForm: Function,
+                            onCloseForm: Function) {
+
     console.log("Validation du formulaire", form);
+    
     let errors = false;
     if (form === null) {
         console.error("Le formulaire est vide");
@@ -247,7 +252,7 @@ export function validateForm(form: FormVetementModel | null, setForm: React.Disp
         callPOSTBackend(url, params, vetement)
         .then((response) => {
             console.log("Vêtement mis à jour avec succès", response);
-            razAndcloseForm(setForm, setErrorsForm, onCloseForm);
+            razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);

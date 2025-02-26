@@ -1,6 +1,6 @@
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
@@ -8,6 +8,7 @@ import { Colors } from '@/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
 import DressingEmptyComponent from './dressingEmpty.component';
 import VetementFormComponent from './vetementForm.component';
+import { loadVetementsDressing } from '@/app/controllers/dressing.controller';
 
 
 export type DressingComponentProps = {
@@ -31,6 +32,15 @@ export type DressingComponentProps = {
 export default function DressingComponent({ dressing }: DressingComponentProps) {
 
   const [openVetementForm, setOpenVetementForm] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [vetements, setVetements] = useState([]);
+
+  useEffect(() => {
+    // Récupération des vêtements du dressing
+    const idDressing = dressing.id;
+    loadVetementsDressing({idDressing, setIsLoading, setVetements} );
+  }, [dressing]);
+
 
   /** Ouverture/Fermeture du menu */
   function toggleOpenVetementForm(): void {
@@ -43,13 +53,16 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
    * @returns composant principal du dressing
    */
   const getPanelContent = () => {
-    if(dressing?.vetements === undefined || dressing?.vetements?.length === 0){
+    if (dressing === undefined) {
+          return <ActivityIndicator color={Colors.app.color} size="large" />;
+        }
+    else if(vetements === undefined || vetements?.length === 0){
       return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm}/>
     }
     else{
       return (
         <ThemedView style={styles.body}>
-          <ThemedText type="subtitle">Nombre de vêtements : {dressing.vetements?.length}</ThemedText>
+          <ThemedText type="subtitle">Nombre de vêtements : {vetements?.length}</ThemedText>
           <TouchableOpacity onPress={toggleOpenVetementForm}>
             <ThemedText type="subtitle">Ajouter un vêtement</ThemedText>
           </TouchableOpacity>

@@ -29,7 +29,7 @@ export type VetementFormComponentProps = {
  **/
 export default function VetementFormComponent({ dressing, vetement, onCloseForm }: VetementFormComponentProps) {
 
-    const [form, setForm] = useState<FormVetementModel | null>(null);
+    const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
 
     const {typeVetements: paramsTypeVetements, taillesMesures: paramsTaillesMesures, usages: paramsUsagesVetements} = useContext(AppContext)!;
@@ -138,7 +138,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
     return (
         <>
             <ThemedView style={styles.title}>
-                <TouchableOpacity onPress={() =>razAndcloseForm(setForm, setErrorForm, onCloseForm)}>
+                <TouchableOpacity onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                 </TouchableOpacity>
                 <ThemedText type="subtitle">{vetement === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
