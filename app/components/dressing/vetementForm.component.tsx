@@ -81,7 +81,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
 
                             maxHeight={300}
-                            data={getTaillesMesuresForm(paramsTaillesMesures, dressing)}
+                            data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
                             labelField="libelle" valueField="id"                            
                             placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage+''}
                             value={form?.taille}

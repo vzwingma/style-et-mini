@@ -1,7 +1,7 @@
 import BackendConfigModel from "@/app/models/backendConfig.model";
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
-import { showToast, ToastDuration } from "@/hooks/AndroidToast";
+import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
 
 // Propriétés de l'écran d'accueil'

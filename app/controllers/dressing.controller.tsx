@@ -1,6 +1,6 @@
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
-import { showToast, ToastDuration } from "@/hooks/AndroidToast";
+import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
 
 // Propriétés de l'écran des équipements

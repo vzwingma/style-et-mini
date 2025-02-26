@@ -1,6 +1,6 @@
 import callBackend from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
-import { showToast, ToastDuration } from "@/hooks/AndroidToast";
+import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
 import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
 import ParamUsageVetementsModel from "../models/paramUsageVetements.model";

@@ -1,3 +1,4 @@
+import { alphanumSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
 import FormVetementModel from "../models/form.vetements.model";
@@ -11,13 +12,21 @@ export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], d
     return typeVetements
         .filter((type) => type.categories
             .filter((cat) => cat === dressing.categorie)
-            .length > 0);
+            .length > 0)
+        .sort((a, b) => alphanumSort(a.libelle, b.libelle));
 }
 
+
+
 // Filtre les tailles de mesures en fonction de la catégorie du dressing
-export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[], dressing: DressingModel): ParamTailleVetementsModel[] {
+export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamTailleVetementsModel[] {
+    if(form?.type === undefined || form?.type === null){
+        return [];
+    }
     return taillesMesures
         .filter((taille) => taille.categorie === dressing.categorie)
+        .filter((taille) => taille.type === form.type.typeTaille)
+        .sort((a, b) => alphanumSort(a.libelle, b.libelle));
 }
 
 
@@ -26,7 +35,8 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
     return usages
         .filter((usage) => usage.categories
             .filter((cat) => cat === dressing.categorie)
-            .length > 0);
+            .length > 0)
+        .sort((a, b) => alphanumSort(a.libelle, b.libelle));
 }
 
 
