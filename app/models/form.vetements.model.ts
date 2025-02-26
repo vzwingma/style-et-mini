@@ -10,7 +10,10 @@ export default interface FormVetementModel {
     libelle    : string;
     type       : ParamTypeVetementsModel;
     taille     : ParamTailleVetementsModel;
-    usage      : string[];
-    couleur    : string;
+    usages     : ParamUsageVetementsModel[];
+    usagesListe: string[];
+    couleurs    : string;
     description: string;
 }
+
+

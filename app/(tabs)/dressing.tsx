@@ -1,8 +1,6 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
-import { useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '../models/dressing.model';
 
