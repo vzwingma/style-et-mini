@@ -1,7 +1,5 @@
-import ParamTypeVetementsModel from "@/app/models/paramTypeVetements.model";
 import { View } from "react-native";
 import { ThemedText } from "../commons/ThemedText";
-import ParamTailleVetementsModel from "@/app/models/paramTailleVetements.model";
 
 
 

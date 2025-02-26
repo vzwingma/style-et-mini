@@ -1,5 +1,4 @@
 import { CategorieDressingEnum as CategorieDressingEnum } from "@/constants/AppEnum";
-import VetementModel from "./vetements.model";
 
 /**
  * Modèle représentant une taille de vetements

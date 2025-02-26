@@ -69,7 +69,7 @@ export default function TabLayout() {
     getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
 
     getDressings({ setIsLoading, setDressings, setError });
-  }, [refreshing])
+  }, [refreshing, setDressings, setTypeVetements, setTaillesMesures, setUsages]);
 
 
   /**

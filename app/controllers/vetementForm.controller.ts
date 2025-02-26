@@ -8,6 +8,7 @@ import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/paramUsageVetements.model";
 import { callPOSTBackend } from "../services/ClientHTTP.service";
+import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -209,7 +210,6 @@ export function validateForm(form: FormVetementModel | null, setForm: React.Disp
             return { ...errors, tailleInError: false, tailleMessage: null }
         });
     }
-    console.log("Usages : ", form.usagesListe, form.usages);
     if (form.usages === undefined || form.usages === null || form.usages.length === 0) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
@@ -221,21 +221,18 @@ export function validateForm(form: FormVetementModel | null, setForm: React.Disp
             return { ...errors, usageInError: false, usageMessage: null }
         });
     }
-    console.log("Formulaire validé ? ", !errors);
     if (!errors) {
         // Enregistrement du formulaire 
-        const resultatSave: boolean = saveVetement(form);
-        if (resultatSave) {
-            razAndcloseForm(setForm, setErrorsForm, onCloseForm);
-        }
+        saveVetement(form);
     }
 
 
 
-
-    function saveVetement(form: FormVetementModel): boolean {
-
-        console.log("Sauvegarde du vêtement", form);
+    /**
+     * sauvegarde du vêtement
+     * @param form formulaire à sauvegarder
+     */
+    function saveVetement(form: FormVetementModel) {
 
         let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
                       { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
@@ -243,20 +240,20 @@ export function validateForm(form: FormVetementModel | null, setForm: React.Disp
 
         const vetement: VetementModel = transformFormToVetementModel(form);
         console.log("Sauvegarde du vêtement", vetement);
-        if (form.id !== null && form.id !== "" && form.id !== undefined) {
-            // TODO : Appel au backend pour mettre à jour le vêtement
-            callPOSTBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params, vetement)
-                .then((response) => {
-                    console.log("Vêtement mis à jour avec succès", response);
-                });
-        }
-        else {
-            // TODO : Appel au backend pour sauvegarder le vêtement
-            callPOSTBackend(SERVICES_URL.SERVICE_VETEMENTS, params, vetement)
-                .then((response) => {
-                    console.log("Vêtement mis à jour avec succès", response);
-                });
-        }
-        return true;
+        const url =  (form.id !== null && form.id !== "" && form.id !== undefined) ?
+                        SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
+
+         //  Appel au backend pour sauvegarder le vêtement
+        callPOSTBackend(url, params, vetement)
+        .then((response) => {
+            console.log("Vêtement mis à jour avec succès", response);
+            razAndcloseForm(setForm, setErrorsForm, onCloseForm);
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur de chargement du dressing", ToastDuration.LONG);
+            return false;
+        });
+
     }
 }
