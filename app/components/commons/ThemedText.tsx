@@ -1,9 +1,10 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors } from '@/constants/Colors';
 
 export type ThemedTextProps = TextProps & {
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'tab';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'tab' | 'italic';
 };
 
 export function ThemedText({
@@ -23,6 +24,7 @@ export function ThemedText({
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
         type === 'tab' ? styles.tab : undefined,
+        type === 'italic' ? styles.italic : undefined,
         style,
       ]}
       {...rest}
@@ -44,10 +46,16 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     lineHeight: 32,
+    color: Colors.app.color,
   },
   subtitle: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  italic: {
+    fontStyle: 'italic',
+    fontSize: 20,
+    color: Colors.dark.icon
   },
   tab: {
     lineHeight: 30,

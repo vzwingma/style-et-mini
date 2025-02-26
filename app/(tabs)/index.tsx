@@ -7,7 +7,7 @@ export default function HomeScreen() {
   return (
     <>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">Homepage</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         

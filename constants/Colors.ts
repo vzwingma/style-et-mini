@@ -45,5 +45,9 @@ export const Colors = {
      * Couleur du texte en mode sombre.
      */
     color: '#339a9a',
+
+    background: '#353636',
+
+    backgroundLight: '#474949',
   }
 };

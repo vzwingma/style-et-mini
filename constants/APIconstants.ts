@@ -6,27 +6,44 @@
 export const API_URL = process.env.BACKEND_URL ?? process.env.EXPO_PUBLIC_BACKEND_URL ?? "http://localhost:5000/";
 export const API_AUTH = process.env.BACKEND_AUTH ?? process.env.EXPO_PUBLIC_BACKEND_AUTH;
 
+
+export enum API_VERBS {
+    GET     = "GET",
+    POST    = "POST",
+    PUT     = "PUT",
+    DELETE  = "DELETE"
+}
+
 /**
  * Paramètres pour les services.
  */
 export const enum SERVICES_PARAMS {
-    IDX         = "<IDX>"
+    ID_DRESSING         = "<IDD>",
+    ID_VETEMENT         = "<IDV>"
 }
 
 /**
  * L'URI racine pour les requêtes API.
  */
-export const ROOT_URI = "api/v1";
+const ROOT_URI = "api/v1";
+const GET_PARAMS = ROOT_URI+"/params/vetements";
 
 
 /**
  * URLs pour différents services.
  */
 export enum SERVICES_URL {
-    GET_CONFIG = ROOT_URI+"/status",
-    GET_TYPE_VETEMENTS = ROOT_URI+"/typeVetements",
+    SERVICE_CONFIG = ROOT_URI+"/status",
+    
+    SERVICE_PARAMS_TYPE_VETEMENTS   = GET_PARAMS+"/types",
+    SERVICE_PARAMS_TAILLES_MESURES  = GET_PARAMS+"/taillesMesures",
+    SERVICE_PARAMS_USAGES           = GET_PARAMS+"/usages",
+    
+    SERVICE_DRESSINGS       = ROOT_URI+"/dressing",
+    SERVICE_DRESSING_BY_ID  = SERVICE_DRESSINGS+"/"+SERVICES_PARAMS.ID_DRESSING,
+    SERVICE_VETEMENTS       = SERVICE_DRESSING_BY_ID+"/vetements",
+    SERVICE_VETEMENTS_BY_ID = SERVICE_VETEMENTS+"/"+SERVICES_PARAMS.ID_DRESSING
 }
-
 
 
 /**

@@ -1,66 +1,43 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../services/AppContextProvider';
-import callApiTypeVetements from '../controllers/dressing.controller';
 import { Colors } from '@/constants/Colors';
-import TypeVetementsModel from '../models/typeVetements.model';
-import { TypeVetementListItem } from '../components/dressing/typeVetementListItem.component';
+import DressingModel from '../models/dressing.model';
 
-export default function DressingScreen() {
+import DressingComponent from '../components/dressing/dressing.component';
 
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const {typeVetements, setTypeVetements} = useContext(AppContext)!;
-    /**
-   *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
-   * et à changement d'onglet
-   * */
-    useEffect(() => {
-      console.log("(Re)Chargement du dressing...");
-      callApiTypeVetements({setIsLoading, setTypeVetements, setError});
-    }, [refreshing])
-  
+interface DressingScreenProps {
+  dressing: DressingModel | undefined;
+}
 
-    function getPanelContent() : React.JSX.Element{
-      if (isLoading) {
-        return <ActivityIndicator size={'large'} color={Colors.app.color} />
-      } else if (error !== null) {
-        return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
-      } else {
-        return showPanel(typeVetements)
-      }
+/**
+ * Ecran de gestion du dressing
+ * @param dressing le dressing
+ */
+export default function DressingScreen({ dressing }: DressingScreenProps) {
+
+  /**
+   * Retourne le contenu du panneau en fonction de l'état de chargement, d'erreur ou des vêtements disponibles.
+   *
+   * @returns {React.JSX.Element} - Un élément JSX représentant le contenu du panneau.
+   * - Si `isLoading` est vrai, retourne un indicateur d'activité.
+   * - Si `error` n'est pas nul, retourne un texte thématisé affichant le message d'erreur.
+   * - Sinon, retourne le panneau des vêtements en utilisant la fonction `showPanelVetements`.
+   */
+  function getPanelContent(): React.JSX.Element {
+    if (dressing === undefined) {
+      return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-
-
-    function showPanel(typeVetements: TypeVetementsModel[] | undefined) : React.JSX.Element{
-      let panel: JSX.Element;
-      let items: JSX.Element[] = [];
-      if(typeVetements !== undefined){
-        typeVetements.forEach((item, idx) => {
-        items.push(<TypeVetementListItem key={item.id} typeVetements={item} />);
-      });
-      }
-      panel = <>{items}</>;
-      return panel;
+    else {
+      return <DressingComponent dressing={dressing} />;
     }
-
+  }
 
   return (
-    <>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Dressing!</ThemedText>
-      </ThemedView>
-
-
-      <ThemedView style={styles.stepContainer}>
-        {getPanelContent()}
-      </ThemedView>
-    </>
+    <ThemedView style={styles.stepContainer}>
+      {getPanelContent()}
+    </ThemedView>
   );
 }
 
@@ -68,10 +45,12 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    borderColor: 'red',
+    borderWidth: 1,
+    width: '100%',
   },
   stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+    width: '100%',
+    padding: 1
   }
 });

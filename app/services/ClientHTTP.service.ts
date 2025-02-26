@@ -1,4 +1,4 @@
-import { API_AUTH, API_URL, KeyValueParams, SERVICES_URL } from '@/constants/APIconstants';
+import { API_AUTH, API_URL, API_VERBS, KeyValueParams, SERVICES_URL } from '@/constants/APIconstants';
 import 'react-native-get-random-values';
 import { v7 as uuidGen } from 'uuid';
 
@@ -45,6 +45,7 @@ function stopWatch(traceId: string, res: Response): number {
     return responseTime;
 }
 
+
 /**
  * Appel HTTP vers le backend
  * @param httpMethod méthode HTTP
@@ -53,7 +54,34 @@ function stopWatch(traceId: string, res: Response): number {
  * @param body body de la requête (optionnel)
  * @returns réponse
  */
-function callBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
+export function callGETBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
+    return callBackend(API_VERBS.GET, path, params);
+}
+
+
+
+/**
+ * Appel HTTP vers le backend
+ * @param httpMethod méthode HTTP
+ * @param path chemin de la ressource
+ * @param params paramètres (optionnels)
+ * @param body body de la requête (optionnel)
+ * @returns réponse
+ */
+export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], body?: any): Promise<any> {
+    return callBackend(API_VERBS.POST, path, params, body);
+}
+
+
+/**
+ * Appel HTTP vers le backend
+ * @param httpMethod méthode HTTP
+ * @param path chemin de la ressource
+ * @param params paramètres (optionnels)
+ * @param body body de la requête (optionnel)
+ * @returns réponse
+ */
+function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParams[], body?: JSON): Promise<any> {
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(path, params);
 
@@ -63,13 +91,14 @@ function callBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any
     startWatch();
 
     return fetch(fullURL, {
-        method: "GET",
+        method: verb,
         mode: "cors",
         headers: new Headers({
             'Content-Type': 'application/json',
             'Authorization': 'Basic ' + API_AUTH
-            }),
-        })
+        }),
+        body: JSON.stringify(body)
+    })
         .then(res => {
             // Fin du watch
             stopWatch(traceId, res);
@@ -79,16 +108,15 @@ function callBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any
                 throw new Error(res.statusText);
             }
         })
-        .then(data => { 
+        .then(data => {
             // console.log("[WS traceId=" + traceId + "] < [data]", data);
-            if(data.status === "ERR") {
+            if (data.status === "ERR") {
                 throw new Error(data.message);
             }
-            return data; })
+            return data;
+        })
         .catch(e => {
             console.error("[WS traceId=" + traceId + "] < Erreur lors de l'appel HTTP [" + fullURL + "]", e);
             throw new Error(e);
         })
-
 }
-export default callBackend;
