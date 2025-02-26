@@ -29,9 +29,9 @@ export default function TabLayout() {
   // Infos métiers
   const { backendConnexionData, setBackendConnexionData, 
           dressings, setDressings,
-          typeVetements, setTypeVetements,
-          taillesMesures, setTaillesMesures,
-          usages, setUsages } = useContext(AppContext)!;
+          setTypeVetements,
+          setTaillesMesures,
+          setUsages } = useContext(AppContext)!;
   const [ idDressing, setIdDressing ] = useState<string | undefined>(undefined);
 
   /**

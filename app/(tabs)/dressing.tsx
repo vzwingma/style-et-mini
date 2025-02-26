@@ -15,14 +15,9 @@ interface DressingScreenProps {
 
 /**
  * Ecran de gestion du dressing
- * @param id id du dressing
+ * @param dressing le dressing
  */
 export default function DressingScreen({ dressing }: DressingScreenProps) {
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-
-
 
   /**
    * Retourne le contenu du panneau en fonction de l'état de chargement, d'erreur ou des vêtements disponibles.
@@ -33,11 +28,10 @@ export default function DressingScreen({ dressing }: DressingScreenProps) {
    * - Sinon, retourne le panneau des vêtements en utilisant la fonction `showPanelVetements`.
    */
   function getPanelContent(): React.JSX.Element {
-    if (isLoading) {
-      return <ActivityIndicator size={'large'} color={Colors.app.color} />
-    } else if (error !== null || dressing === undefined) {
-      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error?.message}</ThemedText>
-    } else {
+    if (dressing === undefined) {
+      return <ActivityIndicator color={Colors.app.color} size="large" />;
+    }
+    else {
       return <DressingComponent dressing={dressing} />;
     }
   }

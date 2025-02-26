@@ -38,7 +38,7 @@ export function loadDressing({ idDressing, setIsLoading, setDressing, setError }
   // Appel du service externe de chargement du dressing
   callBackend(SERVICES_URL.GET_DRESSING_BY_ID, params)
     .then((dressing: DressingModel) => {
-      console.log("Dressing récupéré : ", dressing);
+      console.log("Dressing chargé : ", dressing);
       setIsLoading(false);
       setDressing(dressing);
     })

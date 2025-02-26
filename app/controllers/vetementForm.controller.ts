@@ -32,15 +32,12 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
 
 /**
  * Enregistre le type de vêtements dans le formulaire
- * @param type 
- * @param setForm 
+ * @param type type de vêtements
+ * @param setForm  fonction de mise à jour du formulaire
  */
 export function setTypeForm(type: ParamTypeVetementsModel, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return {
-            ...form,
-            type: type
-        }
+        return { ...form, type: type }
     });
 }
 
@@ -51,18 +48,27 @@ export function setTypeForm(type: ParamTypeVetementsModel, setForm: Function) {
  */
 export function setTailleForm(taille: ParamTailleVetementsModel, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return {
-            ...form,
-            taille: taille
-        }
+        return { ...form, taille: taille }
     });
 }
 
 export function setUsages(usage: string[], setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return {
-            ...form,
-            usage: usage
-        }
+        return { ...form, usage: usage }
     });
+}
+
+
+
+
+
+export function closeForm(form: any, setForm: Function, onCloseForm:Function) {
+    console.log("Fermeture du formulaire", form);
+    setForm(null);
+    onCloseForm();
+}
+
+export function validateForm(form: any, setForm: Function, onCloseForm:Function) {
+    console.log("Validation du formulaire", form);
+    closeForm(form, setForm, onCloseForm);
 }
