@@ -1,7 +1,7 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Colors } from '@/constants/Colors';
+import { Colors, Fonts } from '@/constants/Colors';
 
 export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'tab' | 'italic';
@@ -34,37 +34,38 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: Fonts.app.size,
+    lineHeight: 18,
   },
   defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: Fonts.app.size,
+    lineHeight: 18,
     fontWeight: '600',
   },
   title: {
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 'bold',
     lineHeight: 32,
     color: Colors.app.color,
   },
   subtitle: {
-    fontSize: 20,
+    fontSize: 18,
+    lineHeight: 20,
     fontWeight: 'bold',
   },
   italic: {
     fontStyle: 'italic',
-    fontSize: 20,
+    fontSize: Fonts.app.size,
     color: Colors.dark.icon
   },
   tab: {
-    lineHeight: 30,
+    lineHeight: 20,
     fontSize: 10,
     color: '#ffffff',
   },  
   link: {
-    lineHeight: 30,
-    fontSize: 16,
+    lineHeight: 20,
+    fontSize: Fonts.app.size,
     color: '#0a7ea4',
   },
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, Pressable } from 'react-native'
 
 import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
@@ -33,9 +33,9 @@ export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ open
 
       <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de vêtements</ThemedText>
 
-      <TouchableOpacity onPress={openAddVetement} style={styles.menuItem}>
+      <Pressable onPress={openAddVetement} style={styles.menuItem}>
           <ThemedText type="title" style={{marginTop: 10}}>Ajoutez un vêtement maintenant</ThemedText>
-      </TouchableOpacity>
+      </Pressable>
     </ThemedView>
   );
 }

@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
@@ -22,12 +22,12 @@ export type VetementItemComponentProps = {
 export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, editVetement }: VetementItemComponentProps) => {
 
     return (
-        <TouchableOpacity onPress={() => editVetement(vetement)}>
-        <View key={vetement.id} style={styles.body}>
-            <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} />
-            <ThemedText type="default">{vetement.libelle}</ThemedText>
-        </View>
-        </TouchableOpacity>
+        <Pressable onPress={() => editVetement(vetement)}>
+            <View key={vetement.id} style={styles.body}>
+                <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} />
+                <ThemedText type="default">{vetement.libelle}</ThemedText>
+            </View>
+        </Pressable>
     );
 }
 

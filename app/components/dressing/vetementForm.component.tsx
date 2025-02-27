@@ -1,9 +1,9 @@
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
-import { Colors } from '@/constants/Colors';
+import { Colors, Fonts } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
@@ -48,6 +48,8 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
         initForm(dressing, vetementInEdition, setForm, {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements});
     }, [dressing, vetementInEdition]);
 
+
+    // TODO : Fix on Android
     const getLabelMandatory = (label: string): React.JSX.Element => {
         return (
             <>{label}</>
@@ -154,13 +156,13 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
     return (
         <>
             <ThemedView style={styles.title}>
-                <TouchableOpacity onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
-                </TouchableOpacity>
+                </Pressable>
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
-                <TouchableOpacity onPress={() =>validateForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() =>validateForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
-                </TouchableOpacity>
+                </Pressable>
             </ThemedView>
 
             {getPanelFormContent()}
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
     label: {
         width: 100,
         marginTop: 15,
-        marginBottom: 5,
+        marginBottom: 5
     },
     // Champ de formulaire
     inputError: {
@@ -219,6 +221,7 @@ const styles = StyleSheet.create({
         padding: 10,
         color: Colors.dark.text,
         flex: 3,
+        fontSize: Fonts.app.size,
     },
     // Dropdown de sélection
     dropdown: {
@@ -256,23 +259,23 @@ const styles = StyleSheet.create({
         color: Colors.dark.text,
       },      
       placeholderStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         color: 'gray',
       },
       placeholderErrorStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         color: 'red',
       },      
       // Items sélectionnés dans un dropdown multi-sélection
       selectedStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         borderColor: Colors.app.color,
         borderWidth: 2,
         borderRadius: 8,
         margin: 3,
       },      
       selectedTextStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         color: Colors.dark.text
       },
       iconStyle: {
@@ -281,7 +284,7 @@ const styles = StyleSheet.create({
       },
       inputSearchStyle: {
         height: 40,
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         backgroundColor: 'red',
       },
 });

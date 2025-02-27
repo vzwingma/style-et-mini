@@ -61,7 +61,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     }
     else {
       if (vetements?.length !== 0) {
-        return ( <DressingListComponent vetements={vetements} openAddEditVetement={toggleOpenVetementForm} /> );
+        return ( <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} /> );
       }
       else {
         return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
@@ -89,8 +89,6 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     </View>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {

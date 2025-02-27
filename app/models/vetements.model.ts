@@ -15,5 +15,5 @@ export default interface VetementModel {
     readonly couleurs   : string[];
     readonly image?     : string;
     readonly description: string;
-    readonly statut?     : StatutVetementEnum;
+    readonly statut     : StatutVetementEnum;
 }
