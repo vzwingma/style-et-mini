@@ -27,7 +27,7 @@ export type VetementFormComponentProps = {
  *
  * @component
  **/
-export default function VetementFormComponent({ dressing, vetement, onCloseForm }: VetementFormComponentProps) {
+export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ dressing, vetement, onCloseForm }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);

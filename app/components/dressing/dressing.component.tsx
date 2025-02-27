@@ -1,14 +1,13 @@
-import { ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
-import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
-import DressingEmptyComponent from './dressingEmpty.component';
-import VetementFormComponent from './vetementForm.component';
-import { loadVetementsDressing } from '@/app/controllers/dressing.controller';
-import DressingListComponent from './dressingList.component';
+import { DressingEmptyComponent } from './dressingEmpty.component';
+import { VetementFormComponent  } from './vetementForm.component';
+import { loadVetementsDressing  } from '@/app/controllers/dressing.controller';
+import { DressingListComponent  } from './dressingList.component';
 
 
 export type DressingComponentProps = {
@@ -68,20 +67,22 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
 
       {getPanelContent()}
 
       <MenuDrawer
         open={!openVetementForm}
         position={'right'}
-        drawerContent={<VetementFormComponent dressing={dressing} vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>}
+        drawerContent={
+          <VetementFormComponent dressing={dressing} vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
+        }
         drawerPercentage={98}
         animationTime={250}
         overlay={true}
         opacity={0.3}
       />
-    </ThemedView>
+    </View>
   );
 }
 
@@ -90,5 +91,6 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
+    minHeight: 750
   },
 });

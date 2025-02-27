@@ -24,8 +24,14 @@ export type DressingComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export default function DressingListComponent({ vetements, openAddVetement }: DressingComponentProps) {
+export const DressingListComponent : React.FC<DressingComponentProps> = ({ vetements, openAddVetement }: DressingComponentProps) => {
 
+    /**
+     * Affiche un panneau contenant une liste de vêtements.
+     *
+     * @param {VetementModel[] | undefined} vetements - La liste des vêtements à afficher. Peut être indéfinie.
+     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+     */
     function showPanelVetements(vetements: VetementModel[] | undefined): React.JSX.Element {
         let panel: JSX.Element;
         let items: JSX.Element[] = [];
@@ -48,9 +54,10 @@ export default function DressingListComponent({ vetements, openAddVetement }: Dr
                 </TouchableOpacity>
             </ThemedView>
 
-            <ThemedView style={styles.title}>
+            <ThemedView style={styles.filtre}>
                 <ThemedText type="subtitle">Super filtre</ThemedText>
             </ThemedView>
+
             {showPanelVetements(vetements)}
         </>
     );
@@ -63,6 +70,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         backgroundColor: Colors.app.color,
+        padding: 5
+    },
+    filtre: {
+        alignItems: 'center',
+        width: '100%',
+        borderColor: Colors.app.color,
+        borderWidth: 2,
+        borderRadius: 5,
+        marginTop: 5,
         padding: 5
     }
 });

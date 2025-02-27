@@ -25,7 +25,7 @@ export type DressingComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export default function DressingEmptyComponent({ openAddVetement }: DressingComponentProps) {
+export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ openAddVetement }: DressingComponentProps) => {
 
   return (
     <ThemedView style={styles.container}>
