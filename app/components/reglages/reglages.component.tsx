@@ -67,7 +67,7 @@ export default function ReglagesComponent() {
     <ThemedView style={styles.container}>
       <SectionList
         sections={[
-          {title: 'Paramétrages de vêtements', data: 
+          {title: 'Paramétrages', data: 
             [MenuParametragesEnum.MENU_TYPE_VETEMENTS, 
               MenuParametragesEnum.MENU_TAILLES, 
               MenuParametragesEnum.MENU_USAGES

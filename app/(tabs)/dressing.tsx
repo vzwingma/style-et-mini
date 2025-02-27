@@ -42,15 +42,7 @@ export default function DressingScreen({ dressing }: DressingScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: 'red',
-    borderWidth: 1,
-    width: '100%',
-  },
   stepContainer: {
-    width: '100%',
-    padding: 1
+    width: '100%'
   }
 });

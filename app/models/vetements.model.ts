@@ -1,3 +1,4 @@
+import { StatutVetementEnum } from "@/constants/AppEnum";
 import DressingModel from "./dressing.model";
 import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
 
@@ -14,4 +15,5 @@ export default interface VetementModel {
     readonly couleurs   : string[];
     readonly image?     : string;
     readonly description: string;
+    readonly statut?     : StatutVetementEnum;
 }

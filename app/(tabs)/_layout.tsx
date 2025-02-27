@@ -62,6 +62,7 @@ export default function TabLayout() {
  * */
   useEffect(() => {
     console.log("(Re)Chargement de l'application...");
+    setError(null);
     connectToBackend({ setIsLoading, storeConnexionData, setError });
 
     getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
@@ -154,15 +155,15 @@ export const tabStyles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
     gap: 8,
-    height: 715
+    height: '100%',
   },
 
   tabsViewbox: {
     flexDirection: 'row',
     width: '100%',
     backgroundColor: Colors.dark.titlebackground,
-    height: 70,
-    padding: 10,
+    height: 60,
+    padding: 5,
     margin: 1,
   }
 });
