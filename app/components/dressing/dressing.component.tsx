@@ -1,14 +1,14 @@
-import { ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
-import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
-import DressingEmptyComponent from './dressingEmpty.component';
-import VetementFormComponent from './vetementForm.component';
-import { loadVetementsDressing } from '@/app/controllers/dressing.controller';
-import DressingListComponent from './dressingList.component';
+import { DressingEmptyComponent } from './dressingEmpty.component';
+import { VetementFormComponent  } from './vetementForm.component';
+import { loadVetementsDressing  } from '@/app/controllers/dressing.controller';
+import { DressingListComponent  } from './dressingList.component';
+import VetementModel from '@/app/models/vetements.model';
 
 
 export type DressingComponentProps = {
@@ -31,19 +31,22 @@ export type DressingComponentProps = {
  **/
 export default function DressingComponent({ dressing }: DressingComponentProps) {
 
-  const [openVetementForm, setOpenVetementForm] = useState(true);
+  const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [vetements, setVetements] = useState([]);
+  const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
 
   useEffect(() => {
-    // Récupération des vêtements du dressing
+    // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
+    if(openVetementForm) return;
     const idDressing = dressing.id;
     loadVetementsDressing({ idDressing, setIsLoading, setVetements });
-  }, [dressing]);
+  }, [dressing, openVetementForm]);
 
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpenVetementForm(): void {
+  function toggleOpenVetementForm(vetement? : VetementModel): void {
+    setVetementInEdit(vetement? vetement : null);
     setOpenVetementForm(!openVetementForm);
   };
 
@@ -58,7 +61,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     }
     else {
       if (vetements?.length !== 0) {
-        return ( <DressingListComponent vetements={vetements} openAddVetement={toggleOpenVetementForm} /> );
+        return ( <DressingListComponent vetements={vetements} openAddEditVetement={toggleOpenVetementForm} /> );
       }
       else {
         return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
@@ -68,20 +71,22 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
 
       {getPanelContent()}
 
       <MenuDrawer
-        open={!openVetementForm}
+        open={openVetementForm}
         position={'right'}
-        drawerContent={<VetementFormComponent dressing={dressing} vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>}
+        drawerContent={
+          <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
+        }
         drawerPercentage={98}
         animationTime={250}
         overlay={true}
         opacity={0.3}
       />
-    </ThemedView>
+    </View>
   );
 }
 
@@ -90,5 +95,6 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
+    minHeight: 750
   },
 });

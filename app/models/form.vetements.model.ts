@@ -9,15 +9,15 @@ import { StatutVetementEnum } from "@/constants/AppEnum";
  * Modèle représentant un vetement dans le formulaire
  */
 export default interface FormVetementModel {
-    id: string;
-    dressing: DressingModel;
-    libelle: string;
-    type: ParamTypeVetementsModel;
-    taille: ParamTailleVetementsModel;
-    usages: ParamUsageVetementsModel[];
-    usagesListe: string[];
-    couleurs: string;
-    description: string;
+    id          : string;
+    dressing    : DressingModel;
+    libelle     : string;
+    type        : ParamTypeVetementsModel;
+    taille      : ParamTailleVetementsModel;
+    usages      : ParamUsageVetementsModel[];
+    usagesListe : string[];
+    couleurs    : string;
+    description : string;
 }
 
 
