@@ -1,50 +1,59 @@
-# Welcome to your Expo app 👋
+# Bienvenue dans votre application Expo 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Objectif du projet
 
-## Get started
+L'objectif de ce projet est de créer une application mobile utilisant le framework [Expo](https://expo.dev). Cette application est conçue pour gérer un dressing virtuel, permettant aux utilisateurs d'ajouter, de modifier et de consulter des vêtements et leurs caractéristiques.
 
-1. Install dependencies
+## Description de l'application
+
+L'application "Style & Mini" permet aux utilisateurs de gérer leur dressing virtuel. Les fonctionnalités principales incluent :
+- Ajouter et éditer des vêtements avec des détails tels que le type, la taille, les usages, les couleurs et la description.
+- Visualiser les vêtements ajoutés dans différentes catégories.
+- Paramétrer les types de vêtements, les tailles et les usages.
+
+L'application utilise le routage basé sur les fichiers pour une navigation fluide et est compatible avec les plateformes Android et Web.
+
+## Comment construire et exécuter l'application
+
+### Prérequis
+
+Assurez-vous d'avoir installé les outils suivants :
+- [Node.js](https://nodejs.org/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+
+### Étapes pour démarrer
+
+1. Installer les dépendances
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Démarrer l'application
 
    ```bash
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+Dans la sortie, vous trouverez des options pour ouvrir l'application dans un
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [build de développement](https://docs.expo.dev/develop/development-builds/introduction/)
+- [émulateur Android](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [simulateur iOS](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), un bac à sable limité pour essayer le développement d'applications avec Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Vous pouvez commencer à développer en modifiant les fichiers à l'intérieur du répertoire **app**. Ce projet utilise le [routage basé sur les fichiers](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## En savoir plus
 
-When you're ready, run:
+Pour en savoir plus sur le développement de votre projet avec Expo, consultez les ressources suivantes :
 
-```bash
-npm run reset-project
-```
+- [Documentation Expo](https://docs.expo.dev/): Apprenez les fondamentaux ou approfondissez les sujets avancés avec nos [guides](https://docs.expo.dev/guides).
+- [Tutoriel Learn Expo](https://docs.expo.dev/tutorial/introduction/): Suivez un tutoriel étape par étape où vous créerez un projet qui fonctionne sur Android, iOS et le web.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Rejoindre la communauté
 
-## Learn more
+Rejoignez notre communauté de développeurs créant des applications universelles.
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Expo sur GitHub](https://github.com/expo/expo): Consultez notre plateforme open source et contribuez.
+- [Communauté Discord](https://chat.expo.dev): Discutez avec les utilisateurs d'Expo et posez des questions.
