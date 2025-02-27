@@ -9,6 +9,7 @@ import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/paramUsageVetements.model";
 import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
+import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -49,10 +50,26 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function initForm(dressing: DressingModel, setForm: Function) {
+export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null, 
+                         setForm: Function,
+                         {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements}: VetementsFormParamsTypeProps) {
+
     setForm((form: FormVetementModel) => {
         return { ...form, dressing: dressing }
     });
+    if(vetementInEdition !== null) {
+        setForm((form: FormVetementModel) => {
+            return { ...form, id: 
+                vetementInEdition.id, 
+                libelle: vetementInEdition.libelle, 
+                type: paramsTypeVetements?.find((t) => t.id === vetementInEdition.type.id),
+                taille: paramsTaillesMesures?.find((t) => t.id === vetementInEdition.taille.id),
+                usagesListe: vetementInEdition.usages.map((usage) => usage.id), 
+                usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
+                couleurs: vetementInEdition.couleurs, 
+                description: vetementInEdition.description }
+        });
+    }
 }
 
 
@@ -145,7 +162,7 @@ export function razAndcloseForm(
     form : FormVetementModel,
     setForm: Function,
     setErrorsForm: Function, onCloseForm: Function) {
-        initForm(form?.dressing, setForm);
+        initForm(form?.dressing, null, setForm, {});
         setErrorsForm(null);
         onCloseForm();
 }
@@ -244,9 +261,9 @@ export function validateForm(form: FormVetementModel | null,
         ];
 
         const vetement: VetementModel = transformFormToVetementModel(form);
-        console.log("Sauvegarde du vêtement", vetement);
-        const url =  (form.id !== null && form.id !== "" && form.id !== undefined) ?
-                        SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
+        const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
+        console.log((isEdition ? "Mise à jour":"Création") +" du vêtement", vetement);
+        const url =  isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
 
          //  Appel au backend pour sauvegarder le vêtement
         callPOSTBackend(url, params, vetement)

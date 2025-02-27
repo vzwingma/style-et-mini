@@ -12,12 +12,22 @@ import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
 import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
+import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
+import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
+import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
 
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
     vetement: VetementModel | null;
     onCloseForm: () => void;
+};
+
+
+export type VetementsFormParamsTypeProps = {
+    paramsTypeVetements?     : ParamTypeVetementsModel[];
+    paramsTaillesMesures?    : ParamTailleVetementsModel[];
+    paramsUsagesVetements?   : ParamUsageVetementsModel[];
 };
 
 /**
@@ -27,7 +37,7 @@ export type VetementFormComponentProps = {
  *
  * @component
  **/
-export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ dressing, vetement, onCloseForm }: VetementFormComponentProps) => {
+export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, onCloseForm }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
@@ -35,8 +45,8 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
     const {typeVetements: paramsTypeVetements, taillesMesures: paramsTaillesMesures, usages: paramsUsagesVetements} = useContext(AppContext)!;
 
     useEffect(() => {
-        initForm(dressing, setForm);
-    }, [dressing, vetement]);
+        initForm(dressing, vetementInEdition, setForm, {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements});
+    }, [dressing, vetementInEdition]);
 
     const getLabelMandatory = (label: string): React.JSX.Element => {
         return (
@@ -147,7 +157,7 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                 <TouchableOpacity onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                 </TouchableOpacity>
-                <ThemedText type="subtitle">{vetement === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
+                <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
                 <TouchableOpacity onPress={() =>validateForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </TouchableOpacity>

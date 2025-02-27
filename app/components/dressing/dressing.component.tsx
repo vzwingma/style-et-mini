@@ -8,6 +8,7 @@ import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent  } from './vetementForm.component';
 import { loadVetementsDressing  } from '@/app/controllers/dressing.controller';
 import { DressingListComponent  } from './dressingList.component';
+import VetementModel from '@/app/models/vetements.model';
 
 
 export type DressingComponentProps = {
@@ -33,6 +34,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
   const [openVetementForm, setOpenVetementForm] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [vetements, setVetements] = useState([]);
+  const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
 
   useEffect(() => {
     // Récupération des vêtements du dressing
@@ -42,7 +44,8 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpenVetementForm(): void {
+  function toggleOpenVetementForm(vetement? : VetementModel): void {
+    setVetementInEdit(vetement? vetement : null);
     setOpenVetementForm(!openVetementForm);
   };
 
@@ -57,7 +60,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     }
     else {
       if (vetements?.length !== 0) {
-        return ( <DressingListComponent vetements={vetements} openAddVetement={toggleOpenVetementForm} /> );
+        return ( <DressingListComponent vetements={vetements} openAddEditVetement={toggleOpenVetementForm} /> );
       }
       else {
         return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
@@ -75,7 +78,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
         open={!openVetementForm}
         position={'right'}
         drawerContent={
-          <VetementFormComponent dressing={dressing} vetement={null} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
+          <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
         }
         drawerPercentage={98}
         animationTime={250}

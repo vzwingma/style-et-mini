@@ -25,6 +25,14 @@ export default function ParamUsagesVetements() {
   }, [setUsages])
 
 
+  /**
+   * Retourne le contenu du panneau en fonction de l'état de chargement, d'erreur ou des usages.
+   *
+   * @returns {React.JSX.Element} Un élément JSX représentant le contenu du panneau.
+   * - Si les données sont en cours de chargement, retourne un indicateur d'activité.
+   * - Si une erreur est survenue, retourne un texte thématisé affichant le message d'erreur.
+   * - Sinon, retourne le panneau des usages.
+   */
   function getPanelContent(): React.JSX.Element {
     if (isLoading) {
       return <ActivityIndicator size={'large'} color={Colors.app.color} />
@@ -36,6 +44,12 @@ export default function ParamUsagesVetements() {
   }
 
 
+  /**
+   * Affiche un panneau contenant une liste d'éléments d'usage de vêtements.
+   *
+   * @param {ParamUsageVetementsModel[] | undefined} usageVetements - La liste des usages de vêtements à afficher. Peut être indéfinie.
+   * @returns {React.JSX.Element} Un élément JSX représentant le panneau avec la liste des usages de vêtements.
+   */
   function showPanelUsages(usageVetements: ParamUsageVetementsModel[] | undefined): React.JSX.Element {
     let panel: JSX.Element;
     let items: JSX.Element[] = [];
