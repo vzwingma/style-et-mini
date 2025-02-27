@@ -38,6 +38,12 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
         initForm(dressing, setForm);
     }, [dressing, vetement]);
 
+    const getLabelMandatory = (label: string): React.JSX.Element => {
+        return (
+            <>{label}</>
+        );
+    }
+
     /**
      * 
      * @returns Formulaire de vêtement
@@ -53,7 +59,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                 <View style={styles.form}>
                     
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{<><span>Nom </span><span style={{color:'red'}}>*</span></>}</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.libelleInError ? 'red' : 'gray'} 
                                     value={form?.libelle ? form?.libelle : ''}
                                     placeholder={!errorForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorForm?.libelleMessage+''}
@@ -61,7 +67,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                     </View>
                     
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{<><span>Type de vêtements </span><span style={{color:'red'}}>*</span></>}</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Type")}</ThemedText>
                         <Dropdown
                             style={!errorForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
@@ -69,7 +75,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                             maxHeight={300}
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
                             labelField="libelle" valueField="id"                            
-                            placeholder={!errorForm?.typeInError ? 'Selectionnez un type de vêtements' : errorForm?.typeMessage+''} 
+                            placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage+''} 
                             value={form?.type}                                
                             onChange={type => setTypeForm(type, setForm)}
                             renderLeftIcon={() => (
@@ -79,7 +85,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{<><span>Taille </span><span style={{color:'red'}}>*</span></>}</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Taille")}</ThemedText>
                         <Dropdown
                             style={!errorForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
@@ -97,7 +103,7 @@ export default function VetementFormComponent({ dressing, vetement, onCloseForm 
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{<><span>Usage </span><span style={{color:'red'}}>*</span></>}</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage")}</ThemedText>
                         <MultiSelect
                             style={!errorForm?.usageInError || form?.usagesListe ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
@@ -165,7 +171,6 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         flexDirection: 'column',
-        padding: 10,
         width: '100%',
         backgroundColor: Colors.app.background
     },
@@ -174,14 +179,14 @@ const styles = StyleSheet.create({
         flex: 2,
         flexDirection: 'column',
         padding: 10,
-        margin: 10,
+        margin: 0,
         width: '100%',
         backgroundColor: Colors.app.backgroundLight
     },
     // Label de formulaire
     label: {
-        width: 200,
-        marginTop: 5,
+        width: 100,
+        marginTop: 15,
         marginBottom: 5,
     },
     // Champ de formulaire

@@ -3,6 +3,7 @@ import ParamTailleVetementsModel from "./paramTailleVetements.model";
 import ParamUsageVetementsModel from "./paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
+import { StatutVetementEnum } from "@/constants/AppEnum";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -39,19 +40,14 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
             id          : form.taille.id,
             libelle     : form.taille.libelle,
         },
-        usages: [],
+        usages: form.usages.map((usage: ParamUsageVetementsModel) => {
+            return {
+                id      : usage.id,
+                libelle : usage.libelle
+            }}),
         couleurs: [form.couleurs],
-        description: form.description
+        description: form.description,
+        statut: StatutVetementEnum.ACTIF,
     }
-
-    form.usages.forEach((usage: ParamUsageVetementsModel) => {
-        vetement.usages.push({
-            id: usage.id,
-            libelle: usage.libelle
-        });
-    }
-    );
-
-
     return vetement;
 }

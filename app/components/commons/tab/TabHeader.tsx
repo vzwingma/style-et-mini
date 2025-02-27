@@ -41,7 +41,7 @@ export function getHeaderIcon(tab: Tabs) {
         }
         return "Erreur : dressing non défini";
       case Tabs.REGLAGES:
-        return "Paramètres de l'application";
+        return "Paramètres";
       default:
         return "Erreur : Onglet non défini";
     }

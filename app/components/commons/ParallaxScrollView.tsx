@@ -80,7 +80,7 @@ export default function ParallaxScrollView({
           </ThemedView>
           <ThemedView style={styles.titleHeader}>
             {connexionStatus && getConnexionStatusIcon(connexionStatus)}
-            <ThemedText type="italic" style={{color : 'grey', marginRight: 10, marginBottom: 5}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}</ThemedText>
+            <ThemedText type="italic" style={{color : 'grey', marginRight: 10, marginTop: 10, fontSize: 16}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}</ThemedText>
           </ThemedView>          
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
@@ -102,11 +102,11 @@ export default function ParallaxScrollView({
 function getConnexionStatusIcon(connexionStatus: AppStatusEnum) {
   switch (connexionStatus) {
     case AppStatusEnum.CONNECTE:
-      return <MaterialCommunityIcons name="check-circle" size={24} color="green" style={{padding: 5}} />;
+      return <MaterialCommunityIcons name="check-circle" size={20} color="green"/>;
     case AppStatusEnum.DECONNECTE:
-      return <MaterialCommunityIcons name="alert-circle" size={24} color="red" style={{padding: 5}}/>;
+      return <MaterialCommunityIcons name="alert-circle" size={20} color="red"/>;
     default:
-      return <MaterialCommunityIcons name="help-circle" size={24} color="grey" style={{padding: 5}}/>;
+      return <MaterialCommunityIcons name="help-circle" size={20} color="grey"/>;
   }
 }
 
@@ -123,8 +123,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 10,
-    gap: 10,
+    padding: 5,
     overflow: 'hidden',
   },
   titleHeader: {
@@ -135,6 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: ''
   },
   appColor: {
-    color: Colors.app.color
+    color: Colors.app.color,
+    fontSize: 26,
   }
 });

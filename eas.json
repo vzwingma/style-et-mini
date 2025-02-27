@@ -19,6 +19,9 @@
       "android": {
         "buildType": "apk",
         "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview"
       }
     },
     "production": {

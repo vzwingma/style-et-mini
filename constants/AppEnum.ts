@@ -16,6 +16,12 @@ export enum MenuParametragesEnum {
     MENU_USAGES = 'Usages',
   }
 
+  // Enumération des statuts de vêtements
+export enum StatutVetementEnum {
+    ACTIF   = 'Actif',
+    ARCHIVE = 'Archivé',
+  }
+  
 
 // catégorie de dressing (enfant ou adulte)
 export enum CategorieDressingEnum {

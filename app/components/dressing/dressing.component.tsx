@@ -1,8 +1,7 @@
-import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, StyleSheet } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
-import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
@@ -33,7 +32,7 @@ export type DressingComponentProps = {
 export default function DressingComponent({ dressing }: DressingComponentProps) {
 
   const [openVetementForm, setOpenVetementForm] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [vetements, setVetements] = useState([]);
 
   useEffect(() => {
@@ -57,13 +56,13 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else if (vetements === undefined || vetements?.length === 0) {
-      return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
-    }
     else {
-      return (
-        <DressingListComponent vetements={vetements} openAddVetement={toggleOpenVetementForm} />
-      );
+      if (vetements?.length !== 0) {
+        return ( <DressingListComponent vetements={vetements} openAddVetement={toggleOpenVetementForm} /> );
+      }
+      else {
+        return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
+      }
     }
   }
 
@@ -91,21 +90,5 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
-  },
-  animatedBox: {
-    flex: 1,
-    zIndex: 1,
-    backgroundColor: Colors.dark.background,
-    borderColor: 'red',
-    borderWidth: 1
-
-  },
-  body: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    borderColor: 'red',
-    borderWidth: 1
   },
 });
