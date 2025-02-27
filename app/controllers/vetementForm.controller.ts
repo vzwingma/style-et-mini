@@ -54,20 +54,23 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
                          setForm: Function,
                          {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements}: VetementsFormParamsTypeProps) {
 
-    setForm((form: FormVetementModel) => {
-        return { ...form, dressing: dressing }
-    });
     if(vetementInEdition !== null) {
         setForm((form: FormVetementModel) => {
-            return { ...form, id: 
-                vetementInEdition.id, 
+            return { ...form, 
+                id: vetementInEdition.id, 
                 libelle: vetementInEdition.libelle, 
+                dressing: dressing,
                 type: paramsTypeVetements?.find((t) => t.id === vetementInEdition.type.id),
                 taille: paramsTaillesMesures?.find((t) => t.id === vetementInEdition.taille.id),
                 usagesListe: vetementInEdition.usages.map((usage) => usage.id), 
                 usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
                 couleurs: vetementInEdition.couleurs, 
                 description: vetementInEdition.description }
+        });
+    }
+    else {
+        setForm(() => {
+            return { dressing: dressing }
         });
     }
 }
