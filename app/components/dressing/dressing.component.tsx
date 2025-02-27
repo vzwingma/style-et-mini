@@ -31,16 +31,17 @@ export type DressingComponentProps = {
  **/
 export default function DressingComponent({ dressing }: DressingComponentProps) {
 
-  const [openVetementForm, setOpenVetementForm] = useState(true);
+  const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [vetements, setVetements] = useState([]);
   const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
 
   useEffect(() => {
-    // Récupération des vêtements du dressing
+    // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
+    if(openVetementForm) return;
     const idDressing = dressing.id;
     loadVetementsDressing({ idDressing, setIsLoading, setVetements });
-  }, [dressing]);
+  }, [dressing, openVetementForm]);
 
 
   /** Ouverture/Fermeture du menu */
@@ -75,7 +76,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
       {getPanelContent()}
 
       <MenuDrawer
-        open={!openVetementForm}
+        open={openVetementForm}
         position={'right'}
         drawerContent={
           <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
