@@ -16,6 +16,7 @@ import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { CategorieDressingEnum } from '@/constants/AppEnum';
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
@@ -113,15 +114,15 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                             )}
                         />
                     </View>
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
-                        <BouncyCheckbox 
-                            fillColor={Colors.app.color}
-                            isChecked={form?.petiteTaille}
-                            onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
-                    </View>
-
+                    {   
+                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) &&  <View style={{ flexDirection: 'row' }}>
+                            <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
+                            <BouncyCheckbox 
+                                fillColor={Colors.app.color}
+                                isChecked={form?.petiteTaille}
+                                onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
+                        </View>
+                    }
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage")}</ThemedText>
                         <MultiSelect
