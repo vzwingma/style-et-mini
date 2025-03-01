@@ -2,7 +2,7 @@
 /**
  * Modèle représentant les flags d'erreurs dans le formulaire
  */
-export default interface ErrorsFormVetementModel {
+interface ErrorsFormVetementModel {
     libelleInError  : boolean;
     libelleMessage  : string | null;
 
@@ -26,3 +26,5 @@ export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
     usageInError: false,
     usageMessage: null
 }
+
+export default ErrorsFormVetementModel;
