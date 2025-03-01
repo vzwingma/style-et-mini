@@ -66,8 +66,13 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
         
         return (
             <View style={styles.body}>
-                <View style={{ flex: 1, backgroundColor: 'dark', alignItems: 'center', borderColor: 'black', borderWidth: 1 }} >
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <View style={styles.photo} >
                     <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />
+                    {form.petiteTaille &&
+                    <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
+                                                                         name="arrow-down-circle-outline" color={Colors.app.color} />}
+                </View>
                 </View>
                 <View style={styles.form}>
                     
@@ -203,6 +208,18 @@ const styles = StyleSheet.create({
         margin: 0,
         width: '100%',
         backgroundColor: Colors.app.backgroundLight
+    },
+    photo: {
+        backgroundColor: Colors.app.background,
+        width: 250,
+        height: 250,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 1,
+        borderStartStartRadius: 10,
+        borderEndEndRadius: 10,
+        cursor: 'pointer',
     },
     // Label de formulaire
     label: {
