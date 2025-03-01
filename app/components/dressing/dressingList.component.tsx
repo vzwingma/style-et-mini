@@ -9,6 +9,7 @@ import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as appl
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
+import { vetementSort } from "../commons/CommonsUtils";
 
 export type DressingComponentProps = {
     vetementsInDressing: VetementModel[];
@@ -72,9 +73,11 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     function showPanelVetements(vetements: VetementModel[]): React.JSX.Element[] {
 
         let vetementsItems: JSX.Element[] = [];
-        vetements.forEach((item) => {
+        vetements
+            .sort(vetementSort)
+            .forEach((item) => {
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} editVetement={openAddEditVetement} />);
-        });
+            });
 
         return vetementsItems;
     }

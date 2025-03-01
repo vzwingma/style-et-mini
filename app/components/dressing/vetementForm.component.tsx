@@ -16,7 +16,7 @@ import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { CategorieDressingEnum } from '@/constants/AppEnum';
+import { CategorieDressingEnum, TypeTailleEnum } from '@/constants/AppEnum';
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
@@ -63,7 +63,6 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
      */
     const getPanelFormContent = () => {
 
-        
         return (
             <View style={styles.body}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -120,7 +119,9 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                         />
                     </View>
                     {   
-                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) &&  <View style={{ flexDirection: 'row' }}>
+                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) 
+                        && form.type?.typeTaille === TypeTailleEnum.TAILLE.toUpperCase()
+                        &&  <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
                             <BouncyCheckbox 
                                 fillColor={Colors.app.color}
