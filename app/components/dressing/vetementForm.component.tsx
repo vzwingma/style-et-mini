@@ -10,12 +10,12 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
-
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
@@ -89,7 +89,7 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                             labelField="libelle" valueField="id"                            
                             placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage+''} 
                             value={form?.type}                                
-                            onChange={type => setTypeForm(type, setForm)}
+                            onChange={(type : ParamTypeVetementsModel) => setTypeForm(type, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
@@ -107,11 +107,19 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                             labelField="libelle" valueField="id"                            
                             placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage+''}
                             value={form?.taille}
-                            onChange={taille => setTailleForm(taille, setForm)}
+                            onChange={(taille : ParamTailleVetementsModel)=> setTailleForm(taille, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
                         />
+                    </View>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
+                        <BouncyCheckbox 
+                            fillColor={Colors.app.color}
+                            isChecked={form?.petiteTaille}
+                            onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>

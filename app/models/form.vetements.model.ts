@@ -14,6 +14,7 @@ export default interface FormVetementModel {
     libelle     : string;
     type        : ParamTypeVetementsModel;
     taille      : ParamTailleVetementsModel;
+    petiteTaille: boolean;
     usages      : ParamUsageVetementsModel[];
     usagesListe : string[];
     couleurs    : string;
@@ -39,6 +40,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
         taille: {
             id          : form.taille.id,
             libelle     : form.taille.libelle,
+            petite      : form.petiteTaille,
         },
         usages: form.usages.map((usage: ParamUsageVetementsModel) => {
             return {

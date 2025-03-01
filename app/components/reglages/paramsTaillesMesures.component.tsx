@@ -12,8 +12,8 @@ import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
 
 export default function ParamTaillesMesures() {
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [ isLoading,      setIsLoading] = useState(true);
+  const [ error,          setError] = useState<Error | null>(null);
   const { taillesMesures, setTaillesMesures } = useContext(AppContext)!;
   /**
  *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements

@@ -5,7 +5,7 @@ import { StyleSheet, Pressable, Text, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors, Fonts } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
-import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
+import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
@@ -26,10 +26,10 @@ export type DressingComponentProps = {
 export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetementsInDressing, openAddEditVetement }: DressingComponentProps) => {
 
 
-    const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([]);
-    const [filtresDisponibles, setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
+    const [selectedFiltres,     setSelectedFiltres] = useState<DressingListFiltreModel[]>([]);
+    const [filtresDisponibles,  setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
 
-    const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
+    const [vetementsAffiches,   setVetementsAffiches] = useState<VetementModel[]>([]);
 
     useEffect(() => {
         // Recalcul des filtres disponibles
@@ -38,7 +38,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
     useEffect(() => {
         // Mise à jour de l'affichage des vêtements en fonction des filtres sélectionnés
-        setVetementsAffiches(setVetementsFiltres(vetementsInDressing, selectedFiltres));
+        setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
     }, [selectedFiltres]);
 
     /**
