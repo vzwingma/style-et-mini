@@ -50,4 +50,11 @@ export const Colors = {
 
     backgroundLight: '#474949',
   }
+}
+
+export const Fonts = {
+  app: {
+    size : 14,
+    color: '#339a9a',
+  }
 };

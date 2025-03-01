@@ -62,6 +62,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
                 dressing: dressing,
                 type: paramsTypeVetements?.find((t) => t.id === vetementInEdition.type.id),
                 taille: paramsTaillesMesures?.find((t) => t.id === vetementInEdition.taille.id),
+                petiteTaille: vetementInEdition.taille.petite,
                 usagesListe: vetementInEdition.usages.map((usage) => usage.id), 
                 usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
                 couleurs: vetementInEdition.couleurs, 
@@ -110,6 +111,20 @@ export function setTailleForm(taille: ParamTailleVetementsModel, setForm: Functi
         return { ...form, taille: taille }
     });
 }
+
+
+
+/**
+ * Enregistre la taille de vêtements dans le formulaire
+ * @param petiteTaille 
+ * @param setForm 
+ */
+export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, petiteTaille: petiteTaille }
+    });
+}
+
 
 /**
  * Enregistre la liste des usages de vêtements dans le formulaire

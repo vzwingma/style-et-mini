@@ -3,8 +3,9 @@ import { CategorieDressingEnum as CategorieDressingEnum } from "@/constants/AppE
 /**
  * Modèle représentant une taille de vetements
  */
-export default interface DressingModel {
+interface DressingModel {
     readonly id         : string;
     readonly libelle    : string;
     readonly categorie  : CategorieDressingEnum;
 }
+export default DressingModel;

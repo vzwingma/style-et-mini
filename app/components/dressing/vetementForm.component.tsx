@@ -1,21 +1,22 @@
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
-import { Colors } from '@/constants/Colors';
+import { Colors, Fonts } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
-
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { CategorieDressingEnum, TypeTailleEnum } from '@/constants/AppEnum';
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
@@ -48,6 +49,8 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
         initForm(dressing, vetementInEdition, setForm, {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements});
     }, [dressing, vetementInEdition]);
 
+
+    // TODO : Fix on Android
     const getLabelMandatory = (label: string): React.JSX.Element => {
         return (
             <>{label}</>
@@ -60,11 +63,15 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
      */
     const getPanelFormContent = () => {
 
-        
         return (
             <View style={styles.body}>
-                <View style={{ flex: 1, backgroundColor: 'dark', alignItems: 'center', borderColor: 'black', borderWidth: 1 }} >
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <View style={styles.photo} >
                     <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />
+                    {form.petiteTaille &&
+                    <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
+                                                                         name="arrow-down-circle-outline" color={Colors.app.color} />}
+                </View>
                 </View>
                 <View style={styles.form}>
                     
@@ -87,7 +94,7 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                             labelField="libelle" valueField="id"                            
                             placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage+''} 
                             value={form?.type}                                
-                            onChange={type => setTypeForm(type, setForm)}
+                            onChange={(type : ParamTypeVetementsModel) => setTypeForm(type, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
@@ -105,13 +112,23 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                             labelField="libelle" valueField="id"                            
                             placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage+''}
                             value={form?.taille}
-                            onChange={taille => setTailleForm(taille, setForm)}
+                            onChange={(taille : ParamTailleVetementsModel)=> setTailleForm(taille, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
                         />
                     </View>
-
+                    {   
+                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) 
+                        && form.type?.typeTaille === TypeTailleEnum.TAILLE.toUpperCase()
+                        &&  <View style={{ flexDirection: 'row' }}>
+                            <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
+                            <BouncyCheckbox 
+                                fillColor={Colors.app.color}
+                                isChecked={form?.petiteTaille}
+                                onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
+                        </View>
+                    }
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage")}</ThemedText>
                         <MultiSelect
@@ -154,13 +171,13 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
     return (
         <>
             <ThemedView style={styles.title}>
-                <TouchableOpacity onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
-                </TouchableOpacity>
+                </Pressable>
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
-                <TouchableOpacity onPress={() =>validateForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() =>validateForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
-                </TouchableOpacity>
+                </Pressable>
             </ThemedView>
 
             {getPanelFormContent()}
@@ -193,11 +210,23 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: Colors.app.backgroundLight
     },
+    photo: {
+        backgroundColor: Colors.app.background,
+        width: 250,
+        height: 250,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 1,
+        borderStartStartRadius: 10,
+        borderEndEndRadius: 10,
+        cursor: 'pointer',
+    },
     // Label de formulaire
     label: {
         width: 100,
         marginTop: 15,
-        marginBottom: 5,
+        marginBottom: 5
     },
     // Champ de formulaire
     inputError: {
@@ -219,6 +248,7 @@ const styles = StyleSheet.create({
         padding: 10,
         color: Colors.dark.text,
         flex: 3,
+        fontSize: Fonts.app.size,
     },
     // Dropdown de sélection
     dropdown: {
@@ -256,23 +286,23 @@ const styles = StyleSheet.create({
         color: Colors.dark.text,
       },      
       placeholderStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         color: 'gray',
       },
       placeholderErrorStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         color: 'red',
       },      
       // Items sélectionnés dans un dropdown multi-sélection
       selectedStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         borderColor: Colors.app.color,
         borderWidth: 2,
         borderRadius: 8,
         margin: 3,
       },      
       selectedTextStyle: {
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         color: Colors.dark.text
       },
       iconStyle: {
@@ -281,7 +311,7 @@ const styles = StyleSheet.create({
       },
       inputSearchStyle: {
         height: 40,
-        fontSize: 16,
+        fontSize: Fonts.app.size,
         backgroundColor: 'red',
       },
 });

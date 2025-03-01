@@ -5,7 +5,7 @@ import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
 /**
  * Modèle représentant un vetement avec le backend
  */
-export default interface VetementModel {
+interface VetementModel {
     readonly id         : string;
     dressing            : DressingModel;
     readonly libelle    : string;
@@ -15,5 +15,6 @@ export default interface VetementModel {
     readonly couleurs   : string[];
     readonly image?     : string;
     readonly description: string;
-    readonly statut?     : StatutVetementEnum;
+    readonly statut     : StatutVetementEnum;
 }
+export default VetementModel;

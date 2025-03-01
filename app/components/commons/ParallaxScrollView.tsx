@@ -81,7 +81,7 @@ export default function ParallaxScrollView({
           </ThemedView>
           <ThemedView style={styles.titleHeader}>
             {connexionStatus && getConnexionStatusIcon(connexionStatus)}
-            <ThemedText type="italic" style={{color : 'grey', marginRight: 10, marginTop: 10, fontSize: 16}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}</ThemedText>
+            <ThemedText type="italic" style={{marginRight: 10, marginTop: 10}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}</ThemedText>
           </ThemedView>          
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>

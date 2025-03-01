@@ -16,6 +16,17 @@ export enum MenuParametragesEnum {
     MENU_USAGES = 'Usages',
   }
 
+
+  export enum CaracteristiqueVetementEnum {
+    TYPE = 'Type',
+    TAILLES = 'Taille', 
+    POINTURES = 'Pointure',
+    USAGES = 'Usage',
+    STATUT = 'Statut'
+  }
+
+
+
   // Enumération des statuts de vêtements
 export enum StatutVetementEnum {
     ACTIF   = 'Actif',
