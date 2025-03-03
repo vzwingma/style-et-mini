@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/ThemedText";
-import { StyleSheet, Pressable, Text, View } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors, Fonts } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -73,9 +73,8 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     function showPanelVetements(vetements: VetementModel[]): React.JSX.Element[] {
 
         let vetementsItems: JSX.Element[] = [];
-        vetements
-            .sort(vetementSort)
-            .forEach((item) => {
+        vetements.sort(vetementSort);
+        vetements.forEach((item) => {
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} editVetement={openAddEditVetement} />);
             });
 
@@ -120,7 +119,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                         renderSelectedItem={(item, unSelect) => (
                             <Pressable
                                 style={styles.selectedStyle}
-                                onPress={() => unSelect && unSelect(item)}>
+                                onPress={() => unSelect?.(item)}>
                                 <View style={{flexDirection: 'row'}}>
                                     <ThemedText type="italic"> {item.type} : </ThemedText>
                                     <ThemedText type="default">{item.libelle} </ThemedText>

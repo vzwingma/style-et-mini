@@ -8,8 +8,8 @@ import DressingComponent from '../components/dressing/dressing.component';
 
 
 interface DressingScreenProps {
-  dressing: DressingModel | undefined;
-}
+  readonly dressing: DressingModel | undefined;
+} 
 
 /**
  * Ecran de gestion du dressing

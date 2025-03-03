@@ -38,7 +38,7 @@ export default function ReglagesComponent() {
       setOpen(!open);
     };
 
-    const menuContent = (menu: MenuParametragesEnum) => {
+    const menuContent = (menu: MenuParametragesEnum | null) => {
         switch(menu){
           case MenuParametragesEnum.MENU_TYPE_VETEMENTS:
             return <ParamTypesVetements />
@@ -58,7 +58,7 @@ export default function ReglagesComponent() {
         <TouchableOpacity onPress={() => toggleOpen(null)} style={styles.animatedBox}>
           <ThemedView>
           {
-            menuContent(menu!)
+            menuContent(menu)
           }
           </ThemedView>
         </TouchableOpacity>

@@ -120,7 +120,7 @@ export default function TabLayout() {
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
               {
                 dressings?.map((dressing, idx) => {
-                  return <TabBarItems key={idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} />
+                  return <TabBarItems key={"tab_"+idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} />
                 })
               }
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />

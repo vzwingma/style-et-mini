@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactElement } from 'react';
-import { RefreshControl, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -51,12 +51,12 @@ export default function ParallaxScrollView({
       ],
     };
   });
-
+/*
   const onRefresh = React.useCallback(() => {
     setRefreshing(!refreshing);
     refreshing = !refreshing;
   }, [refreshing, setRefreshing]);
-
+*/
 
   return (
     <ThemedView style={styles.container}>
