@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
@@ -24,9 +24,10 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
     return (
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
-                <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} />
+                {vetement.image && <Image source={{ uri: vetement.image }} style={styles.photo} />}
+                {!vetement.image && <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} style={{paddingBottom: 5}} />}
                 {
-                    vetement.taille.petite && <Ionicons size={24} style={{ position: 'absolute', bottom: 0, right: 0 }}
+                    vetement.taille.petite && <Ionicons size={30} style={{ position: 'absolute', bottom: 0, right: 0 }}
                                                      name="arrow-down-circle-outline" color={Colors.app.color} />
                 }
                 <ThemedText type="default">{vetement.libelle}</ThemedText>
@@ -49,4 +50,11 @@ const styles = StyleSheet.create({
         borderEndEndRadius: 10,
         cursor: 'pointer',
     },
+    photo: {
+        width: 95,
+        height: 95,
+        cursor: 'pointer',
+        margin: 4,
+        alignItems: 'center',
+    }
 });
