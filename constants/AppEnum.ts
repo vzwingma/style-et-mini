@@ -14,6 +14,7 @@ export enum MenuParametragesEnum {
     MENU_TYPE_VETEMENTS = 'Type de vêtements',
     MENU_TAILLES = 'Tailles et Mesures', 
     MENU_USAGES = 'Usages',
+    MENU_ETATS = 'Etats',    
   }
 
 

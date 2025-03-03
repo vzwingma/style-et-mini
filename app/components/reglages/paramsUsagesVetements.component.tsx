@@ -55,7 +55,7 @@ export default function ParamUsagesVetements() {
     let items: JSX.Element[] = [];
     if (usageVetements !== undefined) {
       usageVetements.forEach((item) => {
-        items.push(<ParamListItem key={item.id} libelle={JSON.stringify(item)} />);
+        items.push(<ParamListItem key={item.id} keyItem={item.id} libelle={JSON.stringify(item)} />);
       });
     }
     panel = <>{items}</>;

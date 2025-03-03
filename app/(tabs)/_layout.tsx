@@ -63,16 +63,18 @@ export default function TabLayout() {
  * et à changement d'onglet
  * */
   useEffect(() => {
-    console.log("(Re)Chargement de l'application...");
     setError(null);
-    connectToBackend({ setIsLoading, storeConnexionData, setError });
-
-    getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
-    getParamsUsagesVetements({ setIsLoading, setUsages, setError });
-    getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
-    getParamsEtatsVetements({ setIsLoading, setEtats, setError });
-
-    getDressings({ setIsLoading, setDressings, setError });
+    if(tab === Tabs.INDEX) {
+      console.log("(Re)Chargement de l'application...");
+      connectToBackend({ setIsLoading, storeConnexionData, setError });
+  
+      getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
+      getParamsUsagesVetements({ setIsLoading, setUsages, setError });
+      getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
+      getParamsEtatsVetements({ setIsLoading, setEtats, setError });
+  
+      getDressings({ setIsLoading, setDressings, setError });
+    }
   }, [refreshing, setDressings, setTypeVetements, setTaillesMesures, setUsages]);
 
 

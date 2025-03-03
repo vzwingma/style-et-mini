@@ -46,7 +46,7 @@ export default function ParamTypesVetements() {
     let items: JSX.Element[] = [];
     if (typeVetements !== undefined) {
       typeVetements.forEach((item, idx) => {
-        items.push(<ParamListItem key={item.id} libelle={JSON.stringify(item)} />);
+        items.push(<ParamListItem key={item.id} keyItem={item.id} libelle={JSON.stringify(item)} />);
       });
     }
     panel = <>{items}</>;
