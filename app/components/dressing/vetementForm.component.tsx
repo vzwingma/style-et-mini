@@ -55,10 +55,14 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     }, [dressing, vetementInEdition]);
 
 
-    // TODO : Fix on Android
+    /**
+     * 
+     * @param label 
+     * @returns nom du label avec une étoile rouge si obligatoire
+     */
     const getLabelMandatory = (label: string): React.JSX.Element => {
         return (
-            <>{label}*</>
+            <><ThemedText style={{color: 'red'}}>* </ThemedText><ThemedText>{label}</ThemedText></>
         );
     }
 
@@ -135,23 +139,33 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         </View>
                     }
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage")}</ThemedText>
-                        <MultiSelect
-                            style={!errorForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
-                            selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
-                            maxHeight={300}
-                            
-                            mode='modal'
-                            data={getUsagesForm(paramsUsagesVetements, dressing)}
-                            labelField="libelle" valueField="id"
-                            placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
-                            value={form?.usagesListe}
-                            onChange={usage => setUsages(usage, paramsUsagesVetements, setForm, setErrorForm)}
-                            renderLeftIcon={() => (
-                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                            )}
-                        />
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage(s)")}</ThemedText>
+                        <ThemedView style={styles.filtre}><ThemedText type="subtitle">
+                            <MultiSelect
+                                style={!errorForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                                selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
+                                mode='modal'
+                                data={getUsagesForm(paramsUsagesVetements, dressing, form)}
+                                labelField="libelle" valueField="id"
+                                placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
+                                value={form?.usagesListe}
+                                onChange={usage => setUsages(usage, paramsUsagesVetements, setForm, setErrorForm)}
+                                renderLeftIcon={() => (
+                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
+                                )}
+                                renderSelectedItem={(item, unSelect) => (
+                                    <Pressable
+                                        style={styles.selectedStyle}
+                                        onPress={() => unSelect && unSelect(item)}>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <ThemedText type="default">{item.libelle} </ThemedText>
+                                            <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+                                        </View>
+                                    </Pressable>
+                                )}
+                            />
+                        </ThemedText></ThemedView>
                     </View>
                     {
                         !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE) &&
@@ -182,9 +196,10 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
-                        <TextInput style={styles.input} placeholderTextColor={'gray'}
+                        <TextInput style={[styles.input, {minHeight: 50}]} placeholderTextColor={'gray'}
+                            scrollEnabled={true}
                             value={form?.description ? form?.description : ''}
-                            multiline numberOfLines={3}
+                            multiline numberOfLines={2}
                             placeholder={'Indiquez la description (facultatif)'}
                             onChangeText={descrption => setDescriptionForm(descrption, setForm)} />
                     </View>
@@ -233,8 +248,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         padding: 10,
         margin: 0,
-        width: '100%',
-        backgroundColor: Colors.app.backgroundLight
+        backgroundColor: Colors.app.backgroundLight,
+        minHeight: 100,
     },
     photo: {
         backgroundColor: Colors.app.background,
@@ -286,7 +301,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        width: '100%'
+        width: '100%',
     },
     dropdownInError: {
         marginTop: 5,
@@ -297,6 +312,12 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
+    },
+    filtre: {
+        flex: 1,
+        marginTop: 5,
+        padding: 0,
+        backgroundColor: Colors.app.backgroundLight,
     },
     icon: {
         marginRight: 5,
@@ -322,11 +343,13 @@ const styles = StyleSheet.create({
     },
     // Items sélectionnés dans un dropdown multi-sélection
     selectedStyle: {
-        fontSize: Fonts.app.size,
         borderColor: Colors.app.color,
         borderWidth: 2,
         borderRadius: 8,
-        margin: 3,
+        margin: 1,
+        padding: 3,
+        cursor: 'pointer',
+        paddingLeft: 10,
     },
     selectedTextStyle: {
         fontSize: Fonts.app.size,

@@ -38,7 +38,7 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
 
 
 // Filtre les usages en fonction de la catégorie du dressing
-export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel): ParamUsageVetementsModel[] {
+export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel, form: FormVetementModel): ParamUsageVetementsModel[] {
     return usages
         .filter((usage : ParamUsageVetementsModel) => usage.categories
             .filter((cat) => cat === dressing.categorie)
@@ -84,7 +84,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { dressing: dressing }
+            return { dressing: dressing, usagesListe: [] }
         });
     }
 }
