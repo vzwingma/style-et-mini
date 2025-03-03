@@ -4,6 +4,7 @@ import ParamUsageVetementsModel from "./params/paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
 import { StatutVetementEnum } from "@/constants/AppEnum";
+import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -17,6 +18,8 @@ interface FormVetementModel {
     petiteTaille: boolean;
     usages      : ParamUsageVetementsModel[];
     usagesListe : string[];
+    etat        : ParamEtatVetementsModel;
+
     couleurs    : string;
     description : string;
 }

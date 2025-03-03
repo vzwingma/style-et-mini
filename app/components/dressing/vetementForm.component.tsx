@@ -10,13 +10,14 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, TypeTailleEnum } from '@/constants/AppEnum';
+import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
@@ -29,6 +30,7 @@ export type VetementsFormParamsTypeProps = {
     paramsTypeVetements?     : ParamTypeVetementsModel[];
     paramsTaillesMesures?    : ParamTailleVetementsModel[];
     paramsUsagesVetements?   : ParamUsageVetementsModel[];
+    paramsEtatVetements?      : ParamEtatVetementsModel[];
 };
 
 /**
@@ -43,10 +45,13 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
 
-    const {typeVetements: paramsTypeVetements, taillesMesures: paramsTaillesMesures, usages: paramsUsagesVetements} = useContext(AppContext)!;
+    const { typeVetements: paramsTypeVetements, 
+            taillesMesures: paramsTaillesMesures, 
+            usages: paramsUsagesVetements, 
+            etats: paramsEtatVetements} = useContext(AppContext)!;
 
     useEffect(() => {
-        initForm(dressing, vetementInEdition, setForm, {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements});
+        initForm(dressing, vetementInEdition, setForm, {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements });
     }, [dressing, vetementInEdition]);
 
 
@@ -147,6 +152,23 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                             )}
                         />
                     </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Etat")}</ThemedText>
+                        <Dropdown
+                            style={!errorForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
+
+                            maxHeight={300}
+                            data={getEtatsForm(paramsEtatVetements, dressing)}
+                            labelField="libelle" valueField="id"                            
+                            placeholder={!errorForm?.tailleInError ? 'Selectionnez un état' : errorForm?.etatMessage+''}
+                            value={form?.etat}
+                            onChange={(etat : ParamEtatVetementsModel)=> setEtatForm(etat, setForm)}
+                            renderLeftIcon={() => (
+                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
+                            )}
+                        />
+                    </View>                    
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
                         <TextInput style={styles.input} placeholderTextColor={'gray'} 
