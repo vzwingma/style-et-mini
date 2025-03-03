@@ -1,4 +1,4 @@
-import { Button, Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/ThemedText';
@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, setImageForm, pickImageForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -160,7 +160,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderSelectedItem={(item, unSelect) => (
                                     <Pressable
                                         style={styles.selectedStyle}
-                                        onPress={() => unSelect && unSelect(item)}>
+                                        onPress={() => unSelect?.(item)}>
                                         <View style={{ flexDirection: 'row' }}>
                                             <ThemedText type="default">{item.libelle} </ThemedText>
                                             <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />

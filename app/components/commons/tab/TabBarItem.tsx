@@ -26,7 +26,7 @@ export function TabBarItems({ activeTab, activeDressing, thisTab, selectNewTab, 
     return <ThemedView style={tabStyles.tabsItem} onPointerDown={() => selectNewTab(thisTab, _id)} onTouchEnd={() => selectNewTab(thisTab, _id)}>
                 <TabBarIcon name={getTabIconName(thisTab) + (activeTab === thisTab && activeDressing === _id ? "" : "-outline")} 
                             color={activeTab === thisTab && activeDressing === _id ? Colors.app.color : '#ffffff'} />
-                <ThemedText type='tab'>{libelleTab || thisTab.toString()}</ThemedText>
+                <ThemedText type='tab'>{libelleTab ?? thisTab.toString()}</ThemedText>
             </ThemedView>;
   }
 
