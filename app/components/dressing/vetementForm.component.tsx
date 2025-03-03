@@ -27,10 +27,10 @@ export type VetementFormComponentProps = {
 
 
 export type VetementsFormParamsTypeProps = {
-    paramsTypeVetements?     : ParamTypeVetementsModel[];
-    paramsTaillesMesures?    : ParamTailleVetementsModel[];
-    paramsUsagesVetements?   : ParamUsageVetementsModel[];
-    paramsEtatVetements?      : ParamEtatVetementsModel[];
+    paramsTypeVetements?: ParamTypeVetementsModel[];
+    paramsTaillesMesures?: ParamTailleVetementsModel[];
+    paramsUsagesVetements?: ParamUsageVetementsModel[];
+    paramsEtatVetements?: ParamEtatVetementsModel[];
 };
 
 /**
@@ -40,18 +40,18 @@ export type VetementsFormParamsTypeProps = {
  *
  * @component
  **/
-export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, onCloseForm }: VetementFormComponentProps) => {
+export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, onCloseForm }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
 
-    const { typeVetements: paramsTypeVetements, 
-            taillesMesures: paramsTaillesMesures, 
-            usages: paramsUsagesVetements, 
-            etats: paramsEtatVetements} = useContext(AppContext)!;
+    const { typeVetements: paramsTypeVetements,
+        taillesMesures: paramsTaillesMesures,
+        usages: paramsUsagesVetements,
+        etats: paramsEtatVetements } = useContext(AppContext)!;
 
     useEffect(() => {
-        initForm(dressing, vetementInEdition, setForm, {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements });
+        initForm(dressing, vetementInEdition, setForm, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements });
     }, [dressing, vetementInEdition]);
 
 
@@ -71,35 +71,35 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
         return (
             <View style={styles.body}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <View style={styles.photo} >
-                    <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />
-                    {form.petiteTaille &&
-                    <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
-                                                                         name="arrow-down-circle-outline" color={Colors.app.color} />}
-                </View>
+                    <View style={styles.photo} >
+                        <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />
+                        {form.petiteTaille &&
+                            <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
+                                name="arrow-down-circle-outline" color={Colors.app.color} />}
+                    </View>
                 </View>
                 <View style={styles.form}>
-                    
+
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Nom")}</ThemedText>
-                        <TextInput style={errorForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.libelleInError ? 'red' : 'gray'} 
-                                    value={form?.libelle ? form?.libelle : ''}
-                                    placeholder={!errorForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorForm?.libelleMessage+''}
-                                    onChangeText={libelle => setLibelleForm(libelle, setForm)} />
+                        <TextInput style={errorForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.libelleInError ? 'red' : 'gray'}
+                            value={form?.libelle ? form?.libelle : ''}
+                            placeholder={!errorForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorForm?.libelleMessage + ''}
+                            onChangeText={libelle => setLibelleForm(libelle, setForm)} />
                     </View>
-                    
+
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Type")}</ThemedText>
                         <Dropdown
                             style={!errorForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
                             maxHeight={300}
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
-                            labelField="libelle" valueField="id"                            
-                            placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage+''} 
-                            value={form?.type}                                
-                            onChange={(type : ParamTypeVetementsModel) => setTypeForm(type, setForm)}
+                            labelField="libelle" valueField="id"
+                            placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage + ''}
+                            value={form?.type}
+                            onChange={(type: ParamTypeVetementsModel) => setTypeForm(type, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
@@ -110,25 +110,25 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Taille")}</ThemedText>
                         <Dropdown
                             style={!errorForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
 
                             maxHeight={300}
                             data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
-                            labelField="libelle" valueField="id"                            
-                            placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage+''}
+                            labelField="libelle" valueField="id"
+                            placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage + ''}
                             value={form?.taille}
-                            onChange={(taille : ParamTailleVetementsModel)=> setTailleForm(taille, setForm)}
+                            onChange={(taille: ParamTailleVetementsModel) => setTailleForm(taille, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
                         />
                     </View>
-                    {   
-                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) 
+                    {
+                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase())
                         && form.type?.typeTaille === TypeTailleEnum.TAILLE.toUpperCase()
-                        &&  <View style={{ flexDirection: 'row' }}>
+                        && <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
-                            <BouncyCheckbox 
+                            <BouncyCheckbox
                                 fillColor={Colors.app.color}
                                 isChecked={form?.petiteTaille}
                                 onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
@@ -138,51 +138,54 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage")}</ThemedText>
                         <MultiSelect
                             style={!errorForm?.usageInError || form?.usagesListe ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                             maxHeight={300}
                             mode='modal'
                             data={getUsagesForm(paramsUsagesVetements, dressing)}
-                            labelField="libelle" valueField="id"                            
-                            placeholder={!errorForm?.usageInError ? 'Selectionnez un ou plusieurs usages' : errorForm?.usageMessage+''}
-                            value={form?.usagesListe} 
+                            labelField="libelle" valueField="id"
+                            placeholder={!errorForm?.usageInError ? 'Selectionnez un ou plusieurs usages' : errorForm?.usageMessage + ''}
+                            value={form?.usagesListe}
                             onChange={usage => setUsages(usage, paramsUsagesVetements, setForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
                         />
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Etat")}</ThemedText>
-                        <Dropdown
-                            style={!errorForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle} 
+                    {
+                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) &&
+                        <View style={{ flexDirection: 'row' }}>
+                            <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Etat")}</ThemedText>
+                            <Dropdown
+                                style={!errorForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
 
-                            maxHeight={300}
-                            data={getEtatsForm(paramsEtatVetements, dressing)}
-                            labelField="libelle" valueField="id"                            
-                            placeholder={!errorForm?.tailleInError ? 'Selectionnez un état' : errorForm?.etatMessage+''}
-                            value={form?.etat}
-                            onChange={(etat : ParamEtatVetementsModel)=> setEtatForm(etat, setForm)}
-                            renderLeftIcon={() => (
-                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                            )}
-                        />
-                    </View>                    
+                                maxHeight={300}
+                                data={getEtatsForm(paramsEtatVetements, dressing)}
+                                labelField="libelle" valueField="id"
+                                placeholder={!errorForm?.tailleInError ? 'Selectionnez un état' : errorForm?.etatMessage + ''}
+                                value={form?.etat}
+                                onChange={(etat: ParamEtatVetementsModel) => setEtatForm(etat, setForm)}
+                                renderLeftIcon={() => (
+                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
+                                )}
+                            />
+                        </View>
+                    }
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
-                        <TextInput style={styles.input} placeholderTextColor={'gray'} 
-                                    value={form?.couleurs ? form?.couleurs : ''}
-                                    placeholder={'Indiquez les couleurs (facultatif)'}
-                                    onChangeText={couleurs => setCouleursForm(couleurs, setForm)} />
-                    </View>                    
+                        <TextInput style={styles.input} placeholderTextColor={'gray'}
+                            value={form?.couleurs ? form?.couleurs : ''}
+                            placeholder={'Indiquez les couleurs (facultatif)'}
+                            onChangeText={couleurs => setCouleursForm(couleurs, setForm)} />
+                    </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
-                        <TextInput style={styles.input} placeholderTextColor={'gray'} 
-                                    value={form?.description ? form?.description : ''}
-                                    multiline numberOfLines={3}
-                                    placeholder={'Indiquez la description (facultatif)'}
-                                    onChangeText={descrption => setDescriptionForm(descrption, setForm)} />                        
+                        <TextInput style={styles.input} placeholderTextColor={'gray'}
+                            value={form?.description ? form?.description : ''}
+                            multiline numberOfLines={3}
+                            placeholder={'Indiquez la description (facultatif)'}
+                            onChangeText={descrption => setDescriptionForm(descrption, setForm)} />
                     </View>
                 </View>
             </View>
@@ -193,11 +196,11 @@ export const VetementFormComponent : React.FC<VetementFormComponentProps> = ({ d
     return (
         <>
             <ThemedView style={styles.title}>
-                <Pressable onPress={() =>razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                 </Pressable>
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
-                <Pressable onPress={() =>validateForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() => validateForm(form, setForm, setErrorForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>
             </ThemedView>
@@ -260,7 +263,7 @@ const styles = StyleSheet.create({
         padding: 10,
         color: Colors.dark.text,
         flex: 3,
-    },    
+    },
     input: {
         marginTop: 5,
         marginBottom: 5,
@@ -275,65 +278,65 @@ const styles = StyleSheet.create({
     // Dropdown de sélection
     dropdown: {
         marginTop: 5,
-        marginBottom: 5,        
+        marginBottom: 5,
         flex: 3,
-        padding: 10,        
+        padding: 10,
         borderColor: 'gray',
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-      },
-      dropdownInError: {
+    },
+    dropdownInError: {
         marginTop: 5,
-        marginBottom: 5,        
+        marginBottom: 5,
         flex: 3,
-        padding: 10,        
+        padding: 10,
         borderColor: 'red',
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-      },      
-      icon: {
+    },
+    icon: {
         marginRight: 5,
-      },
-      // Style de la liste déroulante d'un dropdown
-      listStyle: {
+    },
+    // Style de la liste déroulante d'un dropdown
+    listStyle: {
         backgroundColor: Colors.app.backgroundLight,
-      },
-      // Style des éléments de la liste déroulante d'un dropdown
-      listItemStyle: {
+    },
+    // Style des éléments de la liste déroulante d'un dropdown
+    listItemStyle: {
         margin: 0,
         padding: 0,
         height: 'auto',
         color: Colors.dark.text,
-      },      
-      placeholderStyle: {
+    },
+    placeholderStyle: {
         fontSize: Fonts.app.size,
         color: 'gray',
-      },
-      placeholderErrorStyle: {
+    },
+    placeholderErrorStyle: {
         fontSize: Fonts.app.size,
         color: 'red',
-      },      
-      // Items sélectionnés dans un dropdown multi-sélection
-      selectedStyle: {
+    },
+    // Items sélectionnés dans un dropdown multi-sélection
+    selectedStyle: {
         fontSize: Fonts.app.size,
         borderColor: Colors.app.color,
         borderWidth: 2,
         borderRadius: 8,
         margin: 3,
-      },      
-      selectedTextStyle: {
+    },
+    selectedTextStyle: {
         fontSize: Fonts.app.size,
         color: Colors.dark.text
-      },
-      iconStyle: {
+    },
+    iconStyle: {
         width: 20,
         height: 20,
-      },
-      inputSearchStyle: {
+    },
+    inputSearchStyle: {
         height: 40,
         fontSize: Fonts.app.size,
         backgroundColor: 'red',
-      },
+    },
 });

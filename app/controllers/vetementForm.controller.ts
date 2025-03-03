@@ -11,6 +11,7 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
+import { CategorieDressingEnum } from "@/constants/AppEnum";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -235,7 +236,7 @@ export function validateForm(form: FormVetementModel | null,
                 , typeInError: true, typeMessage: "Le type de vêtement est obligatoire"
                 , tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire"
                 , usageInError: true, usageMessage: "Au moins un usage est obligatoire"
-                , etatInError: true, etatMessage: "Au moins un usage est obligatoire"
+                , etatInError: true, etatMessage: "Au moins un état est obligatoire"
             }
         });
         return;
@@ -287,6 +288,19 @@ export function validateForm(form: FormVetementModel | null,
             return { ...errors, usageInError: false, usageMessage: null }
         });
     }
+
+    if (form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)) {
+        errors = true;
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, etatInError: true, etatMessage: "L'état du vêtement est obligatoire" }
+        });
+    }
+    else {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, etatInError: false, etatMessage: null }
+        });
+    }
+
     if (!errors) {
         // Enregistrement du formulaire 
         saveVetement(form);
