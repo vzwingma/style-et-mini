@@ -7,7 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ParamListItem } from './typeParamsListItem.component';
 import { getParamsTaillesVetements } from '@/app/controllers/parametrages.controller';
-import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
+import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
 
 
 export default function ParamTaillesMesures() {

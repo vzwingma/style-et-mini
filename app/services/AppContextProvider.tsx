@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import BackendConfigModel from "../models/backendConfig.model";
-import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
-import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
+import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
+import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import DressingModel from "../models/dressing.model";
-import ParamUsageVetementsModel from "../models/paramUsageVetements.model";
+import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
+import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 
 
 /**
@@ -22,6 +23,9 @@ type AppContextType = {
     usages: ParamUsageVetementsModel[];
     setUsages: React.Dispatch<React.SetStateAction<ParamUsageVetementsModel[] | []>>;
 
+    etats: ParamEtatVetementsModel[];
+    setEtats: React.Dispatch<React.SetStateAction<ParamEtatVetementsModel[] | []>>;
+
     dressings: DressingModel[] | []; 
     setDressings: React.Dispatch<React.SetStateAction<DressingModel[] | []>>;
 };
@@ -39,6 +43,7 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
     const [typeVetements, setTypeVetements]                 = useState<ParamTypeVetementsModel[]>([]);
     const [taillesMesures, setTaillesMesures]               = useState<ParamTailleVetementsModel[]>([]);
     const [usages, setUsages]                               = useState<ParamUsageVetementsModel[]>([]);
+    const [etats, setEtats]                                 = useState<ParamEtatVetementsModel[]>([]);
 
     const [dressings, setDressings]                         = useState<DressingModel[]>([]);
 
@@ -53,13 +58,16 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         taillesMesures,
         setTaillesMesures,
         usages,
-        setUsages
+        setUsages,
+        etats,
+        setEtats
     }), [
         backendConnexionData,
         typeVetements,
         taillesMesures,
         usages,
-        dressings
+        dressings,
+        etats
     ]);
 
     return (

@@ -12,9 +12,9 @@ import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
 import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
-import ParamTypeVetementsModel from '@/app/models/paramTypeVetements.model';
-import ParamTailleVetementsModel from '@/app/models/paramTailleVetements.model';
-import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
+import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
+import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
+import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, TypeTailleEnum } from '@/constants/AppEnum';
 

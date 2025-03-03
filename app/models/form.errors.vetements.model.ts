@@ -14,17 +14,22 @@ interface ErrorsFormVetementModel {
 
     usageInError  : boolean;
     usageMessage  : string | null;
+
+    etatInError  : boolean;
+    etatMessage  : string | null;    
 }
 
 export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
-    libelleInError: false,
-    libelleMessage: null,
-    typeInError: false,
-    typeMessage: null,
-    tailleInError: false,
-    tailleMessage: null,
-    usageInError: false,
-    usageMessage: null
+    libelleInError  : false,
+    libelleMessage  : null,
+    typeInError     : false,
+    typeMessage     : null,
+    tailleInError   : false,
+    tailleMessage   : null,
+    usageInError    : false,
+    usageMessage    : null,
+    etatInError     : false,
+    etatMessage     : null
 }
 
 export default ErrorsFormVetementModel;

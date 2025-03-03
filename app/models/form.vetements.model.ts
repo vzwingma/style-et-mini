@@ -1,6 +1,6 @@
-import ParamTypeVetementsModel from "./paramTypeVetements.model";
-import ParamTailleVetementsModel from "./paramTailleVetements.model";
-import ParamUsageVetementsModel from "./paramUsageVetements.model";
+import ParamTypeVetementsModel from "./params/paramTypeVetements.model";
+import ParamTailleVetementsModel from "./params/paramTailleVetements.model";
+import ParamUsageVetementsModel from "./params/paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
 import { StatutVetementEnum } from "@/constants/AppEnum";

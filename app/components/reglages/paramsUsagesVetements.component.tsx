@@ -7,7 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ParamListItem } from './typeParamsListItem.component';
 import { getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
-import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
+import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 
 
 export default function ParamUsagesVetements() {
