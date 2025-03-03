@@ -1,4 +1,4 @@
-import { CategorieDressingEnum as CategorieDressingEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum } from "@/constants/AppEnum";
 
 /**
  * Modèle représentant une taille de vetements

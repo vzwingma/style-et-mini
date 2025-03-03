@@ -1,4 +1,4 @@
-# Bienvenue dans votre application Expo 👋
+# Application Style & Mini
 
 ## Objectif du projet
 

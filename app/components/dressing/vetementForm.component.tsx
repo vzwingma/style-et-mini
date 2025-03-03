@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { Button, Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/ThemedText';
@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, setImageForm, pickImageForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -18,6 +18,7 @@ import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.mo
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, compareCategorieDressingEnum, compareTypeTailleEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
+
 
 export type VetementFormComponentProps = {
     dressing: DressingModel;
@@ -55,15 +56,14 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     }, [dressing, vetementInEdition]);
 
 
+
     /**
      * 
      * @param label 
      * @returns nom du label avec une étoile rouge si obligatoire
      */
     const getLabelMandatory = (label: string): React.JSX.Element => {
-        return (
-            <><ThemedText style={{color: 'red'}}>* </ThemedText><ThemedText>{label}</ThemedText></>
-        );
+        return (<><ThemedText style={{color: 'red'}}>* </ThemedText><ThemedText>{label}</ThemedText></>);
     }
 
     /**
@@ -76,7 +76,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             <View style={styles.body}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
-                        <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />
+                        {form.image && <Image source={{ uri: form.image }} style={styles.photo} />}
+                        {!form.image && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} onPress={() => pickImageForm(setForm)} />}                        
                         {form.petiteTaille &&
                             <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
                                 name="arrow-down-circle-outline" color={Colors.app.color} />}
@@ -131,7 +132,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE)
                         && compareTypeTailleEnum(form.type?.typeTaille, TypeTailleEnum.TAILLE)
                         && <View style={{ flexDirection: 'row' }}>
-                            <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
+                            <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
                             <BouncyCheckbox
                                 fillColor={Colors.app.color}
                                 isChecked={form?.petiteTaille}

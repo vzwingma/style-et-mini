@@ -67,25 +67,34 @@ export function setVetementsFiltres(vetementsInDressing: VetementModel[], select
 
   groupedFiltres.forEach((filtres, type) => {
     vetementsInDressing = vetementsInDressing.filter(vetement => {
-
-      return filtres.some(filtre => {
-        if (type === CaracteristiqueVetementEnum.TYPE) {
-          return vetement.type.id === filtre.id;
-        } else if (type === CaracteristiqueVetementEnum.TAILLES) {
-          return vetement.taille.id === filtre.id;
-        } else if (type === CaracteristiqueVetementEnum.USAGES) {
-          return vetement.usages.some(usage => usage.id === filtre.id);
-        } else if (type === CaracteristiqueVetementEnum.STATUT) {
-          return vetement.statut === filtre.libelle;
-        }
-        return false;
-      });
+      return filtres.some(filtre => filtreVetementByCaracteristique(vetement, type, filtre));
     });
   });
 
   return vetementsInDressing;
 };
 
+
+/**
+ * Filtre un vêtement en fonction d'une caractéristique spécifique.
+ *
+ * @param vetement - Le modèle de vêtement à filtrer.
+ * @param type - Le type de caractéristique à utiliser pour le filtrage.
+ * @param filtre - Le modèle de filtre contenant les critères de filtrage.
+ * @returns `true` si le vêtement correspond aux critères de filtrage, sinon `false`.
+ */
+function filtreVetementByCaracteristique(vetement: VetementModel, type: CaracteristiqueVetementEnum, filtre: DressingListFiltreModel): boolean {
+  if (type === CaracteristiqueVetementEnum.TYPE) {
+    return vetement.type.id === filtre.id;
+  } else if (type === CaracteristiqueVetementEnum.TAILLES) {
+    return vetement.taille.id === filtre.id;
+  } else if (type === CaracteristiqueVetementEnum.USAGES) {
+    return vetement.usages.some(usage => usage.id === filtre.id);
+  } else if (type === CaracteristiqueVetementEnum.STATUT) {
+    return vetement.statut === filtre.libelle;
+  }
+  return false;
+  }
 
 /**
  * 

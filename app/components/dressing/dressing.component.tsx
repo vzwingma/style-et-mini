@@ -5,14 +5,14 @@ import MenuDrawer from 'react-native-side-drawer';
 import { Colors } from '@/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
 import { DressingEmptyComponent } from './dressingEmpty.component';
-import { VetementFormComponent  } from './vetementForm.component';
-import { loadVetementsDressing  } from '@/app/controllers/dressing.controller';
-import { DressingListComponent  } from './dressingList.component';
+import { VetementFormComponent } from './vetementForm.component';
+import { loadVetementsDressing } from '@/app/controllers/dressing.controller';
+import { DressingListComponent } from './dressingList.component';
 import VetementModel from '@/app/models/vetements.model';
 
 
 export type DressingComponentProps = {
-  dressing: DressingModel;
+  readonly dressing: DressingModel;
 };
 /**
  * Composant principal pour un dressing
@@ -38,15 +38,15 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
   useEffect(() => {
     // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
-    if(openVetementForm) return;
+    if (openVetementForm) return;
     const idDressing = dressing.id;
     loadVetementsDressing({ idDressing, setIsLoading, setVetements });
   }, [dressing, openVetementForm]);
 
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpenVetementForm(vetement? : VetementModel): void {
-    setVetementInEdit(vetement? vetement : null);
+  function toggleOpenVetementForm(vetement?: VetementModel): void {
+    setVetementInEdit(vetement || null);
     setOpenVetementForm(!openVetementForm);
   };
 
@@ -59,13 +59,11 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
+    else if (vetements?.length !== 0) {
+      return (<DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
+    }
     else {
-      if (vetements?.length !== 0) {
-        return ( <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} /> );
-      }
-      else {
-        return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
-      }
+      return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
     }
   }
 
