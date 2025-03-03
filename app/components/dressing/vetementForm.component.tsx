@@ -141,10 +141,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                             maxHeight={300}
+                            
                             mode='modal'
                             data={getUsagesForm(paramsUsagesVetements, dressing)}
                             labelField="libelle" valueField="id"
-                            placeholder={!errorForm?.usageInError ? 'Selectionnez un ou plusieurs usages' : errorForm?.usageMessage + ''}
+                            placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
                             value={form?.usagesListe}
                             onChange={usage => setUsages(usage, paramsUsagesVetements, setForm)}
                             renderLeftIcon={() => (
@@ -285,6 +286,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
+        width: '100%'
     },
     dropdownInError: {
         marginTop: 5,

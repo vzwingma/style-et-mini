@@ -14,7 +14,7 @@ interface VetementModel {
     readonly usages     : VetementCaracteristiquesModel[];
     readonly etat?      : VetementCaracteristiquesModel;
     
-    readonly couleurs   : string[];
+    readonly couleurs   : string;
     readonly image?     : string;
     readonly description: string;
     readonly statut     : StatutVetementEnum;

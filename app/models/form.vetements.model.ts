@@ -50,7 +50,11 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
                 id      : usage.id,
                 libelle : usage.libelle
             }}),
-        couleurs: [form.couleurs],
+        etat: {
+            id          : form.etat.id,
+            libelle     : form.etat.libelle,
+        },
+        couleurs: form.couleurs,
         description: form.description,
         statut: StatutVetementEnum.ACTIF,
     }
