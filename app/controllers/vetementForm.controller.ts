@@ -97,10 +97,15 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function setLibelleForm(libelle: string, setForm: Function) {
+export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, libelle: libelle }
     });
+    if(libelle) {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, libelleInError: false, libelleMessage: null }
+        });
+    }
 }
 
 /**
@@ -145,13 +150,16 @@ export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
  * @param paramsUsagesVetements liste des usages de vêtements
  * @param setForm formulaire à mettre à jour
  */
-export function setUsages(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function) {
+export function setUsages(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function, setErrorsForm: Function) {
 
     let usages: ParamUsageVetementsModel[] = [];
     usageIdsListe.forEach((usageId) => {
         let usageModel = paramsUsagesVetements.find((u) => u.id === usageId);
         if (usageModel !== undefined) {
             usages.push(usageModel);
+            setErrorsForm((errors: ErrorsFormVetementModel) => {
+                return { ...errors, usageInError: false, usageMessage: null }
+            });
         }
     }
     );
@@ -300,7 +308,7 @@ export function validateForm(form: FormVetementModel | null,
             return { ...errors, etatInError: false, etatMessage: null }
         });
     }
-    console.log("Erreurs dans le formulaire", errors);
+
     if (!errors) {
         // Enregistrement du formulaire 
         saveVetement(form);

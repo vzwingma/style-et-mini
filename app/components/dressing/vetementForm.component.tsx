@@ -58,7 +58,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     // TODO : Fix on Android
     const getLabelMandatory = (label: string): React.JSX.Element => {
         return (
-            <>{label}</>
+            <>{label}*</>
         );
     }
 
@@ -85,7 +85,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <TextInput style={errorForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ? form?.libelle : ''}
                             placeholder={!errorForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorForm?.libelleMessage + ''}
-                            onChangeText={libelle => setLibelleForm(libelle, setForm)} />
+                            onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorForm)} />
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
@@ -137,7 +137,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Usage")}</ThemedText>
                         <MultiSelect
-                            style={!errorForm?.usageInError || form?.usagesListe ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                            style={!errorForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                             maxHeight={300}
@@ -147,7 +147,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             labelField="libelle" valueField="id"
                             placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
                             value={form?.usagesListe}
-                            onChange={usage => setUsages(usage, paramsUsagesVetements, setForm)}
+                            onChange={usage => setUsages(usage, paramsUsagesVetements, setForm, setErrorForm)}
                             renderLeftIcon={() => (
                                 <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                             )}
