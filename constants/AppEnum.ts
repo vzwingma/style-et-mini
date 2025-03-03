@@ -41,7 +41,15 @@ export enum CategorieDressingEnum {
     ADULTE  = 'Adulte'
 }
 
+export function compareCategorieDressingEnum(value: string, enumCategorie : CategorieDressingEnum): boolean {
+    return value?.toUpperCase() === enumCategorie.toString().toUpperCase();
+}
+
 export enum TypeTailleEnum {
     TAILLE = 'Taille',
     POINTURE = 'Pointure'
+}
+
+export function compareTypeTailleEnum(value: string, enumType : TypeTailleEnum): boolean {
+    return value?.toUpperCase() === enumType.toString().toUpperCase();
 }

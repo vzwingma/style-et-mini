@@ -1,5 +1,5 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
-import { alphanumSort } from "../components/commons/CommonsUtils";
+import { alphanumSort, triSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
@@ -11,7 +11,7 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum, compareCategorieDressingEnum } from "@/constants/AppEnum";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -33,7 +33,7 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
     return taillesMesures
         .filter((taille) => taille.categorie === dressing.categorie)
         .filter((taille) => taille.type === form.type.typeTaille)
-        .sort((t1, t2) => alphanumSort(t1.libelle, t2.libelle));
+        .sort((t1, t2) => triSort(t1.tri, t2.tri));
 }
 
 
@@ -53,7 +53,7 @@ export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: Dressin
         .filter((etat : ParamEtatVetementsModel) => etat.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .sort((e1, e2) => alphanumSort(e1.libelle, e2.libelle));
+        .sort((e1, e2) => triSort(e1.tri, e2.tri));
 }
 
 /**
@@ -289,7 +289,7 @@ export function validateForm(form: FormVetementModel | null,
         });
     }
 
-    if (form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)) {
+    if (!compareCategorieDressingEnum(form.dressing.categorie, CategorieDressingEnum.ADULTE) && (form.etat === undefined || form.etat === null)) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return { ...errors, etatInError: true, etatMessage: "L'état du vêtement est obligatoire" }
@@ -300,7 +300,7 @@ export function validateForm(form: FormVetementModel | null,
             return { ...errors, etatInError: false, etatMessage: null }
         });
     }
-
+    console.log("Erreurs dans le formulaire", errors);
     if (!errors) {
         // Enregistrement du formulaire 
         saveVetement(form);

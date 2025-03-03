@@ -16,7 +16,7 @@ import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.mode
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { CategorieDressingEnum, TypeTailleEnum } from '@/constants/AppEnum';
+import { CategorieDressingEnum, compareCategorieDressingEnum, compareTypeTailleEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 
 export type VetementFormComponentProps = {
@@ -124,8 +124,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         />
                     </View>
                     {
-                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase())
-                        && form.type?.typeTaille === TypeTailleEnum.TAILLE.toUpperCase()
+                        !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE)
+                        && compareTypeTailleEnum(form.type?.typeTaille, TypeTailleEnum.TAILLE)
                         && <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Petite taille")}</ThemedText>
                             <BouncyCheckbox
@@ -153,7 +153,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         />
                     </View>
                     {
-                        (dressing.categorie !== CategorieDressingEnum.ADULTE.toUpperCase()) &&
+                        !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE) &&
                         <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Etat")}</ThemedText>
                             <Dropdown
