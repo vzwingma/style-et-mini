@@ -5,7 +5,10 @@ export function alphanumSort(a: string, b: string) {
     return a.localeCompare(b, 'fr', { numeric: true });
 }
 
-
+// Fonction de tri numérique
+export function triSort(a: number, b: number) {
+    return a - b;
+}
 
 // Fonction de tri des vêtements
 export function vetementSort(a: VetementModel, b: VetementModel) {

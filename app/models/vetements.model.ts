@@ -12,7 +12,9 @@ interface VetementModel {
     readonly type       : VetementCaracteristiquesModel;
     readonly taille     : VetementCaracteristiquesModel;
     readonly usages     : VetementCaracteristiquesModel[];
-    readonly couleurs   : string[];
+    readonly etat?      : VetementCaracteristiquesModel;
+    
+    readonly couleurs   : string;
     readonly image?     : string;
     readonly description: string;
     readonly statut     : StatutVetementEnum;

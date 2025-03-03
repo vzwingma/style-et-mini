@@ -8,11 +8,11 @@ import { ThemedText } from "../commons/ThemedText";
  * @param typeVetements : TypeVetementsModel
  * @returns item de la liste des types de vêtements
  */
-export const ParamListItem = ({ key, libelle }: any) => {
+export const ParamListItem = ({ keyItem, libelle }: any) => {
 
     return (
-        <View key={key}>
-            <ThemedText type="subtitle">{key}</ThemedText> 
+        <View key={keyItem}>
+            <ThemedText type="subtitle">{keyItem}</ThemedText> 
             <ThemedText type="default">{libelle}</ThemedText>
         </View>
     );

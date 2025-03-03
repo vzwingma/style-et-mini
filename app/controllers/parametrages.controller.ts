@@ -1,9 +1,10 @@
 import { callGETBackend } from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "@/constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
-import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
-import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
-import ParamUsageVetementsModel from "../models/paramUsageVetements.model";
+import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
+import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
+import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
+import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPITypeVetementsProps = {
@@ -25,7 +26,11 @@ type FunctionCallAPIUsagesVetementsProps = {
 }
 
 
-
+type FunctionCallAPIEtatsVetementsProps = {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setEtats: Function
+  setError: React.Dispatch<React.SetStateAction<Error | null>>
+}
 
 /**
  * Appelle l'API pour récupérer les types de vêtements et met à jour l'état en conséquence.
@@ -108,13 +113,6 @@ export function getParamsTaillesVetements({setIsLoading, setTaillesMesures, setE
  * @param {Function} props.setError - Fonction pour définir l'erreur en cas d'échec de l'appel API.
  *
  * @returns {void}
- *
- * @example
- * callApiParamsTaillesVetements({
- *   setIsLoading: (isLoading) => { ... },
- *   setTaillesMesures: (taillesMesures) => { ... },
- *   setError: (error) => { ... }
- * });
  */
 export function getParamsUsagesVetements({setIsLoading, setUsages, setError}: FunctionCallAPIUsagesVetementsProps) {
 
@@ -124,6 +122,36 @@ export function getParamsUsagesVetements({setIsLoading, setUsages, setError}: Fu
     .then((usageVetements : ParamUsageVetementsModel[]) => {
       setIsLoading(false);
       setUsages(usageVetements);
+    })
+    .catch((e) => {
+        setIsLoading(false);
+        setError(e);
+        console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+        showToast("Erreur de connexion au backend", ToastDuration.SHORT);
+    });
+}
+
+
+
+
+/**
+ * Appelle l'API pour récupérer les usages de vêtements et met à jour l'état en conséquence.
+ *
+ * @param {Object} props - Les propriétés de la fonction.
+ * @param {Function} props.setIsLoading - Fonction pour définir l'état de chargement.
+ * @param {Function} props.setUsages - Fonction pour définir les usages de vêtements récupérées.
+ * @param {Function} props.setError - Fonction pour définir l'erreur en cas d'échec de l'appel API.
+ *
+ * @returns {void}
+ */
+export function getParamsEtatsVetements({setIsLoading, setEtats, setError}: FunctionCallAPIEtatsVetementsProps) {
+
+  setIsLoading(true);
+  // Appel du service externe 
+  callGETBackend(SERVICES_URL.SERVICE_PARAMS_ETATS)
+    .then((etatsVetements : ParamEtatVetementsModel[]) => {
+      setIsLoading(false);
+      setEtats(etatsVetements);
     })
     .catch((e) => {
         setIsLoading(false);

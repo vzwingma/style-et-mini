@@ -1,9 +1,10 @@
-import ParamTypeVetementsModel from "./paramTypeVetements.model";
-import ParamTailleVetementsModel from "./paramTailleVetements.model";
-import ParamUsageVetementsModel from "./paramUsageVetements.model";
+import ParamTypeVetementsModel from "./params/paramTypeVetements.model";
+import ParamTailleVetementsModel from "./params/paramTailleVetements.model";
+import ParamUsageVetementsModel from "./params/paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
 import { StatutVetementEnum } from "@/constants/AppEnum";
+import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -17,6 +18,8 @@ interface FormVetementModel {
     petiteTaille: boolean;
     usages      : ParamUsageVetementsModel[];
     usagesListe : string[];
+    etat        : ParamEtatVetementsModel;
+
     couleurs    : string;
     description : string;
 }
@@ -47,7 +50,11 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
                 id      : usage.id,
                 libelle : usage.libelle
             }}),
-        couleurs: [form.couleurs],
+        etat: {
+            id          : form.etat.id,
+            libelle     : form.etat.libelle,
+        },
+        couleurs: form.couleurs,
         description: form.description,
         statut: StatutVetementEnum.ACTIF,
     }

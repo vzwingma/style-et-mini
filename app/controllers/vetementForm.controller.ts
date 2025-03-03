@@ -1,15 +1,17 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
-import { alphanumSort } from "../components/commons/CommonsUtils";
+import { alphanumSort, triSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
 import FormVetementModel, { transformFormToVetementModel } from "../models/form.vetements.model";
-import ParamTailleVetementsModel from "../models/paramTailleVetements.model";
-import ParamTypeVetementsModel from "../models/paramTypeVetements.model";
-import ParamUsageVetementsModel from "../models/paramUsageVetements.model";
+import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
+import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
+import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
 import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
+import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
+import { CategorieDressingEnum, compareCategorieDressingEnum } from "@/constants/AppEnum";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -18,7 +20,7 @@ export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], d
         .filter((type) => type.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .sort((a, b) => alphanumSort(a.libelle, b.libelle));
+        .sort((t1, t2) => alphanumSort(t1.libelle, t2.libelle));
 }
 
 
@@ -31,17 +33,27 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
     return taillesMesures
         .filter((taille) => taille.categorie === dressing.categorie)
         .filter((taille) => taille.type === form.type.typeTaille)
-        .sort((a, b) => alphanumSort(a.libelle, b.libelle));
+        .sort((t1, t2) => triSort(t1.tri, t2.tri));
 }
 
 
 // Filtre les usages en fonction de la catégorie du dressing
-export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel): ParamUsageVetementsModel[] {
+export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel, form: FormVetementModel): ParamUsageVetementsModel[] {
     return usages
-        .filter((usage) => usage.categories
+        .filter((usage : ParamUsageVetementsModel) => usage.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .sort((a, b) => alphanumSort(a.libelle, b.libelle));
+        .sort((u1, u2) => alphanumSort(u1.libelle, u2.libelle));
+}
+
+
+// Filtre les état en fonction de la catégorie du dressing
+export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: DressingModel): ParamEtatVetementsModel[] {
+    return etats
+        .filter((etat : ParamEtatVetementsModel) => etat.categories
+            .filter((cat) => cat === dressing.categorie)
+            .length > 0)
+        .sort((e1, e2) => triSort(e1.tri, e2.tri));
 }
 
 /**
@@ -52,7 +64,7 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null, 
                          setForm: Function,
-                         {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements}: VetementsFormParamsTypeProps) {
+                         {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements}: VetementsFormParamsTypeProps) {
 
     if(vetementInEdition !== null) {
         setForm((form: FormVetementModel) => {
@@ -60,18 +72,19 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
                 id: vetementInEdition.id, 
                 libelle: vetementInEdition.libelle, 
                 dressing: dressing,
-                type: paramsTypeVetements?.find((t) => t.id === vetementInEdition.type.id),
-                taille: paramsTaillesMesures?.find((t) => t.id === vetementInEdition.taille.id),
+                type: paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id),
+                taille: paramsTaillesMesures?.find((taille) => taille.id === vetementInEdition.taille.id),
                 petiteTaille: vetementInEdition.taille.petite,
                 usagesListe: vetementInEdition.usages.map((usage) => usage.id), 
                 usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
+                etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
                 couleurs: vetementInEdition.couleurs, 
                 description: vetementInEdition.description }
         });
     }
     else {
         setForm(() => {
-            return { dressing: dressing }
+            return { dressing: dressing, usagesListe: [] }
         });
     }
 }
@@ -84,10 +97,15 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function setLibelleForm(libelle: string, setForm: Function) {
+export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, libelle: libelle }
     });
+    if(libelle) {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, libelleInError: false, libelleMessage: null }
+        });
+    }
 }
 
 /**
@@ -132,13 +150,16 @@ export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
  * @param paramsUsagesVetements liste des usages de vêtements
  * @param setForm formulaire à mettre à jour
  */
-export function setUsages(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function) {
+export function setUsages(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function, setErrorsForm: Function) {
 
     let usages: ParamUsageVetementsModel[] = [];
     usageIdsListe.forEach((usageId) => {
         let usageModel = paramsUsagesVetements.find((u) => u.id === usageId);
         if (usageModel !== undefined) {
             usages.push(usageModel);
+            setErrorsForm((errors: ErrorsFormVetementModel) => {
+                return { ...errors, usageInError: false, usageMessage: null }
+            });
         }
     }
     );
@@ -146,6 +167,18 @@ export function setUsages(usageIdsListe: string[], paramsUsagesVetements: ParamU
         return { ...form, usagesListe: usageIdsListe, usages: usages }
     });
 }
+
+/**
+ * Enregistre la taille de vêtements dans le formulaire
+ * @param etat 
+ * @param setForm 
+ */
+export function setEtatForm(etat: ParamEtatVetementsModel, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, etat: etat }
+    });
+}
+
 
 /**
  * Enregistre les couleurs de vêtements dans le formulaire
@@ -196,9 +229,9 @@ export function razAndcloseForm(
  * @returns si le formulaire est invalide
  */
 export function validateForm(form: FormVetementModel | null, 
-                            setForm: Function,
-                            setErrorsForm: Function,
-                            onCloseForm: Function) {
+                             setForm: Function,
+                             setErrorsForm: Function,
+                             onCloseForm: Function) {
 
     console.log("Validation du formulaire", form);
     
@@ -211,6 +244,7 @@ export function validateForm(form: FormVetementModel | null,
                 , typeInError: true, typeMessage: "Le type de vêtement est obligatoire"
                 , tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire"
                 , usageInError: true, usageMessage: "Au moins un usage est obligatoire"
+                , etatInError: true, etatMessage: "Au moins un état est obligatoire"
             }
         });
         return;
@@ -250,6 +284,7 @@ export function validateForm(form: FormVetementModel | null,
             return { ...errors, tailleInError: false, tailleMessage: null }
         });
     }
+    
     if (form.usages === undefined || form.usages === null || form.usages.length === 0) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
@@ -261,6 +296,19 @@ export function validateForm(form: FormVetementModel | null,
             return { ...errors, usageInError: false, usageMessage: null }
         });
     }
+
+    if (!compareCategorieDressingEnum(form.dressing.categorie, CategorieDressingEnum.ADULTE) && (form.etat === undefined || form.etat === null)) {
+        errors = true;
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, etatInError: true, etatMessage: "L'état du vêtement est obligatoire" }
+        });
+    }
+    else {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, etatInError: false, etatMessage: null }
+        });
+    }
+
     if (!errors) {
         // Enregistrement du formulaire 
         saveVetement(form);

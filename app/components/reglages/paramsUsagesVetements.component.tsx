@@ -7,7 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ParamListItem } from './typeParamsListItem.component';
 import { getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
-import ParamUsageVetementsModel from '@/app/models/paramUsageVetements.model';
+import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 
 
 export default function ParamUsagesVetements() {
@@ -55,7 +55,7 @@ export default function ParamUsagesVetements() {
     let items: JSX.Element[] = [];
     if (usageVetements !== undefined) {
       usageVetements.forEach((item) => {
-        items.push(<ParamListItem key={item.id} libelle={JSON.stringify(item)} />);
+        items.push(<ParamListItem key={item.id} keyItem={item.id} libelle={JSON.stringify(item)} />);
       });
     }
     panel = <>{items}</>;
