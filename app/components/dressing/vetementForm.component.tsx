@@ -348,9 +348,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 8,
         margin: 1,
-        padding: 3,
-        cursor: 'pointer',
         paddingLeft: 10,
+        marginTop: 5,
+        marginRight: 5,
+        padding: 1,
+        cursor: 'pointer',
     },
     selectedTextStyle: {
         fontSize: Fonts.app.size,

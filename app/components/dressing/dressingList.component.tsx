@@ -85,7 +85,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="defaultSemiBold" style={{ fontWeight: 'bold'}}>{item.type}</ThemedText><ThemedText type="default">{item.libelle}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: 'bold'}}>{item.type}</ThemedText><ThemedText type="subtitle" style={{fontWeight:"normal"}}>{item.libelle}</ThemedText>
             </View>
         );
     };
@@ -168,14 +168,12 @@ const styles = StyleSheet.create({
     // Filtre
     // Dropdown de sélection
     dropdown: {
-        top: 4,
         padding: 8,
-        borderColor: 'gray',
+        borderColor: 'grey',
         borderWidth: 0.5,
         borderRadius: 8,
         alignItems: 'flex-start',
         cursor: 'pointer',
-        bottom: 4,
     },
     icon: {
         marginRight: 5,
@@ -199,16 +197,13 @@ const styles = StyleSheet.create({
     },
     // Items sélectionnés dans un dropdown multi-sélection
     selectedStyle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         borderColor: Colors.app.color,
         borderWidth: 2,
         borderRadius: 8,
-        margin: 1,
+        marginTop: 5,
+        marginRight: 5,
         padding: 1,
         cursor: 'pointer',
-        paddingBottom: 3,
-        paddingTop: 3,
     },
     selectedTextStyle: {
         fontSize: Fonts.app.size,
