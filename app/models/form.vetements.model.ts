@@ -32,8 +32,9 @@ interface FormVetementModel {
  */
 export function transformFormToVetementModel(form: FormVetementModel): VetementModel {
 
+
     const vetement: VetementModel = {
-        id: form.id,
+        id              : form.id,
         image           : form.image,
         dressing        : form.dressing,
         libelle         : form.libelle,
@@ -51,13 +52,16 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
                 id      : usage.id,
                 libelle : usage.libelle
             }}),
-        etat: {
-            id          : form.etat.id,
-            libelle     : form.etat.libelle,
-        },
         couleurs: form.couleurs,
         description: form.description,
         statut: StatutVetementEnum.ACTIF,
+    };
+
+    if (form.etat) {
+        vetement.etat = {
+            id          : form.etat.id,
+            libelle     : form.etat.libelle,
+        };
     }
     return vetement;
 }
