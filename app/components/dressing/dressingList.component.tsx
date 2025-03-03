@@ -27,10 +27,10 @@ export type DressingComponentProps = {
 export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetementsInDressing, openAddEditVetement }: DressingComponentProps) => {
 
 
-    const [selectedFiltres,     setSelectedFiltres] = useState<DressingListFiltreModel[]>([]);
-    const [filtresDisponibles,  setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
+    const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([]);
+    const [filtresDisponibles, setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
 
-    const [vetementsAffiches,   setVetementsAffiches] = useState<VetementModel[]>([]);
+    const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
 
     useEffect(() => {
         // Recalcul des filtres disponibles
@@ -76,7 +76,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         vetements.sort(vetementSort);
         vetements.forEach((item) => {
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} editVetement={openAddEditVetement} />);
-            });
+        });
 
         return vetementsItems;
     }
@@ -85,7 +85,8 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="defaultSemiBold" style={{ fontWeight: 'bold'}}>{item.type}</ThemedText><ThemedText type="default">{item.libelle}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>  {item.type}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{item.libelle}</ThemedText>
             </View>
         );
     };
@@ -120,7 +121,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                             <Pressable
                                 style={styles.selectedStyle}
                                 onPress={() => unSelect?.(item)}>
-                                <View style={{flexDirection: 'row'}}>
+                                <View style={{ flexDirection: 'row' }}>
                                     <ThemedText type="italic"> {item.type} : </ThemedText>
                                     <ThemedText type="default">{item.libelle} </ThemedText>
                                     <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
@@ -168,14 +169,12 @@ const styles = StyleSheet.create({
     // Filtre
     // Dropdown de sélection
     dropdown: {
-        top: 4,
         padding: 8,
-        borderColor: 'gray',
+        borderColor: 'grey',
         borderWidth: 0.5,
         borderRadius: 8,
         alignItems: 'flex-start',
         cursor: 'pointer',
-        bottom: 4,
     },
     icon: {
         marginRight: 5,
@@ -199,16 +198,13 @@ const styles = StyleSheet.create({
     },
     // Items sélectionnés dans un dropdown multi-sélection
     selectedStyle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         borderColor: Colors.app.color,
         borderWidth: 2,
         borderRadius: 8,
-        margin: 1,
+        marginTop: 5,
+        marginRight: 5,
         padding: 1,
         cursor: 'pointer',
-        paddingBottom: 3,
-        paddingTop: 3,
     },
     selectedTextStyle: {
         fontSize: Fonts.app.size,
