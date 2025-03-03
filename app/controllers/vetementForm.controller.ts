@@ -12,7 +12,7 @@ import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 import { CategorieDressingEnum, compareCategorieDressingEnum } from "@/constants/AppEnum";
-
+import * as ImagePicker from 'expo-image-picker';
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
@@ -40,7 +40,7 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
 // Filtre les usages en fonction de la catégorie du dressing
 export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel, form: FormVetementModel): ParamUsageVetementsModel[] {
     return usages
-        .filter((usage : ParamUsageVetementsModel) => usage.categories
+        .filter((usage: ParamUsageVetementsModel) => usage.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
         .sort((u1, u2) => alphanumSort(u1.libelle, u2.libelle));
@@ -50,7 +50,7 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
 // Filtre les état en fonction de la catégorie du dressing
 export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: DressingModel): ParamEtatVetementsModel[] {
     return etats
-        .filter((etat : ParamEtatVetementsModel) => etat.categories
+        .filter((etat: ParamEtatVetementsModel) => etat.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
         .sort((e1, e2) => triSort(e1.tri, e2.tri));
@@ -62,24 +62,27 @@ export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: Dressin
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null, 
-                         setForm: Function,
-                         {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements}: VetementsFormParamsTypeProps) {
+export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
+    setForm: Function,
+    { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements }: VetementsFormParamsTypeProps) {
 
-    if(vetementInEdition !== null) {
+    if (vetementInEdition !== null) {
         setForm((form: FormVetementModel) => {
-            return { ...form, 
-                id: vetementInEdition.id, 
-                libelle: vetementInEdition.libelle, 
+            return {
+                ...form,
+                id: vetementInEdition.id,
+                image: vetementInEdition.image,
+                libelle: vetementInEdition.libelle,
                 dressing: dressing,
                 type: paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id),
                 taille: paramsTaillesMesures?.find((taille) => taille.id === vetementInEdition.taille.id),
                 petiteTaille: vetementInEdition.taille.petite,
-                usagesListe: vetementInEdition.usages.map((usage) => usage.id), 
+                usagesListe: vetementInEdition.usages.map((usage) => usage.id),
                 usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
                 etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
-                couleurs: vetementInEdition.couleurs, 
-                description: vetementInEdition.description }
+                couleurs: vetementInEdition.couleurs,
+                description: vetementInEdition.description
+            }
         });
     }
     else {
@@ -89,6 +92,32 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
 }
 
+
+export const pickImageForm = async (setForm: Function) => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+        setImageForm(result.assets[0].uri, setForm);
+    }
+};
+/**
+ * Enregistre le type de vêtements dans le formulaire
+ * @param type type de vêtements
+ * @param setForm  fonction de mise à jour du formulaire
+ */
+export function setImageForm(image: string, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, image: image }
+    });
+}
 
 
 /**
@@ -101,7 +130,7 @@ export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm
     setForm((form: FormVetementModel) => {
         return { ...form, libelle: libelle }
     });
-    if(libelle) {
+    if (libelle) {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return { ...errors, libelleInError: false, libelleMessage: null }
         });
@@ -210,12 +239,12 @@ export function setDescriptionForm(description: string, setForm: Function) {
  */
 
 export function razAndcloseForm(
-    form : FormVetementModel,
+    form: FormVetementModel,
     setForm: Function,
     setErrorsForm: Function, onCloseForm: Function) {
-        initForm(form?.dressing, null, setForm, {});
-        setErrorsForm(null);
-        onCloseForm();
+    initForm(form?.dressing, null, setForm, {});
+    setErrorsForm(null);
+    onCloseForm();
 }
 
 
@@ -228,13 +257,13 @@ export function razAndcloseForm(
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function validateForm(form: FormVetementModel | null, 
-                             setForm: Function,
-                             setErrorsForm: Function,
-                             onCloseForm: Function) {
+export function validateForm(form: FormVetementModel | null,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function) {
 
     console.log("Validation du formulaire", form);
-    
+
     let errors = false;
     if (form === null) {
         console.error("Le formulaire est vide");
@@ -284,7 +313,7 @@ export function validateForm(form: FormVetementModel | null,
             return { ...errors, tailleInError: false, tailleMessage: null }
         });
     }
-    
+
     if (form.usages === undefined || form.usages === null || form.usages.length === 0) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
@@ -323,25 +352,25 @@ export function validateForm(form: FormVetementModel | null,
     function saveVetement(form: FormVetementModel) {
 
         let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
-                      { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
+        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
         ];
 
         const vetement: VetementModel = transformFormToVetementModel(form);
         const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
-        console.log((isEdition ? "Mise à jour":"Création") +" du vêtement", vetement);
-        const url =  isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
+        console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
+        const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
 
-         //  Appel au backend pour sauvegarder le vêtement
+        //  Appel au backend pour sauvegarder le vêtement
         callPOSTBackend(url, params, vetement)
-        .then((response) => {
-            console.log("Vêtement mis à jour avec succès", response);
-            razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
-        })
-        .catch((e) => {
-            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur de chargement du dressing", ToastDuration.LONG);
-            return false;
-        });
+            .then((response) => {
+                console.log("Vêtement mis à jour avec succès", response);
+                razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
+            })
+            .catch((e) => {
+                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                showToast("Erreur de chargement du dressing", ToastDuration.LONG);
+                return false;
+            });
 
     }
 }

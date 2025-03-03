@@ -19,7 +19,7 @@ interface FormVetementModel {
     usages      : ParamUsageVetementsModel[];
     usagesListe : string[];
     etat        : ParamEtatVetementsModel;
-
+    image       : string;
     couleurs    : string;
     description : string;
 }
@@ -34,6 +34,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
 
     const vetement: VetementModel = {
         id: form.id,
+        image           : form.image,
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {
