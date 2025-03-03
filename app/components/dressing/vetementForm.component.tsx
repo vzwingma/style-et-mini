@@ -76,11 +76,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             <View style={styles.body}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
-                        {form.image && <Image source={{ uri: form.image }} style={styles.photo} />}
-                        {!form.image && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} onPress={() => pickImageForm(setForm)} />}                        
-                        {form.petiteTaille &&
-                            <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
-                                name="arrow-down-circle-outline" color={Colors.app.color} />}
+                        <Pressable onPress={() => pickImageForm(setForm)}>
+                            {form.image && <Image source={{ uri: form.image }} style={styles.photo} />}
+                            {!form.image && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />}
+                            {form.petiteTaille &&
+                                <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
+                                    name="arrow-down-circle-outline" color={Colors.app.color} />}
+                        </Pressable>
                     </View>
                 </View>
                 <View style={styles.form}>

@@ -24,12 +24,11 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
     return (
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
-                {vetement.image && <Image source={{ uri: vetement.image }} style={styles.photo} />}
+                {vetement.image  && <Image source={{ uri: vetement.image }} style={styles.photo} />}
                 {!vetement.image && <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} style={{paddingBottom: 5}} />}
-                {
-                    vetement.taille.petite && <Ionicons size={30} style={{ position: 'absolute', bottom: 0, right: 0 }}
-                                                     name="arrow-down-circle-outline" color={Colors.app.color} />
-                }
+                {   vetement.taille.petite && <Ionicons size={30} 
+                                                        name="arrow-down-circle-outline" 
+                                                        style={{ position: 'absolute', bottom: 0, right: 0 }} color={Colors.app.color} /> }
                 <ThemedText type="default">{vetement.libelle}</ThemedText>
             </View>
         </Pressable>
