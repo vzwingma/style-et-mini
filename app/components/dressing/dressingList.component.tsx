@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/ThemedText";
-import { StyleSheet, Pressable, View } from "react-native";
+import { StyleSheet, Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors, Fonts } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -10,6 +10,7 @@ import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
 import { vetementSort } from "../commons/CommonsUtils";
+import { getTabIcon } from "../commons/tab/TabBarIcon";
 
 export type DressingComponentProps = {
     vetementsInDressing: VetementModel[];
@@ -42,6 +43,18 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
     }, [selectedFiltres]);
 
+
+
+/**
+ * Retourne l'icône de l'onglet sélectionné
+ * @param tab nom de l'onglet
+ * @returns l'icône de l'onglet sélectionné
+ */
+ function getTypeVetementIcon(typeVetements : string): any {
+    const iconURL = '@/assets/icons/'+typeVetements+'-ouline.png';
+    console.log(iconURL);
+    return iconURL;
+ }
     /**
      * Affiche un panneau contenant une liste de vêtements.
      *
@@ -57,6 +70,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
             groupItems.push(
                 <ThemedView key={"key_groupeId_" + groupe} style={styles.groupeLabel}>
                     <ThemedText type="default">{groupe} ({vetements.length})</ThemedText>
+                    <Image source={require('@/assets/icons/dress-outline.png')} style={styles.icon} />
                 </ThemedView>
             );
             groupItems.push(
@@ -88,7 +102,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>  {item.type}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14 }}>  {item.type}</ThemedText>
                 <ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{item.libelle}</ThemedText>
             </View>
         );
@@ -125,7 +139,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                                 style={styles.selectedStyle}
                                 onPress={() => unSelect?.(item)}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <ThemedText type="italic"> {item.type} : </ThemedText>
+                                    <ThemedText type="italic" style={{fontSize:10}}> {item.type} : </ThemedText>
                                     <ThemedText type="default">{item.libelle} </ThemedText>
                                     <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
                                 </View>
@@ -181,6 +195,10 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 5,
+        width: 20,
+        height: 20,
+        color: 'white',
+        tintColor: 'white',
     },
     // Style de la liste déroulante d'un dropdown
     listStyle: {

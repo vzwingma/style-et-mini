@@ -20,7 +20,7 @@ export function TabBarIcon({ style, ...rest }: any) {
  * @param tab nom de l'onglet
  * @returns l'icône de l'onglet sélectionné
  */
-export function getSkirtIcon(selectedTab : boolean, dressingCat? : CategorieDressingEnum): any {
+export function getTabIcon(selectedTab : boolean, dressingCat? : CategorieDressingEnum): any {
   if(CategorieDressingEnum.ADULTE === dressingCat){
     if(selectedTab){
       return require('@/assets/icons/dress.png');

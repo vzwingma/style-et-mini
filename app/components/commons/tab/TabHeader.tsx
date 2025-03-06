@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { Tabs } from "@/constants/TabsEnums";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, StyleSheet } from "react-native";
-import { getSkirtIcon } from "./TabBarIcon";
+import { getTabIcon } from "./TabBarIcon";
 import { CategorieDressingEnum } from "@/constants/AppEnum";
 
 
@@ -15,7 +15,7 @@ export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
       case Tabs.INDEX:
         return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
       case Tabs.DRESSING:
-        return <Image source={getSkirtIcon(true, dressingCat)} style={[tabStyles.headerImage, {width:iconSize+40, height:iconSize+40, bottom:-50}]} />
+        return <Image source={getTabIcon(true, dressingCat)} style={[tabStyles.headerImage, {width:iconSize+40, height:iconSize+40, bottom:-50}]} />
         case Tabs.REGLAGES:
           return <Ionicons size={iconSize} name="options" style={tabStyles.headerImage} />        
       default:

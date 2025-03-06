@@ -1,7 +1,7 @@
 import { Tabs } from "@/constants/TabsEnums";
 import { Image, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { getSkirtIcon, TabBarIcon } from "./TabBarIcon";
+import { getTabIcon, TabBarIcon } from "./TabBarIcon";
 import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
 import { CategorieDressingEnum } from "@/constants/AppEnum";
@@ -46,7 +46,7 @@ function getTabBarIcon({ activeTab, activeDressing, thisTab, _id, categorieDress
     case Tabs.INDEX:
       return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     case Tabs.DRESSING:
-      return <Image source={getSkirtIcon(selectedTab, categorieDressing)} style={{ width: 40, height: 35, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer'}} />
+      return <Image source={getTabIcon(selectedTab, categorieDressing)} style={{ width: 40, height: 35, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer'}} />
     case Tabs.REGLAGES:
       return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     default:
