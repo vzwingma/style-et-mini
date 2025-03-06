@@ -25,7 +25,8 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
                 {vetement.image  && <Image source={{ uri: vetement.image }} style={styles.photo} />}
-                {!vetement.image && <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} style={{paddingBottom: 5}} />}
+                {!vetement.image && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} 
+                                                    style={[styles.iconBig ]}  />}
                 {   vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')} 
                                                     style={[styles.iconSmall ]} />} 
                 <ThemedText type="default">{vetement.libelle}</ThemedText>
@@ -66,5 +67,12 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         borderRadius: 15,
         backgroundColor: Colors.app.backgroundLight,
+    },
+    iconBig: {
+        tintColor: 'gray',
+        margin: 0,
+        width: 95,
+        height: 95,
+        borderColor: Colors.dark.background,
     },
 });

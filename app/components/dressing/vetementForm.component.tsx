@@ -97,7 +97,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             { form.imageId && <Image source={{ uri: form.imageContent?.uri }} style={styles.photo} />}
-                            {!form.imageId && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />}
+                            {!form.imageId && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} 
+                                    style={[styles.iconBig ]} />}
                             {form.petiteTaille &&
                                 <Image source={require('@/assets/icons/small-size-outline.png')} 
                                     style={[styles.iconSmall ]} />}
@@ -349,8 +350,8 @@ const styles = StyleSheet.create({
     },
     iconSmall: {
         position: 'absolute', 
-        bottom: 20, 
-        right: 8, 
+        bottom: 3, 
+        right: 3, 
         tintColor: Colors.app.color,
         width: 50,
         height: 50,
@@ -359,6 +360,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Colors.app.backgroundLight,
     },
+    iconBig: {
+        tintColor: 'gray',
+        margin: 0,
+        width: 240,
+        height: 240,
+        borderColor: Colors.dark.background,
+    },
+        
     
     // Style de la liste déroulante d'un dropdown
     listStyle: {

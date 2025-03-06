@@ -10,7 +10,7 @@ import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
 import { getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
-import { getTabIcon } from "../commons/tab/TabBarIcon";
+
 
 export type DressingComponentProps = {
     vetementsInDressing: VetementModel[];
