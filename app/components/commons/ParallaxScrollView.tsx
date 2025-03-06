@@ -13,13 +13,14 @@ import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
+import BackendConfigModel from '@/app/models/backendConfig.model';
 
 const HEADER_HEIGHT = 100;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerTitle: string;
-  connexionStatus?: AppStatusEnum;
+  backendConnexionData?: BackendConfigModel;
   setRefreshing: React.Dispatch<React.SetStateAction<boolean>>;
 }>;
 
@@ -27,7 +28,7 @@ export default function ParallaxScrollView({
   children,
   headerImage,
   headerTitle,  
-  connexionStatus,
+  backendConnexionData,
   setRefreshing
 }: Props) {
 
@@ -80,8 +81,8 @@ export default function ParallaxScrollView({
             <ThemedText type="title" style={styles.appColor}>{headerTitle}</ThemedText>
           </ThemedView>
           <ThemedView style={styles.titleHeader}>
-            {connexionStatus && getConnexionStatusIcon(connexionStatus)}
-            <ThemedText type="italic" style={{marginRight: 10, marginTop: 10}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}</ThemedText>
+            {backendConnexionData && getConnexionStatusIcon(backendConnexionData)}
+            <ThemedText type="italic" style={{marginRight: 10, marginTop: 10}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}/{backendConnexionData?.version}</ThemedText>
           </ThemedView>          
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
@@ -100,14 +101,14 @@ export default function ParallaxScrollView({
  * @see MaterialCommunityIconsProps
  * @see Colors
  */
-function getConnexionStatusIcon(connexionStatus: AppStatusEnum) {
-  switch (connexionStatus) {
-    case AppStatusEnum.CONNECTE:
-      return <MaterialCommunityIcons name="check-circle" size={20} color="green"/>;
-    case AppStatusEnum.DECONNECTE:
-      return <MaterialCommunityIcons name="alert-circle" size={20} color="red"/>;
-    default:
-      return <MaterialCommunityIcons name="help-circle" size={20} color="grey"/>;
+function getConnexionStatusIcon(backendConnexionData? : BackendConfigModel): ReactElement {
+  if(backendConnexionData === undefined) 
+    return <MaterialCommunityIcons name="help-circle" size={20} color="grey"/>;
+  if((backendConnexionData.status?.indexOf("OK") ?? -1) > 0) {
+    return <MaterialCommunityIcons name="check-circle" size={20} color="green"/>;
+  }
+  else {
+    return <MaterialCommunityIcons name="alert-circle" size={20} color="red"/>;
   }
 }
 

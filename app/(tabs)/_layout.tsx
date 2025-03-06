@@ -36,15 +36,6 @@ export default function TabLayout() {
     setEtats } = useContext(AppContext)!;
   const [idDressing, setIdDressing] = useState<string | undefined>(undefined);
 
-  /**
-   * Récupère le statut de connexion au backend
-   *
-   * @returns Le statut de connexion suivant l'énumération AppStatus
-   */
-  function getConnexionStatus(): AppStatusEnum {
-    if (isLoading) return AppStatusEnum.INCONNU;
-    return (backendConnexionData?.status?.indexOf("OK") ?? -1) > 0 ? AppStatusEnum.CONNECTE : AppStatusEnum.DECONNECTE;
-  }
 
   /**
    * Fonction pour changer d'onglet
@@ -104,7 +95,7 @@ export default function TabLayout() {
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab)}
         headerTitle={getHeaderTitle(tab, dressings?.find(d => d.id === idDressing)?.libelle)}
-        connexionStatus={getConnexionStatus()}
+        backendConnexionData={backendConnexionData}
         setRefreshing={setRefreshing}>
 
         <ThemedView style={tabStyles.titleContainer}>
