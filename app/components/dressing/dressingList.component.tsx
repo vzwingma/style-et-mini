@@ -50,6 +50,9 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
      */
     function showPanelGroupeVetements(vetementsByGroup: Map<string, VetementModel[]>): React.JSX.Element[] {
         let groupItems: JSX.Element[] = [];
+        // Sort par nom du groupe
+        var vetementsByGroup = new Map([...vetementsByGroup.entries()].sort());
+
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
                 <ThemedView key={"key_groupeId_" + groupe} style={styles.groupeLabel}>
