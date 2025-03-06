@@ -26,9 +26,8 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
             <View key={vetement.id} style={styles.body}>
                 {vetement.image  && <Image source={{ uri: vetement.image }} style={styles.photo} />}
                 {!vetement.image && <Ionicons size={95} name="shirt-outline" color={Colors.dark.text} style={{paddingBottom: 5}} />}
-                {   vetement.taille.petite && <Ionicons size={30} 
-                                                        name="arrow-down-circle-outline" 
-                                                        style={{ position: 'absolute', bottom: 0, right: 0 }} color={Colors.app.color} /> }
+                {   vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')} 
+                                                    style={[styles.iconSmall ]} />} 
                 <ThemedText type="default">{vetement.libelle}</ThemedText>
             </View>
         </Pressable>
@@ -55,5 +54,17 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         margin: 4,
         alignItems: 'center',
-    }
+    },
+    iconSmall: {
+        position: 'absolute', 
+        bottom: 1, 
+        right: 1, 
+        tintColor: Colors.app.color,
+        width: 30,
+        height: 30,
+        borderColor: Colors.dark.icon,
+        borderWidth: 0,
+        borderRadius: 15,
+        backgroundColor: Colors.app.backgroundLight,
+    },
 });

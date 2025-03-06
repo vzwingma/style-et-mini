@@ -99,8 +99,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             { form.imageId && <Image source={{ uri: form.imageContent?.uri }} style={styles.photo} />}
                             {!form.imageId && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />}
                             {form.petiteTaille &&
-                                <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
-                                    name="arrow-down-circle-outline" color={Colors.app.color} />}
+                                <Image source={require('@/assets/icons/small-size-outline.png')} 
+                                    style={[styles.iconSmall ]} />}
                         </Pressable>
                     </View>
                 </View>
@@ -206,9 +206,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={!errorForm?.tailleInError ? 'Selectionnez un état' : errorForm?.etatMessage + ''}
                                 value={form?.etat}
                                 onChange={(etat: ParamEtatVetementsModel) => setEtatForm(etat, setForm)}
-                                renderLeftIcon={() => (
-                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                                )}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-condition-outline.png')} style={styles.icon} />}
                             />
                         </View>
                     }
@@ -349,6 +347,19 @@ const styles = StyleSheet.create({
         height: 20,
         tintColor: 'white',
     },
+    iconSmall: {
+        position: 'absolute', 
+        bottom: 20, 
+        right: 8, 
+        tintColor: Colors.app.color,
+        width: 50,
+        height: 50,
+        borderColor: Colors.app.color,
+        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: Colors.app.backgroundLight,
+    },
+    
     // Style de la liste déroulante d'un dropdown
     listStyle: {
         backgroundColor: Colors.app.backgroundLight,
