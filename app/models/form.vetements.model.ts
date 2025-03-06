@@ -38,7 +38,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
 
     const vetement: VetementModel = {
         id              : form.id,
-        image           : form.imageId,
+        image           : form.imageContent?.uri,
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {
