@@ -126,9 +126,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage + ''}
                             value={form?.type}
                             onChange={(type: ParamTypeVetementsModel) => setTypeForm(type, setForm)}
-                            renderLeftIcon={() => (
-                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                            )}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-outline.png')} style={styles.icon} />}
                         />
                     </View>
 
@@ -144,9 +142,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage + ''}
                             value={form?.taille}
                             onChange={(taille: ParamTailleVetementsModel) => setTailleForm(taille, setForm)}
-                            renderLeftIcon={() => (
-                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                            )}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={styles.icon} />}
                         />
                     </View>
                     {
@@ -173,9 +169,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
                                 value={form?.usagesListe}
                                 onChange={usage => setUsagesForm(usage, paramsUsagesVetements, setForm, setErrorForm)}
-                                renderLeftIcon={() => (
-                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                                )}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={getRenderSelectedItem}
                             />
                         </ThemedText></ThemedView>
@@ -193,9 +187,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={'Selectionnez des saisons (par défaut : toutes saisons)'}
                                 value={form?.saisons?.map(saison => (saison.toString())) || []}
                                 onChange={saisons => setSaisonForm(saisons, setForm)}
-                                renderLeftIcon={() => (
-                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                                )}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={getRenderSelectedItem}
                             />
                         </ThemedText></ThemedView>
@@ -353,6 +345,9 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 5,
+        width: 20,
+        height: 20,
+        tintColor: 'white',
     },
     // Style de la liste déroulante d'un dropdown
     listStyle: {
