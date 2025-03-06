@@ -1,4 +1,4 @@
-import { StatutVetementEnum } from "@/constants/AppEnum";
+import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import DressingModel from "./dressing.model";
 import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
 
@@ -12,10 +12,11 @@ interface VetementModel {
     readonly type       : VetementCaracteristiquesModel;
     readonly taille     : VetementCaracteristiquesModel;
     readonly usages     : VetementCaracteristiquesModel[];
+    readonly saisons    : SaisonVetementEnum[];
     etat?               : VetementCaracteristiquesModel;
     
     readonly couleurs   : string;
-    readonly image?     : string;
+    readonly image?     : string | null;
     readonly description: string;
     readonly statut     : StatutVetementEnum;
 }

@@ -1,4 +1,4 @@
-import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
+import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import DressingListFiltreModel from "../models/dressingListeFiltre.model";
 import VetementCaracteristiquesModel from "../models/vetementCaracteristique.model";
 import VetementModel from "../models/vetements.model";
@@ -92,6 +92,8 @@ function filtreVetementByCaracteristique(vetement: VetementModel, type: Caracter
     return vetement.usages.some(usage => usage.id === filtre.id);
   } else if (type === CaracteristiqueVetementEnum.STATUT) {
     return vetement.statut === filtre.libelle;
+  } else if (type === CaracteristiqueVetementEnum.SAISON) {
+    return vetement.saisons?.some(saison => saison === filtre.id) || vetement.saisons === undefined || vetement.saisons?.length < 1;
   }
   return false;
   }
@@ -110,8 +112,10 @@ export function getFiltersAvailables(vetements: VetementModel[]): DressingListFi
   addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES);
   addCaracteristiqueInFilter(filtres, vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES);
 
-  const dataStatuts: StatutVetementEnum[] = vetements.map(vetement => vetement.statut);
-  addStatutInFilter(filtres, dataStatuts);
+  addEnumsInFilter(filtres, vetements.map(vetement => vetement.statut));
+  addEnumsInFilter(filtres, vetements.flatMap(vetement => vetement.saisons));
+
+
   filtres.sort((a, b) => (a.type + a.libelle).localeCompare((b.type + b.libelle))); // Tri par ordre alphabétique
 
   return filtres;
@@ -149,22 +153,26 @@ function addCaracteristiqueInFilter(filtres: DressingListFiltreModel[],
  * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
  * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
  */
-function addStatutInFilter(filtres: DressingListFiltreModel[], dataStatuts: StatutVetementEnum[]) {
+function addEnumsInFilter(filtres: DressingListFiltreModel[], dataStatuts: StatutVetementEnum[] | SaisonVetementEnum[]) {
 
   if (dataStatuts.length <= 1) {
     return
   }
 
-  dataStatuts.filter((value, index, self) => self.indexOf(value) === index)
+  dataStatuts
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .filter(data => data !== null && data !== undefined)
     .forEach(data => {
 
-      const idStatut = data === StatutVetementEnum.ACTIF ? '1' : '2';
+      const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
+      const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
+      const libelle = isStatut ? data : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
 
-      if (!filtres.find(filtre => filtre.id === idStatut)) {
+      if (!filtres.find(filtre => filtre.id === data)) {
         filtres.push({
-          id: idStatut,
-          libelle: data,
-          type: CaracteristiqueVetementEnum.STATUT
+          id: data,
+          libelle: libelle,
+          type: type
         });
       }
     });

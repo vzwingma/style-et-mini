@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
         margin: 0,
         padding: 3,
         height: 'auto',
+        fontFamily: "BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
     },
     placeholderStyle: {
         fontWeight: 'light',

@@ -11,8 +11,9 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum, compareCategorieDressingEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum, compareCategorieDressingEnum, SaisonVetementEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
+import { v7 as uuidGen } from 'uuid';
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
@@ -38,13 +39,14 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
 
 
 // Filtre les usages en fonction de la catégorie du dressing
-export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel, form: FormVetementModel): ParamUsageVetementsModel[] {
+export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel): ParamUsageVetementsModel[] {
     return usages
         .filter((usage: ParamUsageVetementsModel) => usage.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
         .sort((u1, u2) => alphanumSort(u1.libelle, u2.libelle));
 }
+
 
 
 // Filtre les état en fonction de la catégorie du dressing
@@ -79,6 +81,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
                 petiteTaille: vetementInEdition.taille.petite,
                 usagesListe: vetementInEdition.usages.map((usage) => usage.id),
                 usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
+                saisons: vetementInEdition.saisons ?? [],
                 etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
                 couleurs: vetementInEdition.couleurs,
                 description: vetementInEdition.description
@@ -87,7 +90,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { dressing: dressing, usagesListe: [] }
+            return { dressing: dressing, usagesListe: [], saisons: [] }
         });
     }
 }
@@ -101,11 +104,8 @@ export const pickImageForm = async (setForm: Function) => {
         aspect: [1, 1],
         quality: 1,
     });
-
-    console.log(result);
-
     if (!result.canceled) {
-        setImageForm(result.assets[0].uri, setForm);
+        setImageForm(result.assets[0], setForm);
     }
 };
 /**
@@ -113,9 +113,10 @@ export const pickImageForm = async (setForm: Function) => {
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setImageForm(image: string, setForm: Function) {
+export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, image: image }
+        image.assetId = uuidGen();
+        return { ...form, imageId: image.assetId, imageContent: image }
     });
 }
 
@@ -208,6 +209,17 @@ export function setEtatForm(etat: ParamEtatVetementsModel, setForm: Function) {
     });
 }
 
+
+/**
+ * Enregistre la taille de vêtements dans le formulaire
+ * @param saisonsString 
+ * @param setForm 
+ */
+export function setSaisonForm(saisons: string[], setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, saisons: saisons }
+    });
+}
 
 /**
  * Enregistre les couleurs de vêtements dans le formulaire
@@ -363,14 +375,14 @@ export function validateForm(form: FormVetementModel | null,
         //  Appel au backend pour sauvegarder le vêtement
         callPOSTBackend(url, params, vetement)
             .then((response) => {
-                console.log("Vêtement mis à jour avec succès", response);
+                console.log("Vêtement enregistré avec succès", response);
+                showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
                 razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur de chargement du dressing", ToastDuration.LONG);
+                showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
                 return false;
             });
-
     }
 }

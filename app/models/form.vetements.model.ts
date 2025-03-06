@@ -3,25 +3,28 @@ import ParamTailleVetementsModel from "./params/paramTailleVetements.model";
 import ParamUsageVetementsModel from "./params/paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
-import { StatutVetementEnum } from "@/constants/AppEnum";
+import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
+import { ImagePickerAsset } from "expo-image-picker";
 
 /**
  * Modèle représentant un vetement dans le formulaire
  */
 interface FormVetementModel {
-    id          : string;
-    dressing    : DressingModel;
-    libelle     : string;
-    type        : ParamTypeVetementsModel;
-    taille      : ParamTailleVetementsModel;
-    petiteTaille: boolean;
-    usages      : ParamUsageVetementsModel[];
-    usagesListe : string[];
-    etat        : ParamEtatVetementsModel;
-    image       : string;
-    couleurs    : string;
-    description : string;
+    id           : string;
+    dressing     : DressingModel;
+    libelle      : string;
+    type         : ParamTypeVetementsModel;
+    taille       : ParamTailleVetementsModel;
+    petiteTaille : boolean;
+    usages       : ParamUsageVetementsModel[];
+    usagesListe  : string[];
+    saisons      : SaisonVetementEnum[];
+    etat         : ParamEtatVetementsModel;
+    imageId?     : string;
+    imageContent?: ImagePickerAsset;
+    couleurs     : string;
+    description  : string;
 }
 
 
@@ -35,7 +38,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
 
     const vetement: VetementModel = {
         id              : form.id,
-        image           : form.image,
+        image           : form.imageContent?.uri,
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {
@@ -52,6 +55,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
                 id      : usage.id,
                 libelle : usage.libelle
             }}),
+        saisons: form.saisons,
         couleurs: form.couleurs,
         description: form.description,
         statut: StatutVetementEnum.ACTIF,
