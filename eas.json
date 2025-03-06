@@ -13,16 +13,6 @@
         "EXPO_PUBLIC_MY_ENVIRONMENT": "development"
       }
     },
-    "qua": {
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk",
-        "image": "latest"
-      },
-      "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "qua"
-      }
-    },    
     "preview": {
       "distribution": "internal",
       "android": {
@@ -34,6 +24,16 @@
       }
     },
     "production": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
+      }
+    },    
+    "productionStore": {
       "android": {
         "image": "latest"
       },
