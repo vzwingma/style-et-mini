@@ -1,5 +1,6 @@
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
+import { CategorieDressingEnum } from '@/constants/AppEnum';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**
@@ -14,3 +15,26 @@ export function TabBarIcon({ style, ...rest }: any) {
 
 
 
+/**
+ * Retourne l'icône de l'onglet sélectionné
+ * @param tab nom de l'onglet
+ * @returns l'icône de l'onglet sélectionné
+ */
+export function getSkirtIcon(selectedTab : boolean, dressingCat? : CategorieDressingEnum): any {
+  if(CategorieDressingEnum.ADULTE === dressingCat){
+    if(selectedTab){
+      return require('@/assets/icons/dress.png');
+    }
+    else{
+      return require('@/assets/icons/dress-outline.png');
+    }
+  }
+  else{
+    if(selectedTab){
+      return require('@/assets/icons/baby-clothing.png');
+    }
+    else{
+      return require('@/assets/icons/baby-clothing-outline.png');
+    }
+  }
+  }

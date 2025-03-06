@@ -66,14 +66,14 @@ export default function TabLayout() {
     setError(null);
     if(tab === Tabs.INDEX && isLoading === false) {
       console.log("(Re)Chargement de la configuration...");
-      getParamsTaillesVetements({ setTaillesMesures, setError });
-      getParamsUsagesVetements({ setUsages, setError });
-      getParamsTypeVetements({ setTypeVetements, setError });
-      getParamsEtatsVetements({ setEtats, setError });
+      getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
+      getParamsUsagesVetements({  setUsages, setError, setIsLoading });
+      getParamsTypeVetements({    setTypeVetements, setError, setIsLoading });
+      getParamsEtatsVetements({   setEtats, setError, setIsLoading });
   
       getDressings({ setIsLoading, setDressings, setError });
     }
-  }, [refreshing, setIsLoading, setDressings, setTypeVetements, setTaillesMesures, setUsages, setError]);
+  }, [refreshing, setIsLoading, backendConnexionData, setUsages, setError]);
 
 
   /**
@@ -100,7 +100,7 @@ export default function TabLayout() {
   return (
     <>
       <ParallaxScrollView
-        headerImage={getHeaderIcon(tab)}
+        headerImage={getHeaderIcon(tab, dressings?.find(d => d.id === idDressing)?.categorie)}
         headerTitle={getHeaderTitle(tab, dressings?.find(d => d.id === idDressing)?.libelle)}
         backendConnexionData={backendConnexionData}
         setRefreshing={setRefreshing}>
@@ -118,7 +118,7 @@ export default function TabLayout() {
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
               {
                 dressings?.map((dressing, idx) => {
-                  return <TabBarItems key={"tab_"+idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} />
+                  return <TabBarItems key={"tab_"+idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} categorieDressing={dressing.categorie} />
                 })
               }
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />

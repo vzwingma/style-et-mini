@@ -1,9 +1,10 @@
 import { Tabs } from "@/constants/TabsEnums";
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { TabBarIcon } from "./TabBarIcon";
+import { getSkirtIcon, TabBarIcon } from "./TabBarIcon";
 import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
+import { CategorieDressingEnum } from "@/constants/AppEnum";
 
 // Propriétés des onglets
 interface TabBarItemsProps {
@@ -13,6 +14,15 @@ interface TabBarItemsProps {
   libelleTab?: string; // this tab label
   _id?: string; // this tab id
   selectNewTab: (tab: Tabs, _id?: string) => void; // set active tab
+  categorieDressing?: CategorieDressingEnum; // dressing category
+}
+
+interface TabBarIconsProps {
+  activeTab: Tabs; // active tab
+  activeDressing?: string; // active dressing
+  thisTab: Tabs; // this tab name
+  _id?: string; // this tab id
+  categorieDressing?: CategorieDressingEnum; // dressing category
 }
 
 /**
@@ -22,31 +32,30 @@ interface TabBarItemsProps {
  * @param thisTab this tab name
  * @param setTab fonction pour définir l'onglet actif
  */
-export function TabBarItems({ activeTab, activeDressing, thisTab, selectNewTab, libelleTab, _id }: Readonly<TabBarItemsProps>): JSX.Element {
+export function TabBarItems({ activeTab, activeDressing, thisTab, selectNewTab, libelleTab, _id, categorieDressing }: Readonly<TabBarItemsProps>): JSX.Element {
   return <ThemedView style={tabStyles.tabsItem} onPointerDown={() => selectNewTab(thisTab, _id)} onTouchEnd={() => selectNewTab(thisTab, _id)}>
-    <TabBarIcon name={getTabIconName(thisTab) + (activeTab === thisTab && activeDressing === _id ? "" : "-outline")}
-      color={activeTab === thisTab && activeDressing === _id ? Colors.app.color : '#ffffff'} />
+    { getTabBarIcon({ activeTab, activeDressing, thisTab, _id, categorieDressing }) }
     <ThemedText type='tab'>{libelleTab ?? thisTab.toString()}</ThemedText>
   </ThemedView>;
 }
 
-/**
- * Retourne l'icône de l'onglet sélectionné
- * @param tab nom de l'onglet
- * @returns l'icône de l'onglet sélectionné
- */
-function getTabIconName(tab: Tabs): string {
-  switch (tab) {
+
+function getTabBarIcon({ activeTab, activeDressing, thisTab, _id, categorieDressing }: Readonly<TabBarIconsProps>): JSX.Element {
+  const selectedTab : boolean = activeTab === thisTab && activeDressing === _id;
+  switch (thisTab) {
     case Tabs.INDEX:
-      return 'home';
+      return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     case Tabs.DRESSING:
-      return 'shirt';
+      return <Image source={getSkirtIcon(selectedTab, categorieDressing)} style={{ width: 40, height: 35, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer'}} />
     case Tabs.REGLAGES:
-      return 'construct';
+      return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     default:
-      return '';
+      return <></>;
   }
 }
+
+
+
 
 const tabStyles = StyleSheet.create({
 
