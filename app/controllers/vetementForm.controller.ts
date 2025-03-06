@@ -11,7 +11,7 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum, compareCategorieDressingEnum, SaisonVetementEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum, compareCategorieDressingEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import { v7 as uuidGen } from 'uuid';
 

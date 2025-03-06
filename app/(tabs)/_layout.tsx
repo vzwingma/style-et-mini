@@ -4,7 +4,6 @@ import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { AppStatusEnum } from '@/constants/AppEnum';
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
