@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginTop: 5,
-        padding: 0
+        padding: 0,
     },
     groupeLabel: {
         alignItems: 'center',

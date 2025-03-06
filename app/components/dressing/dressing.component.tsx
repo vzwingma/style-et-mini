@@ -59,8 +59,8 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else if (vetements?.length !== 0) {
-      return (<DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
+    else if (vetements?.length !== 0 ) {
+      return (openVetementForm === false && <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
     }
     else {
       return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />

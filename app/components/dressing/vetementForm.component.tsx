@@ -282,7 +282,6 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 0,
         backgroundColor: Colors.app.backgroundLight,
-        minHeight: 100,
     },
     photo: {
         backgroundColor: Colors.app.background,

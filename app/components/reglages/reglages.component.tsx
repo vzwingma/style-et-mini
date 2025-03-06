@@ -117,17 +117,15 @@ const styles = StyleSheet.create({
     left: 15,
     width: '100%',
     backgroundColor: Colors.dark.background,
-    borderColor: 'red',
-    borderWidth: 1
-
+    borderColor: 'grey',
+    borderWidth: 1,
+    overflow: 'scroll',
   },
   body: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    borderColor: 'red',
-    borderWidth: 1
   },
 
 
