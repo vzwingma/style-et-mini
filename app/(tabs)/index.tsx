@@ -2,15 +2,23 @@ import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
+import { useContext } from 'react';
+import { AppContext } from '../services/AppContextProvider';
+
+
 
 export default function HomeScreen() {
+
+  const { backendConnexionData } = useContext(AppContext)!;
+
+
   return (
     <>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Homepage</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        
+        <ThemedText type="subtitle">Environnement : {backendConnexionData?.env}</ThemedText>
       </ThemedView>
     </>
   );
