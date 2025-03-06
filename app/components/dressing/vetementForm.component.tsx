@@ -10,13 +10,13 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages as setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { CategorieDressingEnum, compareCategorieDressingEnum, compareTypeTailleEnum, TypeTailleEnum } from '@/constants/AppEnum';
+import { CategorieDressingEnum, compareCategorieDressingEnum, compareTypeTailleEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 
 
@@ -46,10 +46,12 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
 
-    const { typeVetements: paramsTypeVetements,
+    const { 
+        typeVetements: paramsTypeVetements,
         taillesMesures: paramsTaillesMesures,
         usages: paramsUsagesVetements,
-        etats: paramsEtatVetements } = useContext(AppContext)!;
+        etats: paramsEtatVetements 
+    } = useContext(AppContext)!;
 
     useEffect(() => {
         initForm(dressing, vetementInEdition, setForm, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements });
@@ -68,6 +70,23 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
     /**
      * 
+     * @param item 
+     * @param unSelect 
+     * @returns élément sélectionné
+     */
+    const getRenderSelectedItem= (item:any, unSelect:any): React.JSX.Element => (
+        <Pressable
+            style={styles.selectedStyle}
+            onPress={() => unSelect?.(item)}>
+            <View style={{ flexDirection: 'row' }}>
+                <ThemedText type="default">{item.libelle} </ThemedText>
+                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+            </View>
+        </Pressable>
+    );
+
+    /**
+     * 
      * @returns Formulaire de vêtement
      */
     const getPanelFormContent = () => {
@@ -77,8 +96,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
-                            {form.image && <Image source={{ uri: form.image }} style={styles.photo} />}
-                            {!form.image && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />}
+                            { form.imageId && <Image source={{ uri: form.imageContent?.uri }} style={styles.photo} />}
+                            {!form.imageId && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />}
                             {form.petiteTaille &&
                                 <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
                                     name="arrow-down-circle-outline" color={Colors.app.color} />}
@@ -149,27 +168,38 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                                 selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                                 mode='modal'
-                                data={getUsagesForm(paramsUsagesVetements, dressing, form)}
+                                data={getUsagesForm(paramsUsagesVetements, dressing)}
                                 labelField="libelle" valueField="id"
                                 placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
                                 value={form?.usagesListe}
-                                onChange={usage => setUsages(usage, paramsUsagesVetements, setForm, setErrorForm)}
+                                onChange={usage => setUsagesForm(usage, paramsUsagesVetements, setForm, setErrorForm)}
                                 renderLeftIcon={() => (
                                     <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
                                 )}
-                                renderSelectedItem={(item, unSelect) => (
-                                    <Pressable
-                                        style={styles.selectedStyle}
-                                        onPress={() => unSelect?.(item)}>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <ThemedText type="default">{item.libelle} </ThemedText>
-                                            <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
-                                        </View>
-                                    </Pressable>
-                                )}
+                                renderSelectedItem={getRenderSelectedItem}
                             />
                         </ThemedText></ThemedView>
                     </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Saisons</ThemedText>
+                        <ThemedView style={styles.filtre}><ThemedText type="subtitle">
+                            <MultiSelect
+                                style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
+                                selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
+                                mode='modal'
+                                data={Object.values(SaisonVetementEnum).map(saison => ({ id: saison, libelle: getLibelleSaisonVetementEnum(saison) }))}
+                                labelField="libelle" valueField="id"
+                                placeholder={'Selectionnez des saisons (par défaut : toutes saisons)'}
+                                value={form?.saisons?.map(saison => (saison.toString())) || []}
+                                onChange={saisons => setSaisonForm(saisons, setForm)}
+                                renderLeftIcon={() => (
+                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
+                                )}
+                                renderSelectedItem={getRenderSelectedItem}
+                            />
+                        </ThemedText></ThemedView>
+                    </View>                    
                     {
                         !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE) &&
                         <View style={{ flexDirection: 'row' }}>
@@ -335,9 +365,11 @@ const styles = StyleSheet.create({
         padding: 0,
         height: 'auto',
         color: Colors.dark.text,
+        fontFamily: "BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
     },
     placeholderStyle: {
         fontSize: Fonts.app.size,
+        fontWeight: 'normal',
         color: 'gray',
     },
     placeholderErrorStyle: {
