@@ -9,7 +9,7 @@ import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as appl
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
-import { vetementSort } from "../commons/CommonsUtils";
+import { getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
 import { getTabIcon } from "../commons/tab/TabBarIcon";
 
 export type DressingComponentProps = {
@@ -45,16 +45,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
 
 
-/**
- * Retourne l'icône de l'onglet sélectionné
- * @param tab nom de l'onglet
- * @returns l'icône de l'onglet sélectionné
- */
- function getTypeVetementIcon(typeVetements : string): any {
-    const iconURL = '@/assets/icons/'+typeVetements+'-ouline.png';
-    console.log(iconURL);
-    return iconURL;
- }
+
     /**
      * Affiche un panneau contenant une liste de vêtements.
      *
@@ -70,7 +61,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
             groupItems.push(
                 <ThemedView key={"key_groupeId_" + groupe} style={styles.groupeLabel}>
                     <ThemedText type="default">{groupe} ({vetements.length})</ThemedText>
-                    <Image source={require('@/assets/icons/dress-outline.png')} style={styles.icon} />
+                    <Image source={getTypeVetementIcon(groupe)} style={styles.icon} />
                 </ThemedView>
             );
             groupItems.push(
@@ -131,7 +122,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                         value={selectedFiltres.map(filtre => filtre.id)}
                         onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
                         renderLeftIcon={() => (
-                            <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
+                            <Image source={require('@/assets/icons/filter.png')} style={styles.icon} />
                         )}
                         renderItem={renderFilterItem}
                         renderSelectedItem={(item, unSelect) => (
