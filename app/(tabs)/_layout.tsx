@@ -4,6 +4,7 @@ import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
+
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
@@ -49,7 +50,7 @@ export default function TabLayout() {
   }
 
   /**
- *  A l'initialisation, lance la connexion à Domoticz
+ *  A l'initialisation, lance la connexion au backend et charge les données
  * et à changement d'onglet
  * */
   useEffect(() => {
@@ -57,15 +58,22 @@ export default function TabLayout() {
     if(tab === Tabs.INDEX) {
       console.log("(Re)Chargement de l'application...");
       connectToBackend({ setIsLoading, storeConnexionData, setError });
-  
-      getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
-      getParamsUsagesVetements({ setIsLoading, setUsages, setError });
-      getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
-      getParamsEtatsVetements({ setIsLoading, setEtats, setError });
+    }
+  }, [refreshing, setIsLoading, setError]);
+
+
+  useEffect(() => {
+    setError(null);
+    if(tab === Tabs.INDEX && isLoading === false) {
+      console.log("(Re)Chargement de la configuration...");
+      getParamsTaillesVetements({ setTaillesMesures, setError });
+      getParamsUsagesVetements({ setUsages, setError });
+      getParamsTypeVetements({ setTypeVetements, setError });
+      getParamsEtatsVetements({ setEtats, setError });
   
       getDressings({ setIsLoading, setDressings, setError });
     }
-  }, [refreshing, setDressings, setTypeVetements, setTaillesMesures, setUsages]);
+  }, [refreshing, setIsLoading, setDressings, setTypeVetements, setTaillesMesures, setUsages, setError]);
 
 
   /**
@@ -83,7 +91,7 @@ export default function TabLayout() {
     if (isLoading) {
       return <ActivityIndicator size={'large'} color={Colors.app.color} />
     } else if (error !== null) {
-      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
+      return <><ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText><ThemedText type="italic">{error.stack}</ThemedText></>
     } else {
       return showPanel(tab, idDressing)
     }
