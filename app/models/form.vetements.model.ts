@@ -22,7 +22,7 @@ interface FormVetementModel {
     saisons      : SaisonVetementEnum[];
     etat         : ParamEtatVetementsModel;
     imageId?     : string;
-    imageContent?: ImagePickerAsset;
+    imageContent?: string;
     couleurs     : string;
     description  : string;
 }
@@ -38,7 +38,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
 
     const vetement: VetementModel = {
         id              : form.id,
-        image           : form.imageContent?.uri,
+        image           : form.imageContent,
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {

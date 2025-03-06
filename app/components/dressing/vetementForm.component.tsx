@@ -96,7 +96,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
-                            { form.imageId && <Image source={{ uri: form.imageContent?.uri }} style={styles.photo} />}
+                            { form.imageId && <Image source={{ uri: form.imageContent }} style={styles.photo} />}
                             {!form.imageId && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} 
                                     style={[styles.iconBig ]} />}
                             {form.petiteTaille &&
