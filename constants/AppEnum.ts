@@ -1,13 +1,5 @@
-import VetementCaracteristiquesModel from "@/app/models/vetementCaracteristique.model";
-
 export const APP_MOBILE_VERSION = "0.0.1";
 export const APP_MOBILE_NAME = "Style et Mini";
-// Enumération des statuts de l'application
-export enum AppStatusEnum {
-  INCONNU     = 'INCONNU',
-  CONNECTE    = 'CONNECTE',
-  DECONNECTE  = 'DECONNECTE',
-}
 
 
 // Enumération des menus de l'application
@@ -23,38 +15,31 @@ export enum MenuParametragesEnum {
 
 // catégorie de dressing (enfant ou adulte)
 export enum CategorieDressingEnum {
-  BEBE    = 'Bébé',
-  ENFANT  = 'Enfant',
-  ADULTE  = 'Adulte'
+  BEBE    = 'BEBE',
+  ENFANT  = 'ENFANT',
+  ADULTE  = 'ADULTE'
 }
 
 
 export enum CaracteristiqueVetementEnum {
-  TYPE      = 'Type',
-  TAILLES   = 'Taille',
-  POINTURES = 'Pointure',
-  USAGES    = 'Usage',
-  STATUT    = 'Statut',
-  SAISON    = 'Saison'
+  TYPE      = 'TYPE',
+  TAILLES   = 'TAILLES',
+  POINTURES = 'POINTURES',
+  USAGES    = 'USAGES',
+  STATUT    = 'STATUT',
+  SAISON    = 'SAISON'
 }
 
-
-export function compareCategorieDressingEnum(value: string, enumCategorie: CategorieDressingEnum): boolean {
-  return value?.toUpperCase() === enumCategorie.toString().toUpperCase();
-}
 
 export enum TypeTailleEnum {
-  TAILLE    = 'Taille',
-  POINTURE  = 'Pointure'
-}
-
-export function compareTypeTailleEnum(value: string, enumType: TypeTailleEnum): boolean {
-  return value?.toUpperCase() === enumType.toString().toUpperCase();
+  TAILLE    = 'TAILLE',
+  POINTURE  = 'POINTURE'
 }
 
 // Enumération des statuts de vêtements
 export enum SaisonVetementEnum {
-  ETE = "ETE", HIVER = "HIVER"
+  ETE = "ETE", 
+  HIVER = "HIVER"
 }
 
 export function getLibelleSaisonVetementEnum(enumSaison: SaisonVetementEnum): string  {
@@ -70,6 +55,6 @@ export function getLibelleSaisonVetementEnum(enumSaison: SaisonVetementEnum): st
 
 // Enumération des statuts de vêtements
 export enum StatutVetementEnum {
-  ACTIF = 'Actif',
-  ARCHIVE = 'Archivé',
+  ACTIF   = 'ACTIF',
+  ARCHIVE = 'ARCHIVE',
 }

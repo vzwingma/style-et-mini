@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/ThemedText";
-import { StyleSheet, Pressable, View } from "react-native";
+import { StyleSheet, Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors, Fonts } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -9,7 +9,8 @@ import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as appl
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
-import { vetementSort } from "../commons/CommonsUtils";
+import { getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
+
 
 export type DressingComponentProps = {
     vetementsInDressing: VetementModel[];
@@ -42,6 +43,9 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
     }, [selectedFiltres]);
 
+
+
+
     /**
      * Affiche un panneau contenant une liste de vêtements.
      *
@@ -50,10 +54,14 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
      */
     function showPanelGroupeVetements(vetementsByGroup: Map<string, VetementModel[]>): React.JSX.Element[] {
         let groupItems: JSX.Element[] = [];
+        // Sort par nom du groupe
+        var vetementsByGroup = new Map([...vetementsByGroup.entries()].sort());
+
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
                 <ThemedView key={"key_groupeId_" + groupe} style={styles.groupeLabel}>
                     <ThemedText type="default">{groupe} ({vetements.length})</ThemedText>
+                    <Image source={getTypeVetementIcon(groupe)} style={styles.icon} />
                 </ThemedView>
             );
             groupItems.push(
@@ -85,7 +93,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>  {item.type}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14 }}>  {item.type}</ThemedText>
                 <ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{item.libelle}</ThemedText>
             </View>
         );
@@ -114,7 +122,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                         value={selectedFiltres.map(filtre => filtre.id)}
                         onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
                         renderLeftIcon={() => (
-                            <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
+                            <Image source={require('@/assets/icons/filter.png')} style={styles.icon} />
                         )}
                         renderItem={renderFilterItem}
                         renderSelectedItem={(item, unSelect) => (
@@ -122,7 +130,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                                 style={styles.selectedStyle}
                                 onPress={() => unSelect?.(item)}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <ThemedText type="italic"> {item.type} : </ThemedText>
+                                    <ThemedText type="italic" style={{fontSize:10}}> {item.type} : </ThemedText>
                                     <ThemedText type="default">{item.libelle} </ThemedText>
                                     <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
                                 </View>
@@ -178,6 +186,10 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 5,
+        width: 20,
+        height: 20,
+        color: 'white',
+        tintColor: 'white',
     },
     // Style de la liste déroulante d'un dropdown
     listStyle: {

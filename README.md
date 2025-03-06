@@ -10,6 +10,8 @@ L'application "Style & Mini" permet aux utilisateurs de gérer leur dressing vir
 - Ajouter et éditer des vêtements avec des détails tels que le type, la taille, les usages, les couleurs et la description.
 - Visualiser les vêtements ajoutés dans différentes catégories.
 - Paramétrer les types de vêtements, les tailles et les usages.
+- **Nouveau**: Rechercher des vêtements par nom, type ou couleur.
+- **Nouveau**: Ajouter des photos aux vêtements pour une meilleure visualisation.
 
 L'application utilise le routage basé sur les fichiers pour une navigation fluide et est compatible avec les plateformes Android et Web.
 
@@ -49,11 +51,3 @@ Vous pouvez commencer à développer en modifiant les fichiers à l'intérieur d
 Pour en savoir plus sur le développement de votre projet avec Expo, consultez les ressources suivantes :
 
 - [Documentation Expo](https://docs.expo.dev/): Apprenez les fondamentaux ou approfondissez les sujets avancés avec nos [guides](https://docs.expo.dev/guides).
-- [Tutoriel Learn Expo](https://docs.expo.dev/tutorial/introduction/): Suivez un tutoriel étape par étape où vous créerez un projet qui fonctionne sur Android, iOS et le web.
-
-## Rejoindre la communauté
-
-Rejoignez notre communauté de développeurs créant des applications universelles.
-
-- [Expo sur GitHub](https://github.com/expo/expo): Consultez notre plateforme open source et contribuez.
-- [Communauté Discord](https://chat.expo.dev): Discutez avec les utilisateurs d'Expo et posez des questions.

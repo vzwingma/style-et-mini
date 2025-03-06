@@ -21,7 +21,7 @@ export default function ParamTaillesMesures() {
  * */
   useEffect(() => {
     console.log("(Re)Chargement des paramètres de Tailles et Mesures...");
-    getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
+    getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
   }, [setTaillesMesures])
 
 

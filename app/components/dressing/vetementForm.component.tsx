@@ -16,7 +16,7 @@ import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.mode
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { CategorieDressingEnum, compareCategorieDressingEnum, compareTypeTailleEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
+import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 
 
@@ -97,10 +97,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             { form.imageId && <Image source={{ uri: form.imageContent?.uri }} style={styles.photo} />}
-                            {!form.imageId && <Ionicons size={250} name="shirt-outline" color={Colors.dark.text} />}
+                            {!form.imageId && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} 
+                                    style={[styles.iconBig ]} />}
                             {form.petiteTaille &&
-                                <Ionicons size={50} style={{ position: 'absolute', bottom: 2, right: 2 }}
-                                    name="arrow-down-circle-outline" color={Colors.app.color} />}
+                                <Image source={require('@/assets/icons/small-size-outline.png')} 
+                                    style={[styles.iconSmall ]} />}
                         </Pressable>
                     </View>
                 </View>
@@ -126,9 +127,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage + ''}
                             value={form?.type}
                             onChange={(type: ParamTypeVetementsModel) => setTypeForm(type, setForm)}
-                            renderLeftIcon={() => (
-                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                            )}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-outline.png')} style={styles.icon} />}
                         />
                     </View>
 
@@ -144,14 +143,12 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage + ''}
                             value={form?.taille}
                             onChange={(taille: ParamTailleVetementsModel) => setTailleForm(taille, setForm)}
-                            renderLeftIcon={() => (
-                                <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                            )}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={styles.icon} />}
                         />
                     </View>
                     {
-                        !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE)
-                        && compareTypeTailleEnum(form.type?.typeTaille, TypeTailleEnum.TAILLE)
+                        CategorieDressingEnum.ADULTE !== dressing.categorie
+                        && TypeTailleEnum.TAILLE !== form.type?.typeTaille
                         && <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
                             <BouncyCheckbox
@@ -173,9 +170,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
                                 value={form?.usagesListe}
                                 onChange={usage => setUsagesForm(usage, paramsUsagesVetements, setForm, setErrorForm)}
-                                renderLeftIcon={() => (
-                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                                )}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={getRenderSelectedItem}
                             />
                         </ThemedText></ThemedView>
@@ -193,15 +188,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={'Selectionnez des saisons (par défaut : toutes saisons)'}
                                 value={form?.saisons?.map(saison => (saison.toString())) || []}
                                 onChange={saisons => setSaisonForm(saisons, setForm)}
-                                renderLeftIcon={() => (
-                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                                )}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={getRenderSelectedItem}
                             />
                         </ThemedText></ThemedView>
                     </View>                    
                     {
-                        !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE) &&
+                        CategorieDressingEnum.ADULTE !== dressing.categorie &&
                         <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Etat")}</ThemedText>
                             <Dropdown
@@ -214,9 +207,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={!errorForm?.tailleInError ? 'Selectionnez un état' : errorForm?.etatMessage + ''}
                                 value={form?.etat}
                                 onChange={(etat: ParamEtatVetementsModel) => setEtatForm(etat, setForm)}
-                                renderLeftIcon={() => (
-                                    <Ionicons style={styles.icon} color={'white'} name="triangle" size={20} />
-                                )}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-condition-outline.png')} style={styles.icon} />}
                             />
                         </View>
                     }
@@ -353,7 +344,31 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 5,
+        width: 20,
+        height: 20,
+        tintColor: 'white',
     },
+    iconSmall: {
+        position: 'absolute', 
+        bottom: 3, 
+        right: 3, 
+        tintColor: Colors.app.color,
+        width: 50,
+        height: 50,
+        borderColor: Colors.app.color,
+        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: Colors.app.backgroundLight,
+    },
+    iconBig: {
+        tintColor: 'gray',
+        margin: 0,
+        width: 240,
+        height: 240,
+        borderColor: Colors.dark.background,
+    },
+        
+    
     // Style de la liste déroulante d'un dropdown
     listStyle: {
         backgroundColor: Colors.app.backgroundLight,

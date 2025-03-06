@@ -23,3 +23,31 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
         return alphanumSort(a.taille.libelle, b.taille.libelle);
     };
 }
+
+
+/**
+ * Retourne l'icône du type de vêtement (cf. https://www.flaticon.com/)
+ * @param typeVetements nom du type de vêtement
+ * @returns l'icône 
+ */
+export function getTypeVetementIcon(typeVetements : string): any {
+    typeVetements = typeVetements.toLocaleLowerCase();
+    switch(typeVetements){
+        case 'body':
+            return require('@/assets/icons/body-outline.png');
+        case 'robe':
+            return require('@/assets/icons/dress-outline.png');
+        case 'pantalon':
+            return require('@/assets/icons/pants-outline.png');
+        case 'short':
+            return require('@/assets/icons/shorts-outline.png');
+        case 'manteau':
+            return require('@/assets/icons/coat-outline.png');
+        case 'tshirt':
+            return require('@/assets/icons/tshirt-outline.png');
+        case 'chaussures':
+            return require('@/assets/icons/shoes-outline.png');
+        default:
+            return require('@/assets/icons/clothes-outline.png');
+    }
+ }
