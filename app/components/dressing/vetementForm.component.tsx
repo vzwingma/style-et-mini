@@ -16,7 +16,7 @@ import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.mode
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
 import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { CategorieDressingEnum, compareCategorieDressingEnum, compareTypeTailleEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
+import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 
 
@@ -150,8 +150,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         />
                     </View>
                     {
-                        !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE)
-                        && compareTypeTailleEnum(form.type?.typeTaille, TypeTailleEnum.TAILLE)
+                        CategorieDressingEnum.ADULTE !== dressing.categorie
+                        && TypeTailleEnum.TAILLE !== form.type?.typeTaille
                         && <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
                             <BouncyCheckbox
@@ -201,7 +201,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         </ThemedText></ThemedView>
                     </View>                    
                     {
-                        !compareCategorieDressingEnum(dressing.categorie, CategorieDressingEnum.ADULTE) &&
+                        CategorieDressingEnum.ADULTE !== dressing.categorie &&
                         <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{getLabelMandatory("Etat")}</ThemedText>
                             <Dropdown

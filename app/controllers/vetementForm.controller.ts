@@ -11,7 +11,7 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum, compareCategorieDressingEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import { v7 as uuidGen } from 'uuid';
 
@@ -338,7 +338,7 @@ export function validateForm(form: FormVetementModel | null,
         });
     }
 
-    if (!compareCategorieDressingEnum(form.dressing.categorie, CategorieDressingEnum.ADULTE) && (form.etat === undefined || form.etat === null)) {
+    if (CategorieDressingEnum.ADULTE !== form.dressing.categorie && (form.etat === undefined || form.etat === null)) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return { ...errors, etatInError: true, etatMessage: "L'état du vêtement est obligatoire" }
