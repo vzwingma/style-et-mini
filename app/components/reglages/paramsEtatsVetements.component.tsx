@@ -21,7 +21,7 @@ export default function ParamEtatsVetements() {
  * */
   useEffect(() => {
     console.log("(Re)Chargement des paramètres d'états...");
-    getParamsEtatsVetements({ setIsLoading, setEtats, setError });
+    getParamsEtatsVetements({ setEtats, setError, setIsLoading });
   }, [setEtats])
 
 
