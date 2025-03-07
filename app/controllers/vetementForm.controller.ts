@@ -68,7 +68,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     setForm: Function,
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements }: VetementsFormParamsTypeProps) {
 
-    if (vetementInEdition !== null) {
+    if (vetementInEdition !== null && vetementInEdition !== undefined) {
         setForm((form: FormVetementModel) => {
             return {
                 ...form,

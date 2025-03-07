@@ -45,7 +45,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpenVetementForm(vetement?: VetementModel): void {
+  function toggleOpenVetementForm(vetement?: VetementModel | null): void {
     setVetementInEdit(vetement || null);
     setOpenVetementForm(!openVetementForm);
   };
@@ -63,7 +63,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
       return (openVetementForm === false && <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
     }
     else {
-      return <DressingEmptyComponent openAddVetement={toggleOpenVetementForm} />
+      return <DressingEmptyComponent openAddVetement={() => toggleOpenVetementForm(null)} />
     }
   }
 
