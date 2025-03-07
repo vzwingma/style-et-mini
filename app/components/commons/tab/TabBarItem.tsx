@@ -46,7 +46,7 @@ function getTabBarIcon({ activeTab, activeDressing, thisTab, _id, categorieDress
     case Tabs.INDEX:
       return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     case Tabs.DRESSING:
-      return <Image source={getTabIcon(selectedTab, categorieDressing)} style={{ width: 40, height: 35, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer'}} />
+      return <Image source={getTabIcon(selectedTab, categorieDressing)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer'}} />
     case Tabs.REGLAGES:
       return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     default:
