@@ -90,6 +90,12 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     }
 
 
+    /**
+     * Rendu d'un élément de filtre dans la liste de dressing.
+     *
+     * @param {DressingListFiltreModel} item - L'élément de filtre à afficher.
+     * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
+     */
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
@@ -98,6 +104,27 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
             </View>
         );
     };
+
+    /**
+     * Rend un élément sélectionné de la liste de dressing.
+     *
+     * @param {DressingListFiltreModel} item - L'élément de la liste de dressing à afficher.
+     * @param {(item: DressingListFiltreModel) => void} unSelect - Fonction de rappel pour désélectionner l'élément.
+     * @returns {JSX.Element} - Composant Pressable affichant l'élément sélectionné avec une icône pour le désélectionner.
+     */
+    const renderSelectedItem = (item: DressingListFiltreModel, unSelect?: (item: DressingListFiltreModel) => void) => {
+        return (
+            <Pressable
+                style={styles.selectedStyle}
+                onPress={() => unSelect?.(item)}>
+                <View style={{ flexDirection: 'row' }}>
+                    <ThemedText type="italic" style={{fontSize:10}}> {item.type} : </ThemedText>
+                    <ThemedText type="default">{item.libelle} </ThemedText>
+                    <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+                </View>
+            </Pressable>
+        )};
+
 
     return (
         <>
@@ -121,21 +148,9 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                         placeholder={'Selectionnez un ou plusieurs filtre'}
                         value={selectedFiltres.map(filtre => filtre.id)}
                         onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
-                        renderLeftIcon={() => (
-                            <Image source={require('@/assets/icons/filter.png')} style={styles.icon} />
-                        )}
+                        renderLeftIcon={() => (<Image source={require('@/assets/icons/filter.png')} style={styles.icon} />)}
                         renderItem={renderFilterItem}
-                        renderSelectedItem={(item, unSelect) => (
-                            <Pressable
-                                style={styles.selectedStyle}
-                                onPress={() => unSelect?.(item)}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <ThemedText type="italic" style={{fontSize:10}}> {item.type} : </ThemedText>
-                                    <ThemedText type="default">{item.libelle} </ThemedText>
-                                    <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
-                                </View>
-                            </Pressable>
-                        )}
+                        renderSelectedItem={renderSelectedItem}
                     /></ThemedText>
             </ThemedView>
 
