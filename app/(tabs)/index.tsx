@@ -19,7 +19,7 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Environnement : {backendConnexionData?.env}</ThemedText>
-        <ThemedText type="subtitle">URLs : {process.env.BACKEND_URL} / {process.env.EXPO_PUBLIC_BACKEND_URL}</ThemedText>
+        <ThemedText type="subtitle">URL : {process.env.EXPO_PUBLIC_BACKEND_URL}</ThemedText>
       </ThemedView>
     </>
   );
