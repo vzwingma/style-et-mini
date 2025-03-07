@@ -10,7 +10,8 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "development"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "development",
+        "NODE_ENV":"development"
       }
     },
     "preview": {
@@ -20,7 +21,8 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview",
+        "NODE_ENV":"production"
       }
     },
     "production": {
@@ -30,7 +32,8 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
+        "NODE_ENV":"production"
       }
     },    
     "productionStore": {
@@ -38,7 +41,8 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
+        "NODE_ENV":"production"
       }
     }
   },
