@@ -68,7 +68,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     setForm: Function,
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements }: VetementsFormParamsTypeProps) {
 
-    if (vetementInEdition !== null) {
+    if (vetementInEdition !== null && vetementInEdition !== undefined) {
         setForm((form: FormVetementModel) => {
             return {
                 ...form,
@@ -105,7 +105,7 @@ export const pickImageForm = async (setForm: Function) => {
         quality: 1,
     });
     if (!result.canceled) {
-        setImageForm(result.assets[0], setForm);
+        setImageForm(result.assets[0].uri, setForm);
     }
 };
 /**
@@ -113,10 +113,9 @@ export const pickImageForm = async (setForm: Function) => {
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
+export function setImageForm(image: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        image.assetId = uuidGen();
-        return { ...form, imageId: image.assetId, imageContent: image }
+        return { ...form, imageId: uuidGen(), imageContent: image }
     });
 }
 
