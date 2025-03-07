@@ -31,10 +31,10 @@ export function getTabIcon(selectedTab : boolean, dressingCat? : CategorieDressi
   }
   else{
     if(selectedTab){
-      return require('@/assets/icons/baby-clothing.png');
+      return require('@/assets/icons/baby-clothes.png');
     }
     else{
-      return require('@/assets/icons/baby-clothing-outline.png');
+      return require('@/assets/icons/baby-clothes-outline.png');
     }
   }
   }
