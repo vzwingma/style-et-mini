@@ -12,7 +12,8 @@
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "development",
         "NODE_ENV":"development"
-      }
+      },
+      "environment": "development"
     },
     "preview": {
       "distribution": "internal",
@@ -23,7 +24,8 @@
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "preview",
         "NODE_ENV":"production"
-      }
+      },
+      "environment": "preview"
     },
     "production": {
       "distribution": "internal",
@@ -34,7 +36,8 @@
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
         "NODE_ENV":"production"
-      }
+      },
+      "environment": "production"
     },    
     "productionStore": {
       "android": {
@@ -43,7 +46,8 @@
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
         "NODE_ENV":"production"
-      }
+      },
+      "environment": "production"
     }
   },
   "submit": {
