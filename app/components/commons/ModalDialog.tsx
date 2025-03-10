@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
 import { Alert, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -31,25 +32,25 @@ export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text
     return (
         <>
             <Modal animationType="slide"
-                   transparent={true}
-                   visible={modalVisible}
+                transparent={true}
+                visible={modalVisible}
                 onRequestClose={() => {
                     setModalVisible(!modalVisible);
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>{text}</Text>
-                        <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={ackModal}>
-                            <Text style={styles.textStyle}>Valider</Text>
-                        </Pressable>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={closeModal}>
-                            <Text style={styles.textStyle}>Annuler</Text>
-                        </Pressable>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={closeModal}>
+                                <Text style={styles.textStyle}>Annuler</Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.buttonOpen]}
+                                onPress={ackModal}>
+                                <Text style={styles.textStyle}>Valider</Text>
+                            </Pressable>
                         </View>
                     </View>
                 </View>
@@ -67,9 +68,11 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
+        backgroundColor: Colors.app.background,
+        borderRadius: 10,
+        borderColor: Colors.app.color,
+        borderWidth: 1,
+        padding: 20,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -81,15 +84,22 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     button: {
-        borderRadius: 20,
-        padding: 10,
+        borderRadius: 10,
+        padding: 15,
         elevation: 2,
+        margin: 15,
+        width: 100
+
     },
     buttonOpen: {
-        backgroundColor: '#F194FF',
+        backgroundColor: Colors.app.color,
+        borderColor: Colors.app.color,
+        borderWidth: 1,
     },
     buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: Colors.app.backgroundLight,
+        borderColor: Colors.app.color,
+        borderWidth: 1,
     },
     textStyle: {
         color: 'white',
@@ -99,5 +109,6 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
+        color: Colors.dark.text,
     },
 });
