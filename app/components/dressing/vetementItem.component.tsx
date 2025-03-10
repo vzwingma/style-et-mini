@@ -4,7 +4,6 @@ import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { Colors } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
-import { Ionicons } from '@expo/vector-icons';
 
 
 export type VetementItemComponentProps = {

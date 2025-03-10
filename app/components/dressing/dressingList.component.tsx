@@ -9,7 +9,7 @@ import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as appl
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
-import { getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
+import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
 
 
 export type DressingComponentProps = {
@@ -55,7 +55,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     function showPanelGroupeVetements(vetementsByGroup: Map<string, VetementModel[]>): React.JSX.Element[] {
         let groupItems: JSX.Element[] = [];
         // Sort par nom du groupe
-        var vetementsByGroup = new Map([...vetementsByGroup.entries()].sort());
+        vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) => alphanumSort(a[0], b[0])));
 
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
