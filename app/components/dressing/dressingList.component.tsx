@@ -10,6 +10,7 @@ import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
 import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
+import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 
 
 export type DressingComponentProps = {
@@ -28,7 +29,8 @@ export type DressingComponentProps = {
 export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetementsInDressing, openAddEditVetement }: DressingComponentProps) => {
 
 
-    const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([]);
+    const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([
+        {id: StatutVetementEnum.ACTIF, libelle: StatutVetementEnum.ACTIF, type: CaracteristiqueVetementEnum.STATUT}]);
     const [filtresDisponibles, setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
 
     const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);

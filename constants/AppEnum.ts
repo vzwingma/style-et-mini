@@ -1,4 +1,4 @@
-export const APP_MOBILE_VERSION = "0.0.1";
+export const APP_MOBILE_VERSION = "0.0.2";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 

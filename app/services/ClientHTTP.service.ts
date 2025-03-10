@@ -61,15 +61,27 @@ export function callGETBackend(path: SERVICES_URL, params?: KeyValueParams[]): P
 
 
 /**
- * Appel HTTP vers le backend
- * @param httpMethod méthode HTTP
- * @param path chemin de la ressource
- * @param params paramètres (optionnels)
- * @param body body de la requête (optionnel)
- * @returns réponse
+ * Effectue un appel POST vers le backend.
+ *
+ * @param {SERVICES_URL} path - Le chemin de l'URL du service.
+ * @param {KeyValueParams[]} [params] - Les paramètres de la requête sous forme de paires clé-valeur.
+ * @param {any} [body] - Le corps de la requête à envoyer.
+ * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
  */
 export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], body?: any): Promise<any> {
     return callBackend(API_VERBS.POST, path, params, body);
+}
+
+
+/**
+ * Appelle le backend avec une requête DELETE.
+ *
+ * @param {SERVICES_URL} path - Le chemin de l'URL du service.
+ * @param {KeyValueParams[]} [params] - Les paramètres optionnels de la requête.
+ * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
+ */
+export function callDELETEBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
+    return callBackend(API_VERBS.DELETE, path, params);
 }
 
 
