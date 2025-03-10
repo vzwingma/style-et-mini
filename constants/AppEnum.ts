@@ -38,10 +38,16 @@ export enum TypeTailleEnum {
 
 // Enumération des statuts de vêtements
 export enum SaisonVetementEnum {
-  ETE = "ETE", 
+  ETE   = "ETE", 
   HIVER = "HIVER"
 }
 
+/**
+ * Retourne le libellé correspondant à une saison de vêtement.
+ *
+ * @param enumSaison - L'énumération de la saison de vêtement.
+ * @returns Le libellé de la saison de vêtement sous forme de chaîne de caractères.
+ */
 export function getLibelleSaisonVetementEnum(enumSaison: SaisonVetementEnum): string  {
   switch (enumSaison) {
     case SaisonVetementEnum.ETE:
