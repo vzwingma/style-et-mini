@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages as setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages as setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -269,8 +269,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @returns {JSX.Element} Une image représentant l'icône d'archive ou de désarchivage.
      */
     function renderArchiveIcon() {
-        return (form.statut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={styles.iconMenuStyle} /> 
-         : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} /> )
+        return (form.statut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={styles.iconMenuStyle} />
+            : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} />)
     }
 
 
@@ -281,13 +281,15 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
-                    <Pressable onPress={() => archiveForm(form, setForm, setErrorForm, onCloseForm)}>
-                        { renderArchiveIcon()}
-                    </Pressable>
-                    <Pressable disabled={true}>
-                        <Image source={require('@/assets/icons/bin-outline.png')} style={[styles.iconMenuStyle, {tintColor: 'grey'}]} />
-                    </Pressable>
-
+                    {   form.id &&
+                        <>
+                            <Pressable onPress={() => archiveForm(form, setForm, setErrorForm, onCloseForm)}>
+                                {renderArchiveIcon()}
+                            </Pressable>
+                            <Pressable onPress={() => deleteForm(form, setForm, setErrorForm, onCloseForm)}>
+                                <Image source={require('@/assets/icons/bin-outline.png')} style={[styles.iconMenuStyle, { tintColor: 'grey' }]} />
+                            </Pressable>
+                        </> }
                 </View>
 
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>

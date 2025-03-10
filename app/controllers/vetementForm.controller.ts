@@ -7,7 +7,7 @@ import FormVetementModel, { transformFormToVetementModel } from "../models/form.
 import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
-import { callPOSTBackend } from "../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
@@ -407,5 +407,65 @@ export function archiveForm(form: FormVetementModel,
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
     saveVetement(form, setForm, setErrorsForm, onCloseForm);
+
+}
+
+
+/**
+ * Supprime un vêtement à partir du formulaire donné.
+ *
+ * @param {FormVetementModel} form - Le modèle de formulaire contenant les informations du vêtement à supprimer.
+ * @param {Function} setForm - Fonction pour mettre à jour l'état du formulaire.
+ * @param {Function} setErrorsForm - Fonction pour mettre à jour les erreurs du formulaire.
+ * @param {Function} onCloseForm - Fonction pour fermer le formulaire.
+ *
+ * @returns {void}
+ *
+ * @description
+ * Cette fonction envoie une requête DELETE au backend pour supprimer le vêtement spécifié.
+ * Si la suppression est réussie, un message de succès est affiché et le formulaire est réinitialisé et fermé.
+ * En cas d'erreur, un message d'erreur est affiché.
+ */
+function deleteVetement(form: FormVetementModel,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function) {
+
+    let params = [
+        { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
+        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
+    ];
+
+    const isEdition = (form.id !== null && form.id !== "" && form.id !== undefined);
+    console.log("Suppression du vêtement", form);
+    //  Appel au backend pour supprimer le vêtement
+    callDELETEBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params)
+        .then((response) => {
+            console.log("Vêtement supprimé avec succès", response);
+            showToast("Vêtement supprimé avec succès", ToastDuration.SHORT);
+            razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur de suppression du vêtement : " + e, ToastDuration.LONG);
+            return false;
+        });
+}
+
+/**
+ * Validation du formulaire pour archivage du vêtement
+ * @param form formulaire à valider
+ * @param setForm fonction de mise à jour du formulaire
+ * @param setErrorsForm fonction de mise à jour des erreurs
+ * @param onCloseForm fonction de fermeture du formulaire
+ * @returns si le formulaire est invalide
+ */
+export function deleteForm(form: FormVetementModel,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function) {
+    console.log("Suppression du vêtement", form.id);
+    // Enregistrement du formulaire 
+    deleteVetement(form, setForm, setErrorsForm, onCloseForm);
 
 }
