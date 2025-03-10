@@ -109,7 +109,6 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
             }
         })
         .then(data => {
-            // console.log("[WS traceId=" + traceId + "] < [data]", data);
             if (data.status === "ERR") {
                 throw new Error(data.message);
             }
