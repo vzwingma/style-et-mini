@@ -4,7 +4,7 @@ import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { AppStatusEnum } from '@/constants/AppEnum';
+
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
@@ -50,7 +50,7 @@ export default function TabLayout() {
   }
 
   /**
- *  A l'initialisation, lance la connexion à Domoticz
+ *  A l'initialisation, lance la connexion au backend et charge les données
  * et à changement d'onglet
  * */
   useEffect(() => {
@@ -58,15 +58,22 @@ export default function TabLayout() {
     if(tab === Tabs.INDEX) {
       console.log("(Re)Chargement de l'application...");
       connectToBackend({ setIsLoading, storeConnexionData, setError });
-  
-      getParamsTaillesVetements({ setIsLoading, setTaillesMesures, setError });
-      getParamsUsagesVetements({ setIsLoading, setUsages, setError });
-      getParamsTypeVetements({ setIsLoading, setTypeVetements, setError });
-      getParamsEtatsVetements({ setIsLoading, setEtats, setError });
+    }
+  }, [refreshing, setIsLoading, setError]);
+
+
+  useEffect(() => {
+    setError(null);
+    if(tab === Tabs.INDEX && isLoading === false) {
+      console.log("(Re)Chargement de la configuration...");
+      getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
+      getParamsUsagesVetements({  setUsages, setError, setIsLoading });
+      getParamsTypeVetements({    setTypeVetements, setError, setIsLoading });
+      getParamsEtatsVetements({   setEtats, setError, setIsLoading });
   
       getDressings({ setIsLoading, setDressings, setError });
     }
-  }, [refreshing, setDressings, setTypeVetements, setTaillesMesures, setUsages]);
+  }, [refreshing, setIsLoading, backendConnexionData, setUsages, setError]);
 
 
   /**
@@ -84,7 +91,7 @@ export default function TabLayout() {
     if (isLoading) {
       return <ActivityIndicator size={'large'} color={Colors.app.color} />
     } else if (error !== null) {
-      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
+      return <><ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText><ThemedText type="italic">{error.stack}</ThemedText></>
     } else {
       return showPanel(tab, idDressing)
     }
@@ -93,7 +100,7 @@ export default function TabLayout() {
   return (
     <>
       <ParallaxScrollView
-        headerImage={getHeaderIcon(tab)}
+        headerImage={getHeaderIcon(tab, dressings?.find(d => d.id === idDressing)?.categorie)}
         headerTitle={getHeaderTitle(tab, dressings?.find(d => d.id === idDressing)?.libelle)}
         backendConnexionData={backendConnexionData}
         setRefreshing={setRefreshing}>
@@ -111,7 +118,7 @@ export default function TabLayout() {
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
               {
                 dressings?.map((dressing, idx) => {
-                  return <TabBarItems key={"tab_"+idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} />
+                  return <TabBarItems key={"tab_"+idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} categorieDressing={dressing.categorie} />
                 })
               }
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
@@ -127,13 +134,13 @@ export default function TabLayout() {
    *
    * @param tab L'onglet sélectionné
    */
-  function showPanel(tab: Tabs, _id?: string): JSX.Element {
+  function showPanel(tab: Tabs, idDressing?: string): JSX.Element {
 
     switch (tab) {
       case Tabs.INDEX:
         return <HomeScreen />
       case Tabs.DRESSING:
-        if (_id === undefined) {
+        if (idDressing === undefined) {
           return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
         }
         else {

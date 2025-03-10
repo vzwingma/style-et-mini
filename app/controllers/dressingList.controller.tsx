@@ -155,7 +155,7 @@ function addCaracteristiqueInFilter(filtres: DressingListFiltreModel[],
  */
 function addEnumsInFilter(filtres: DressingListFiltreModel[], dataStatuts: StatutVetementEnum[] | SaisonVetementEnum[]) {
 
-  if (dataStatuts.length <= 1) {
+  if (dataStatuts.filter((value, index, self) => self.indexOf(value) === index).length <= 1) {
     return
   }
 
@@ -163,7 +163,7 @@ function addEnumsInFilter(filtres: DressingListFiltreModel[], dataStatuts: Statu
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter(data => data !== null && data !== undefined)
     .forEach(data => {
-
+      
       const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
       const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
       const libelle = isStatut ? data : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);

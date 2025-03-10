@@ -109,7 +109,6 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
             }
         })
         .then(data => {
-            // console.log("[WS traceId=" + traceId + "] < [data]", data);
             if (data.status === "ERR") {
                 throw new Error(data.message);
             }
@@ -117,6 +116,7 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
         })
         .catch(e => {
             console.error("[WS traceId=" + traceId + "] < Erreur lors de l'appel HTTP [" + fullURL + "]", e);
+            e.message += ' @ url:' + fullURL; 
             throw new Error(e);
         })
 }

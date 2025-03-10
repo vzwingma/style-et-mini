@@ -1,19 +1,21 @@
 import { Colors } from "@/constants/Colors";
 import { Tabs } from "@/constants/TabsEnums";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
+import { getTabIcon } from "./TabBarIcon";
+import { CategorieDressingEnum } from "@/constants/AppEnum";
 
 
 /**
  * Affiche l'image du logo de l'application suivant l'onglet sélectionné
  */
-export function getHeaderIcon(tab: Tabs) {
+export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
     const iconSize = 110;
     switch (tab) {
       case Tabs.INDEX:
         return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
       case Tabs.DRESSING:
-        return <Ionicons size={iconSize} name="shirt" style={tabStyles.headerImage} />
+        return <Image source={getTabIcon(true, dressingCat)} style={[tabStyles.headerImage, {width:iconSize+40, height:iconSize+40, bottom:-50}]} />
         case Tabs.REGLAGES:
           return <Ionicons size={iconSize} name="options" style={tabStyles.headerImage} />        
       default:
@@ -51,6 +53,7 @@ export function getHeaderIcon(tab: Tabs) {
 export const tabStyles = StyleSheet.create({
     headerImage: {
       color: '#808080',
+      tintColor: '#808080',
       position: 'absolute',
       bottom: -20,
       backgroundColor: Colors.dark.titlebackground,

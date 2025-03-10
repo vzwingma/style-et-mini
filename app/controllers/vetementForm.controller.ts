@@ -11,7 +11,7 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum, compareCategorieDressingEnum, SaisonVetementEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import { v7 as uuidGen } from 'uuid';
 
@@ -68,7 +68,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     setForm: Function,
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements }: VetementsFormParamsTypeProps) {
 
-    if (vetementInEdition !== null) {
+    if (vetementInEdition !== null && vetementInEdition !== undefined) {
         setForm((form: FormVetementModel) => {
             return {
                 ...form,
@@ -105,7 +105,7 @@ export const pickImageForm = async (setForm: Function) => {
         quality: 1,
     });
     if (!result.canceled) {
-        setImageForm(result.assets[0], setForm);
+        setImageForm(result.assets[0].uri, setForm);
     }
 };
 /**
@@ -113,10 +113,9 @@ export const pickImageForm = async (setForm: Function) => {
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
+export function setImageForm(image: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        image.assetId = uuidGen();
-        return { ...form, imageId: image.assetId, imageContent: image }
+        return { ...form, imageId: uuidGen(), imageContent: image }
     });
 }
 
@@ -338,7 +337,7 @@ export function validateForm(form: FormVetementModel | null,
         });
     }
 
-    if (!compareCategorieDressingEnum(form.dressing.categorie, CategorieDressingEnum.ADULTE) && (form.etat === undefined || form.etat === null)) {
+    if (CategorieDressingEnum.ADULTE !== form.dressing.categorie && (form.etat === undefined || form.etat === null)) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return { ...errors, etatInError: true, etatMessage: "L'état du vêtement est obligatoire" }

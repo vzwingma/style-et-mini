@@ -5,7 +5,6 @@ import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
 import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
-import { ImagePickerAsset } from "expo-image-picker";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -22,7 +21,7 @@ interface FormVetementModel {
     saisons      : SaisonVetementEnum[];
     etat         : ParamEtatVetementsModel;
     imageId?     : string;
-    imageContent?: ImagePickerAsset;
+    imageContent?: string;
     couleurs     : string;
     description  : string;
 }
@@ -38,7 +37,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
 
     const vetement: VetementModel = {
         id              : form.id,
-        image           : form.imageContent?.uri,
+        image           : form.imageContent,
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {

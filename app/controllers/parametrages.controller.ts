@@ -5,31 +5,32 @@ import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
 import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
+import { SetStateAction } from "react";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPITypeVetementsProps = {
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   setTypeVetements: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 type FunctionCallAPITaillesVetementsProps = {
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   setTaillesMesures: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 type FunctionCallAPIUsagesVetementsProps = {
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   setUsages: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 
 type FunctionCallAPIEtatsVetementsProps = {
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   setEtats: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 /**
@@ -49,18 +50,18 @@ type FunctionCallAPIEtatsVetementsProps = {
  *   setError: (error) => { ... }
  * });
  */
-export function getParamsTypeVetements({setIsLoading, setTypeVetements, setError}: FunctionCallAPITypeVetementsProps) {
+export function getParamsTypeVetements({setTypeVetements, setError, setIsLoading}: FunctionCallAPITypeVetementsProps) {
 
   setIsLoading(true);
   // Appel du backend
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS)
     .then((typeVetements : ParamTypeVetementsModel[]) => {
-      setIsLoading(false);
       setTypeVetements(typeVetements);
+      setIsLoading(false);
     })
     .catch((e) => {
-        setIsLoading(false);
         setError(e);
+        setIsLoading(false);
         console.error('Une erreur s\'est produite lors de la connexion au backend', e);
         showToast("Erreur de connexion au backend", ToastDuration.SHORT);
     });
@@ -85,18 +86,18 @@ export function getParamsTypeVetements({setIsLoading, setTypeVetements, setError
  *   setError: (error) => { ... }
  * });
  */
-export function getParamsTaillesVetements({setIsLoading, setTaillesMesures, setError}: FunctionCallAPITaillesVetementsProps) {
+export function getParamsTaillesVetements({setTaillesMesures, setError, setIsLoading}: FunctionCallAPITaillesVetementsProps) {
 
   setIsLoading(true);
   // Appel du service externe
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES)
     .then((tailleVetements : ParamTailleVetementsModel[]) => {
-      setIsLoading(false);
       setTaillesMesures(tailleVetements);
+      setIsLoading(false);
     })
     .catch((e) => {
-        setIsLoading(false);
         setError(e);
+        setIsLoading(false);
         console.error('Une erreur s\'est produite lors de la connexion au backend', e);
         showToast("Erreur de connexion au backend", ToastDuration.SHORT);
     });
@@ -108,20 +109,18 @@ export function getParamsTaillesVetements({setIsLoading, setTaillesMesures, setE
  * Appelle l'API pour récupérer les usages de vêtements et met à jour l'état en conséquence.
  *
  * @param {Object} props - Les propriétés de la fonction.
- * @param {Function} props.setIsLoading - Fonction pour définir l'état de chargement.
  * @param {Function} props.setUsages - Fonction pour définir les usages de vêtements récupérées.
  * @param {Function} props.setError - Fonction pour définir l'erreur en cas d'échec de l'appel API.
  *
  * @returns {void}
  */
-export function getParamsUsagesVetements({setIsLoading, setUsages, setError}: FunctionCallAPIUsagesVetementsProps) {
-
+export function getParamsUsagesVetements({setUsages, setError, setIsLoading}: FunctionCallAPIUsagesVetementsProps) {
   setIsLoading(true);
   // Appel du service externe 
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_USAGES)
     .then((usageVetements : ParamUsageVetementsModel[]) => {
-      setIsLoading(false);
       setUsages(usageVetements);
+      setIsLoading(false);
     })
     .catch((e) => {
         setIsLoading(false);
@@ -144,14 +143,14 @@ export function getParamsUsagesVetements({setIsLoading, setUsages, setError}: Fu
  *
  * @returns {void}
  */
-export function getParamsEtatsVetements({setIsLoading, setEtats, setError}: FunctionCallAPIEtatsVetementsProps) {
+export function getParamsEtatsVetements({setEtats, setError, setIsLoading}: FunctionCallAPIEtatsVetementsProps) {
 
   setIsLoading(true);
   // Appel du service externe 
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_ETATS)
     .then((etatsVetements : ParamEtatVetementsModel[]) => {
-      setIsLoading(false);
       setEtats(etatsVetements);
+      setIsLoading(false);
     })
     .catch((e) => {
         setIsLoading(false);

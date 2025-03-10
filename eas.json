@@ -10,8 +10,10 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "development"
-      }
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "development",
+        "NODE_ENV":"development"
+      },
+      "environment": "development"
     },
     "preview": {
       "distribution": "internal",
@@ -20,8 +22,10 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview"
-      }
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview",
+        "NODE_ENV":"production"
+      },
+      "environment": "preview"
     },
     "production": {
       "distribution": "internal",
@@ -30,16 +34,20 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
-      }
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
+        "NODE_ENV":"production"
+      },
+      "environment": "production"
     },    
     "productionStore": {
       "android": {
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
-      }
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
+        "NODE_ENV":"production"
+      },
+      "environment": "production"
     }
   },
   "submit": {

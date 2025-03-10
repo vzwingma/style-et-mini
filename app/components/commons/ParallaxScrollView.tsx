@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/app/components/commons/ThemedView';
-import { APP_MOBILE_NAME, APP_MOBILE_VERSION, AppStatusEnum } from '@/constants/AppEnum';
+import { APP_MOBILE_NAME, APP_MOBILE_VERSION } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

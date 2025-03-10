@@ -1,10 +1,9 @@
-import { StyleSheet, Pressable } from 'react-native'
+import { StyleSheet, Pressable, Image } from 'react-native'
 
 import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
 
 
 export type DressingComponentProps = {
@@ -29,12 +28,12 @@ export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ open
 
   return (
     <ThemedView style={styles.container}>
-      <Ionicons size={280} name="shirt-outline" color={Colors.dark.text} />
+      <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.icon ]}  />
 
       <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de vêtements</ThemedText>
 
       <Pressable onPress={openAddVetement} style={styles.menuItem}>
-          <ThemedText type="title" style={{marginTop: 10}}>Ajoutez un vêtement maintenant</ThemedText>
+          <ThemedText type="title" style={{marginTop: 10}}>Ajoutez un vêtement</ThemedText>
       </Pressable>
     </ThemedView>
   );
@@ -46,7 +45,7 @@ export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ open
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
-    height: 550,
+    height: 700,
     alignItems: 'center',
   },
   animatedBox: {
@@ -58,17 +57,16 @@ const styles = StyleSheet.create({
     borderWidth: 1
 
   },
-  body: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    borderColor: 'red',
-    borderWidth: 1
-  },
+
   menuItem: {
     padding: 10,
-    height: 44,
     cursor: 'pointer',
   },
+  icon: {
+    tintColor: 'gray',
+    margin: 10,
+    width: 280,
+    height: 280,
+    borderColor: Colors.dark.background,
+},  
 });
