@@ -313,7 +313,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             {modalDialog}
 
             <ThemedView style={styles.title}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 150 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
@@ -326,7 +326,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             <Pressable onPress={() => deleteFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
-                        </>}
+                        </>
+                    }
                 </View>
 
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
@@ -507,7 +508,7 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26,
         tintColor: 'white',
-        top: 2,
+        marginLeft: 15,
     },
     iconItemStyle: {
         width: 30,
