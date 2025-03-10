@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsages as setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm, FormModelProps } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -19,6 +19,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 import { getTypeVetementIcon } from '../commons/CommonsUtils';
+import { ModalDialogComponent } from '../commons/ModalDialog';
 
 
 export type VetementFormComponentProps = {
@@ -59,6 +60,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
+
+    const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
     const {
         typeVetements: paramsTypeVetements,
@@ -273,24 +276,57 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} />)
     }
 
+    /**
+     * Validation du formulaire pour archivage du vêtement
+     * @param form formulaire à valider
+     * @param setForm fonction de mise à jour du formulaire
+     * @param setErrorsForm fonction de mise à jour des erreurs
+     * @param onCloseForm fonction de fermeture du formulaire
+     * @returns si le formulaire est invalide
+     */
+    function archiveFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }: FormModelProps, setModalDialog: Function) {
+        const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
+            ackModalCallback={() => archiveForm(form, setForm, setErrorForm, onCloseForm)}
+            showModal={Math.random()} />;
+        setModalDialog(dialog);
+    }
+
+    /**
+ * Validation du formulaire pour archivage du vêtement
+ * @param form formulaire à valider
+ * @param setForm fonction de mise à jour du formulaire
+ * @param setErrorsForm fonction de mise à jour des erreurs
+ * @param onCloseForm fonction de fermeture du formulaire
+ * @returns si le formulaire est invalide
+ */
+    function deleteFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }: FormModelProps, setModalDialog: Function) {
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
+            ackModalCallback={() => deleteForm(form, setForm, setErrorForm, onCloseForm)}
+            showModal={Math.random()} />;
+        setModalDialog(dialog);
+    }
+
 
     return (
         <>
+            {modalDialog}
+
             <ThemedView style={styles.title}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 150 }}>
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
-                    {   form.id 
-                    &&
+                    {form.id
+                        &&
                         <>
-                            <Pressable onPress={() => archiveForm(form, setForm, setErrorForm, onCloseForm)}>
+                            <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
                                 {renderArchiveIcon()}
                             </Pressable>
-                            <Pressable onPress={() => deleteForm(form, setForm, setErrorForm, onCloseForm)}>
+                            <Pressable onPress={() => deleteFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
-                        </> }
+                        </>}
                 </View>
 
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
@@ -300,6 +336,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             </ThemedView>
 
             {getPanelFormContent()}
+
+
         </>
     );
 }

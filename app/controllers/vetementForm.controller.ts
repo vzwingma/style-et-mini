@@ -180,7 +180,7 @@ export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
  * @param paramsUsagesVetements liste des usages de vêtements
  * @param setForm formulaire à mettre à jour
  */
-export function setUsages(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function, setErrorsForm: Function) {
+export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function, setErrorsForm: Function) {
 
     let usages: ParamUsageVetementsModel[] = [];
     usageIdsListe.forEach((usageId) => {
@@ -388,6 +388,12 @@ export function validateForm(form: FormVetementModel | null,
     }
 }
 
+export type FormModelProps = {
+    form: FormVetementModel,
+    setForm: Function,
+    setErrorForm: Function,
+    onCloseForm: Function
+};
 
 /**
  * Validation du formulaire pour archivage du vêtement
