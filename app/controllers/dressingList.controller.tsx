@@ -2,6 +2,7 @@ import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVeteme
 import DressingListFiltreModel from "../models/dressingListeFiltre.model";
 import VetementCaracteristiquesModel from "../models/vetementCaracteristique.model";
 import VetementModel from "../models/vetements.model";
+import { alphanumSort } from "../components/commons/CommonsUtils";
 /**
  * Groupe les vêtements par type.
  *
@@ -115,9 +116,7 @@ export function getFiltersAvailables(vetements: VetementModel[]): DressingListFi
   addEnumsInFilter(filtres, vetements.map(vetement => vetement.statut));
   addEnumsInFilter(filtres, vetements.flatMap(vetement => vetement.saisons));
 
-
-  filtres.sort((a, b) => (a.type + a.libelle).localeCompare((b.type + b.libelle))); // Tri par ordre alphabétique
-  console.log("Filtres disponibles : ", filtres);
+  filtres.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
   return filtres;
 }
 

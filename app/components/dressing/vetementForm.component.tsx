@@ -281,13 +281,14 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
-                    {   form.id &&
+                    {   form.id 
+                    &&
                         <>
                             <Pressable onPress={() => archiveForm(form, setForm, setErrorForm, onCloseForm)}>
                                 {renderArchiveIcon()}
                             </Pressable>
                             <Pressable onPress={() => deleteForm(form, setForm, setErrorForm, onCloseForm)}>
-                                <Image source={require('@/assets/icons/bin-outline.png')} style={[styles.iconMenuStyle, { tintColor: 'grey' }]} />
+                                <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
                         </> }
                 </View>
