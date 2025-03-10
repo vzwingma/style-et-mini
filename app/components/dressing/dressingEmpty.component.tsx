@@ -4,7 +4,6 @@ import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
 
 
 export type DressingComponentProps = {

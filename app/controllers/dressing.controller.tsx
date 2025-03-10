@@ -84,7 +84,7 @@ export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }
   // Appel du service externe de chargement du dressing
   callGETBackend(SERVICES_URL.SERVICE_VETEMENTS, params)
     .then((vetements: VetementModel[]) => {
-      console.log("Dressing ", vetements?.at(0)?.dressing.libelle, "chargé : ", vetements?.length, "vêtements");
+      console.log("Dressing ", vetements?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", vetements?.length, "vêtements");
       setIsLoading(false);
       setVetements(vetements);
     })

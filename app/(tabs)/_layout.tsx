@@ -134,13 +134,13 @@ export default function TabLayout() {
    *
    * @param tab L'onglet sélectionné
    */
-  function showPanel(tab: Tabs, _id?: string): JSX.Element {
+  function showPanel(tab: Tabs, idDressing?: string): JSX.Element {
 
     switch (tab) {
       case Tabs.INDEX:
         return <HomeScreen />
       case Tabs.DRESSING:
-        if (_id === undefined) {
+        if (idDressing === undefined) {
           return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
         }
         else {

@@ -21,20 +21,10 @@ export function TabBarIcon({ style, ...rest }: any) {
  * @returns l'icône de l'onglet sélectionné
  */
 export function getTabIcon(selectedTab : boolean, dressingCat? : CategorieDressingEnum): any {
-  if(CategorieDressingEnum.ADULTE === dressingCat){
-    if(selectedTab){
-      return require('@/assets/icons/dress.png');
-    }
-    else{
-      return require('@/assets/icons/dress-outline.png');
-    }
+  switch(dressingCat){
+    case CategorieDressingEnum.ADULTE:
+      return selectedTab ? require('@/assets/icons/dress.png') : require('@/assets/icons/dress-outline.png');
+    case CategorieDressingEnum.BEBE:
+      return selectedTab ? require('@/assets/icons/baby-clothes.png') : require('@/assets/icons/baby-clothes-outline.png');
   }
-  else{
-    if(selectedTab){
-      return require('@/assets/icons/baby-clothes.png');
-    }
-    else{
-      return require('@/assets/icons/baby-clothes-outline.png');
-    }
-  }
-  }
+}
