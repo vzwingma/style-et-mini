@@ -18,6 +18,6 @@ interface VetementModel {
     readonly couleurs   : string;
     readonly image?     : string | null;
     readonly description: string;
-    readonly statut     : StatutVetementEnum;
+    statut              : StatutVetementEnum;
 }
 export default VetementModel;

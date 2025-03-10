@@ -24,6 +24,7 @@ interface FormVetementModel {
     imageContent?: string;
     couleurs     : string;
     description  : string;
+    statut       : StatutVetementEnum;
 }
 
 
@@ -57,7 +58,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
         saisons: form.saisons,
         couleurs: form.couleurs,
         description: form.description,
-        statut: StatutVetementEnum.ACTIF,
+        statut: form.statut,
     };
 
     if (form.etat) {

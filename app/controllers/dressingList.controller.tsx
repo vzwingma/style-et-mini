@@ -117,7 +117,7 @@ export function getFiltersAvailables(vetements: VetementModel[]): DressingListFi
 
 
   filtres.sort((a, b) => (a.type + a.libelle).localeCompare((b.type + b.libelle))); // Tri par ordre alphabétique
-
+  console.log("Filtres disponibles : ", filtres);
   return filtres;
 }
 

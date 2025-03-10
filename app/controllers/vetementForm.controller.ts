@@ -11,7 +11,7 @@ import { callPOSTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import { v7 as uuidGen } from 'uuid';
 
@@ -84,7 +84,8 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
                 saisons: vetementInEdition.saisons ?? [],
                 etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
                 couleurs: vetementInEdition.couleurs,
-                description: vetementInEdition.description
+                description: vetementInEdition.description,
+                statut: vetementInEdition.statut ?? StatutVetementEnum.ACTIF
             }
         });
     }
@@ -259,6 +260,38 @@ export function razAndcloseForm(
 }
 
 
+/**
+ * sauvegarde du vêtement
+ * @param form formulaire à sauvegarder
+ */
+function saveVetement(form: FormVetementModel,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function) {
+
+    let params = [
+        { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
+        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
+    ];
+
+    const vetement: VetementModel = transformFormToVetementModel(form);
+    const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
+    console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
+    const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
+
+    //  Appel au backend pour sauvegarder le vêtement
+    callPOSTBackend(url, params, vetement)
+        .then((response) => {
+            console.log("Vêtement enregistré avec succès", response);
+            showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
+            razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
+            return false;
+        });
+}
 
 /**
  * Validation du formulaire
@@ -351,37 +384,28 @@ export function validateForm(form: FormVetementModel | null,
 
     if (!errors) {
         // Enregistrement du formulaire 
-        saveVetement(form);
+        saveVetement(form, setForm, setErrorsForm, onCloseForm);
     }
+}
 
 
+/**
+ * Validation du formulaire pour archivage du vêtement
+ * @param form formulaire à valider
+ * @param setForm fonction de mise à jour du formulaire
+ * @param setErrorsForm fonction de mise à jour des erreurs
+ * @param onCloseForm fonction de fermeture du formulaire
+ * @returns si le formulaire est invalide
+ */
+export function archiveForm(form: FormVetementModel,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function) {
 
-    /**
-     * sauvegarde du vêtement
-     * @param form formulaire à sauvegarder
-     */
-    function saveVetement(form: FormVetementModel) {
+    console.log("Validation du formulaire pour archivage", form);
+    form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE :  StatutVetementEnum.ACTIF);
+    console.log("Archivage du vêtement", form.id, form.statut);
+    // Enregistrement du formulaire 
+    saveVetement(form, setForm, setErrorsForm, onCloseForm);
 
-        let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
-        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
-        ];
-
-        const vetement: VetementModel = transformFormToVetementModel(form);
-        const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
-        console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
-        const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
-
-        //  Appel au backend pour sauvegarder le vêtement
-        callPOSTBackend(url, params, vetement)
-            .then((response) => {
-                console.log("Vêtement enregistré avec succès", response);
-                showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
-                razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
-            })
-            .catch((e) => {
-                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
-                return false;
-            });
-    }
 }
