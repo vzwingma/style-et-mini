@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: Colors.dark.background,
+        opacity: 0.9,
     },
     modalView: {
         margin: 20,
@@ -82,13 +84,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        height: 150,
     },
     button: {
         borderRadius: 10,
         padding: 15,
         elevation: 2,
         margin: 15,
-        width: 100
+        width: 100,
+        height: 50,
 
     },
     buttonOpen: {
