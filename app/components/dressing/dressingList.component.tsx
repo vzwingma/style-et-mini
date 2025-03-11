@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/ThemedText";
-import { StyleSheet, Pressable, View, Image } from "react-native";
+import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
-import { Colors, Fonts } from "@/constants/Colors";
+import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
 import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
 import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
+import { styles } from "./dressingList.style";
 
 
 export type DressingComponentProps = {
@@ -47,6 +48,35 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
 
 
+    /**
+     * Rendu de la barre de filtres.
+     *
+     * Cette fonction retourne une vue thématisée contenant un composant MultiSelect
+     * permettant de sélectionner un ou plusieurs filtres parmi les filtres disponibles.
+     *
+     * @returns {JSX.Element} La vue thématisée avec le composant MultiSelect.
+     */
+    function renderFiltersBar() {
+        return (
+            
+            <ThemedView style={styles.filtresBar}>
+                    <MultiSelect
+                        style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                        iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        maxHeight={500}
+                        mode='modal'
+                        data={filtresDisponibles}
+                        labelField="libelle" valueField="id"
+                        placeholder={'Selectionnez un ou plusieurs filtre'}
+                        value={selectedFiltres.map(filtre => filtre.id)}
+                        onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
+                        renderLeftIcon={() => (<Image source={require('@/assets/icons/filter.png')} style={styles.icon} />)}
+                        renderItem={renderFilterItem}
+                        renderSelectedItem={renderSelectedItem}
+                    />
+            </ThemedView>
+    )};
 
     /**
      * Affiche un panneau contenant une liste de vêtements.
@@ -116,10 +146,8 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
      */
     const renderSelectedItem = (item: DressingListFiltreModel, unSelect?: (item: DressingListFiltreModel) => void) => {
         return (
-            <Pressable
-                style={styles.selectedStyle}
-                onPress={() => unSelect?.(item)}>
-                <View style={{ flexDirection: 'row' }}>
+            <Pressable onPress={() => unSelect?.(item)}>
+                <View style={styles.selectedStyle}>
                     <ThemedText type="italic" style={{fontSize:10}}> {item.type} : </ThemedText>
                     <ThemedText type="default">{item.libelle} </ThemedText>
                     <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
@@ -136,116 +164,9 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                     <Ionicons size={28} name="add-outline" color={Colors.dark.text} />
                 </Pressable>
             </ThemedView>
-
-            <ThemedView style={styles.filtre}>
-                <ThemedText type="subtitle">
-                    <MultiSelect
-                        style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                        iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        maxHeight={500}
-                        mode='modal'
-                        data={filtresDisponibles}
-                        labelField="libelle" valueField="id"
-                        placeholder={'Selectionnez un ou plusieurs filtre'}
-                        value={selectedFiltres.map(filtre => filtre.id)}
-                        onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
-                        renderLeftIcon={() => (<Image source={require('@/assets/icons/filter.png')} style={styles.icon} />)}
-                        renderItem={renderFilterItem}
-                        renderSelectedItem={renderSelectedItem}
-                    /></ThemedText>
-            </ThemedView>
+            {renderFiltersBar()}
 
             {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
         </>
     );
 }
-
-const styles = StyleSheet.create({
-    title: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5
-    },
-    filtre: {
-        alignItems: 'center',
-        width: '100%',
-        marginTop: 5,
-        padding: 0,
-    },
-    groupeLabel: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5,
-        margin: 5,
-    },
-    groupeContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: '100%',
-        alignItems: 'center',
-    },
-    // Filtre
-    // Dropdown de sélection
-    dropdown: {
-        padding: 8,
-        borderColor: 'grey',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        alignItems: 'flex-start',
-        cursor: 'pointer',
-    },
-    icon: {
-        marginRight: 5,
-        width: 20,
-        height: 20,
-        color: 'white',
-        tintColor: 'white',
-    },
-    // Style de la liste déroulante d'un dropdown
-    listStyle: {
-        backgroundColor: Colors.app.backgroundLight,
-    },
-    // Style des éléments de la liste déroulante d'un dropdown
-    listItemStyle: {
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: "space-between",
-        margin: 0,
-        padding: 3,
-        height: 'auto',
-        fontFamily: "BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
-    },
-    placeholderStyle: {
-        fontWeight: 'light',
-        color: 'gray',
-    },
-    // Items sélectionnés dans un dropdown multi-sélection
-    selectedStyle: {
-        borderColor: Colors.app.color,
-        borderWidth: 2,
-        borderRadius: 8,
-        marginTop: 5,
-        marginRight: 5,
-        padding: 1,
-        cursor: 'pointer',
-    },
-    selectedTextStyle: {
-        fontSize: Fonts.app.size,
-    },
-    iconStyle: {
-        width: 20,
-        height: 20,
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: Fonts.app.size,
-        backgroundColor: 'red',
-    },
-});
