@@ -7,10 +7,17 @@ import { AppContext } from '../services/AppContextProvider';
 
 
 
+/**
+ * Composant principal de l'écran d'accueil.
+ *
+ * Ce composant utilise le contexte `AppContext` pour obtenir les données de connexion au backend.
+ * Il affiche le titre de la page et l'environnement actuel.
+ *
+ * @returns {JSX.Element} Le composant JSX représentant l'écran d'accueil.
+ */
 export default function HomeScreen() {
 
   const { backendConnexionData } = useContext(AppContext)!;
-
 
   return (
     <>

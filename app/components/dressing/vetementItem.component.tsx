@@ -26,7 +26,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
                 {vetement.image  && <Image source={{ uri: vetement.image }} style={styles.photo} />}
                 {!vetement.image && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} 
                                                     style={[styles.iconBig ]}  />}
-                {   vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')} 
+                {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')} 
                                                     style={[styles.iconSmall ]} />} 
                 <ThemedText type="default">{vetement.libelle}</ThemedText>
             </View>
