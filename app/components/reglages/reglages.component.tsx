@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, SectionList } from 'react-native'
+import { StyleSheet, TouchableOpacity, SectionList, Pressable } from 'react-native'
 
 import React, { useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
@@ -55,13 +55,12 @@ export default function ReglagesComponent() {
 
     const drawerContent = () => {
       return (
-        <TouchableOpacity onPress={() => toggleOpen(null)} style={styles.animatedBox}>
-          <ThemedView>
+        <Pressable style={styles.animatedBox}>
+
           {
             menuContent(menu)
           }
-          </ThemedView>
-        </TouchableOpacity>
+        </Pressable>
       );
     };
 
@@ -93,10 +92,10 @@ export default function ReglagesComponent() {
           open={!open}
           position={'right'}
           drawerContent={drawerContent()}
-          drawerPercentage={100}
+          drawerPercentage={98}
           animationTime={250}
           overlay={true}
-          opacity={0.3}
+          opacity={0.8}
         />
       </ThemedView>
   );
@@ -108,7 +107,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     zIndex: 0,
-    width: '100%'
+    width: '100%',
+    borderColor: 'red',
+    borderWidth: 1,
   },
   animatedBox: {
     flex: 1,
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 1,
     overflow: 'scroll',
+    
   },
   body: {
     flex: 1,

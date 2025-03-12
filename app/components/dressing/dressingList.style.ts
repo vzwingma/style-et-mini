@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     /** Filtre  */
     filtresBar: {
         alignItems: 'center',
-        marginTop: 5,
+        marginTop: 3,
         padding: 0,
         justifyContent: 'center',
     },    
@@ -50,11 +50,11 @@ export const styles = StyleSheet.create({
         color: 'white',
         tintColor: 'white',
     },
-    // Style de la liste déroulante d'un dropdown
+    // Style de la liste déroulante des filtres
     listStyle: {
         backgroundColor: Colors.app.backgroundLight,
     },
-    // Style des éléments de la liste déroulante d'un dropdown
+    // Style des éléments de la liste déroulante des filtres
     listItemStyle: {
         flexDirection: 'row',
         width: '100%',

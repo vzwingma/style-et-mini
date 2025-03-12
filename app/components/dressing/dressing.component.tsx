@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';

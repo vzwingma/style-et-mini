@@ -150,8 +150,8 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         return (
             <Pressable onPress={() => unSelect?.(item)}>
                 <View style={styles.selectedStyle}>
-                    <ThemedText type="italic" style={{fontSize:10}}> {item.type} : </ThemedText>
-                    <ThemedText type="default">{item.libelle} </ThemedText>
+                    <ThemedText type="italic" style={{fontSize:11, top:2}}> {item.type} : </ThemedText>
+                    <ThemedText type="default" style={{top:1}}>{item.libelle} </ThemedText>
                     <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
                 </View>
             </Pressable>
