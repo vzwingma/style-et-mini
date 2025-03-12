@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
@@ -35,7 +35,7 @@ export type DressingComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
+export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
 
   const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +51,7 @@ export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing 
   // Changement de l'état du formulaire de vêtement si le dressing change
   useEffect(() => {
     setOpenVetementForm(false);
-    loadVetementsDressing({ idDressing : dressing.id, setIsLoading, setVetements });
+    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
   }, [dressing]);
 
 
@@ -74,7 +74,7 @@ export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing 
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else if (vetements?.length !== 0 ) {
+    else if (vetements?.length !== 0) {
       return (openVetementForm === false && <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
     }
     else {
@@ -85,9 +85,7 @@ export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing 
 
   return (
     <View style={styles.container}>
-
       {getPanelContent()}
-
       <MenuDrawer
         open={openVetementForm}
         position={'right'}
@@ -97,8 +95,7 @@ export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing 
         drawerPercentage={98}
         animationTime={250}
         overlay={true}
-        opacity={0.3}
-      />
+        opacity={0.3} />
     </View>
   );
 }
@@ -106,6 +103,6 @@ export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing 
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
-    minHeight: 750
-  },
+    minHeight: 800,
+  }
 });
