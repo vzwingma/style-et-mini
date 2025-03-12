@@ -1,9 +1,9 @@
-import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { Image, Pressable, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
-import { Colors, Fonts } from '@/constants/Colors';
+import { Colors } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
@@ -52,15 +52,6 @@ export type VetementsFormParamsTypeProps = {
  * @param {() => void} props.onCloseForm - Fonction de rappel pour fermer le formulaire.
  *
  * @returns {React.JSX.Element} - Un élément JSX représentant le formulaire de vêtement.
- *
- * @example
- * ```tsx
- * <VetementFormComponent
- *   dressing={dressing}
- *   vetement={vetementEnEdition}
- *   onCloseForm={handleCloseForm}
- * />
- * ```
  */
 export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, onCloseForm }: VetementFormComponentProps) => {
 
