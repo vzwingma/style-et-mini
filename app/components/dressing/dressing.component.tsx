@@ -45,9 +45,14 @@ export const DressingComponent : React.FC<DressingComponentProps> = ({ dressing 
   useEffect(() => {
     // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
     if (openVetementForm) return;
-    const idDressing = dressing.id;
-    loadVetementsDressing({ idDressing, setIsLoading, setVetements });
-  }, [dressing, openVetementForm]);
+    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
+  }, [openVetementForm]);
+
+  // Changement de l'état du formulaire de vêtement si le dressing change
+  useEffect(() => {
+    setOpenVetementForm(false);
+    loadVetementsDressing({ idDressing : dressing.id, setIsLoading, setVetements });
+  }, [dressing]);
 
 
   /** Ouverture/Fermeture du menu */

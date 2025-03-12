@@ -29,10 +29,8 @@ export const styles = StyleSheet.create({
     /** Filtre  */
     filtresBar: {
         alignItems: 'center',
-        width: '100%',
         marginTop: 5,
         padding: 0,
-        flexDirection: 'row',
         justifyContent: 'center',
     },    
     // Dropdown de sélection

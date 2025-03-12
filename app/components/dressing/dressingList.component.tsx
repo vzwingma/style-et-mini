@@ -60,6 +60,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         return (
             
             <ThemedView style={styles.filtresBar}>
+                <View style={styles.filtresBar}>
                     <MultiSelect
                         style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                         iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -75,6 +76,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                         renderItem={renderFilterItem}
                         renderSelectedItem={renderSelectedItem}
                     />
+                </View>
             </ThemedView>
     )};
 
