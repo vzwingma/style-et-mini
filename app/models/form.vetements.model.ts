@@ -20,7 +20,6 @@ interface FormVetementModel {
     usagesListe  : string[];
     saisons      : SaisonVetementEnum[];
     etat         : ParamEtatVetementsModel;
-    imageId?     : string;
     imageContent?: string;
     couleurs     : string;
     description  : string;

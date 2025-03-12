@@ -69,11 +69,12 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements }: VetementsFormParamsTypeProps) {
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
+
         setForm((form: FormVetementModel) => {
             return {
                 ...form,
                 id: vetementInEdition.id,
-                image: vetementInEdition.image,
+                imageContent: vetementInEdition.image,
                 libelle: vetementInEdition.libelle,
                 dressing: dressing,
                 type: paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id),
