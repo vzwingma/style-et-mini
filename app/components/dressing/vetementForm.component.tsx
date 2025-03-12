@@ -122,13 +122,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     const getPanelFormContent = () => {
 
         return (
-            <View style={styles.body}>
+            <View style={[styles.body]} >
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
-                            {form.imageId &&
+                            {form.imageContent &&
                                 <Image source={{ uri: form.imageContent }} style={styles.photo} />}
-                            {!form.imageId &&
+                            {!form.imageContent &&
                                 <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
                             {form.petiteTaille &&
                                 <Image source={require('@/assets/icons/small-size-outline.png')} style={[styles.iconSmall]} />}
@@ -334,8 +334,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             </ThemedView>
 
             {getPanelFormContent()}
-
-
         </>
     );
 }
