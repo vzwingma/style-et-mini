@@ -167,7 +167,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <Dropdown
                             style={!errorForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
-
+                            mode='modal'
                             maxHeight={300}
                             data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
                             labelField="libelle" valueField="id"
@@ -231,7 +231,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             <Dropdown
                                 style={!errorForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
-
+                                mode='modal'
                                 maxHeight={300}
                                 data={getEtatsForm(paramsEtatVetements, dressing)}
                                 labelField="libelle" valueField="id"
