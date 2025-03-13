@@ -315,8 +315,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id
-                        &&
-                        <>
+                     && <>
                             <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
                                 {renderArchiveIcon()}
                             </Pressable>
