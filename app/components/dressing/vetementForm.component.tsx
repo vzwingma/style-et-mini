@@ -18,9 +18,10 @@ import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.mo
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
-import { getTypeVetementIcon } from '../commons/CommonsUtils';
+import { getTypeVetementIcon, resizeImage } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/ModalDialog';
 import { styles } from './vetementForm.styles';
+import VetementImageModel from '@/app/models/vetements.image.model';
 
 
 /**
@@ -121,14 +122,20 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      */
     const getPanelFormContent = () => {
 
+        let renderFormImage = {} as VetementImageModel;
+        if (form.image) {
+            // recalcul de la taille de l'image suivant la mise en page
+            renderFormImage = resizeImage(form.image, 250);
+        }
+
         return (
             <View style={[styles.body]} >
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
-                            {form.imageContent &&
-                                <Image source={{ uri: form.imageContent }} style={styles.photo} />}
-                            {!form.imageContent &&
+                            {form.image &&
+                                <Image source={{ uri: renderFormImage.contenu }} style={[styles.photo, {width: renderFormImage.largeur, height: renderFormImage.hauteur}]} />} 
+                            {!form.image &&
                                 <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
                             {form.petiteTaille &&
                                 <Image source={require('@/assets/icons/small-size-outline.png')} style={[styles.iconSmall]} />}
@@ -315,8 +322,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id
-                        &&
-                        <>
+                     && <>
                             <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
                                 {renderArchiveIcon()}
                             </Pressable>

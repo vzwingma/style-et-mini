@@ -1,14 +1,75 @@
+import VetementImageModel from "@/app/models/vetements.image.model";
 import VetementModel from "@/app/models/vetements.model";
 
 // Fonction de tri alphanumérique
+/**
+ * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
+ * 
+ * Cette fonction utilise `localeCompare` avec les paramètres de la langue française
+ * et l'option `numeric` activée, ce qui permet de comparer les chaînes en tenant
+ * compte des valeurs numériques dans les chaînes.
+ * 
+ * @param a - La première chaîne à comparer.
+ * @param b - La seconde chaîne à comparer.
+ * @returns Un nombre négatif si `a` précède `b`, un nombre positif si `a` suit `b`,
+ *          ou 0 si les deux chaînes sont égales.
+ */
 export function alphanumSort(a: string, b: string) {
     return a.localeCompare(b, 'fr', { numeric: true });
 }
 
 // Fonction de tri numérique
-export function triSort(a: number, b: number) {
+/**
+ * Trie deux nombres dans l'ordre croissant.
+ *
+ * @param a - Le premier nombre à comparer.
+ * @param b - Le second nombre à comparer.
+ * @returns Une valeur négative si `a` est inférieur à `b`, 
+ *          une valeur positive si `a` est supérieur à `b`, 
+ *          ou 0 si les deux sont égaux.
+ */
+export function numSort(a: number, b: number) {
     return a - b;
 }
+
+
+
+
+/**
+ * Redimensionne une image en fonction d'une taille maximale tout en conservant son ratio.
+ *
+ * @param image - L'image à redimensionner, représentée par un objet `VetementImageModel`.
+ *                Doit contenir les propriétés `contenu`, `largeur` et `hauteur`.
+ * @param maxSize - La taille maximale (en pixels) pour la largeur ou la hauteur de l'image.
+ * @returns Une nouvelle instance de `VetementImageModel` avec les dimensions redimensionnées
+ *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
+ *          retourne l'image d'origine.
+ */
+export function resizeImage(image: VetementImageModel, maxSize : number): VetementImageModel {
+    if (image && image.contenu) {
+        const ratioImage = image.largeur / image.hauteur;
+        let imageResized = {} as VetementImageModel; 
+        if(ratioImage > 1) {
+            imageResized = {
+                ...image,
+                contenu: image.contenu,
+                largeur: maxSize,
+                hauteur: maxSize / ratioImage
+            }
+        } else {
+            imageResized = {
+                ...image,
+                contenu: image.contenu,
+                largeur: maxSize * ratioImage,
+                hauteur: maxSize
+            }
+        }
+        return imageResized;
+    }
+    return image;
+}
+
+
 
 // Fonction de tri des vêtements
 export function vetementSort(a: VetementModel, b: VetementModel) {

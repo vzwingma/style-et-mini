@@ -1,6 +1,7 @@
 import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import DressingModel from "./dressing.model";
 import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
+import VetementImageModel from "./vetements.image.model";
 
 /**
  * Modèle représentant un vetement avec le backend
@@ -16,7 +17,7 @@ interface VetementModel {
     etat?               : VetementCaracteristiquesModel;
     
     readonly couleurs   : string;
-    readonly image?     : string | null;
+    image?              : VetementImageModel | null;
     readonly description: string;
     statut              : StatutVetementEnum;
 }

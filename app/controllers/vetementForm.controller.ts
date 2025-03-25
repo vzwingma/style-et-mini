@@ -1,5 +1,5 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
-import { alphanumSort, triSort } from "../components/commons/CommonsUtils";
+import { alphanumSort, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
@@ -34,7 +34,7 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
     return taillesMesures
         .filter((taille) => taille.categorie === dressing.categorie)
         .filter((taille) => taille.type === form.type.typeTaille)
-        .sort((t1, t2) => triSort(t1.tri, t2.tri));
+        .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
 
 
@@ -55,7 +55,7 @@ export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: Dressin
         .filter((etat: ParamEtatVetementsModel) => etat.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .sort((e1, e2) => triSort(e1.tri, e2.tri));
+        .sort((e1, e2) => numSort(e1.tri, e2.tri));
 }
 
 /**
@@ -74,7 +74,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
             return {
                 ...form,
                 id: vetementInEdition.id,
-                imageContent: vetementInEdition.image,
+                image: vetementInEdition.image,
                 libelle: vetementInEdition.libelle,
                 dressing: dressing,
                 type: paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id),
@@ -103,11 +103,10 @@ export const pickImageForm = async (setForm: Function) => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: true,
-        aspect: [1, 1],
         quality: 1,
     });
     if (!result.canceled) {
-        setImageForm(result.assets[0].uri, setForm);
+        setImageForm(result.assets[0], setForm);
     }
 };
 /**
@@ -115,9 +114,14 @@ export const pickImageForm = async (setForm: Function) => {
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setImageForm(image: string, setForm: Function) {
+export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, imageId: uuidGen(), imageContent: image }
+        return { ...form, image : {
+            id: uuidGen(), 
+            contenu: image.uri,
+            largeur: image.width, 
+            hauteur: image.height 
+        }}
     });
 }
 
