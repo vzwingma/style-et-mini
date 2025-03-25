@@ -86,48 +86,68 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
 
 /**
  * Retourne l'icône du type de vêtement (cf. https://www.flaticon.com/)
- * @param typeVetements nom du type de vêtement
+ * @param typeVetements id du type de vêtement
  * @returns l'icône 
  */
 export function getTypeVetementIcon(typeVetements: string): any {
     typeVetements = typeVetements.toLocaleLowerCase();
     switch (typeVetements) {
-        case 'accessoires':
-            return require('@/assets/icons/accessories-outline.png');
-        case 'accessoire de bain':
-            return require('@/assets/icons/swimming-outline.png');
-        case 'body':
-            return require('@/assets/icons/body-outline.png');
-        case 'chaussettes':
-            return require('@/assets/icons/socks-outline.png');
-        case 'chaussures':
-            return require('@/assets/icons/shoes-outline.png');
-        case 'culotte/shorty':
-            return require('@/assets/icons/underwear-outline.png');
-        case 'débardeur':
-            return require('@/assets/icons/undershirt-outline.png');
-        case 'gilet':
-            return require('@/assets/icons/sweater-outline.png');            
-        case 'legging':
-            return require('@/assets/icons/leggins-outline.png');
-        case 'maillot de bain':
-            return require('@/assets/icons/swim-clothes-outline.png');
-        case 'manteau':
-            return require('@/assets/icons/coat-outline.png');
-        case 'pantalon':
-            return require('@/assets/icons/pants-outline.png');
-        case 'pyjama':
-            return require('@/assets/icons/pyjama-outline.png');
-        case 'robe':
-            return require('@/assets/icons/dress2-outline.png');
-        case 'short':
-            return require('@/assets/icons/shorts-outline.png');
-        case 'sweat':
-            return require('@/assets/icons/sweat-shirt-outline.png');
-        case 't-shirt':
-            return require('@/assets/icons/tshirt-outline.png');
-        case 'tshirt':
-            return require('@/assets/icons/tshirt-outline.png');
+        case '67c9720416c735a1d539286c':
+            return require('@/assets/icons/accessories-outline.png');   // accessoires
+        case '67c9712e16c735a1d5392869':
+            return require('@/assets/icons/swimming-outline.png');      // accessoires de bain
+        case '67e3304008d64ab0e3683d6b':
+            return require('@/assets/icons/blouse-outline.png');        // blouse
+        case '67baf8e7445ea1ea588258de':
+            return require('@/assets/icons/body-outline.png');          // body
+        case '67baf923445ea1ea588258e0':
+            return require('@/assets/icons/socks-outline.png');         // chaussettes
+        case '67bcd7babff50425c7725e3b':
+            return require('@/assets/icons/shoes-outline.png');         // chaussures
+        case '67e330ac08d64ab0e3683d70':
+            return require('@/assets/icons/tights-outline.png');        // collant
+        case '67c970a616c735a1d5392865':
+            return require('@/assets/icons/jumpsuit-outline.png');      // combinaison
+        case '67c9719116c735a1d539286a':
+            return require('@/assets/icons/underwear-outline.png');     // culotte/shorty
+        case '67c971c116c735a1d539286b':
+            return require('@/assets/icons/undershirt-outline.png');    // débardeur
+        case '67c9708b16c735a1d5392864':
+            return require('@/assets/icons/sweater-outline.png');       // gilet  
+        case '67e330be08d64ab0e3683d72':
+            return require('@/assets/icons/trench-coat-outline.png');   // Impermeable
+        case '67e3307a08d64ab0e3683d6c':
+            return require('@/assets/icons/skirt-outline.png');         // jupe
+        case '67e330d708d64ab0e3683d75':
+            return require('@/assets/icons/skirt-short-outline.png');   // jupe-short
+        case '67c9707216c735a1d5392862':
+            return require('@/assets/icons/leggins-outline.png');       // legging
+        case '67c9711416c735a1d5392868':
+            return require('@/assets/icons/swim-clothes-outline.png');  // maillot de bain
+        case '67e330a008d64ab0e3683d6f':
+            return require('@/assets/icons/undershirt2-outline.png');   // maillot de corps
+        case '67bcd836bff50425c7725e3f':
+            return require('@/assets/icons/coat-outline.png');          // manteau
+        case '67e330c808d64ab0e3683d73':
+            return require('@/assets/icons/cropped-pant-outline.png');  // pantacourt
+        case '67bcd7fdbff50425c7725e3e':
+            return require('@/assets/icons/pants-outline.png');         // pantalon
+        case '67e3309208d64ab0e3683d6e':
+            return require('@/assets/icons/pullover-outline.png');      // pull
+        case '67c970ea16c735a1d5392867':
+            return require('@/assets/icons/pyjama-outline.png');        // pyjama
+        case '67bcd7d2bff50425c7725e3c':
+            return require('@/assets/icons/dress2-outline.png');        // robe
+        case '67e330cf08d64ab0e3683d74':
+            return require('@/assets/icons/long-pants-outline.png');    // sarouel
+        case '67c9707f16c735a1d5392863':
+            return require('@/assets/icons/shorts-outline.png');        // short
+        case '67c970bf16c735a1d5392866':
+            return require('@/assets/icons/sweat-shirt-outline.png');   // sweat-shirt
+        case '67c9704b2875e9983ae97589':
+            return require('@/assets/icons/tshirt-outline.png');        // t-shirt
+        case '67e330b708d64ab0e3683d71':
+            return require('@/assets/icons/jacket-outline.png');        // veste
         default:
             return require('@/assets/icons/clothes-outline.png');
     }
