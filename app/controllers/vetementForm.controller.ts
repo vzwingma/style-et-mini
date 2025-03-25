@@ -103,7 +103,6 @@ export const pickImageForm = async (setForm: Function) => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: true,
-        aspect: [1, 1],
         quality: 1,
     });
     if (!result.canceled) {
