@@ -46,25 +46,23 @@ export function numSort(a: number, b: number) {
  *          retourne l'image d'origine.
  */
 export function resizeImage(image: VetementImageModel, maxSize : number): VetementImageModel {
-    if (image && image.contenu) {
+    if (image?.contenu) {
         const ratioImage = image.largeur / image.hauteur;
-        let imageResized = {} as VetementImageModel; 
         if(ratioImage > 1) {
-            imageResized = {
+            return {
                 ...image,
                 contenu: image.contenu,
                 largeur: maxSize,
                 hauteur: maxSize / ratioImage
             }
         } else {
-            imageResized = {
+            return {
                 ...image,
                 contenu: image.contenu,
                 largeur: maxSize * ratioImage,
                 hauteur: maxSize
             }
         }
-        return imageResized;
     }
     return image;
 }
