@@ -112,7 +112,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      */
     const renderTypeItem = (item: ParamTypeVetementsModel): React.JSX.Element => (
         <View style={[styles.listItemStyle, { flexDirection: 'row' }]}>
-            <Image source={getTypeVetementIcon(item.libelle)} style={styles.iconItemStyle} />
+            <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
             <ThemedText style={{ top: 15 }}>{item.libelle}</ThemedText>
         </View>
     );
@@ -158,7 +158,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             style={!errorForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
-                            maxHeight={300}
+                            maxHeight={50}
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
                             labelField="libelle" valueField="id"
                             placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage + ''}

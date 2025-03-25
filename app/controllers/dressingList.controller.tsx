@@ -13,7 +13,7 @@ export function groupeVetementByType(vetements: VetementModel[]): Map<string, Ve
   const map = new Map<string, VetementModel[]>();
 
   vetements.forEach((vetement) => {
-    const type = vetement.type.libelle;
+    const type = vetement.type.id;
     if (map.has(type)) {
       map.get(type)?.push(vetement);
     } else {
