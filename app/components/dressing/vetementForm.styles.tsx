@@ -26,8 +26,6 @@ export const styles = StyleSheet.create({
     },
     photo: {
         backgroundColor: Colors.app.background,
-        width: 250,
-        height: 250,
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: Colors.app.backgroundLight,
@@ -122,6 +120,7 @@ export const styles = StyleSheet.create({
     // Style de la liste déroulante d'un dropdown
     listStyle: {
         backgroundColor: Colors.app.backgroundLight,
+        height: '90%',
     },
     // Style des éléments de la liste déroulante d'un dropdown
     listItemStyle: {

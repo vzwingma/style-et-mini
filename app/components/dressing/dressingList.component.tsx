@@ -94,7 +94,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
                 <ThemedView key={"key_groupeId_" + groupe} style={styles.groupeLabel}>
-                    <ThemedText type="default">{groupe} ({vetements.length})</ThemedText>
+                    <ThemedText type="default">{vetements[0]?.type?.libelle} ({vetements.length})</ThemedText>
                     <Image source={getTypeVetementIcon(groupe)} style={styles.icon} />
                 </ThemedView>
             );
