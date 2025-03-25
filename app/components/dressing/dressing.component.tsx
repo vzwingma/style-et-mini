@@ -11,6 +11,12 @@ import { DressingListComponent } from './dressingList.component';
 import VetementModel from '@/app/models/vetements.model';
 
 
+/**
+ * Propriétés pour le composant DressingComponent.
+ *
+ * @typedef {Object} DressingComponentProps
+ * @property {DressingModel} dressing - Le modèle de dressing à afficher.
+ */
 export type DressingComponentProps = {
   readonly dressing: DressingModel;
 };
@@ -29,7 +35,7 @@ export type DressingComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export default function DressingComponent({ dressing }: DressingComponentProps) {
+export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
 
   const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,9 +45,14 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
   useEffect(() => {
     // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
     if (openVetementForm) return;
-    const idDressing = dressing.id;
-    loadVetementsDressing({ idDressing, setIsLoading, setVetements });
-  }, [dressing, openVetementForm]);
+    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
+  }, [openVetementForm]);
+
+  // Changement de l'état du formulaire de vêtement si le dressing change
+  useEffect(() => {
+    setOpenVetementForm(false);
+    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
+  }, [dressing]);
 
 
   /** Ouverture/Fermeture du menu */
@@ -52,14 +63,18 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
 
   /**
-   * 
-   * @returns composant principal du dressing
+   * Retourne le contenu du panneau en fonction de l'état actuel du dressing.
+   *
+   * @returns {JSX.Element} - Un composant JSX représentant le contenu du panneau.
+   * Si le dressing est indéfini, nul ou en cours de chargement, retourne un indicateur d'activité.
+   * Si le dressing contient des vêtements et que le formulaire de vêtement n'est pas ouvert, retourne la liste des vêtements.
+   * Sinon, retourne un composant indiquant que le dressing est vide avec une option pour ajouter un vêtement.
    */
   const getPanelContent = () => {
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else if (vetements?.length !== 0 ) {
+    else if (vetements?.length !== 0) {
       return (openVetementForm === false && <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
     }
     else {
@@ -70,9 +85,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 
   return (
     <View style={styles.container}>
-
       {getPanelContent()}
-
       <MenuDrawer
         open={openVetementForm}
         position={'right'}
@@ -82,8 +95,7 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
         drawerPercentage={98}
         animationTime={250}
         overlay={true}
-        opacity={0.3}
-      />
+        opacity={0.3} />
     </View>
   );
 }
@@ -91,6 +103,6 @@ export default function DressingComponent({ dressing }: DressingComponentProps) 
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
-    minHeight: 750
-  },
+    minHeight: 800,
+  }
 });

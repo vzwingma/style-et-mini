@@ -18,14 +18,14 @@ export enum API_VERBS {
  * Paramètres pour les services.
  */
 export const enum SERVICES_PARAMS {
-    ID_DRESSING         = "<IDD>",
-    ID_VETEMENT         = "<IDV>"
+    ID_DRESSING = "<IDD>",
+    ID_VETEMENT = "<IDV>"
 }
 
 /**
  * L'URI racine pour les requêtes API.
  */
-const ROOT_URI = "api/v1";
+const ROOT_URI   = "api/v1";
 const GET_PARAMS = ROOT_URI+"/params/vetements";
 
 

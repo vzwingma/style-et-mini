@@ -4,6 +4,7 @@ import React from 'react';
 import { ThemedText } from '../commons/ThemedText';
 import { Colors } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
+import { resizeImage } from '../commons/CommonsUtils';
 
 
 export type VetementItemComponentProps = {
@@ -20,14 +21,20 @@ export type VetementItemComponentProps = {
  **/
 export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, editVetement }: VetementItemComponentProps) => {
 
+    if (vetement.image) {
+        // recalcul de la taille de l'image suivant la mise en page
+        vetement.image = resizeImage(vetement.image, 95);
+    }
     return (
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
-                {vetement.image  && <Image source={{ uri: vetement.image }} style={styles.photo} />}
-                {!vetement.image && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} 
-                                                    style={[styles.iconBig ]}  />}
-                {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')} 
-                                                    style={[styles.iconSmall ]} />} 
+                <View style={styles.photoFrame}>
+                    {vetement.image && <Image source={{ uri: vetement.image.contenu }} style={[styles.photo, { width: vetement.image.largeur, height: vetement.image.hauteur }]} />}
+                    {!vetement.image && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
+                        style={[styles.iconBig]} />}
+                    {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
+                        style={[styles.iconSmall]} />}
+                </View>
                 <ThemedText type="default">{vetement.libelle}</ThemedText>
             </View>
         </Pressable>
@@ -40,6 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.app.background,
         width: 120,
         height: 124,
+        paddingTop: 5,
         margin: 5,
         alignItems: 'center',
         borderColor: Colors.app.backgroundLight,
@@ -48,17 +56,19 @@ const styles = StyleSheet.create({
         borderEndEndRadius: 10,
         cursor: 'pointer',
     },
-    photo: {
+    photoFrame: {
         width: 95,
         height: 95,
-        cursor: 'pointer',
-        margin: 4,
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    photo: {
+        cursor: 'pointer',
     },
     iconSmall: {
-        position: 'absolute', 
-        bottom: 1, 
-        right: 1, 
+        position: 'absolute',
+        bottom: 1,
+        right: 1,
         tintColor: Colors.app.color,
         width: 30,
         height: 30,
