@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, SectionList, Pressable } from 'react-native'
+import { StyleSheet, SectionList, Pressable } from 'react-native'
 
 import React, { useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
@@ -27,77 +27,79 @@ import ParamEtatsVetements from './paramsEtatsVetements.component';
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
 export default function ReglagesComponent() {
-  
+
   const [open, setOpen] = useState(true);
   const [menu, setMenu] = useState<MenuParametragesEnum | null>(null);
 
 
-    /** Ouverture/Fermeture du menu */
-    function toggleOpen(item:any) : void {
-      setMenu(item?.item);
-      setOpen(!open);
-    };
+  /** Ouverture/Fermeture du menu */
+  function toggleOpen(item: any): void {
+    setMenu(item?.item);
+    setOpen(!open);
+  };
 
-    const menuContent = (menu: MenuParametragesEnum | null) => {
-        switch(menu){
-          case MenuParametragesEnum.MENU_TYPE_VETEMENTS:
-            return <ParamTypesVetements />
-          case MenuParametragesEnum.MENU_TAILLES:
-            return <ParamTaillesMesures />
-            case MenuParametragesEnum.MENU_USAGES:
-              return <ParamUsagesVetements />
-              case MenuParametragesEnum.MENU_ETATS:
-                return <ParamEtatsVetements />
-          default:
-            return <></>
+  const menuContent = (menu: MenuParametragesEnum | null) => {
+    switch (menu) {
+      case MenuParametragesEnum.MENU_TYPE_VETEMENTS:
+        return <ParamTypesVetements />
+      case MenuParametragesEnum.MENU_TAILLES:
+        return <ParamTaillesMesures />
+      case MenuParametragesEnum.MENU_USAGES:
+        return <ParamUsagesVetements />
+      case MenuParametragesEnum.MENU_ETATS:
+        return <ParamEtatsVetements />
+      default:
+        return <></>
+    }
+  };
+
+  const drawerContent = () => {
+    return (
+      <Pressable style={styles.animatedBox}>
+
+        {
+          menuContent(menu)
         }
-    };
+      </Pressable>
+    );
+  };
 
-    const drawerContent = () => {
-      return (
-        <Pressable style={styles.animatedBox}>
 
-          {
-            menuContent(menu)
-          }
-        </Pressable>
-      );
-    };
-
-    
   return (
     <ThemedView style={styles.container}>
       <SectionList
         sections={[
-          {title: 'Paramétrages', data: 
-            [MenuParametragesEnum.MENU_TYPE_VETEMENTS, 
-              MenuParametragesEnum.MENU_TAILLES, 
+          {
+            title: 'Paramétrages', data:
+              [MenuParametragesEnum.MENU_TYPE_VETEMENTS,
+              MenuParametragesEnum.MENU_TAILLES,
               MenuParametragesEnum.MENU_USAGES,
               MenuParametragesEnum.MENU_ETATS
-            ]},
+              ]
+          },
         ]}
-        renderItem={({item}) => <ThemedView style={styles.menuItem} >
-                                  <ThemedText type='default' onPress={() => toggleOpen({item})}>{item}</ThemedText>
-                                </ThemedView>}
-        renderSectionHeader={({section}) => (
+        renderItem={({ item }) => <ThemedView style={styles.menuItem} >
+          <ThemedText type='default' onPress={() => toggleOpen({ item })}>{item}</ThemedText>
+        </ThemedView>}
+        renderSectionHeader={({ section }) => (
           <ThemedView style={styles.menuHeader}>
             <ThemedText type="title">{section.title}</ThemedText>
           </ThemedView>
         )}
         keyExtractor={item => `basicListEntry-${item}`}
-        style={{width: '100%', height: 685}}
+        style={{ width: '100%', height: 685 }}
       />
-      
-        <MenuDrawer
-          open={!open}
-          position={'right'}
-          drawerContent={drawerContent()}
-          drawerPercentage={98}
-          animationTime={250}
-          overlay={true}
-          opacity={0.8}
-        />
-      </ThemedView>
+
+      <MenuDrawer
+        open={!open}
+        position={'right'}
+        drawerContent={drawerContent()}
+        drawerPercentage={98}
+        animationTime={250}
+        overlay={true}
+        opacity={0.8}
+      />
+    </ThemedView>
   );
 }
 
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 1,
     overflow: 'scroll',
-    
+
   },
   body: {
     flex: 1,

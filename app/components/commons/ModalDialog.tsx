@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
-import { Alert, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 
 
@@ -30,32 +30,30 @@ export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text
 
 
     return (
-        <>
-            <Modal animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{text}</Text>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={closeModal}>
-                                <Text style={styles.textStyle}>Annuler</Text>
-                            </Pressable>
-                            <Pressable
-                                style={[styles.button, styles.buttonOpen]}
-                                onPress={ackModal}>
-                                <Text style={styles.textStyle}>Valider</Text>
-                            </Pressable>
-                        </View>
+        <Modal animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalText}>{text}</Text>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={closeModal}>
+                            <Text style={styles.textStyle}>Annuler</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonOpen]}
+                            onPress={ackModal}>
+                            <Text style={styles.textStyle}>Valider</Text>
+                        </Pressable>
                     </View>
                 </View>
-            </Modal>
-        </>
+            </View>
+        </Modal>
     )
 }
 

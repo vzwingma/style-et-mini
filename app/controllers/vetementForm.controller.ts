@@ -447,7 +447,6 @@ function deleteVetement(form: FormVetementModel,
         { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
     ];
 
-    const isEdition = (form.id !== null && form.id !== "" && form.id !== undefined);
     console.log("Suppression du vêtement", form);
     //  Appel au backend pour supprimer le vêtement
     callDELETEBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params)
