@@ -120,7 +120,6 @@ export const styles = StyleSheet.create({
     // Style de la liste déroulante d'un dropdown
     listStyle: {
         backgroundColor: Colors.app.backgroundLight,
-        height: '90%',
     },
     // Style des éléments de la liste déroulante d'un dropdown
     listItemStyle: {
