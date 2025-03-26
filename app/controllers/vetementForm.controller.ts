@@ -19,8 +19,8 @@ import { v7 as uuidGen } from 'uuid';
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
     return typeVetements
         .filter((type) => type.categories
-            .filter((cat) => cat === dressing.categorie)
-            .length > 0)
+                                .filter((cat) => cat === dressing.categorie)
+                                .length > 0)
         .sort((t1, t2) => alphanumSort(t1.libelle, t2.libelle));
 }
 
@@ -32,7 +32,9 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
         return [];
     }
     return taillesMesures
-        .filter((taille) => taille.categorie === dressing.categorie)
+        .filter((taille) => taille.categories
+                                    .filter((cat) => cat === dressing.categorie)
+                                    .length > 0)
         .filter((taille) => taille.type === form.type.typeTaille)
         .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
@@ -117,7 +119,7 @@ export const pickImageForm = async (setForm: Function) => {
 export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, image : {
-            id: uuidGen(), 
+            id: uuidGen().replace(/-/g, "").substring(0, 24),
             contenu: image.uri,
             largeur: image.width, 
             hauteur: image.height 
