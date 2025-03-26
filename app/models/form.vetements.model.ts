@@ -6,6 +6,7 @@ import VetementModel from "./vetements.model";
 import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
 import VetementImageModel from "./vetements.image.model";
+import ParamMarqueVetementsModel from "./params/paramMarqueVetements.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -14,15 +15,20 @@ interface FormVetementModel {
     id           : string;
     dressing     : DressingModel;
     libelle      : string;
+    image?       : VetementImageModel;
+    
     type         : ParamTypeVetementsModel;
     taille       : ParamTailleVetementsModel;
     petiteTaille : boolean;
+    
     usages       : ParamUsageVetementsModel[];
     usagesListe  : string[];
+    
     saisons      : SaisonVetementEnum[];
-    etat         : ParamEtatVetementsModel;
-    image?       : VetementImageModel;
     couleurs     : string;
+    collection   : string;
+    marque       : ParamMarqueVetementsModel;    
+    etat         : ParamEtatVetementsModel;
     description  : string;
     statut       : StatutVetementEnum;
 }
@@ -57,6 +63,11 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
             }}),
         saisons: form.saisons,
         couleurs: form.couleurs,
+        collection: form.collection,
+        marque: {
+            id          : form.marque.id,
+            libelle     : form.marque.libelle,
+        },
         description: form.description,
         statut: form.statut,
     };

@@ -10,15 +10,18 @@ interface VetementModel {
     readonly id         : string;
     dressing            : DressingModel;
     readonly libelle    : string;
+    image?              : VetementImageModel | null;
+
     readonly type       : VetementCaracteristiquesModel;
     readonly taille     : VetementCaracteristiquesModel;
     readonly usages     : VetementCaracteristiquesModel[];
-    readonly saisons    : SaisonVetementEnum[];
+    readonly saisons    : SaisonVetementEnum[];    
+    readonly couleurs?  : string;
+
     etat?               : VetementCaracteristiquesModel;
-    
-    readonly couleurs   : string;
-    image?              : VetementImageModel | null;
-    readonly description: string;
+    readonly collection?: string;
+    readonly marque     : VetementCaracteristiquesModel;
+    readonly description?: string;
     statut              : StatutVetementEnum;
 }
 export default VetementModel;

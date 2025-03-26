@@ -14,6 +14,7 @@ import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 import { CategorieDressingEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import { v7 as uuidGen } from 'uuid';
+import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
@@ -35,7 +36,7 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
         .filter((taille) => taille.categories
                                     .filter((cat) => cat === dressing.categorie)
                                     .length > 0)
-        .filter((taille) => taille.type === form.type.typeTaille)
+        .filter((taille) => taille.type === form.type.type)
         .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
 
@@ -252,6 +253,27 @@ export function setDescriptionForm(description: string, setForm: Function) {
 }
 
 
+/**
+ * Enregistre la collection de vêtements dans le formulaire
+ * @param marque description du vêtement
+ * @param setForm formulaire à mettre à jour
+ */
+export function setMarqueForm(marque: ParamMarqueVetementsModel, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, marque: marque }
+    });
+}
+
+/**
+ * Enregistre la collection de vêtements dans le formulaire
+ * @param collection description du vêtement
+ * @param setForm formulaire à mettre à jour
+ */
+export function setCollectionForm(collection: string, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, collection: collection }
+    });
+}
 
 /**
  * Validation du formulaire

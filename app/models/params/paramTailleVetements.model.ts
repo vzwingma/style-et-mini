@@ -1,11 +1,9 @@
-import { TypeTailleEnum } from "@/constants/AppEnum";
-import ParamGenericVetementsModel from "./paramGenericVetements.model";
+import ParamGenericVetementsChaussuresModel from "./paramGenericVetementsChaussures.model";
 
 /**
  * Modèle représentant une taille de vetements
  */
-interface ParamTailleVetementsModel extends ParamGenericVetementsModel {
+interface ParamTailleVetementsModel extends ParamGenericVetementsChaussuresModel {
     readonly tri        : number;
-    readonly type       : TypeTailleEnum;
 }
 export default ParamTailleVetementsModel;
