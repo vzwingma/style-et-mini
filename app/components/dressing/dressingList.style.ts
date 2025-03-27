@@ -42,6 +42,7 @@ export const styles = StyleSheet.create({
         alignItems: 'flex-start',
         cursor: 'pointer',
         marginRight: 5,
+        width: '80%',
     },
     icon: {
         marginRight: 5,
@@ -87,8 +88,6 @@ export const styles = StyleSheet.create({
         height: 20,
     },
     inputSearchStyle: {
-        height: 40,
         fontSize: Fonts.app.size,
-        backgroundColor: 'red',
     },
 });

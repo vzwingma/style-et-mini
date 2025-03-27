@@ -117,7 +117,7 @@ function filtreVetementByCaracteristique(vetement: VetementModel, type: Caracter
  * - Ajoute les valeurs des énumérations (statut, saisons) aux filtres.
  * - Trie les filtres par ordre alphabétique en fonction de leur type et libellé.
  */
-export function getFiltersAvailables(vetements: VetementModel[]): DressingListFiltreModel[] {
+export function calculFiltresPossibles(vetements: VetementModel[]): DressingListFiltreModel[] {
 
   let filtres: DressingListFiltreModel[] = [];
 
@@ -153,6 +153,7 @@ function addCaracteristiqueInFilter(filtres: DressingListFiltreModel[],
       if (!filtres.find(filtre => filtre.id === data.id)) {
         filtres.push({
           id: data.id,
+          typeLibelle: type+data.libelle,
           libelle: data.libelle,
           type: type,
         });
@@ -187,6 +188,7 @@ function addEnumsInFilter(filtres: DressingListFiltreModel[], dataStatuts: Statu
         filtres.push({
           id: data,
           libelle: libelle,
+          typeLibelle: type+libelle,
           type: type
         });
       }
