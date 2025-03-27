@@ -137,7 +137,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14 }}>  {item.type}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14, fontStyle: 'italic'}}>  {item.type}</ThemedText>
                 <ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{item.libelle}</ThemedText>
             </View>
         );

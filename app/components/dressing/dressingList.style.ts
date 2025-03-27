@@ -89,5 +89,6 @@ export const styles = StyleSheet.create({
     },
     inputSearchStyle: {
         fontSize: Fonts.app.size,
+        color: Colors.dark.text,
     },
 });
