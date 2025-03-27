@@ -268,7 +268,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorForm?.marqueInError ? 'Selectionnez une marque' : errorForm?.marqueMessage + ''}
                             value={form?.marque}
                             onChange={(marque: ParamMarqueVetementsModel) => setMarqueForm(marque, setForm)}
-                            renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={styles.icon} />}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={styles.icon} />}
                         />
                     </View>
                     <View style={{ flexDirection: 'row' }}>
