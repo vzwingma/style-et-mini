@@ -27,7 +27,7 @@ export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], d
 
 
 
-// Filtre les tailles de mesures en fonction de la catégorie du dressing
+// Filtre les tailles de mesures en fonction de la catégorie du dressing et du type de vêtement
 export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamTailleVetementsModel[] {
     if (form?.type === undefined || form?.type === null) {
         return [];
@@ -61,6 +61,21 @@ export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: Dressin
         .sort((e1, e2) => numSort(e1.tri, e2.tri));
 }
 
+
+// Filtre les marques en fonction de la catégorie du dressing et du type de vêtement
+export function getMarquesForm(marques: ParamMarqueVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamMarqueVetementsModel[] {
+    if (form?.type === undefined || form?.type === null) {
+        return [];
+    }
+    return marques
+        .filter((marque: ParamMarqueVetementsModel) => marque.categories
+            .filter((cat) => cat === dressing.categorie)
+            .length > 0)
+        .filter((marque) => marque.type === form.type.type)            
+        .sort((m1, m2) => alphanumSort(m1.libelle, m2.libelle));
+}
+
+
 /**
  * Met à jour le libellé du formulaire de vêtement.
  *
@@ -69,7 +84,7 @@ export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: Dressin
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
     setForm: Function,
-    { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements }: VetementsFormParamsTypeProps) {
+    { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) {
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
 
@@ -83,12 +98,18 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
                 type: paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id),
                 taille: paramsTaillesMesures?.find((taille) => taille.id === vetementInEdition.taille.id),
                 petiteTaille: vetementInEdition.taille.petite,
+
                 usagesListe: vetementInEdition.usages.map((usage) => usage.id),
                 usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
+                
                 saisons: vetementInEdition.saisons ?? [],
-                etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
                 couleurs: vetementInEdition.couleurs,
+
+                marque: paramsMarquesVetements?.find((marque) => marque.id === vetementInEdition.marque?.id),
+                collection: vetementInEdition.collection,
+                etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
                 description: vetementInEdition.description,
+
                 statut: vetementInEdition.statut ?? StatutVetementEnum.ACTIF
             }
         });
@@ -396,6 +417,18 @@ export function validateForm(form: FormVetementModel | null,
     else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return { ...errors, usageInError: false, usageMessage: null }
+        });
+    }
+
+    if (form.marque === undefined || form.marque === null) {
+        errors = true;
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, marqueInError: true, marqueMessage: "La marque est obligatoire" }
+        });
+    }
+    else {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, marqueInError: false, marqueMessage: null }
         });
     }
 

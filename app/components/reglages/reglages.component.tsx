@@ -10,6 +10,7 @@ import ParamTaillesMesures from './paramsTaillesMesures.component';
 import { MenuParametragesEnum } from '@/constants/AppEnum';
 import ParamUsagesVetements from './paramsUsagesVetements.component';
 import ParamEtatsVetements from './paramsEtatsVetements.component';
+import ParamMarquesVetements from './paramsMarquesVetements.component';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -48,6 +49,8 @@ export default function ReglagesComponent() {
         return <ParamUsagesVetements />
       case MenuParametragesEnum.MENU_ETATS:
         return <ParamEtatsVetements />
+        case MenuParametragesEnum.MENU_MARQUES:
+          return <ParamMarquesVetements />        
       default:
         return <></>
     }
@@ -71,10 +74,12 @@ export default function ReglagesComponent() {
         sections={[
           {
             title: 'Paramétrages', data:
-              [MenuParametragesEnum.MENU_TYPE_VETEMENTS,
-              MenuParametragesEnum.MENU_TAILLES,
-              MenuParametragesEnum.MENU_USAGES,
-              MenuParametragesEnum.MENU_ETATS
+              [
+                MenuParametragesEnum.MENU_TYPE_VETEMENTS,
+                MenuParametragesEnum.MENU_TAILLES,
+                MenuParametragesEnum.MENU_USAGES,
+                MenuParametragesEnum.MENU_ETATS,
+                MenuParametragesEnum.MENU_MARQUES,
               ]
           },
         ]}

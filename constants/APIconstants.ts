@@ -38,6 +38,7 @@ export enum SERVICES_URL {
     SERVICE_PARAMS_TYPE_VETEMENTS   = GET_PARAMS+"/types",
     SERVICE_PARAMS_TAILLES_MESURES  = GET_PARAMS+"/taillesMesures",
     SERVICE_PARAMS_USAGES           = GET_PARAMS+"/usages",
+    SERVICE_PARAMS_MARQUES          = GET_PARAMS+"/marques",
     SERVICE_PARAMS_ETATS            = GET_PARAMS+"/etats",
 
     SERVICE_DRESSINGS       = ROOT_URI+"/dressing",

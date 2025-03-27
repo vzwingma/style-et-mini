@@ -5,6 +5,7 @@ import ParamTailleVetementsModel from "../models/params/paramTailleVetements.mod
 import DressingModel from "../models/dressing.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
+import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
 
 
 /**
@@ -22,6 +23,9 @@ type AppContextType = {
 
     usages: ParamUsageVetementsModel[];
     setUsages: React.Dispatch<React.SetStateAction<ParamUsageVetementsModel[] | []>>;
+
+    marques: ParamTypeVetementsModel[];
+    setMarques: React.Dispatch<React.SetStateAction<ParamTypeVetementsModel[] | []>>;
 
     etats: ParamEtatVetementsModel[];
     setEtats: React.Dispatch<React.SetStateAction<ParamEtatVetementsModel[] | []>>;
@@ -43,6 +47,7 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
     const [typeVetements, setTypeVetements]                 = useState<ParamTypeVetementsModel[]>([]);
     const [taillesMesures, setTaillesMesures]               = useState<ParamTailleVetementsModel[]>([]);
     const [usages, setUsages]                               = useState<ParamUsageVetementsModel[]>([]);
+    const [marques, setMarques]                             = useState<ParamMarqueVetementsModel[]>([]);
     const [etats, setEtats]                                 = useState<ParamEtatVetementsModel[]>([]);
 
     const [dressings, setDressings]                         = useState<DressingModel[]>([]);
@@ -57,6 +62,8 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         setTypeVetements,
         taillesMesures,
         setTaillesMesures,
+        marques,
+        setMarques,
         usages,
         setUsages,
         etats,
@@ -65,6 +72,7 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         backendConnexionData,
         typeVetements,
         taillesMesures,
+        marques,
         usages,
         dressings,
         etats

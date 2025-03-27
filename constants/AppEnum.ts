@@ -8,6 +8,7 @@ export enum MenuParametragesEnum {
   MENU_TAILLES          = 'Tailles et Mesures',
   MENU_USAGES           = 'Usages',
   MENU_ETATS            = 'Etats',
+  MENU_MARQUES          = 'Marques',
 }
 
 
