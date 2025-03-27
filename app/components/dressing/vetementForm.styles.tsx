@@ -11,18 +11,14 @@ export const styles = StyleSheet.create({
         padding: 5
     },
     body: {
-        flex: 1,
-        flexDirection: 'column',
         width: '100%',
         backgroundColor: Colors.app.background
     },
     // Formulaire
     form: {
-        flex: 2,
-        flexDirection: 'column',
         padding: 10,
         margin: 0,
-        backgroundColor: Colors.app.backgroundLight,
+        backgroundColor: Colors.app.backgroundLight
     },
     photo: {
         backgroundColor: Colors.app.background,
@@ -33,6 +29,7 @@ export const styles = StyleSheet.create({
         borderStartStartRadius: 10,
         borderEndEndRadius: 10,
         cursor: 'pointer',
+        margin: 10,
     },
     // Label de formulaire
     label: {
