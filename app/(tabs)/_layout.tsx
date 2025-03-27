@@ -15,7 +15,7 @@ import connectToBackend, { getDressings } from '../controllers/index.controller'
 import DressingScreen from './dressing';
 import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
 import ReglageScreen from './reglages';
-import { getParamsEtatsVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
+import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
 
 export default function TabLayout() {
 
@@ -33,7 +33,8 @@ export default function TabLayout() {
     setTypeVetements,
     setTaillesMesures,
     setUsages,
-    setEtats } = useContext(AppContext)!;
+    setEtats,
+    setMarques } = useContext(AppContext)!;
   const [idDressing, setIdDressing] = useState<string | undefined>(undefined);
 
 
@@ -66,9 +67,11 @@ export default function TabLayout() {
     setError(null);
     if(tab === Tabs.INDEX && isLoading === false) {
       console.log("(Re)Chargement de la configuration...");
-      getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
-      getParamsUsagesVetements({  setUsages, setError, setIsLoading });
-      getParamsTypeVetements({    setTypeVetements, setError, setIsLoading });
+      getParamsTaillesVetements ({ setTaillesMesures, setError, setIsLoading });
+      getParamsUsagesVetements  ({  setUsages, setError, setIsLoading });
+      getParamsTypeVetements    ({    setTypeVetements, setError, setIsLoading });
+      getParamsMarquesVetements ({ setMarques, setError, setIsLoading });
+
       getParamsEtatsVetements({   setEtats, setError, setIsLoading });
   
       getDressings({ setIsLoading, setDressings, setError });

@@ -93,6 +93,8 @@ function filtreVetementByCaracteristique(vetement: VetementModel, type: Caracter
     return vetement.usages.some(usage => usage.id === filtre.id);
   } else if (type === CaracteristiqueVetementEnum.STATUT) {
     return vetement.statut === filtre.libelle;
+  } else if (type === CaracteristiqueVetementEnum.MARQUES) {
+    return vetement.marque?.id === filtre.id;
   } else if (type === CaracteristiqueVetementEnum.SAISON) {
     return vetement.saisons?.some(saison => saison === filtre.id) || vetement.saisons === undefined || vetement.saisons?.length < 1;
   }
@@ -104,7 +106,18 @@ function filtreVetementByCaracteristique(vetement: VetementModel, type: Caracter
  * @param vetements 
  * @returns 
  */
-export function getFiltersAvailables(vetements: VetementModel[]): DressingListFiltreModel[] {
+/**
+ * Génère une liste de filtres disponibles à partir d'une liste de vêtements.
+ *
+ * @param vetements - Liste des modèles de vêtements à analyser.
+ * @returns Une liste de modèles de filtres pour le dressing, triée par ordre alphabétique.
+ *
+ * Cette fonction effectue les opérations suivantes :
+ * - Ajoute les caractéristiques des vêtements (type, taille, usages) aux filtres.
+ * - Ajoute les valeurs des énumérations (statut, saisons) aux filtres.
+ * - Trie les filtres par ordre alphabétique en fonction de leur type et libellé.
+ */
+export function calculFiltresPossibles(vetements: VetementModel[]): DressingListFiltreModel[] {
 
   let filtres: DressingListFiltreModel[] = [];
 
@@ -112,6 +125,7 @@ export function getFiltersAvailables(vetements: VetementModel[]): DressingListFi
   addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPE);
   addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES);
   addCaracteristiqueInFilter(filtres, vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES);
+  addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES);
 
   addEnumsInFilter(filtres, vetements.map(vetement => vetement.statut));
   addEnumsInFilter(filtres, vetements.flatMap(vetement => vetement.saisons));
@@ -132,11 +146,14 @@ function addCaracteristiqueInFilter(filtres: DressingListFiltreModel[],
   dataVetement: VetementCaracteristiquesModel[],
   type: CaracteristiqueVetementEnum) {
 
-  dataVetement.filter((value, index, self) => self.indexOf(value) === index)
+  dataVetement
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .filter(data => data !== null && data !== undefined)
     .forEach(data => {
       if (!filtres.find(filtre => filtre.id === data.id)) {
         filtres.push({
           id: data.id,
+          typeLibelle: type+data.libelle,
           libelle: data.libelle,
           type: type,
         });
@@ -171,6 +188,7 @@ function addEnumsInFilter(filtres: DressingListFiltreModel[], dataStatuts: Statu
         filtres.push({
           id: data,
           libelle: libelle,
+          typeLibelle: type+libelle,
           type: type
         });
       }

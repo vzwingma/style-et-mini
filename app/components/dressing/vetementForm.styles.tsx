@@ -11,18 +11,14 @@ export const styles = StyleSheet.create({
         padding: 5
     },
     body: {
-        flex: 1,
-        flexDirection: 'column',
         width: '100%',
         backgroundColor: Colors.app.background
     },
     // Formulaire
     form: {
-        flex: 2,
-        flexDirection: 'column',
         padding: 10,
         margin: 0,
-        backgroundColor: Colors.app.backgroundLight,
+        backgroundColor: Colors.app.backgroundLight
     },
     photo: {
         backgroundColor: Colors.app.background,
@@ -33,6 +29,7 @@ export const styles = StyleSheet.create({
         borderStartStartRadius: 10,
         borderEndEndRadius: 10,
         cursor: 'pointer',
+        margin: 10,
     },
     // Label de formulaire
     label: {
@@ -83,6 +80,7 @@ export const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
+        width: '100%'
     },
     filtre: {
         flex: 1,
@@ -101,8 +99,8 @@ export const styles = StyleSheet.create({
         bottom: 3,
         right: 3,
         tintColor: Colors.app.color,
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         borderColor: Colors.app.color,
         borderWidth: 1,
         borderRadius: 10,

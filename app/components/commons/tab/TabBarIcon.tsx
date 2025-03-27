@@ -25,7 +25,7 @@ export function getTabIcon(selectedTab : boolean, dressingCat? : CategorieDressi
     case CategorieDressingEnum.ADULTE:
       return selectedTab ? require('@/assets/icons/dress.png') : require('@/assets/icons/dress-outline.png');
       case CategorieDressingEnum.ENFANT:
-        return selectedTab ? require('@/assets/icons/baby-clothes.png') : require('@/assets/icons/baby-clothes-outline.png');      
+        return selectedTab ? require('@/assets/icons/girl-dress.png') : require('@/assets/icons/girl-dress-outline.png');      
     case CategorieDressingEnum.BEBE:
       return selectedTab ? require('@/assets/icons/baby-clothes.png') : require('@/assets/icons/baby-clothes-outline.png');
   }

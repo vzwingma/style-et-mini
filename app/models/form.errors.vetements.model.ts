@@ -15,6 +15,9 @@ interface ErrorsFormVetementModel {
     usageInError  : boolean;
     usageMessage  : string | null;
 
+    marqueInError  : boolean;
+    marqueMessage  : string | null;
+
     etatInError  : boolean;
     etatMessage  : string | null;    
 }
@@ -22,12 +25,19 @@ interface ErrorsFormVetementModel {
 export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
     libelleInError  : false,
     libelleMessage  : null,
+    
     typeInError     : false,
     typeMessage     : null,
+    
     tailleInError   : false,
     tailleMessage   : null,
+    
     usageInError    : false,
     usageMessage    : null,
+
+    marqueInError   : false,
+    marqueMessage   : null,
+
     etatInError     : false,
     etatMessage     : null
 }

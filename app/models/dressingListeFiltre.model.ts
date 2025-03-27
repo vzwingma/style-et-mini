@@ -6,6 +6,7 @@ import { CaracteristiqueVetementEnum } from "@/constants/AppEnum";
  interface DressingListFiltreModel {
     readonly id             : string;
     readonly libelle        : string;
+    readonly typeLibelle    : string;
     readonly type           : CaracteristiqueVetementEnum;
 }
 export default DressingListFiltreModel;
