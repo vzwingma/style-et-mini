@@ -5,7 +5,7 @@ import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
-import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
+import { getFiltersAvailables as calculFiltresPossibles, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
@@ -38,7 +38,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
     useEffect(() => {
         // Recalcul des filtres disponibles
-        setFiltresDisponibles(getFiltersAvailables(vetementsInDressing));
+        setFiltresDisponibles(calculFiltresPossibles(vetementsInDressing));
     }, [vetementsInDressing]);
 
     useEffect(() => {
