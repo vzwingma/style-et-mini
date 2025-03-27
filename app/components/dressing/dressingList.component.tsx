@@ -5,7 +5,7 @@ import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
-import { getFiltersAvailables, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
+import { calculFiltresPossibles, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
@@ -31,14 +31,14 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
 
     const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([
-        {id: StatutVetementEnum.ACTIF, libelle: StatutVetementEnum.ACTIF, type: CaracteristiqueVetementEnum.STATUT}]);
+        {id: StatutVetementEnum.ACTIF, libelle: StatutVetementEnum.ACTIF, type: CaracteristiqueVetementEnum.STATUT, typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF},]);
     const [filtresDisponibles, setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
 
     const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
 
     useEffect(() => {
         // Recalcul des filtres disponibles
-        setFiltresDisponibles(getFiltersAvailables(vetementsInDressing));
+        setFiltresDisponibles(calculFiltresPossibles(vetementsInDressing));
     }, [vetementsInDressing]);
 
     useEffect(() => {
@@ -65,11 +65,15 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                         style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                         iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
-                        maxHeight={500}
                         mode='modal'
                         data={filtresDisponibles}
-                        labelField="libelle" valueField="id"
+                        labelField="typeLibelle" valueField="id"
                         placeholder={'Selectionnez un ou plusieurs filtre'}
+                        search={true}
+                        searchPlaceholder={'Rechercher un filtre'}
+                        searchQuery={(keyword: string, labelValue: string) => {
+                            return (labelValue.match(new RegExp(keyword, 'i'))) ? true : false;}
+                        }
                         value={selectedFiltres.map(filtre => filtre.id)}
                         onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
                         renderLeftIcon={() => (<Image source={require('@/assets/icons/filter.png')} style={styles.icon} />)}
@@ -133,7 +137,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const renderFilterItem = (item: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14 }}>  {item.type}</ThemedText>
+                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14, fontStyle: 'italic'}}>  {item.type}</ThemedText>
                 <ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{item.libelle}</ThemedText>
             </View>
         );

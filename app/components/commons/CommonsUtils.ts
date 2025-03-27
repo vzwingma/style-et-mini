@@ -112,10 +112,14 @@ export function getTypeVetementIcon(typeVetements: string): any {
             return require('@/assets/icons/underwear-outline.png');     // culotte/shorty
         case '67c971c116c735a1d539286b':
             return require('@/assets/icons/undershirt-outline.png');    // débardeur
+        case '67e5d6e42525c528f4411aa4':
+            return require('@/assets/icons/ensemble-outline.png');      // ensemble
         case '67c9708b16c735a1d5392864':
             return require('@/assets/icons/sweater-outline.png');       // gilet  
         case '67e330be08d64ab0e3683d72':
             return require('@/assets/icons/trench-coat-outline.png');   // Impermeable
+        case '67e5d6d32525c528f4411aa3':
+            return require('@/assets/icons/jogging-outline.png');       // Jogging
         case '67e3307a08d64ab0e3683d6c':
             return require('@/assets/icons/skirt-outline.png');         // jupe
         case '67e330d708d64ab0e3683d75':

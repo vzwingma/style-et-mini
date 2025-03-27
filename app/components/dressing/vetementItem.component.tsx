@@ -89,6 +89,8 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 12,
         height:40,
-        verticalAlign: 'middle',
-    },
+        backgroundColor: Colors.app.background,
+        textAlign: 'center',
+        alignContent: 'center',
+    }
 });

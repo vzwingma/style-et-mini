@@ -26,6 +26,7 @@ export enum CaracteristiqueVetementEnum {
   TYPE      = 'TYPE',
   TAILLES   = 'TAILLES',
   POINTURES = 'POINTURES',
+  MARQUES   = 'MARQUES',
   USAGES    = 'USAGES',
   STATUT    = 'STATUT',
   SAISON    = 'SAISON'
