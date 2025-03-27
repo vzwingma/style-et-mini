@@ -8,6 +8,7 @@ export enum MenuParametragesEnum {
   MENU_TAILLES          = 'Tailles et Mesures',
   MENU_USAGES           = 'Usages',
   MENU_ETATS            = 'Etats',
+  MENU_MARQUES          = 'Marques',
 }
 
 
@@ -38,8 +39,9 @@ export enum TypeTailleEnum {
 
 // Enumération des statuts de vêtements
 export enum SaisonVetementEnum {
-  ETE   = "ETE", 
-  HIVER = "HIVER"
+  ETE       = "ETE", 
+  MISAISON  = "MISAISON",  
+  HIVER     = "HIVER"
 }
 
 /**
@@ -54,6 +56,8 @@ export function getLibelleSaisonVetementEnum(enumSaison: SaisonVetementEnum): st
       return "Printemps/Eté";
     case SaisonVetementEnum.HIVER:
       return "Automne/Hiver";
+      case SaisonVetementEnum.MISAISON:
+        return "Mi-saison";      
     default:
       return "Inconnu";
   }

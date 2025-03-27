@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm, FormModelProps } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm, FormModelProps, setCollectionForm, getMarquesForm, setMarqueForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -22,6 +22,7 @@ import { getTypeVetementIcon, resizeImage } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/ModalDialog';
 import { styles } from './vetementForm.styles';
 import VetementImageModel from '@/app/models/vetements.image.model';
+import ParamMarqueVetementsModel from '@/app/models/params/paramMarqueVetements.model';
 
 
 /**
@@ -41,6 +42,7 @@ export type VetementsFormParamsTypeProps = {
     paramsTaillesMesures?: ParamTailleVetementsModel[];
     paramsUsagesVetements?: ParamUsageVetementsModel[];
     paramsEtatVetements?: ParamEtatVetementsModel[];
+    paramsMarquesVetements?: ParamMarqueVetementsModel[];
 };
 
 
@@ -62,14 +64,15 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
     const {
-        typeVetements: paramsTypeVetements,
-        taillesMesures: paramsTaillesMesures,
-        usages: paramsUsagesVetements,
-        etats: paramsEtatVetements
+        typeVetements   : paramsTypeVetements,
+        taillesMesures  : paramsTaillesMesures,
+        usages          : paramsUsagesVetements,
+        etats           : paramsEtatVetements,
+        marques         : paramsMarquesVetements
     } = useContext(AppContext)!;
 
     useEffect(() => {
-        initForm(dressing, vetementInEdition, setForm, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements });
+        initForm(dressing, vetementInEdition, setForm, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements });
     }, [dressing, vetementInEdition]);
 
 
@@ -129,7 +132,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         }
 
         return (
-            <View style={[styles.body]} >
+            <View style={styles.body}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.photo} >
                         <Pressable onPress={() => pickImageForm(setForm)}>
@@ -158,7 +161,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             style={!errorForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
-                            maxHeight={50}
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
                             labelField="libelle" valueField="id"
                             placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage + ''}
@@ -175,7 +177,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             style={!errorForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
-                            maxHeight={300}
                             data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
                             labelField="libelle" valueField="id"
                             placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage + ''}
@@ -186,7 +187,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     </View>
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie
-                        && TypeTailleEnum.TAILLE === form.type?.typeTaille
+                        && TypeTailleEnum.TAILLE === form.type?.type
                         && <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
                             <BouncyCheckbox
@@ -231,6 +232,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             />
                         </ThemedText></ThemedView>
                     </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
+                        <TextInput style={styles.input} placeholderTextColor={'gray'}
+                            value={form?.couleurs ? form?.couleurs : ''}
+                            placeholder={'Indiquez les couleurs (facultatif)'}
+                            onChangeText={couleurs => setCouleursForm(couleurs, setForm)} />
+                    </View>                    
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie &&
                         <View style={{ flexDirection: 'row' }}>
@@ -250,11 +258,25 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         </View>
                     }
                     <View style={{ flexDirection: 'row' }}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Marque")}</ThemedText>
+                        <Dropdown
+                            style={!errorForm?.marqueInError || form?.marque ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.marqueInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            mode='modal'
+                            data={getMarquesForm(paramsMarquesVetements, dressing, form)}
+                            labelField="libelle" valueField="id"
+                            placeholder={!errorForm?.marqueInError ? 'Selectionnez une marque' : errorForm?.marqueMessage + ''}
+                            value={form?.marque}
+                            onChange={(marque: ParamMarqueVetementsModel) => setMarqueForm(marque, setForm)}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={styles.icon} />}
+                        />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>Collection</ThemedText>
                         <TextInput style={styles.input} placeholderTextColor={'gray'}
-                            value={form?.couleurs ? form?.couleurs : ''}
-                            placeholder={'Indiquez les couleurs (facultatif)'}
-                            onChangeText={couleurs => setCouleursForm(couleurs, setForm)} />
+                            value={form?.collection ? form?.collection : ''}
+                            placeholder={'Indiquez la collection (facultatif)'}
+                            onChangeText={collection => setCollectionForm(collection, setForm)} />
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
