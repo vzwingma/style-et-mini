@@ -23,7 +23,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
 
     if (vetement.image) {
         // recalcul de la taille de l'image suivant la mise en page
-        vetement.image = resizeImage(vetement.image, 95);
+        vetement.image = resizeImage(vetement.image, 100);
     }
     return (
         <Pressable onPress={() => editVetement(vetement)}>
@@ -35,7 +35,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
                     {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
                         style={[styles.iconSmall]} />}
                 </View>
-                <ThemedText type="default">{vetement.libelle}</ThemedText>
+                <ThemedText type="default" style={styles.label}>{vetement.libelle}</ThemedText>
             </View>
         </Pressable>
     );
@@ -45,8 +45,8 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
 const styles = StyleSheet.create({
     body: {
         backgroundColor: Colors.app.background,
-        width: 120,
-        height: 124,
+        width: 110,
+        height: 145,
         paddingTop: 5,
         margin: 5,
         alignItems: 'center',
@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
     },
     photoFrame: {
-        width: 95,
-        height: 95,
+        width: 100,
+        height: 100,
         alignItems: 'center',
         justifyContent: 'center',
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 1,
     },
     photo: {
         cursor: 'pointer',
@@ -83,5 +85,10 @@ const styles = StyleSheet.create({
         width: 95,
         height: 95,
         borderColor: Colors.dark.background,
+    },
+    label: {
+        fontSize: 12,
+        height:40,
+        verticalAlign: 'middle',
     },
 });
