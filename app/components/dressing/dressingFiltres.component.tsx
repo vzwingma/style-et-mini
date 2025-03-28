@@ -4,14 +4,13 @@ import { ThemedText } from "../commons/ThemedText";
 import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
-import { VetemenItemComponent } from "./vetementItem.component";
-import { calculFiltresPossibles, groupeVetementByType, setVetementsFiltres as applyFiltresOnVetements, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingList.controller";
+import { setVetementsFiltres as applyFiltresOnVetements } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
-import DressingListFiltreModel from "@/app/models/dressingListeFiltre.model";
-import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
+import DressingListFiltreModel from "@/app/models/vetementFiltre.model";
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import { styles } from "./dressingList.style";
+import { calculFiltresPossibles, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingFiltres.controller";
 
 
 export type DressingFiltresComponentProps = {
@@ -31,7 +30,12 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
 
 
     const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([
-        {id: StatutVetementEnum.ACTIF, libelle: StatutVetementEnum.ACTIF, type: CaracteristiqueVetementEnum.STATUT, typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF},]);
+        {
+            id: StatutVetementEnum.ACTIF, 
+            libelle: StatutVetementEnum.ACTIF, 
+            type: CaracteristiqueVetementEnum.STATUT, 
+            typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF
+        },]);
     const [filtresDisponibles, setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
 
 
@@ -49,14 +53,16 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
     /**
      * Rendu d'un élément de filtre dans la liste de dressing.
      *
-     * @param {DressingListFiltreModel} item - L'élément de filtre à afficher.
+     * @param {DressingListFiltreModel} filtre - L'élément de filtre à afficher.
      * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
      */
-    const renderFilterItem = (item: DressingListFiltreModel) => {
+    const renderFilterItem = (filtre: DressingListFiltreModel) => {
         return (
             <View style={styles.listItemStyle}>
-                <ThemedText type="subtitle" style={{ fontWeight: '300', fontSize: 14, fontStyle: 'italic'}}>  {item.type}</ThemedText>
-                <ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{item.libelle}</ThemedText>
+                {filtre.isType 
+                    && <ThemedText type="subtitle" style={{ fontWeight: 'bold', fontSize: 14, fontStyle: 'italic', color:Colors.app.color}}> {filtre.type}</ThemedText>}
+                {!filtre.isType 
+                    && <><ThemedText>{}</ThemedText><ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{filtre.libelle}</ThemedText></>}
             </View>
         );
     };
@@ -81,6 +87,13 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
 
 
     /**
+     * Recherche d'un filtre dans la liste de filtres.
+     */
+    const searchQuery = (keyword: string, labelValue: string) => {
+        return (labelValue.match(new RegExp(keyword, 'i'))) ? true : false;
+    }
+
+    /**
      * Rendu de la barre de filtres.
      *
      * Cette fonction retourne une vue thématisée contenant un composant MultiSelect
@@ -99,12 +112,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
                     data={filtresDisponibles}
                     labelField="typeLibelle" valueField="id"
                     placeholder={'Selectionnez un ou plusieurs filtre'}
-                    search={true}
-                    searchPlaceholder={'Rechercher un filtre'}
-                    searchQuery={(keyword: string, labelValue: string) => {
-                        return (labelValue.match(new RegExp(keyword, 'i'))) ? true : false;
-                    }
-                    }
+                    search={true} searchPlaceholder={'Rechercher un filtre'} searchQuery={searchQuery}
                     value={selectedFiltres.map(filtre => filtre.id)}
                     onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
                     renderLeftIcon={() => (<Image source={require('@/assets/icons/filter.png')} style={styles.icon} />)}
