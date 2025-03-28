@@ -41,8 +41,7 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'flex-start',
         cursor: 'pointer',
-        marginRight: 5,
-        width: '80%',
+        marginRight: 5
     },
     icon: {
         marginRight: 5,
