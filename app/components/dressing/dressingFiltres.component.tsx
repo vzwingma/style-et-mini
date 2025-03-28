@@ -28,7 +28,6 @@ export type DressingFiltresComponentProps = {
  **/
 export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = ({ vetementsInDressing, setVetementsAffiches }: DressingFiltresComponentProps) => {
 
-
     const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([
         {
             id: StatutVetementEnum.ACTIF, 
