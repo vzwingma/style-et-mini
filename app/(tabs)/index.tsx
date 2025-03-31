@@ -1,12 +1,9 @@
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext } from 'react';
 import { AppContext } from '../services/AppContextProvider';
-import DressingModel from '../models/dressing.model';
-import { Colors } from '@/constants/Colors';
-import { getTabIcon } from '../components/commons/tab/TabBarIcon';
 import { Tabs } from '@/constants/TabsEnums';
 import DressingTabComponent from '../components/home/dressingTab.component';
 
