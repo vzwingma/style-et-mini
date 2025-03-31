@@ -1,8 +1,6 @@
-import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
-import DressingListFiltreModel from "../models/dressingListeFiltre.model";
-import VetementCaracteristiquesModel from "../models/vetementCaracteristique.model";
+import { CaracteristiqueVetementEnum} from "@/constants/AppEnum";
+import DressingListFiltreModel from "../models/vetementFiltre.model";
 import VetementModel from "../models/vetements.model";
-import { alphanumSort } from "../components/commons/CommonsUtils";
 /**
  * Groupe les vêtements par type.
  *
@@ -23,19 +21,6 @@ export function groupeVetementByType(vetements: VetementModel[]): Map<string, Ve
   return map;
 }
 
-
-
-/**
- * Sélectionne les filtres disponibles en fonction des identifiants de filtres sélectionnés.
- *
- * @param {string[]} selectedIdFiltres - Les identifiants des filtres sélectionnés.
- * @param {DressingListFiltreModel[]} filtresDisponibles - La liste des filtres disponibles.
- * @param {Function} setSelectedFiltres - La fonction pour mettre à jour les filtres sélectionnés.
- * @returns {void}
- */
-export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: DressingListFiltreModel[], setSelectedFiltres: Function ): void {
-  setSelectedFiltres(filtresDisponibles.filter(filtre => selectedIdFiltres.includes(filtre.id)));
-}
 
 
 
@@ -100,97 +85,3 @@ function filtreVetementByCaracteristique(vetement: VetementModel, type: Caracter
   }
   return false;
   }
-
-/**
- * 
- * @param vetements 
- * @returns 
- */
-/**
- * Génère une liste de filtres disponibles à partir d'une liste de vêtements.
- *
- * @param vetements - Liste des modèles de vêtements à analyser.
- * @returns Une liste de modèles de filtres pour le dressing, triée par ordre alphabétique.
- *
- * Cette fonction effectue les opérations suivantes :
- * - Ajoute les caractéristiques des vêtements (type, taille, usages) aux filtres.
- * - Ajoute les valeurs des énumérations (statut, saisons) aux filtres.
- * - Trie les filtres par ordre alphabétique en fonction de leur type et libellé.
- */
-export function calculFiltresPossibles(vetements: VetementModel[]): DressingListFiltreModel[] {
-
-  let filtres: DressingListFiltreModel[] = [];
-
-  // Recalcul des filtres disponibles
-  addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPE);
-  addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES);
-  addCaracteristiqueInFilter(filtres, vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES);
-  addCaracteristiqueInFilter(filtres, vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES);
-
-  addEnumsInFilter(filtres, vetements.map(vetement => vetement.statut));
-  addEnumsInFilter(filtres, vetements.flatMap(vetement => vetement.saisons));
-
-  filtres.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
-  return filtres;
-}
-
-
-/**
- * Ajoute une caractéristique dans les filtres si elle n'est pas déjà présente.
- *
- * @param {DressingListFiltreModel[]} filtres - La liste des filtres à mettre à jour.
- * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
- * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
- */
-function addCaracteristiqueInFilter(filtres: DressingListFiltreModel[],
-  dataVetement: VetementCaracteristiquesModel[],
-  type: CaracteristiqueVetementEnum) {
-
-  dataVetement
-    .filter((value, index, self) => self.indexOf(value) === index)
-    .filter(data => data !== null && data !== undefined)
-    .forEach(data => {
-      if (!filtres.find(filtre => filtre.id === data.id)) {
-        filtres.push({
-          id: data.id,
-          typeLibelle: type+data.libelle,
-          libelle: data.libelle,
-          type: type,
-        });
-      }
-    });
-}
-
-
-/**
- * Ajoute une caractéristique dans les filtres si elle n'est pas déjà présente.
- *
- * @param {DressingListFiltreModel[]} filtres - La liste des filtres à mettre à jour.
- * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
- * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
- */
-function addEnumsInFilter(filtres: DressingListFiltreModel[], dataStatuts: StatutVetementEnum[] | SaisonVetementEnum[]) {
-
-  if (dataStatuts.filter((value, index, self) => self.indexOf(value) === index).length <= 1) {
-    return
-  }
-
-  dataStatuts
-    .filter((value, index, self) => self.indexOf(value) === index)
-    .filter(data => data !== null && data !== undefined)
-    .forEach(data => {
-      
-      const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
-      const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
-      const libelle = isStatut ? data : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
-
-      if (!filtres.find(filtre => filtre.id === data)) {
-        filtres.push({
-          id: data,
-          libelle: libelle,
-          typeLibelle: type+libelle,
-          type: type
-        });
-      }
-    });
-}

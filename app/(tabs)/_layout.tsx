@@ -27,9 +27,9 @@ export default function TabLayout() {
   const [tab, setTab] = useState(Tabs.INDEX);
 
   // Infos métiers
-  const { backendConnexionData, setBackendConnexionData,
-    dressings,
-    setDressings,
+  const { 
+    backendConnexionData, setBackendConnexionData,
+    dressings, setDressings,
     setTypeVetements,
     setTaillesMesures,
     setUsages,
@@ -141,7 +141,7 @@ export default function TabLayout() {
 
     switch (tab) {
       case Tabs.INDEX:
-        return <HomeScreen />
+        return <HomeScreen selectNewTab={selectNewTab} />
       case Tabs.DRESSING:
         if (idDressing === undefined) {
           return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>

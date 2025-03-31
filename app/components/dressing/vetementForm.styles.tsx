@@ -108,10 +108,17 @@ export const styles = StyleSheet.create({
     },
     iconBig: {
         tintColor: 'gray',
-        margin: 0,
         width: 240,
         height: 240,
-        borderColor: Colors.dark.background,
+        backgroundColor: Colors.app.background,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 1,
+        borderStartStartRadius: 10,
+        borderEndEndRadius: 10,
+        cursor: 'pointer',
+        margin: 10,
     },
 
 
