@@ -64,6 +64,11 @@ export const styles = StyleSheet.create({
         height: 'auto',
         fontFamily: "BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
     },
+    listTypeStyle: {
+        borderBottomColor: Colors.app.color, borderBottomWidth: 1,
+        borderTopColor: Colors.app.color, borderTopWidth: 1,
+        marginTop: 10,
+    },
     placeholderStyle: {
         fontWeight: 'light',
         color: 'gray',

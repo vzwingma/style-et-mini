@@ -47,7 +47,7 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
       <Pressable onPress={() => selectNewTab(Tabs.DRESSING, dressing.id)}>
         <ThemedView style={styles.container}>
           <Image source={getTabIcon(true, dressing.categorie)} style={[styles.icon]} />
-          <ThemedText type="subtitle">{dressing.libelle}</ThemedText>
+          <ThemedText type="subtitle" style={{height: 40}}>{dressing.libelle}</ThemedText>
         </ThemedView>
       </Pressable>
     );
@@ -55,9 +55,7 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
 
   return (
     <ThemedView style={styles.titleContainer}>
-      <ThemedView style={styles.stepContainer}>
         <ThemedText type="title">Environnement : {backendConnexionData?.env}</ThemedText>
-      </ThemedView>
       {
         dressings && dressings.map(dressing => {
           return <DressingTabComponent dressing={dressing} />
@@ -76,11 +74,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-
   container: {
     zIndex: 0,
     alignItems: 'center',
@@ -90,9 +83,9 @@ const styles = StyleSheet.create({
 
   icon: {
     tintColor: 'gray',
-    margin: 10,
-    width: 280,
-    height: 280,
+    margin: 5,
+    width: 250,
+    height: 250,
     borderColor: Colors.dark.background,
   }
 });

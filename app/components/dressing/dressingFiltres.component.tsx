@@ -57,7 +57,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
      */
     const renderFilterItem = (filtre: DressingListFiltreModel) => {
         return (
-            <View style={styles.listItemStyle}>
+            <View style={[styles.listItemStyle, filtre.isType ? styles.listTypeStyle : '']}>
                 {filtre.isType 
                     && <ThemedText type="subtitle" style={{ fontWeight: 'bold', fontSize: 14, fontStyle: 'italic', color:Colors.app.color}}> {filtre.type}</ThemedText>}
                 {!filtre.isType 
@@ -104,7 +104,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
         <ThemedView style={styles.filtresBar}>
             <View style={styles.filtresBar}>
                 <MultiSelect
-                    style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                    style={styles.dropdown} containerStyle={styles.listStyle} itemTextStyle={styles.listItemStyle}
                     iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
