@@ -96,8 +96,8 @@ export const styles = StyleSheet.create({
     },
     iconSmall: {
         position: 'absolute',
-        bottom: 3,
-        right: 3,
+        bottom: 15,
+        right: 15,
         tintColor: Colors.app.color,
         width: 40,
         height: 40,

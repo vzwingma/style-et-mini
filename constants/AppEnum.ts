@@ -46,8 +46,6 @@ export enum CaracteristiqueVetementEnum {
  * Enumération représentant les différents types de tailles.
  * 
  * @enum {string}
- * @property {string} TAILLE - **[Déprécié]** Représente une taille générique.
- * @property {string} POINTURE - **[Déprécié]** Représente une pointure (chaussures).
  * @property {string} VETEMENTS - Représente les tailles pour les vêtements.
  * @property {string} CHAUSSURES - Représente les tailles pour les chaussures.
  */
