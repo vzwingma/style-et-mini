@@ -41,7 +41,7 @@ export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
         if (dressingName) {
           return `Le dressing de ${dressingName}`;
         }
-        return "Erreur : dressing non défini";
+        return "? Dressing ?";
       case Tabs.REGLAGES:
         return "Paramètres";
       default:
