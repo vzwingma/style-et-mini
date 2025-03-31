@@ -1,4 +1,4 @@
-export const APP_MOBILE_VERSION = "0.0.3";
+export const APP_MOBILE_VERSION = "0.1.0";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 
@@ -21,11 +21,20 @@ export enum CategorieDressingEnum {
   ADULTE  = 'ADULTE'
 }
 
-
+/**
+ * Enumération représentant les différentes caractéristiques d'un vêtement.
+ * 
+ * @enum {string}
+ * @property {string} TYPE - Le type de vêtement (exemple : chemise, pantalon, etc.).
+ * @property {string} TAILLES - Les tailles disponibles pour le vêtement.
+ * @property {string} MARQUES - Les marques associées au vêtement.
+ * @property {string} USAGES - Les usages possibles du vêtement (exemple : sport, travail, etc.).
+ * @property {string} STATUT - Le statut du vêtement (exemple : disponible, en rupture de stock, etc.).
+ * @property {string} SAISON - La saison associée au vêtement (exemple : été, hiver, etc.).
+ */
 export enum CaracteristiqueVetementEnum {
   TYPE      = 'TYPE',
   TAILLES   = 'TAILLES',
-  POINTURES = 'POINTURES',
   MARQUES   = 'MARQUES',
   USAGES    = 'USAGES',
   STATUT    = 'STATUT',
@@ -33,9 +42,18 @@ export enum CaracteristiqueVetementEnum {
 }
 
 
+/**
+ * Enumération représentant les différents types de tailles.
+ * 
+ * @enum {string}
+ * @property {string} TAILLE - **[Déprécié]** Représente une taille générique.
+ * @property {string} POINTURE - **[Déprécié]** Représente une pointure (chaussures).
+ * @property {string} VETEMENTS - Représente les tailles pour les vêtements.
+ * @property {string} CHAUSSURES - Représente les tailles pour les chaussures.
+ */
 export enum TypeTailleEnum {
-  TAILLE    = 'TAILLE',
-  POINTURE  = 'POINTURE'
+  VETEMENTS = 'VETEMENTS',
+  CHAUSSURES = 'CHAUSSURES'
 }
 
 // Enumération des statuts de vêtements

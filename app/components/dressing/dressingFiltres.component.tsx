@@ -88,8 +88,8 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
     /**
      * Recherche d'un filtre dans la liste de filtres.
      */
-    const searchQuery = (keyword: string, labelValue: string) => {
-        return (labelValue.match(new RegExp(keyword, 'i'))) ? true : false;
+    const searchQuery = (keyword: string, labelValue: string) : boolean => {
+        return !!new RegExp(keyword, 'i').exec(labelValue);
     }
 
     /**

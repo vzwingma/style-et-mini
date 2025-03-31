@@ -1,10 +1,8 @@
 import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
-import DressingListFiltreModel from "../models/vetementFiltre.model";
 import VetementCaracteristiquesModel from "../models/vetementCaracteristique.model";
 import VetementModel from "../models/vetements.model";
 import { alphanumSort } from "../components/commons/CommonsUtils";
 import VetementFiltreModel from "../models/vetementFiltre.model";
-
 
 
 /**
@@ -17,8 +15,8 @@ import VetementFiltreModel from "../models/vetementFiltre.model";
  */
 export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: VetementFiltreModel[], setSelectedFiltres: Function): void {
   const selectTypeFiltre = (filtresDisponibles
-                .filter(filtre => selectedIdFiltres.includes(filtre.id))
-                .filter(filtre => !filtre.isType));
+    .filter(filtre => selectedIdFiltres.includes(filtre.id))
+    .filter(filtre => !filtre.isType));
   setSelectedFiltres(selectTypeFiltre);
 }
 
@@ -37,7 +35,7 @@ export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: V
  */
 export function calculFiltresPossibles(vetements: VetementModel[]): VetementFiltreModel[] {
 
-  let filtres: DressingListFiltreModel[] = [];
+  let filtres: VetementFiltreModel[] = [];
 
   // Recalcul des filtres disponibles
   return filtres.concat(
@@ -46,7 +44,7 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
 
     { id: CaracteristiqueVetementEnum.TAILLES, libelle: '', type: CaracteristiqueVetementEnum.TAILLES, typeLibelle: CaracteristiqueVetementEnum.TAILLES, isType: true },
     addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES),
-    
+
     { id: CaracteristiqueVetementEnum.USAGES, libelle: '', type: CaracteristiqueVetementEnum.USAGES, typeLibelle: CaracteristiqueVetementEnum.USAGES, isType: true },
     addCaracteristiqueInFilter(vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES),
 
@@ -64,13 +62,13 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
 /**
  * Ajoute une caractéristique dans les filtres si elle n'est pas déjà présente.
  *
- * @param {DressingListFiltreModel[]} filtres - La liste des filtres à mettre à jour.
+ * @param {VetementFiltreModel[]} filtres - La liste des filtres à mettre à jour.
  * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
  * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
  */
-function addCaracteristiqueInFilter(dataVetement: VetementCaracteristiquesModel[], type: CaracteristiqueVetementEnum) : DressingListFiltreModel[]  {
+function addCaracteristiqueInFilter(dataVetement: VetementCaracteristiquesModel[], type: CaracteristiqueVetementEnum): VetementFiltreModel[] {
 
-  let filtresTypes : DressingListFiltreModel[] = [];
+  let filtresTypes: VetementFiltreModel[] = [];
   dataVetement
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter(data => data !== null && data !== undefined)
@@ -84,26 +82,26 @@ function addCaracteristiqueInFilter(dataVetement: VetementCaracteristiquesModel[
         });
       }
     });
-    
-    filtresTypes.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
-    return filtresTypes;
+
+  filtresTypes.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
+  return filtresTypes;
 }
 
 
 /**
  * Ajoute une caractéristique dans les filtres si elle n'est pas déjà présente.
  *
- * @param {DressingListFiltreModel[]} filtres - La liste des filtres à mettre à jour.
+ * @param {VetementFiltreModel[]} filtres - La liste des filtres à mettre à jour.
  * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
  * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
  */
-function addEnumsInFilter(dataStatuts: StatutVetementEnum[] | SaisonVetementEnum[]) : DressingListFiltreModel[]   {
+function addEnumsInFilter(dataStatuts: StatutVetementEnum[] | SaisonVetementEnum[]): VetementFiltreModel[] {
 
   if (dataStatuts.filter((value, index, self) => self.indexOf(value) === index).length <= 1) {
     return [];
   }
 
-  let filtresTypes : DressingListFiltreModel[] = [];
+  let filtresTypes: VetementFiltreModel[] = [];
   dataStatuts
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter(data => data !== null && data !== undefined)
@@ -121,6 +119,6 @@ function addEnumsInFilter(dataStatuts: StatutVetementEnum[] | SaisonVetementEnum
         });
       }
     });
-    filtresTypes.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
-    return filtresTypes;
+  filtresTypes.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
+  return filtresTypes;
 }

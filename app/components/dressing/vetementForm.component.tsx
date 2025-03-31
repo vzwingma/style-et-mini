@@ -187,7 +187,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     </View>
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie
-                        && TypeTailleEnum.TAILLE === form.type?.type
+                        && TypeTailleEnum.VETEMENTS === form.type?.type
                         && <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
                             <BouncyCheckbox

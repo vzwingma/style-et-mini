@@ -8,6 +8,7 @@ import DressingModel from '../models/dressing.model';
 import { Colors } from '@/constants/Colors';
 import { getTabIcon } from '../components/commons/tab/TabBarIcon';
 import { Tabs } from '@/constants/TabsEnums';
+import DressingTabComponent from '../components/home/dressingTab.component';
 
 
 /**
@@ -18,17 +19,10 @@ import { Tabs } from '@/constants/TabsEnums';
  *                          un identifiant optionnel de type `string` ou `undefined`.
  */
 interface HomeScreenProps {
-  selectNewTab: (newTab: Tabs, _id?: string | undefined) => void;
+  readonly selectNewTab: (newTab: Tabs, _id?: string | undefined) => void;
 }
 
-/**
- * @typedef DressingTabComponentProps
- * @description Propriétés pour le composant de l'onglet Dressing.
- * @property {DressingModel} dressing - Modèle représentant les données du dressing.
- */
-type DressingTabComponentProps = {
-  dressing: DressingModel;
-};
+
 /**
  * Composant principal de l'écran d'accueil.
  *
@@ -41,24 +35,13 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
 
   const { backendConnexionData, dressings } = useContext(AppContext)!;
 
-  const DressingTabComponent: React.FC<DressingTabComponentProps> = ({ dressing }: DressingTabComponentProps) => {
-
-    return (
-      <Pressable onPress={() => selectNewTab(Tabs.DRESSING, dressing.id)}>
-        <ThemedView style={styles.container}>
-          <Image source={getTabIcon(true, dressing.categorie)} style={[styles.icon]} />
-          <ThemedText type="subtitle" style={{height: 40}}>{dressing.libelle}</ThemedText>
-        </ThemedView>
-      </Pressable>
-    );
-  }
 
   return (
     <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Environnement : {backendConnexionData?.env}</ThemedText>
       {
-        dressings && dressings.map(dressing => {
-          return <DressingTabComponent dressing={dressing} />
+        dressings?.map(dressing => {
+          return <DressingTabComponent key={"dressTab" + dressing.id} dressing={dressing} selectNewTab={selectNewTab} />
         })
       }
     </ThemedView>);
@@ -73,19 +56,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: 8,
-  },
-  container: {
-    zIndex: 0,
-    alignItems: 'center',
-    borderColor: 'grey',
-    borderWidth: 0.5
-  },
-
-  icon: {
-    tintColor: 'gray',
-    margin: 5,
-    width: 250,
-    height: 250,
-    borderColor: Colors.dark.background,
   }
 });
