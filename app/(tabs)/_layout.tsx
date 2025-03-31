@@ -16,6 +16,7 @@ import DressingScreen from './dressing';
 import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
 import ReglageScreen from './reglages';
 import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
+import DressingModel from '../models/dressing.model';
 
 export default function TabLayout() {
 
@@ -27,16 +28,16 @@ export default function TabLayout() {
   const [tab, setTab] = useState(Tabs.INDEX);
 
   // Infos métiers
-  const { backendConnexionData, setBackendConnexionData,
-    dressings,
-    setDressings,
+  const { 
+    backendConnexionData, setBackendConnexionData,
+    dressings, setDressings,
     setTypeVetements,
     setTaillesMesures,
     setUsages,
     setEtats,
     setMarques } = useContext(AppContext)!;
-  const [idDressing, setIdDressing] = useState<string | undefined>(undefined);
-
+  // Identifiant du dressing sélectionné
+    const [dressingSelectionne, setDressingSelectionne] = useState<DressingModel | undefined>(undefined);
 
   /**
    * Fonction pour changer d'onglet
@@ -46,7 +47,7 @@ export default function TabLayout() {
     setRefreshing(!refreshing);
     setTab(newTab);
     if (_id) {
-      setIdDressing(_id);
+      setDressingSelectionne(dressings?.find(d => d.id === _id));
     }
   }
 
@@ -96,15 +97,15 @@ export default function TabLayout() {
     } else if (error !== null) {
       return <><ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText><ThemedText type="italic">{error.stack}</ThemedText></>
     } else {
-      return showPanel(tab, idDressing)
+      return showPanel(tab, dressingSelectionne);
     }
   }
 
   return (
     <>
       <ParallaxScrollView
-        headerImage={getHeaderIcon(tab, dressings?.find(d => d.id === idDressing)?.categorie)}
-        headerTitle={getHeaderTitle(tab, dressings?.find(d => d.id === idDressing)?.libelle)}
+        headerImage={getHeaderIcon(tab, dressingSelectionne?.categorie)}
+        headerTitle={getHeaderTitle(tab, dressingSelectionne?.libelle)}
         backendConnexionData={backendConnexionData}
         setRefreshing={setRefreshing}>
 
@@ -119,13 +120,13 @@ export default function TabLayout() {
           (!isLoading && error === null) ?
             <>
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
-              {
-                dressings?.map((dressing, idx) => {
-                  return <TabBarItems key={"tab_"+idx} activeTab={tab} activeDressing={idDressing} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} libelleTab={dressing.libelle} _id={dressing.id} categorieDressing={dressing.categorie} />
-                })
+
+              {dressingSelectionne !== undefined ?
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} /> : null
               }
+
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
-            </> : <></>
+            </> : null
         }
       </View>
     </>
@@ -137,17 +138,17 @@ export default function TabLayout() {
    *
    * @param tab L'onglet sélectionné
    */
-  function showPanel(tab: Tabs, idDressing?: string): JSX.Element {
+  function showPanel(tab: Tabs, dressing?: DressingModel): JSX.Element {
 
     switch (tab) {
       case Tabs.INDEX:
-        return <HomeScreen />
+        return <HomeScreen selectNewTab={selectNewTab} />
       case Tabs.DRESSING:
-        if (idDressing === undefined) {
-          return <ThemedText type="title" style={{ color: 'red' }}>Erreur : Aucun dressing sélectionné</ThemedText>
+        if (dressing === undefined) {
+          return <ThemedText type="title" style={{ color: Colors.app.color }}>Veuillez sélectionner un dressing</ThemedText>
         }
         else {
-          return <DressingScreen dressing={dressings?.find(d => d.id === idDressing)} />
+          return <DressingScreen dressing={dressing} />
         }
       case Tabs.REGLAGES:
         return <ReglageScreen />

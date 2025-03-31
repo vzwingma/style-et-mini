@@ -4,7 +4,20 @@ import { ThemedText } from '@/app/components/commons/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext } from 'react';
 import { AppContext } from '../services/AppContextProvider';
+import { Tabs } from '@/constants/TabsEnums';
+import DressingTabComponent from '../components/home/dressingTab.component';
 
+
+/**
+ * Propriétés pour le composant HomeScreen.
+ *
+ * @property selectNewTab - Fonction permettant de sélectionner un nouvel onglet.
+ *                          Prend en paramètre un nouvel onglet de type `Tabs` et
+ *                          un identifiant optionnel de type `string` ou `undefined`.
+ */
+interface HomeScreenProps {
+  readonly selectNewTab: (newTab: Tabs, _id?: string | undefined) => void;
+}
 
 
 /**
@@ -15,37 +28,30 @@ import { AppContext } from '../services/AppContextProvider';
  *
  * @returns {JSX.Element} Le composant JSX représentant l'écran d'accueil.
  */
-export default function HomeScreen() {
+export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
 
-  const { backendConnexionData } = useContext(AppContext)!;
+  const { backendConnexionData, dressings } = useContext(AppContext)!;
+
 
   return (
-    <>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Homepage</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Environnement : {backendConnexionData?.env}</ThemedText>
-      </ThemedView>
-    </>
-  );
+    <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title">Environnement : {backendConnexionData?.env}</ThemedText>
+      {
+        dressings?.map(dressing => {
+          return <DressingTabComponent key={"dressTab" + dressing.id} dressing={dressing} selectNewTab={selectNewTab} />
+        })
+      }
+    </ThemedView>);
 }
+
+
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    flex: 1,
     alignItems: 'center',
     gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  }
 });

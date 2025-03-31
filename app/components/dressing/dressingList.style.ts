@@ -41,8 +41,7 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'flex-start',
         cursor: 'pointer',
-        marginRight: 5,
-        width: '80%',
+        marginRight: 5
     },
     icon: {
         marginRight: 5,
@@ -64,6 +63,11 @@ export const styles = StyleSheet.create({
         padding: 3,
         height: 'auto',
         fontFamily: "BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
+    },
+    listTypeStyle: {
+        borderBottomColor: Colors.app.color, borderBottomWidth: 1,
+        borderTopColor: Colors.app.color, borderTopWidth: 1,
+        marginTop: 10,
     },
     placeholderStyle: {
         fontWeight: 'light',
