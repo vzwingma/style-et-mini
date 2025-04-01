@@ -24,7 +24,7 @@ type DressingTabComponentProps = {
       <Pressable onPress={() => selectNewTab(Tabs.DRESSING, dressing.id)}>
         <ThemedView style={styles.container}>
           <Image source={getTabIcon(true, dressing.categorie)} style={[styles.icon]} />
-          <ThemedText type="subtitle" style={{height: 40}}>{dressing.libelle}</ThemedText>
+          <ThemedText type="subtitle" style={{height: 25}}>{dressing.libelle}</ThemedText>
         </ThemedView>
       </Pressable>
     );
@@ -44,8 +44,8 @@ type DressingTabComponentProps = {
     icon: {
       tintColor: 'gray',
       margin: 5,
-      width: 250,
-      height: 250,
+      width: 230,
+      height: 230,
       borderColor: Colors.dark.background,
     }
   });
