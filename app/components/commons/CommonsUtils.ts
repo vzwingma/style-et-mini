@@ -15,6 +15,12 @@ import VetementModel from "@/app/models/vetements.model";
  *          ou 0 si les deux chaînes sont égales.
  */
 export function alphanumSort(a: string, b: string) {
+    if(a.startsWith('...')){
+        return 1;
+    }
+    if(b.startsWith('...')){
+        return -1;
+    }
     return a.localeCompare(b, 'fr', { numeric: true });
 }
 
