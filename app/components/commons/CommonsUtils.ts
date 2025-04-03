@@ -1,6 +1,5 @@
 import VetementImageModel from "@/app/models/vetements.image.model";
 import VetementModel from "@/app/models/vetements.model";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Fonction de tri alphanumérique
 /**
@@ -16,6 +15,12 @@ import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
  *          ou 0 si les deux chaînes sont égales.
  */
 export function alphanumSort(a: string, b: string) {
+    if(a.startsWith('...')){
+        return 1;
+    }
+    if(b.startsWith('...')){
+        return -1;
+    }
     return a.localeCompare(b, 'fr', { numeric: true });
 }
 
@@ -177,6 +182,8 @@ export function getTypeVetementIcon(typeVetements: string): any {
             return require('@/assets/icons/long-pants-outline.png');    // sarouel
         case '67c9707f16c735a1d5392863':
             return require('@/assets/icons/shorts-outline.png');        // short
+        case '67ee742d60546911d1e17c53':
+            return require('@/assets/icons/tracksuit-outline.png');       // survetement
         case '67c970bf16c735a1d5392866':
             return require('@/assets/icons/sweat-shirt-outline.png');   // sweat-shirt
         case '67c9704b2875e9983ae97589':

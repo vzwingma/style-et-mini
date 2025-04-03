@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet } from "react-native";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/ThemedText";
 import { Tabs } from "@/constants/TabsEnums";
-import { getTabIcon } from "../commons/tab/TabBarIcon";
+import { getHomeIcon } from "../commons/tab/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 
 
@@ -23,8 +23,8 @@ type DressingTabComponentProps = {
     return (
       <Pressable onPress={() => selectNewTab(Tabs.DRESSING, dressing.id)}>
         <ThemedView style={styles.container}>
-          <Image source={getTabIcon(true, dressing.categorie)} style={[styles.icon]} />
-          <ThemedText type="subtitle" style={{height: 25}}>{dressing.libelle}</ThemedText>
+          <Image source={getHomeIcon(dressing.categorie)} style={[styles.icon]} />
+          <ThemedText type="subtitle" style={{height: 40}}>{dressing.libelle}</ThemedText>
         </ThemedView>
       </Pressable>
     );
@@ -42,7 +42,6 @@ type DressingTabComponentProps = {
     },
   
     icon: {
-      tintColor: 'gray',
       margin: 5,
       width: 230,
       height: 230,
