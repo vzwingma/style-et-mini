@@ -37,24 +37,31 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
 
   let filtres: VetementFiltreModel[] = [];
 
+  const filtresTypes = addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPE);
+  const filtresTaille = addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES);  
+  const filtresUsages = addCaracteristiqueInFilter(vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES);
+  const filtresMarques = addCaracteristiqueInFilter(vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES);
+  const filtresStatut = addEnumsInFilter(vetements.map(vetement => vetement.statut));
+  const filtresSaisons = addEnumsInFilter(vetements.flatMap(vetement => vetement.saisons));
+
   // Recalcul des filtres disponibles
   return filtres.concat(
-    { id: CaracteristiqueVetementEnum.TYPE, libelle: '', type: CaracteristiqueVetementEnum.TYPE, typeLibelle: CaracteristiqueVetementEnum.TYPE, isType: true },
+    filtresTypes.length ? { id: CaracteristiqueVetementEnum.TYPE, libelle: '', type: CaracteristiqueVetementEnum.TYPE, typeLibelle: CaracteristiqueVetementEnum.TYPE, isType: true } : [],
     addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPE),
 
-    { id: CaracteristiqueVetementEnum.TAILLES, libelle: '', type: CaracteristiqueVetementEnum.TAILLES, typeLibelle: CaracteristiqueVetementEnum.TAILLES, isType: true },
+    filtresTaille.length ? { id: CaracteristiqueVetementEnum.TAILLES, libelle: '', type: CaracteristiqueVetementEnum.TAILLES, typeLibelle: CaracteristiqueVetementEnum.TAILLES, isType: true } : [],
     addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES),
 
-    { id: CaracteristiqueVetementEnum.USAGES, libelle: '', type: CaracteristiqueVetementEnum.USAGES, typeLibelle: CaracteristiqueVetementEnum.USAGES, isType: true },
+    filtresUsages.length ? { id: CaracteristiqueVetementEnum.USAGES, libelle: '', type: CaracteristiqueVetementEnum.USAGES, typeLibelle: CaracteristiqueVetementEnum.USAGES, isType: true } : [],
     addCaracteristiqueInFilter(vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES),
 
-    { id: CaracteristiqueVetementEnum.MARQUES, libelle: '', type: CaracteristiqueVetementEnum.MARQUES, typeLibelle: CaracteristiqueVetementEnum.MARQUES, isType: true },
+    filtresMarques.length ? { id: CaracteristiqueVetementEnum.MARQUES, libelle: '', type: CaracteristiqueVetementEnum.MARQUES, typeLibelle: CaracteristiqueVetementEnum.MARQUES, isType: true } : [],
     addCaracteristiqueInFilter(vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES),
 
-    { id: CaracteristiqueVetementEnum.STATUT, libelle: '', type: CaracteristiqueVetementEnum.STATUT, typeLibelle: CaracteristiqueVetementEnum.STATUT, isType: true },
+    filtresStatut.length ? { id: CaracteristiqueVetementEnum.STATUT, libelle: '', type: CaracteristiqueVetementEnum.STATUT, typeLibelle: CaracteristiqueVetementEnum.STATUT, isType: true } : [],
     addEnumsInFilter(vetements.map(vetement => vetement.statut)),
 
-    { id: CaracteristiqueVetementEnum.SAISON, libelle: '', type: CaracteristiqueVetementEnum.SAISON, typeLibelle: CaracteristiqueVetementEnum.SAISON, isType: true },
+    filtresSaisons.length ? { id: CaracteristiqueVetementEnum.SAISON, libelle: '', type: CaracteristiqueVetementEnum.SAISON, typeLibelle: CaracteristiqueVetementEnum.SAISON, isType: true } : [],
     addEnumsInFilter(vetements.flatMap(vetement => vetement.saisons)));
 }
 
