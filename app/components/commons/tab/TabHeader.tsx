@@ -39,7 +39,9 @@ export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
         return "Bienvenue";
       case Tabs.DRESSING:
         if (dressingName) {
-          return `Le dressing de ${dressingName}`;
+          const startsWithVowel = /^[aeiouyAEIOUY]/.test(dressingName);
+
+          return `Le dressing d${startsWithVowel ? "'" : "e "}${dressingName}`;
         }
         return "? Dressing ?";
       case Tabs.REGLAGES:

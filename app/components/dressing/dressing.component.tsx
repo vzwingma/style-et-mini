@@ -103,6 +103,6 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
 const styles = StyleSheet.create({
   container: {
     zIndex: 0,
-    minHeight: 1000,
+    minHeight: 1200,
   }
 });

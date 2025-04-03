@@ -1,9 +1,9 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
-import { alphanumSort, numSort } from "../components/commons/CommonsUtils";
+import { alphanumSort, checkPriceFormat, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
-import FormVetementModel, { transformFormToVetementModel } from "../models/form.vetements.model";
+import FormVetementModel, { transformFormToVetementModel, transformVetementToFormModel } from "../models/form.vetements.model";
 import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
@@ -88,31 +88,8 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
 
-        setForm((form: FormVetementModel) => {
-            return {
-                ...form,
-                id: vetementInEdition.id,
-                image: vetementInEdition.image,
-                libelle: vetementInEdition.libelle,
-                dressing: dressing,
-                type: paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id),
-                taille: paramsTaillesMesures?.find((taille) => taille.id === vetementInEdition.taille.id),
-                petiteTaille: vetementInEdition.taille.petite,
-
-                usagesListe: vetementInEdition.usages.map((usage) => usage.id),
-                usages: vetementInEdition.usages.map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id)),
-                
-                saisons: vetementInEdition.saisons ?? [],
-                couleurs: vetementInEdition.couleurs,
-
-                marque: paramsMarquesVetements?.find((marque) => marque.id === vetementInEdition.marque?.id),
-                collection: vetementInEdition.collection,
-                etat: paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id),
-                description: vetementInEdition.description,
-
-                statut: vetementInEdition.statut ?? StatutVetementEnum.ACTIF
-            }
-        });
+        setForm((form: FormVetementModel) => transformVetementToFormModel(form, vetementInEdition, dressing,
+                                            {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsMarquesVetements, paramsEtatVetements}));
     }
     else {
         setForm(() => {
@@ -297,6 +274,22 @@ export function setCollectionForm(collection: string, setForm: Function) {
 }
 
 /**
+ * Enregistre la collection de vêtements dans le formulaire
+ * @param prix description du vêtement
+ * @param setForm formulaire à mettre à jour
+ */
+export function setPrixForm(prix: string, setForm: Function, isPrixNeuf: boolean) {
+    setForm((form: FormVetementModel) => {
+        if(isPrixNeuf) {
+            return { ...form, prixNeuf: prix?.replace(",",".") }
+        }
+        else {
+            return { ...form, prixAchat: prix?.replace(",",".") }
+        }
+    });
+}
+
+/**
  * Validation du formulaire
  */
 
@@ -330,6 +323,7 @@ function saveVetement(form: FormVetementModel,
     const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
 
     //  Appel au backend pour sauvegarder le vêtement
+
     callPOSTBackend(url, params, vetement)
         .then((response) => {
             console.log("Vêtement enregistré avec succès", response);
@@ -343,6 +337,7 @@ function saveVetement(form: FormVetementModel,
         });
 }
 
+let errors = false;
 /**
  * Validation du formulaire
  * @param form formulaire à valider
@@ -357,10 +352,10 @@ export function validateForm(form: FormVetementModel | null,
     onCloseForm: Function) {
 
     console.log("Validation du formulaire", form);
-
-    let errors = false;
+    errors = false;
     if (form === null) {
         console.error("Le formulaire est vide");
+        errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return {
                 ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire"
@@ -372,83 +367,52 @@ export function validateForm(form: FormVetementModel | null,
         });
         return;
     }
-    if (form.libelle === undefined || form.libelle === "") {
-        errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire" }
-        });
-    }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, libelleInError: false, libelleMessage: null }
-        });
-    }
 
-    if (form.type === undefined || form.type === null) {
-        errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, typeInError: true, typeMessage: "Le type de vêtement est obligatoire" }
-        });
-    }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, typeInError: false, typeMessage: null }
-        });
-    }
-
-    if (form.taille === undefined || form.taille === null) {
-        errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire" }
-        });
-    }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, tailleInError: false, tailleMessage: null }
-        });
-    }
-
-    if (form.usages === undefined || form.usages === null || form.usages.length === 0) {
-        errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, usageInError: true, usageMessage: "Au moins un usage est obligatoire" }
-        });
-    }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, usageInError: false, usageMessage: null }
-        });
-    }
-
-    if (form.marque === undefined || form.marque === null) {
-        errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, marqueInError: true, marqueMessage: "La marque est obligatoire" }
-        });
-    }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, marqueInError: false, marqueMessage: null }
-        });
-    }
-
-    if (CategorieDressingEnum.ADULTE !== form.dressing.categorie && (form.etat === undefined || form.etat === null)) {
-        errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, etatInError: true, etatMessage: "L'état du vêtement est obligatoire" }
-        });
-    }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, etatInError: false, etatMessage: null }
-        });
-    }
+    validateAttribute("libelle" , form.libelle === undefined || form.libelle === ""
+        , setErrorsForm, "Le libellé du vêtement est obligatoire");
+    validateAttribute("type"    , form.type === undefined || form.type === null
+        , setErrorsForm, "Le type de vêtement est obligatoire");
+    validateAttribute("taille"  , form.taille === undefined || form.taille === null
+        , setErrorsForm, "La taille du vêtement est obligatoire");
+    validateAttribute("usage"   , form.usages === undefined || form.usages === null || form.usages.length === 0
+        , setErrorsForm, "Au moins un usage est obligatoire");
+    validateAttribute("marque"  , form.marque === undefined || form.marque === null
+        , setErrorsForm, "La marque est obligatoire");
+    validateAttribute("etat"    , form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
+        , setErrorsForm, "L'état du vêtement est obligatoire");
+    validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
+        , setErrorsForm, "Le prix d'achat doit être au format numérique");
+    validateAttribute("prixNeuf", !checkPriceFormat(form.prixNeuf)
+        , setErrorsForm, "Le prix neuf doit être au format numérique");
 
     if (!errors) {
         // Enregistrement du formulaire 
         saveVetement(form, setForm, setErrorsForm, onCloseForm);
     }
 }
+
+/**
+ * Valide un attribut et met à jour les erreurs du formulaire en conséquence.
+ *
+ * @param attributeName - Le nom de l'attribut à valider.
+ * @param attributeCheckFail - Indique si la validation de l'attribut a échoué (true si échec, false sinon).
+ * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
+ * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
+ */
+function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string){
+    if (attributeCheckFail) {
+        errors = true;
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors, [attributeName+"InError"]: true, [attributeName+"Message"]: errorMessage }
+        });
+    }
+    else {
+        setErrorsForm((errors: ErrorsFormVetementModel) => {
+            return { ...errors,[attributeName+"InError"]: false, [attributeName+"Message"]: null }
+        });
+    }
+}
+
 
 export type FormModelProps = {
     form: FormVetementModel,

@@ -20,17 +20,15 @@ export type VetementItemComponentProps = {
  * @component
  **/
 export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, editVetement }: VetementItemComponentProps) => {
-
-    if (vetement.image) {
-        // recalcul de la taille de l'image suivant la mise en page
-        vetement.image = resizeImage(vetement.image, 100);
-    }
+    
+    const vetementImageToShow = vetement.image ? resizeImage(vetement.image, 100) : null;
+    
     return (
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
                 <View style={styles.photoFrame}>
-                    {vetement.image && <Image source={{ uri: vetement.image.contenu }} style={[styles.photo, { width: vetement.image.largeur, height: vetement.image.hauteur }]} />}
-                    {!vetement.image && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
+                    {vetementImageToShow && <Image source={{ uri: vetementImageToShow.contenu }} style={[styles.photo, { width: vetementImageToShow.largeur, height: vetementImageToShow.hauteur }]} />}
+                    {!vetementImageToShow && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
                         style={[styles.iconBig]} />}
                     {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
                         style={[styles.iconSmall]} />}
@@ -45,7 +43,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
 const styles = StyleSheet.create({
     body: {
         backgroundColor: Colors.app.background,
-        width: 110,
+        width: 115,
         height: 145,
         paddingTop: 5,
         margin: 5,

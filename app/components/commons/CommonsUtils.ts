@@ -15,6 +15,12 @@ import VetementModel from "@/app/models/vetements.model";
  *          ou 0 si les deux chaînes sont égales.
  */
 export function alphanumSort(a: string, b: string) {
+    if(a.startsWith('...')){
+        return 1;
+    }
+    if(b.startsWith('...')){
+        return -1;
+    }
     return a.localeCompare(b, 'fr', { numeric: true });
 }
 
@@ -34,39 +40,33 @@ export function numSort(a: number, b: number) {
 
 
 
-
 /**
- * Redimensionne une image en fonction d'une taille maximale tout en conservant son ratio.
- *
- * @param image - L'image à redimensionner, représentée par un objet `VetementImageModel`.
- *                Doit contenir les propriétés `contenu`, `largeur` et `hauteur`.
- * @param maxSize - La taille maximale (en pixels) pour la largeur ou la hauteur de l'image.
- * @returns Une nouvelle instance de `VetementImageModel` avec les dimensions redimensionnées
- *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
- *          retourne l'image d'origine.
+ * Retourne la valeur numérique d'un prix sous forme de chaîne de caractères.
+ * 
+ * @param prix - Le prix à convertir, sous forme de chaîne de caractères, ou `null`/`undefined`.
+ * @returns La valeur numérique du prix arrondie à deux décimales, ou `null` si le prix est invalide ou vide.
  */
-export function resizeImage(image: VetementImageModel, maxSize : number): VetementImageModel {
-    if (image?.contenu) {
-        const ratioImage = image.largeur / image.hauteur;
-        if(ratioImage > 1) {
-            return {
-                ...image,
-                contenu: image.contenu,
-                largeur: maxSize,
-                hauteur: maxSize / ratioImage
-            }
-        } else {
-            return {
-                ...image,
-                contenu: image.contenu,
-                largeur: maxSize * ratioImage,
-                hauteur: maxSize
-            }
-        }
-    }
-    return image;
+export function checkPriceFormat(prix: string | null | undefined): boolean {
+    const prixFormat = getPriceValue(prix);
+    return prixFormat === null || !isNaN(prixFormat);
 }
 
+
+
+
+
+/**
+ * Convertit une chaîne de caractères représentant un prix en un nombre.
+ * 
+ * @param prix - Le prix à convertir, sous forme de chaîne de caractères, ou `null`/`undefined`.
+ * @returns La valeur numérique du prix arrondie à deux décimales, ou `null` si le prix est invalide ou vide.
+ */
+export function getPriceValue(prix: string | null | undefined): number | null {
+    if (prix === undefined || prix === null || prix?.trim() === "") {
+        return null;
+    }
+    return parseFloat(parseFloat(prix).toFixed(2));
+}
 
 
 // Fonction de tri des vêtements
@@ -81,6 +81,41 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
     else {
         return alphanumSort(a.taille.libelle, b.taille.libelle);
     };
+}
+
+
+
+
+
+/**
+ * Redimensionne une image en fonction d'une taille maximale tout en conservant son ratio.
+ *
+ * @param image - L'image à redimensionner, représentée par un objet `VetementImageModel`.
+ *                Doit contenir les propriétés `contenu`, `largeur` et `hauteur`.
+ * @param maxSize - La taille maximale (en pixels) pour la largeur ou la hauteur de l'image.
+ * @returns Une nouvelle instance de `VetementImageModel` avec les dimensions redimensionnées
+ *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
+ *          retourne l'image d'origine.
+ */
+export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel {
+    if (image?.contenu) {
+        const ratioImage = image.largeur / image.hauteur;
+        const clonedImage = { ...image }; // Clone the object
+        if (ratioImage > 1) {
+            return {
+                ...clonedImage,
+                largeur: maxSize,
+                hauteur: maxSize / ratioImage
+            };
+        } else {
+            return {
+                ...clonedImage,
+                largeur: maxSize * ratioImage,
+                hauteur: maxSize
+            };
+        }
+    }
+    return { ...image }; // Return a cloned object even if no resizing is done
 }
 
 
@@ -146,6 +181,8 @@ export function getTypeVetementIcon(typeVetements: string): any {
             return require('@/assets/icons/long-pants-outline.png');    // sarouel
         case '67c9707f16c735a1d5392863':
             return require('@/assets/icons/shorts-outline.png');        // short
+        case '67ee742d60546911d1e17c53':
+            return require('@/assets/icons/tracksuit-outline.png');       // survetement
         case '67c970bf16c735a1d5392866':
             return require('@/assets/icons/sweat-shirt-outline.png');   // sweat-shirt
         case '67c9704b2875e9983ae97589':
