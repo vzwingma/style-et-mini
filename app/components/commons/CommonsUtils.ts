@@ -146,6 +146,8 @@ export function getTypeVetementIcon(typeVetements: string): any {
             return require('@/assets/icons/long-pants-outline.png');    // sarouel
         case '67c9707f16c735a1d5392863':
             return require('@/assets/icons/shorts-outline.png');        // short
+        case '67ee742d60546911d1e17c53':
+            return require('@/assets/icons/tracksuit-outline.png');       // survetement
         case '67c970bf16c735a1d5392866':
             return require('@/assets/icons/sweat-shirt-outline.png');   // sweat-shirt
         case '67c9704b2875e9983ae97589':
