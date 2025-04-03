@@ -1,6 +1,5 @@
 import VetementImageModel from "@/app/models/vetements.image.model";
 import VetementModel from "@/app/models/vetements.model";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Fonction de tri alphanumérique
 /**
@@ -16,13 +15,7 @@ import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
  *          ou 0 si les deux chaînes sont égales.
  */
 export function alphanumSort(a: string, b: string) {
-    if(a.startsWith('...')){
-        return 1;
-    }
-    if(b.startsWith('...')){
-        return -1;
-    }
-    return a.localeCompare(b, 'fr', { numeric: true });
+    return a.startsWith('...') ? 1 : b.startsWith('...') ? -1 : a.localeCompare(b, 'fr', { numeric: true });
 }
 
 // Fonction de tri numérique
