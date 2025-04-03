@@ -19,7 +19,13 @@ interface ErrorsFormVetementModel {
     marqueMessage  : string | null;
 
     etatInError  : boolean;
-    etatMessage  : string | null;    
+    etatMessage  : string | null; 
+    
+    prixNeufInError  : boolean;
+    prixNeufMessage  : string | null;
+
+    prixAchatInError  : boolean;
+    prixAchatMessage  : string | null;
 }
 
 export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
@@ -39,7 +45,13 @@ export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
     marqueMessage   : null,
 
     etatInError     : false,
-    etatMessage     : null
+    etatMessage     : null,
+
+    prixNeufInError : false,
+    prixNeufMessage : null,
+
+    prixAchatInError: false,
+    prixAchatMessage: null
 }
 
 export default ErrorsFormVetementModel;

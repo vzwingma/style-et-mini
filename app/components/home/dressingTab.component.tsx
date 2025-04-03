@@ -43,8 +43,8 @@ type DressingTabComponentProps = {
   
     icon: {
       margin: 5,
-      width: 250,
-      height: 250,
+      width: 230,
+      height: 230,
       borderColor: Colors.dark.background,
     }
   });
