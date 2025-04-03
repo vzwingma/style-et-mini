@@ -1,5 +1,6 @@
 import VetementImageModel from "@/app/models/vetements.image.model";
 import VetementModel from "@/app/models/vetements.model";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Fonction de tri alphanumérique
 /**
@@ -34,6 +35,52 @@ export function numSort(a: number, b: number) {
 
 
 
+/**
+ * Retourne la valeur numérique d'un prix sous forme de chaîne de caractères.
+ * 
+ * @param prix - Le prix à convertir, sous forme de chaîne de caractères, ou `null`/`undefined`.
+ * @returns La valeur numérique du prix arrondie à deux décimales, ou `null` si le prix est invalide ou vide.
+ */
+export function checkPriceFormat(prix: string | null | undefined): boolean {
+    const prixFormat = getPriceValue(prix);
+    return prixFormat === null || !isNaN(prixFormat);
+}
+
+
+
+
+
+/**
+ * Convertit une chaîne de caractères représentant un prix en un nombre.
+ * 
+ * @param prix - Le prix à convertir, sous forme de chaîne de caractères, ou `null`/`undefined`.
+ * @returns La valeur numérique du prix arrondie à deux décimales, ou `null` si le prix est invalide ou vide.
+ */
+export function getPriceValue(prix: string | null | undefined): number | null {
+    if (prix === undefined || prix === null || prix?.trim() === "") {
+        return null;
+    }
+    return parseFloat(parseFloat(prix).toFixed(2));
+}
+
+
+// Fonction de tri des vêtements
+export function vetementSort(a: VetementModel, b: VetementModel) {
+    if (a.taille.libelle === b.taille.libelle) {
+
+        if (a.taille.petite === b.taille.petite) {
+            return alphanumSort(a.libelle, b.libelle);
+        }
+        return a.taille.petite ? -1 : 1;
+    }
+    else {
+        return alphanumSort(a.taille.libelle, b.taille.libelle);
+    };
+}
+
+
+
+
 
 /**
  * Redimensionne une image en fonction d'une taille maximale tout en conservant son ratio.
@@ -65,22 +112,6 @@ export function resizeImage(image: VetementImageModel, maxSize : number): Veteme
         }
     }
     return image;
-}
-
-
-
-// Fonction de tri des vêtements
-export function vetementSort(a: VetementModel, b: VetementModel) {
-    if (a.taille.libelle === b.taille.libelle) {
-
-        if (a.taille.petite === b.taille.petite) {
-            return alphanumSort(a.libelle, b.libelle);
-        }
-        return a.taille.petite ? -1 : 1;
-    }
-    else {
-        return alphanumSort(a.taille.libelle, b.taille.libelle);
-    };
 }
 
 
