@@ -23,7 +23,7 @@ export function TabBarIcon({ style, ...rest }: any) {
 export function getTabIcon(selectedTab : boolean, dressingCat? : CategorieDressingEnum): any {
   switch(dressingCat){
     case CategorieDressingEnum.ADULTE:
-      return selectedTab ? require('@/assets/icons/dress.png') : require('@/assets/icons/dress-outline.png');
+      return selectedTab ? require('@/assets/icons/adult-dress.png') : require('@/assets/icons/adult-dress-outline.png');
       case CategorieDressingEnum.ENFANT:
         return selectedTab ? require('@/assets/icons/girl-dress.png') : require('@/assets/icons/girl-dress-outline.png');      
     case CategorieDressingEnum.BEBE:
