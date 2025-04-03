@@ -380,7 +380,6 @@ export function validateForm(form: FormVetementModel | null,
         , setErrorsForm, "La marque est obligatoire");
     validateAttribute("etat"    , form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
         , setErrorsForm, "L'état du vêtement est obligatoire");
-        console.log(form.prixAchat, checkPriceFormat(form.prixAchat), form.prixNeuf, checkPriceFormat(form.prixNeuf));
     validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
         , setErrorsForm, "Le prix d'achat doit être au format numérique");
     validateAttribute("prixNeuf", !checkPriceFormat(form.prixNeuf)
@@ -392,6 +391,14 @@ export function validateForm(form: FormVetementModel | null,
     }
 }
 
+/**
+ * Valide un attribut et met à jour les erreurs du formulaire en conséquence.
+ *
+ * @param attributeName - Le nom de l'attribut à valider.
+ * @param attributeCheckFail - Indique si la validation de l'attribut a échoué (true si échec, false sinon).
+ * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
+ * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
+ */
 function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string){
     if (attributeCheckFail) {
         errors = true;
