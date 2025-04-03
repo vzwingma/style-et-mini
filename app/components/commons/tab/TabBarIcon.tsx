@@ -14,6 +14,21 @@ export function TabBarIcon({ style, ...rest }: any) {
 
 
 
+/**
+ * Retourne l'icône de l'onglet sélectionné
+ * @param tab nom de l'onglet
+ * @returns l'icône de l'onglet sélectionné
+ */
+export function getHomeIcon(dressingCat? : CategorieDressingEnum): any {
+  switch(dressingCat){
+    case CategorieDressingEnum.ADULTE:
+      return require('@/assets/icons/mom-dressing.png');
+      case CategorieDressingEnum.ENFANT:
+        return require('@/assets/icons/girl-dressing.png') ;
+    case CategorieDressingEnum.BEBE:
+      return require('@/assets/icons/baby-clothes.png') ;
+  }
+}
 
 /**
  * Retourne l'icône de l'onglet sélectionné
