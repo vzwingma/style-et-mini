@@ -97,26 +97,25 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
  *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
  *          retourne l'image d'origine.
  */
-export function resizeImage(image: VetementImageModel, maxSize : number): VetementImageModel {
+export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel {
     if (image?.contenu) {
         const ratioImage = image.largeur / image.hauteur;
-        if(ratioImage > 1) {
+        const clonedImage = { ...image }; // Clone the object
+        if (ratioImage > 1) {
             return {
-                ...image,
-                contenu: image.contenu,
+                ...clonedImage,
                 largeur: maxSize,
                 hauteur: maxSize / ratioImage
-            }
+            };
         } else {
             return {
-                ...image,
-                contenu: image.contenu,
+                ...clonedImage,
                 largeur: maxSize * ratioImage,
                 hauteur: maxSize
-            }
+            };
         }
     }
-    return image;
+    return { ...image }; // Return a cloned object even if no resizing is done
 }
 
 
