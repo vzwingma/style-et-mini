@@ -1,9 +1,7 @@
-import { API_AUTH, API_URL, API_VERBS, KeyValueParams, SERVICES_URL } from '@/constants/APIconstants';
+import { API_AUTH, API_PWD, API_URL, API_VERBS, KeyValueParams, SERVICES_URL } from '@/constants/APIconstants';
 import 'react-native-get-random-values';
 import { v7 as uuidGen } from 'uuid';
-
-
-
+import { Buffer } from 'buffer';
 /** Client HTTP **/
 
 let storageWatch = 0;
@@ -107,7 +105,7 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
         mode: "cors",
         headers: new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + API_AUTH
+            'Authorization': 'Basic ' + Buffer.from(API_AUTH + ':' + API_PWD, 'binary').toString('base64')
         }),
         body: JSON.stringify(body)
     })
