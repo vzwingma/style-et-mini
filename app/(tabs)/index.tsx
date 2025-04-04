@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/app/components/commons/ThemedText';
+import { ThemedText } from '@/app/components/commons/views/ThemedText';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext } from 'react';
 import { AppContext } from '../services/AppContextProvider';
