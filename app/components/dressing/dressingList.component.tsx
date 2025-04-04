@@ -1,7 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
-import { ThemedText } from "../commons/views/ThemedText";
-import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -11,6 +9,8 @@ import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/Comm
 import { styles } from "./dressingList.style";
 import { DressingFiltreComponent } from "./dressingFiltres.component";
 import AccordionItem from "../commons/accordion/AccordionItem.component";
+import { ThemedText } from "../commons/views/ThemedText";
+import { Pressable, View } from "react-native";
 
 
 export type DressingComponentProps = {
@@ -44,6 +44,8 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) => {
             return alphanumSort(a[1][0]?.type.libelle, b[1][0]?.type.libelle);
         }));
+
+
 
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
