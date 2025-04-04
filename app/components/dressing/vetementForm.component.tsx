@@ -1,7 +1,7 @@
 import { Image, Pressable, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
-import { ThemedText } from '../commons/ThemedText';
+import { ThemedText } from '../commons/views/ThemedText';
 import { ThemedView } from '../commons/ThemedView';
 import { Colors } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
@@ -19,7 +19,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 import { getTypeVetementIcon, resizeImage } from '../commons/CommonsUtils';
-import { ModalDialogComponent } from '../commons/ModalDialog';
+import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
 import VetementImageModel from '@/app/models/vetements.image.model';
 import ParamMarqueVetementsModel from '@/app/models/params/paramMarqueVetements.model';

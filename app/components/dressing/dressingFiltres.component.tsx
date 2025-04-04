@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
-import { ThemedText } from "../commons/ThemedText";
+import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
