@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
-import { Pressable, Image, ScrollView, View } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -48,10 +48,11 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
-                <AccordionItem title={vetements[0]?.type?.libelle + " (" + vetements.length + ")"}
+                <AccordionItem
+                    title={vetements[0]?.type?.libelle + " (" + vetements.length + ")"}
                     icon={getTypeVetementIcon(groupe)}
                     key={"key_groupeId_" + groupe}>
-                        {showPanelVetements(vetements)}
+                    {showPanelVetements(vetements)}
                 </AccordionItem>
             );
         });
