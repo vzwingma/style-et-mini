@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
-import { ThemedText } from "../commons/ThemedText";
-import { Pressable, Image } from "react-native";
+import { ThemedText } from "../commons/views/ThemedText";
+import { Pressable, Image, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
 import { styles } from "./dressingList.style";
 import { DressingFiltreComponent } from "./dressingFiltres.component";
+import AccordionItem from "../commons/accordion/AccordionItem.component";
 
 
 export type DressingComponentProps = {
@@ -39,23 +40,20 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     function showPanelGroupeVetements(vetementsByGroup: Map<string, VetementModel[]>): React.JSX.Element[] {
         let groupItems: JSX.Element[] = [];
         // Sort par nom du groupe
-        vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) =>{
+        vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) => {
             return alphanumSort(a[1][0]?.type.libelle, b[1][0]?.type.libelle);
-        } ));
+        }));
 
 
-        
+
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
-                <ThemedView key={"key_groupeId_" + groupe} style={styles.groupeLabel}>
-                    <ThemedText type="default">{vetements[0]?.type?.libelle} ({vetements.length})</ThemedText>
-                    <Image source={getTypeVetementIcon(groupe)} style={styles.icon} />
-                </ThemedView>
+                <AccordionItem title={vetements[0]?.type?.libelle + " (" + vetements.length + ")"}
+                    icon={getTypeVetementIcon(groupe)}
+                    key={"key_groupeId_" + groupe}>
+                        {showPanelVetements(vetements)}
+                </AccordionItem>
             );
-            groupItems.push(
-                <ThemedView key={"key_groupeList_" + groupe} style={styles.groupeContainer}>
-                    {showPanelVetements(vetements)}
-                </ThemedView>);
         });
         return groupItems;
     }
@@ -88,9 +86,11 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                 </Pressable>
             </ThemedView>
 
-            <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches}/>
-            
-            {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
+            <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches} />
+            <ScrollView contentInsetAdjustmentBehavior="automatic">
+                {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
+            </ScrollView>
+
         </>
     );
 }

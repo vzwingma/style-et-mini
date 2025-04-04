@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { ThemedText } from "../commons/ThemedText";
+import { ThemedText } from "../commons/views/ThemedText";
 
 
 
