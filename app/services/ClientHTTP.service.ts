@@ -115,18 +115,17 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
             if (res.status >= 200 && res.status < 300) {
                 return res.json();
             } else {
-                throw new Error(res.statusText);
+                throw new Error(res.status + "/" + res.statusText);
             }
         })
         .then(data => {
             if (data.status === "ERR") {
-                throw new Error(data.message);
+                throw new Error(data);
             }
             return data;
         })
         .catch(e => {
             console.error("[WS traceId=" + traceId + "] < Erreur lors de l'appel HTTP [" + fullURL + "]", e);
-            e.message += ' @ url:' + fullURL; 
             throw new Error(e);
         })
 }
