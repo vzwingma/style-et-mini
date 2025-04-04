@@ -43,7 +43,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
 const styles = StyleSheet.create({
     body: {
         backgroundColor: Colors.app.background,
-        width: 115,
+        width: 112,
         height: 145,
         paddingTop: 5,
         margin: 5,
