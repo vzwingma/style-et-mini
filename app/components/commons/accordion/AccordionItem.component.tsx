@@ -64,7 +64,8 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       backgroundColor: Colors.app.color,
       flex: 1,
       flexDirection: 'row',
-      justifyContent:'space-between'
+      justifyContent: 'space-between',
+      height: 25
     },
     groupeLabel: {
       paddingLeft: 5,
