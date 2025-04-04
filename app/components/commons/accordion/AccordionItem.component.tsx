@@ -71,7 +71,7 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      height: 25,
+      height: 25
     },
     groupeLabel: {
       paddingLeft: 5,
