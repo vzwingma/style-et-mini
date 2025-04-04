@@ -74,7 +74,9 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       height: 25,
     },
     groupeLabel: {
-        color: 'white',
+      paddingLeft: 5,
+      paddingTop: 2,
+      color: 'white',
     },
     icon: {
       marginTop: 2,
