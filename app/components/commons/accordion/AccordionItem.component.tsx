@@ -38,17 +38,16 @@ export default function AccordionItem({ children, title, icon }: AccordionItemPr
       setExpanded(!expanded);
     }
   
-    const body = <View style={styles.accordBody}>{ children }</View>;
-  
     return (
       <View style={styles.accordContainer}>
         <TouchableOpacity style={styles.accordHeader} onPress={ toggleItem }>
-          <Text style={styles.groupeLabel}>{ title }</Text>
-          <Image source={icon} style={styles.icon} />
-          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' }
-                size={20} color="#bbb" />
+          <View style={styles.accordHeader}>
+            <Text style={styles.groupeLabel}>{ title }</Text>
+            <Image source={icon} style={styles.icon} />
+          </View>
+          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' } size={20} color="#bbb" />
         </TouchableOpacity>
-        { expanded && body }
+        { expanded && <View style={styles.accordBody}>{ children }</View> }
       </View>
     );
   }
@@ -57,25 +56,20 @@ export default function AccordionItem({ children, title, icon }: AccordionItemPr
 
   const styles = StyleSheet.create({
     accordContainer: {
-      paddingTop: 4,
+      paddingTop: 4
     },
     accordHeader: {
       backgroundColor: Colors.app.color,
       flex: 1,
       flexDirection: 'row',
-      justifyContent:'space-between'
+      justifyContent: 'space-between',
+      height: 25,
     },
     groupeLabel: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5,
         color: 'white',
     },
     icon: {
-      marginTop: 5,
+      marginTop: 2,
       marginRight: 5,
       width: 20,
       height: 20,
@@ -84,13 +78,8 @@ export default function AccordionItem({ children, title, icon }: AccordionItemPr
   },
     accordBody: {
       flexDirection: 'row',
-      alignItems: 'center',
-    },
-    textSmall: {
-      fontSize: 16
-    },
-    seperator: {
-      height: 12
+      flex: 1,
+      flexWrap: 'wrap',
     }
   });
   
