@@ -67,13 +67,9 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       justifyContent:'space-between'
     },
     groupeLabel: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5,
-        color: 'white',
+      paddingLeft: 5,
+      paddingTop: 2,
+      color: 'white',
     },
     icon: {
       marginTop: 2,
