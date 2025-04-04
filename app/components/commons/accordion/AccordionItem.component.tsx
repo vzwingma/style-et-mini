@@ -64,13 +64,16 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       backgroundColor: Colors.app.color,
       flex: 1,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      height: 25
+      justifyContent:'space-between'
     },
     groupeLabel: {
-      paddingLeft: 5,
-      paddingTop: 2,
-      color: 'white',
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        backgroundColor: Colors.app.color,
+        padding: 5,
+        color: 'white',
     },
     icon: {
       marginTop: 2,

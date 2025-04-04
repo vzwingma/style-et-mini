@@ -1,5 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
+import { ThemedText } from "../commons/views/ThemedText";
+import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -9,8 +11,7 @@ import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/Comm
 import { styles } from "./dressingList.style";
 import { DressingFiltreComponent } from "./dressingFiltres.component";
 import AccordionItem from "../commons/accordion/AccordionItem.component";
-import { ThemedText } from "../commons/views/ThemedText";
-import { Pressable, View } from "react-native";
+
 
 
 export type DressingComponentProps = {
