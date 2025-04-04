@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
 
     groupeContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     /** Filtre  */
     filtresBar: {

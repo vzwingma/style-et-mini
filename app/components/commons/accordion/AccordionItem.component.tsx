@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Image, LayoutAnimation, Platform, StyleSheet, Text, TouchableOpacity, UIManager, View } from "react-native";
 
 if(Platform.OS === 'android') {
@@ -13,6 +13,7 @@ if(Platform.OS === 'android') {
 type AccordionItemPros = PropsWithChildren<{
     title: string;
     icon?: any;
+    toggleAllItems?: boolean;
   }>;
 
 
@@ -30,9 +31,16 @@ type AccordionItemPros = PropsWithChildren<{
  * - Le composant utilise un état local pour gérer l'expansion ou la rétraction de l'accordéon.
  * - Une icône `Ionicons` est utilisée pour indiquer l'état (ouvert/fermé) de l'accordéon.
  */
-export default function AccordionItem({ children, title, icon }: AccordionItemPros): JSX.Element {
-    const [ expanded, setExpanded ] = useState(false);
+export default function AccordionItem({ children, title, icon, toggleAllItems }: AccordionItemPros): JSX.Element {
+    const [ expanded, setExpanded ] = useState(toggleAllItems || false);
   
+    useEffect(() => {
+      if (toggleAllItems !== undefined) {
+        setExpanded(toggleAllItems);
+      }
+    }
+    , [ toggleAllItems ]);
+
     function toggleItem() {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setExpanded(!expanded);

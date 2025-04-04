@@ -1,7 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedView } from "../commons/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
-import { Pressable, ScrollView } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { Colors } from "@/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
@@ -30,6 +30,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
     const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
 
+    const [toggleAllItems, setToggleAllItems] = useState(false);
 
     /**
      * Affiche un panneau contenant une liste de vêtements.
@@ -44,13 +45,12 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
             return alphanumSort(a[1][0]?.type.libelle, b[1][0]?.type.libelle);
         }));
 
-
-
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
                 <AccordionItem
                     title={vetements[0]?.type?.libelle + " (" + vetements.length + ")"}
                     icon={getTypeVetementIcon(groupe)}
+                    toggleAllItems={toggleAllItems}
                     key={"key_groupeId_" + groupe}>
                     {showPanelVetements(vetements)}
                 </AccordionItem>
@@ -82,12 +82,19 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         <>
             <ThemedView style={styles.title}>
                 <ThemedText type="subtitle">{vetementsAffiches?.length} vêtement{vetementsAffiches?.length > 1 ? "s" : ""}</ThemedText>
+                <View style={{flexDirection: "row", gap: 10, alignItems: "center"}}>
                 <Pressable onPress={() => openAddEditVetement()}>
                     <Ionicons size={28} name="add-outline" color={Colors.dark.text} />
                 </Pressable>
+                <Pressable onPress={() => setToggleAllItems(!toggleAllItems)}>
+                    <MaterialCommunityIcons size={28} name={toggleAllItems ? "chevron-double-up": "chevron-double-down"} color={Colors.dark.text} />
+                </Pressable>
+                </View>
             </ThemedView>
 
-            <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches} />
+            <View>
+                <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches} />
+            </View>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
                 {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
             </ScrollView>
