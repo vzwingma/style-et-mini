@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm, FormModelProps, setCollectionForm, getMarquesForm, setMarqueForm, setPrixForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm, FormModelProps, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -150,7 +150,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.libelleInError ? 'red' : 'gray'}
-                            value={form?.libelle ? form?.libelle : ''}
+                            value={form?.libelle ?? ''}
                             placeholder={!errorForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorForm)} />
                     </View>
@@ -225,7 +225,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 data={Object.values(SaisonVetementEnum).map(saison => ({ id: saison, libelle: getLibelleSaisonVetementEnum(saison) }))}
                                 labelField="libelle" valueField="id"
                                 placeholder={'(par défaut : toutes saisons)'}
-                                value={form?.saisons?.map(saison => (saison.toString())) || []}
+                                value={form?.saisons?.map(saison => (saison.toString())) ?? []}
                                 onChange={saisons => setSaisonForm(saisons, setForm)}
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
@@ -235,7 +235,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
                         <TextInput style={styles.input} placeholderTextColor={'gray'}
-                            value={form?.couleurs ? form?.couleurs : ''}
+                            value={form?.couleurs ?? ''}
                             placeholder={'Indiquez les couleurs (facultatif)'}
                             onChangeText={couleurs => setCouleursForm(couleurs, setForm)} />
                     </View>                    
@@ -274,30 +274,30 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Collection</ThemedText>
                         <TextInput style={styles.input} placeholderTextColor={'gray'}
-                            value={form?.collection ? form?.collection : ''}
+                            value={form?.collection ?? ''}
                             placeholder={'Indiquez la collection (facultatif)'}
                             onChangeText={collection => setCollectionForm(collection, setForm)} />
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix d'achat</ThemedText>
                         <TextInput style={errorForm?.prixAchatInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.prixAchatInError ? 'red' : 'gray'}
-                            value={form?.prixAchat ? form?.prixAchat : ''}
+                            value={form?.prixAchat ?? ''}
                             placeholder={!errorForm?.prixAchatMessage ? 'Saisir le prix d\'achat (facultatif)' : errorForm?.prixAchatMessage + ''}
-                            onChangeText={prix => setPrixForm(prix, setForm, false)} />
+                            onChangeText={prix => setPrixAchatForm(prix, setForm)} />
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix neuf</ThemedText>
                         <TextInput style={errorForm?.prixNeufInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.prixNeufInError ? 'red' : 'gray'}
-                            value={form?.prixNeuf ? form?.prixNeuf : ''}
+                            value={form?.prixNeuf ?? ''}
                             placeholder={!errorForm?.prixNeufMessage ? 'Saisir le prix neuf(facultatif)' : errorForm?.prixNeufMessage + ''}
-                            onChangeText={prix => setPrixForm(prix, setForm, true)} />
+                            onChangeText={prix => setPrixNeufForm(prix, setForm)} />
                     </View>                                        
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
                         <TextInput style={[styles.input, { minHeight: 50 }]} placeholderTextColor={'gray'}
                             scrollEnabled={true}
-                            value={form?.description ? form?.description : ''}
+                            value={form?.description ?? ''}
                             multiline numberOfLines={2}
                             placeholder={'Indiquez la description (facultatif)'}
                             onChangeText={descrption => setDescriptionForm(descrption, setForm)} />

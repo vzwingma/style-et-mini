@@ -278,16 +278,23 @@ export function setCollectionForm(collection: string, setForm: Function) {
  * @param prix description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setPrixForm(prix: string, setForm: Function, isPrixNeuf: boolean) {
+export function setPrixNeufForm(prix: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        if(isPrixNeuf) {
-            return { ...form, prixNeuf: prix?.replace(",",".") }
-        }
-        else {
-            return { ...form, prixAchat: prix?.replace(",",".") }
-        }
+        return { ...form, prixNeuf: prix?.replace(",",".") }
     });
 }
+
+/**
+ * Enregistre la collection de vêtements dans le formulaire
+ * @param prix description du vêtement
+ * @param setForm formulaire à mettre à jour
+ */
+export function setPrixAchatForm(prix: string, setForm: Function) {
+    setForm((form: FormVetementModel) => {
+        return { ...form, prixAchat: prix?.replace(",",".") }
+    });
+}
+
 
 /**
  * Validation du formulaire
