@@ -100,11 +100,13 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
 
 
 export const pickImageForm = async (setForm: Function) => {
+
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: true,
         quality: 1,
+        legacy: true
     });
     if (!result.canceled) {
         setImageForm(result.assets[0], setForm);
