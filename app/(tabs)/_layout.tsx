@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import ParallaxScrollView from '@/app/components/commons/ParallaxScrollView';
+import ParallaxScrollView from '@/app/components/commons/views/ParallaxScrollView';
 import { ThemedView } from '@/app/components/commons/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
-import { ThemedText } from '@/app/components/commons/ThemedText';
+import { ThemedText } from '@/app/components/commons/views/ThemedText';
 import { Tabs } from '@/constants/TabsEnums';
 import HomeScreen from '.';
 import { getHeaderIcon, getHeaderTitle } from '@/app/components/commons/tab/TabHeader';

@@ -11,20 +11,9 @@ export const styles = StyleSheet.create({
         padding: 5
     },
 
-    groupeLabel: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5,
-        margin: 5,
-    },
     groupeContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: '100%',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     /** Filtre  */
     filtresBar: {

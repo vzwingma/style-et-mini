@@ -1,7 +1,7 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import React from 'react';
-import { ThemedText } from '../commons/ThemedText';
+import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { resizeImage } from '../commons/CommonsUtils';
@@ -43,7 +43,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
 const styles = StyleSheet.create({
     body: {
         backgroundColor: Colors.app.background,
-        width: 115,
+        width: 112,
         height: 145,
         paddingTop: 5,
         margin: 5,
