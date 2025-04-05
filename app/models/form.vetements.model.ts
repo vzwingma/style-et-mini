@@ -34,7 +34,7 @@ interface FormVetementModel {
     prixNeuf?    : string | null;
     prixAchat?   : string | null;
 
-    etat         : ParamEtatVetementsModel;
+    etat         : ParamEtatVetementsModel | null;
     description  : string | null;
     statut       : StatutVetementEnum;
 }
@@ -128,7 +128,7 @@ export function transformVetementToFormModel(form: FormVetementModel, vetementIn
 
             marque          : paramsMarquesVetements?.find((marque) => marque.id === (vetementInEdition.marque?.id ?? '67ee890c60546911d1e17c54')) ?? (() => { throw new Error("Marque " + vetementInEdition.etat?.id + " introuvable"); })(),
             collection      : vetementInEdition.collection,
-            etat            : paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id) ?? (() => { throw new Error("État " + vetementInEdition.etat?.id + " introuvable"); })(),
+            etat            : paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id) ?? null,
 
             prixAchat       : vetementInEdition.prix?.achat != null ? vetementInEdition.prix.achat.toString() : null,
             prixNeuf        : vetementInEdition.prix?.neuf != null ? vetementInEdition.prix.neuf.toString() : null,
