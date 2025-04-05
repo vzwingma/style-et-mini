@@ -27,7 +27,7 @@ type AccordionItemPros = PropsWithChildren<{
  * - Une icône `Ionicons` est utilisée pour indiquer l'état (ouvert/fermé) de l'accordéon.
  */
 export default function AccordionItem({ children, title, icon, toggleAllItems }: AccordionItemPros): JSX.Element {
-    const [ expanded, setExpanded ] = useState(toggleAllItems || false);
+    const [ expanded, setExpanded ] = useState(toggleAllItems ?? false);
     
     useEffect(() => {
       if (toggleAllItems !== undefined) {

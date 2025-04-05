@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-export const APP_MOBILE_VERSION = Constants.expoConfig?.version || "0.0.0";
+export const APP_MOBILE_VERSION = Constants.expoConfig?.version ?? "0.0.0";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 
