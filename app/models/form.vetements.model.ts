@@ -50,7 +50,6 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
         id              : form.id,
         image           : {
             id          : form.image?.id,
-            nom         : form.image?.nom,
             hauteur     : form.image?.hauteur,
             largeur     : form.image?.largeur
         },

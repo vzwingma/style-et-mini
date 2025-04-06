@@ -3,10 +3,9 @@
  */
 interface VetementImageModel {
     readonly id?        : string;
-    readonly nom?       : string;
+    readonly uri?       : string;
     readonly hauteur?   : number;
     readonly largeur?   : number;
-    readonly base64?    : Buffer;
 }
 
 
