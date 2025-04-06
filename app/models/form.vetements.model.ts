@@ -48,7 +48,12 @@ interface FormVetementModel {
 export function transformFormToVetementModel(form: FormVetementModel): VetementModel {
     const vetement: VetementModel = {
         id              : form.id,
-        image           : form.image,
+        image           : {
+            id          : form.image?.id,
+            nom         : form.image?.nom,
+            hauteur     : form.image?.hauteur,
+            largeur     : form.image?.largeur
+        },
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {

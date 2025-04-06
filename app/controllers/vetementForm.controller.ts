@@ -106,7 +106,8 @@ export const pickImageForm = async (setForm: Function) => {
         mediaTypes: ['images'],
         allowsEditing: true,
         quality: 1,
-        legacy: true
+        legacy: true,
+        base64: true,
     });
     if (!result.canceled) {
         setImageForm(result.assets[0], setForm);
@@ -121,9 +122,10 @@ export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Funct
     setForm((form: FormVetementModel) => {
         return { ...form, image : {
             id: uuidGen().replace(/-/g, "").substring(0, 24),
-            contenu: image.uri,
-            largeur: image.width, 
-            hauteur: image.height 
+            nom     : image.fileName,
+            largeur : image.width, 
+            hauteur : image.height,
+            base64  : image.base64
         }}
     });
 }

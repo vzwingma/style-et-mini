@@ -130,14 +130,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             // recalcul de la taille de l'image suivant la mise en page
             renderFormImage = resizeImage(form.image, 250);
         }
-
         return (
             <View style={styles.body}>
                 <View style={{justifyContent: 'center', alignItems: 'center' }}>
                     <View>
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             {form.image &&
-                                <Image source={{ uri: renderFormImage.contenu }} style={[styles.photo, {width: renderFormImage.largeur, height: renderFormImage.hauteur}]} />} 
+                                <Image source={{ uri: renderFormImage.nom }} style={[styles.photo, {width: renderFormImage.largeur, height: renderFormImage.hauteur}]} />} 
                             {!form.image &&
                                 <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
                             {form.petiteTaille &&

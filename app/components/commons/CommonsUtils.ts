@@ -98,8 +98,10 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
  *          retourne l'image d'origine.
  */
 export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel {
-    if (image?.contenu) {
+
+    if (image?.largeur && image?.hauteur) {
         const ratioImage = image.largeur / image.hauteur;
+
         const clonedImage = { ...image }; // Clone the object
         if (ratioImage > 1) {
             return {
