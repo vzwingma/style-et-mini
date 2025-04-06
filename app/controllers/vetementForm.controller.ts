@@ -7,7 +7,7 @@ import FormVetementModel, { transformFormToVetementModel, transformVetementToFor
 import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
-import { callDELETEBackend, callPOSTBackend } from "../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPOSTBinaryBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
@@ -106,8 +106,7 @@ export const pickImageForm = async (setForm: Function) => {
         mediaTypes: ['images'],
         allowsEditing: true,
         quality: 1,
-        legacy: true,
-        base64: true,
+        legacy: true
     });
     if (!result.canceled) {
         setImageForm(result.assets[0], setForm);
@@ -121,11 +120,10 @@ export const pickImageForm = async (setForm: Function) => {
 export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, image : {
-            id: uuidGen().replace(/-/g, "").substring(0, 24),
-            nom     : image.fileName,
+            id      : image.fileName,
+            uri     : image.uri,
             largeur : image.width, 
-            hauteur : image.height,
-            base64  : image.base64
+            hauteur : image.height
         }}
     });
 }
@@ -346,7 +344,34 @@ function saveVetement(form: FormVetementModel,
             showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
             return false;
         });
+
+
+    if(form.image !== null && form.image !== undefined) {
+        console.log("Enregistrement de l'image du vêtement", form.image);
+        
+        const formData = new FormData();
+        formData.append('image', {
+            uri  : form.image.uri,
+            name : form.image.id,
+            type : 'image/jpg',
+          } as unknown as Blob);
+
+
+        //  Appel au backend pour sauvegarder l'image du vêtement
+        callPOSTBinaryBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params, formData)
+        .then((response) => {
+            console.log("Image du vêtement enregistrée avec succès", response);
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+            return false;
+        });
+    }
 }
+
+
+
 
 let errors = false;
 /**

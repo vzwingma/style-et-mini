@@ -30,7 +30,13 @@ function evaluateURL(path: string, params?: KeyValueParams[]): string {
 function startWatch(): void {
     storageWatch = new Date().getTime();
 }
-
+/**
+ * 
+ * @returns header d'authentification
+ */
+const getAuthHeader = () => {
+    return 'Basic ' + Buffer.from(API_AUTH + ':' + API_PWD, 'binary').toString('base64');
+};
 /**
  * Fin du watch de la réponse
  * @param traceId id de la trace
@@ -71,6 +77,50 @@ export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], b
 }
 
 
+
+/**
+ * Effectue un appel HTTP POST vers un backend avec des données binaires (FormData).
+ *
+ * @param {SERVICES_URL} path - Le chemin ou l'URL du service backend à appeler.
+ * @param {KeyValueParams[]} [params] - Une liste optionnelle de paramètres clé-valeur à ajouter à l'URL.
+ * @param {FormData} [data] - Les données binaires à envoyer dans le corps de la requête.
+ * @returns {Promise<any>} Une promesse qui se résout avec la réponse du backend en cas de succès,
+ * ou qui est rejetée avec un message d'erreur en cas d'échec.
+ *
+ * @throws {Error} Si une erreur réseau ou une erreur HTTP se produit.
+ * ```
+ */
+export function callPOSTBinaryBackend(path: SERVICES_URL, params?: KeyValueParams[], data?: FormData): Promise<any> {
+    // Calcul de l'URL complétée
+    const fullURL = evaluateURL(path, params);
+
+    let traceId = uuidGen().replaceAll("-", "");
+    console.log("[WS traceId=" + traceId + "] > [" + fullURL + "]");
+    // Début du watch
+    startWatch();
+
+    return new Promise((resolve, reject) => {
+        let formFetch = new XMLHttpRequest();
+        formFetch.open('POST', fullURL, true, API_AUTH, API_PWD);
+        formFetch.setRequestHeader('Content-Type', 'multipart/form-data');
+        formFetch.setRequestHeader('Authorization', getAuthHeader());
+        formFetch.onload = function() {
+            if (formFetch.status >= 200 && formFetch.status < 300) {
+                stopWatch(traceId, formFetch.response);
+                resolve(formFetch.response);
+            } else {
+                reject(formFetch.statusText);
+            }
+        }
+        formFetch.onerror = function() {
+            console.error("[WS traceId=" + traceId + "] < Erreur lors de l'appel HTTP [" + fullURL + "]", formFetch.statusText);
+            reject(formFetch.statusText);
+        }
+        formFetch.send(data);
+    });
+}
+
+
 /**
  * Appelle le backend avec une requête DELETE.
  *
@@ -105,7 +155,10 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
         mode: "cors",
         headers: new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + Buffer.from(API_AUTH + ':' + API_PWD, 'binary').toString('base64')
+            'Accept': 'application/json',
+            'Accept-Charset': 'utf-8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Authorization': getAuthHeader(),
         }),
         body: JSON.stringify(body)
     })
