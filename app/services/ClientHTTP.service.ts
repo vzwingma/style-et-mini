@@ -106,6 +106,7 @@ export function callPOSTBinaryBackend(path: SERVICES_URL, params?: KeyValueParam
         formFetch.setRequestHeader('Authorization', getAuthHeader());
         formFetch.onload = function() {
             if (formFetch.status >= 200 && formFetch.status < 300) {
+                console.log(formFetch.response);
                 stopWatch(traceId, formFetch.response);
                 resolve(formFetch.response);
             } else {

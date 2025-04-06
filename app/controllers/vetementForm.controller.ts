@@ -347,7 +347,7 @@ function saveVetement(form: FormVetementModel,
 
 
     if(form.image !== null && form.image !== undefined) {
-        console.log("Enregistrement de l'image du vêtement", form.image);
+        console.log("Enregistrement de l'image du vêtement", form.image.id);
         
         const formData = new FormData();
         formData.append('image', {
