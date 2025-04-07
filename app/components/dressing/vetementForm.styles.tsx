@@ -37,6 +37,12 @@ export const styles = StyleSheet.create({
         marginTop: 15,
         marginBottom: 5
     },
+    labelEuro: {
+        width: 15,
+        marginTop: 15,
+        marginBottom: 5,
+        textAlign: 'right',
+    },    
     // Champ de formulaire
     inputError: {
         marginTop: 5,
