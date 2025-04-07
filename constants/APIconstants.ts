@@ -7,6 +7,9 @@ export const API_URL  = process.env.BACKEND_URL  ?? process.env.EXPO_PUBLIC_BACK
 export const API_AUTH = process.env.BACKEND_AUTH ?? process.env.EXPO_PUBLIC_BACKEND_AUTH ?? "dev";
 export const API_PWD  = process.env.BACKEND_PWD  ?? process.env.EXPO_PUBLIC_BACKEND_PWD  ?? "dev";
 
+export const API_S3_URL = process.env.S3_URL ?? process.env.EXPO_PUBLIC_S3_URL ?? "https://d31c3dsgaaj32d.cloudfront.net/";
+
+
 export enum API_VERBS {
     GET     = "GET",
     POST    = "POST",

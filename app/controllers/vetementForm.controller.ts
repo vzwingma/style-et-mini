@@ -16,10 +16,10 @@ import * as ImagePicker from 'expo-image-picker';
 import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
 
 export type FormModelProps = {
-    form            : FormVetementModel,
-    setForm         : Function,
-    setErrorsForm   : Function,
-    onCloseForm     : Function
+    form: FormVetementModel,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function
 };
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -140,10 +140,9 @@ export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Funct
     setForm((form: FormVetementModel) => {
         return {
             ...form, image: {
-                id: image.fileName,
-                uri: image.uri,
-                largeur: image.width,
-                hauteur: image.height
+                localUri: image.uri,
+                largeur : image.width,
+                hauteur : image.height
             }
         }
     });
@@ -345,30 +344,34 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
     ];
 
     const vetement: VetementModel = transformFormToVetementModel(form);
-    const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
-    console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
-    const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
 
     if (form.image !== null && form.image !== undefined) {
-        console.log("Enregistrement de l'image du vêtement", form.image.id);
+        console.log("Enregistrement de l'image du vêtement", vetement.id);
         //  Appel au backend pour récupérer une URL S3
         callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
             .then(async (response) => {
                 const urlS3 = response.url;
-                console.debug("Enregistrement de l'image du vêtement dans S3", urlS3);
-                if (form.image?.uri) {
-                    fetch(form.image.uri)
+                const uriImage = response.s3uri
+                console.debug("Enregistrement de l'image du vêtement ", uriImage, " dans S3", urlS3);
+                if (form.image?.localUri) {
+                    fetch(form.image.localUri)
                         .then((response) => response.blob())
                         .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
                         .then((responseToS3) => {
-                            if(responseToS3) {
-                                console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3);
+                            if (responseToS3) {
+                                console.log("Image du vêtement enregistrée avec succès dans S3");
                                 showToast("Image du vêtement enregistrée avec succès", ToastDuration.SHORT);
                             }
                             else {
                                 console.error("Erreur lors de l'enregistrement de l'image du vêtement dans S3", responseToS3);
                                 showToast("Erreur d'enregistrement de l'image du vêtement dans S3 : " + responseToS3, ToastDuration.LONG);
                             }
+                        })
+                        .then(() => {
+                            if (vetement.image) {
+                                vetement.image.s3uri = uriImage;
+                            }
+                            saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, onCloseForm });
                         })
                         .catch((e) => {
                             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -386,7 +389,37 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
             });
 
     }
+    else {
+        saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, onCloseForm });
+    }
+}
 
+
+/**
+ * Sauvegarde les attributs d'un vêtement en appelant un service backend.
+ * 
+ * @param vetement - Le modèle du vêtement à sauvegarder.
+ * @param params - Tableau de paramètres contenant une clé et une valeur pour le service.
+ * @param formProps - Objet contenant les propriétés du formulaire :
+ *   - `form` : Les données actuelles du formulaire.
+ *   - `setForm` : Fonction pour mettre à jour les données du formulaire.
+ *   - `setErrorsForm` : Fonction pour définir les erreurs du formulaire.
+ *   - `onCloseForm` : Fonction pour fermer le formulaire.
+ * 
+ * @remarks
+ * Cette fonction détermine si le vêtement est en mode création ou mise à jour
+ * en fonction de la présence d'un identifiant (`id`) dans le modèle du vêtement.
+ * Elle effectue un appel POST au backend pour sauvegarder les données et gère
+ * les retours en affichant des notifications de succès ou d'erreur.
+ * 
+ * @throws Une erreur est affichée dans la console et une notification est montrée
+ * si l'appel au backend échoue.
+ */
+function saveVetementAttributs(vetement : VetementModel, params : { key: SERVICES_PARAMS; value: string; }[], { form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
+    
+    const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
+    console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
+    const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
     //  Appel au backend pour sauvegarder le vêtement
     callPOSTBackend(url, params, vetement)
         .then((response) => {
@@ -400,9 +433,6 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
             return false;
         });
 }
-
-
-
 
 let errors = false;
 /**
