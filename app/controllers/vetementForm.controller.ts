@@ -7,21 +7,22 @@ import FormVetementModel, { transformFormToVetementModel, transformVetementToFor
 import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
-import { callDELETEBackend, callPOSTBackend, callPOSTBinaryBackend } from "../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 import { CategorieDressingEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
-import { v7 as uuidGen } from 'uuid';
 import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
+
+
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
     return typeVetements
         .filter((type) => type.categories
-                                .filter((cat) => cat === dressing.categorie)
-                                .length > 0)
+            .filter((cat) => cat === dressing.categorie)
+            .length > 0)
         .sort((t1, t2) => alphanumSort(t1.libelle, t2.libelle));
 }
 
@@ -34,8 +35,8 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
     }
     return taillesMesures
         .filter((taille) => taille.categories
-                                    .filter((cat) => cat === dressing.categorie)
-                                    .length > 0)
+            .filter((cat) => cat === dressing.categorie)
+            .length > 0)
         .filter((taille) => taille.type === form.type.type)
         .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
@@ -71,7 +72,7 @@ export function getMarquesForm(marques: ParamMarqueVetementsModel[], dressing: D
         .filter((marque: ParamMarqueVetementsModel) => marque.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .filter((marque) => marque.type === form.type.type)            
+        .filter((marque) => marque.type === form.type.type)
         .sort((m1, m2) => alphanumSort(m1.libelle, m2.libelle));
 }
 
@@ -89,7 +90,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
 
         setForm((form: FormVetementModel) => transformVetementToFormModel(form, vetementInEdition, dressing,
-                                            {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsMarquesVetements, paramsEtatVetements}));
+            { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsMarquesVetements, paramsEtatVetements }));
     }
     else {
         setForm(() => {
@@ -119,12 +120,14 @@ export const pickImageForm = async (setForm: Function) => {
  */
 export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, image : {
-            id      : image.fileName,
-            uri     : image.uri,
-            largeur : image.width, 
-            hauteur : image.height
-        }}
+        return {
+            ...form, image: {
+                id: image.fileName,
+                uri: image.uri,
+                largeur: image.width,
+                hauteur: image.height
+            }
+        }
     });
 }
 
@@ -282,7 +285,7 @@ export function setCollectionForm(collection: string, setForm: Function) {
  */
 export function setPrixNeufForm(prix: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, prixNeuf: prix?.replace(",",".") }
+        return { ...form, prixNeuf: prix?.replace(",", ".") }
     });
 }
 
@@ -293,7 +296,7 @@ export function setPrixNeufForm(prix: string, setForm: Function) {
  */
 export function setPrixAchatForm(prix: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, prixAchat: prix?.replace(",",".") }
+        return { ...form, prixAchat: prix?.replace(",", ".") }
     });
 }
 
@@ -332,10 +335,9 @@ function saveVetement(form: FormVetementModel,
     const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
 
     //  Appel au backend pour sauvegarder le vêtement
-
     callPOSTBackend(url, params, vetement)
         .then((response) => {
-            console.log("Vêtement enregistré avec succès", response);
+            console.log("Attributs du vêtement enregistrés avec succès", response);
             showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
             razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
         })
@@ -345,28 +347,35 @@ function saveVetement(form: FormVetementModel,
             return false;
         });
 
-
-    if(form.image !== null && form.image !== undefined) {
+    if (form.image !== null && form.image !== undefined) {
         console.log("Enregistrement de l'image du vêtement", form.image.id);
-        
-        const formData = new FormData();
-        formData.append('image', {
-            uri  : form.image.uri,
-            name : form.image.id,
-            type : 'image/jpg',
-          } as unknown as Blob);
+        //  Appel au backend pour récupérer une URL S3
+        callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
+            .then(async (response) => {
+                const urlS3 = response.resultat;
+                console.debug("Enregistrement de l'image du vêtement dans S3", urlS3);
+                if (form.image?.uri) {
+                    const bufferImage = await fetch(form.image.uri).then((response) => response.blob())
+                    return callPUTBinaryBackend(urlS3, bufferImage)
+                        .then((response) => {
+                            console.log("Image du vêtement enregistrée avec succès dans S3", response);
+                            showToast("Image du vêtement enregistrée avec succès", ToastDuration.SHORT);
+                        })
+                        .catch((e) => {
+                            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                            return false;
+                        });
+                } else {
+                    console.error("Image URI is missing or invalid.");
+                }
+            })
+            .catch((e) => {
+                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                return false;
+            });
 
-
-        //  Appel au backend pour sauvegarder l'image du vêtement
-        callPOSTBinaryBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params, formData)
-        .then((response) => {
-            console.log("Image du vêtement enregistrée avec succès", response);
-        })
-        .catch((e) => {
-            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
-            return false;
-        });
     }
 }
 
@@ -404,17 +413,17 @@ export function validateForm(form: FormVetementModel | null,
         return;
     }
 
-    validateAttribute("libelle" , form.libelle === undefined || form.libelle === ""
+    validateAttribute("libelle", form.libelle === undefined || form.libelle === ""
         , setErrorsForm, "Le libellé du vêtement est obligatoire");
-    validateAttribute("type"    , form.type === undefined || form.type === null
+    validateAttribute("type", form.type === undefined || form.type === null
         , setErrorsForm, "Le type de vêtement est obligatoire");
-    validateAttribute("taille"  , form.taille === undefined || form.taille === null
+    validateAttribute("taille", form.taille === undefined || form.taille === null
         , setErrorsForm, "La taille du vêtement est obligatoire");
-    validateAttribute("usage"   , form.usages === undefined || form.usages === null || form.usages.length === 0
+    validateAttribute("usage", form.usages === undefined || form.usages === null || form.usages.length === 0
         , setErrorsForm, "Au moins un usage est obligatoire");
-    validateAttribute("marque"  , form.marque === undefined || form.marque === null
+    validateAttribute("marque", form.marque === undefined || form.marque === null
         , setErrorsForm, "La marque est obligatoire");
-    validateAttribute("etat"    , form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
+    validateAttribute("etat", form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
         , setErrorsForm, "L'état du vêtement est obligatoire");
     validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
         , setErrorsForm, "Le prix d'achat doit être au format numérique");
@@ -426,7 +435,6 @@ export function validateForm(form: FormVetementModel | null,
         saveVetement(form, setForm, setErrorsForm, onCloseForm);
     }
 }
-
 /**
  * Valide un attribut et met à jour les erreurs du formulaire en conséquence.
  *
@@ -435,16 +443,16 @@ export function validateForm(form: FormVetementModel | null,
  * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
  * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
  */
-function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string){
+function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string) {
     if (attributeCheckFail) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, [attributeName+"InError"]: true, [attributeName+"Message"]: errorMessage }
+            return { ...errors, [attributeName + "InError"]: true, [attributeName + "Message"]: errorMessage }
         });
     }
     else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors,[attributeName+"InError"]: false, [attributeName+"Message"]: null }
+            return { ...errors, [attributeName + "InError"]: false, [attributeName + "Message"]: null }
         });
     }
 }
@@ -471,7 +479,7 @@ export function archiveForm(form: FormVetementModel,
     onCloseForm: Function) {
 
     console.log("Validation du formulaire pour archivage", form);
-    form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE :  StatutVetementEnum.ACTIF);
+    form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
     saveVetement(form, setForm, setErrorsForm, onCloseForm);
