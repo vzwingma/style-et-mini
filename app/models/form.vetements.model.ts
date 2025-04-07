@@ -9,6 +9,7 @@ import VetementImageModel from "./vetements.image.model";
 import ParamMarqueVetementsModel from "./params/paramMarqueVetements.model";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import { getPriceValue } from "../components/commons/CommonsUtils";
+import { API_S3_URL } from "@/constants/APIconstants";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -49,7 +50,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
     const vetement: VetementModel = {
         id              : form.id,
         image           : {
-            id          : form.image?.id,
+            s3uri       : form.image?.s3uri,
             hauteur     : form.image?.hauteur,
             largeur     : form.image?.largeur
         },
@@ -112,10 +113,15 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
  */
 export function transformVetementToFormModel(form: FormVetementModel, vetementInEdition: VetementModel, dressing: DressingModel,
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) : FormVetementModel{
+
         return {
             ...form,
             id              : vetementInEdition.id,
-            image           : vetementInEdition.image,
+            image           : {
+                s3uri       : API_S3_URL + vetementInEdition.image?.s3uri,
+                hauteur     : vetementInEdition.image?.hauteur,
+                largeur     : vetementInEdition.image?.largeur
+            },  
             libelle         : vetementInEdition.libelle,
             dressing        : dressing,
             type            : paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id) ?? (() => { throw new Error("Type "+ vetementInEdition.type.id +" introuvable"); })(),
