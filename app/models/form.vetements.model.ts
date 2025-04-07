@@ -9,7 +9,6 @@ import VetementImageModel from "./vetements.image.model";
 import ParamMarqueVetementsModel from "./params/paramMarqueVetements.model";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import { getPriceValue } from "../components/commons/CommonsUtils";
-import { API_S3_URL } from "@/constants/APIconstants";
 
 /**
  * Modèle représentant un vetement dans le formulaire

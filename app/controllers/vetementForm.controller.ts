@@ -345,7 +345,7 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
 
     const vetement: VetementModel = transformFormToVetementModel(form);
 
-    if (form.image !== null && form.image !== undefined && form.image.localUri !== null && form.image.localUri !== undefined) {
+    if (form.image?.localUri !== null && form.image?.localUri !== undefined) {
         console.log("Enregistrement de l'image du vêtement", vetement.id);
         //  Appel au backend pour récupérer une URL S3
         callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
@@ -357,16 +357,7 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
                     fetch(form.image.localUri)
                         .then((response) => response.blob())
                         .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
-                        .then((responseToS3) => {
-                            if (responseToS3) {
-                                console.log("Image du vêtement enregistrée avec succès dans S3");
-                                showToast("Image du vêtement enregistrée avec succès", ToastDuration.SHORT);
-                            }
-                            else {
-                                console.error("Erreur lors de l'enregistrement de l'image du vêtement dans S3", responseToS3);
-                                showToast("Erreur d'enregistrement de l'image du vêtement dans S3 : " + responseToS3, ToastDuration.LONG);
-                            }
-                        })
+                        .then((responseToS3) => console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3))
                         .then(() => {
                             if (vetement.image) {
                                 vetement.image.s3uri = uriImage;
