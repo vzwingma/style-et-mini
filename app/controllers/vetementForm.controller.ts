@@ -15,7 +15,12 @@ import { CategorieDressingEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
 
-
+export type FormModelProps = {
+    form            : FormVetementModel,
+    setForm         : Function,
+    setErrorsForm   : Function,
+    onCloseForm     : Function
+};
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
@@ -100,6 +105,19 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
 }
 
 
+/**
+ * Lance une bibliothèque d'images pour permettre à l'utilisateur de sélectionner une image
+ * et met à jour le formulaire avec l'image sélectionnée.
+ *
+ * @param setForm - Fonction utilisée pour mettre à jour l'état du formulaire avec l'image sélectionnée.
+ * 
+ * @remarks
+ * Cette fonction utilise `ImagePicker.launchImageLibraryAsync` pour ouvrir la bibliothèque d'images.
+ * Elle permet l'édition de l'image avant la sélection et garantit une qualité maximale.
+ * Si l'utilisateur annule la sélection, aucune action n'est effectuée.
+ * 
+ * @returns Une promesse qui se résout une fois que l'image est sélectionnée et le formulaire mis à jour.
+ */
 export const pickImageForm = async (setForm: Function) => {
 
     // No permissions request is necessary for launching the image library
@@ -319,10 +337,7 @@ export function razAndcloseForm(
  * sauvegarde du vêtement
  * @param form formulaire à sauvegarder
  */
-function saveVetement(form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
+function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
 
     let params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
@@ -333,6 +348,44 @@ function saveVetement(form: FormVetementModel,
     const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
     console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
     const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
+
+    if (form.image !== null && form.image !== undefined) {
+        console.log("Enregistrement de l'image du vêtement", form.image.id);
+        //  Appel au backend pour récupérer une URL S3
+        callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
+            .then(async (response) => {
+                const urlS3 = response.url;
+                console.debug("Enregistrement de l'image du vêtement dans S3", urlS3);
+                if (form.image?.uri) {
+                    fetch(form.image.uri)
+                        .then((response) => response.blob())
+                        .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
+                        .then((responseToS3) => {
+                            if(responseToS3) {
+                                console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3);
+                                showToast("Image du vêtement enregistrée avec succès", ToastDuration.SHORT);
+                            }
+                            else {
+                                console.error("Erreur lors de l'enregistrement de l'image du vêtement dans S3", responseToS3);
+                                showToast("Erreur d'enregistrement de l'image du vêtement dans S3 : " + responseToS3, ToastDuration.LONG);
+                            }
+                        })
+                        .catch((e) => {
+                            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                            return false;
+                        })
+                } else {
+                    console.error("L'URI de l'image est nulle ou indéfinie");
+                }
+            })
+            .catch((e) => {
+                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                return false;
+            });
+
+    }
 
     //  Appel au backend pour sauvegarder le vêtement
     callPOSTBackend(url, params, vetement)
@@ -346,37 +399,6 @@ function saveVetement(form: FormVetementModel,
             showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
             return false;
         });
-
-    if (form.image !== null && form.image !== undefined) {
-        console.log("Enregistrement de l'image du vêtement", form.image.id);
-        //  Appel au backend pour récupérer une URL S3
-        callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
-            .then(async (response) => {
-                const urlS3 = response.resultat;
-                console.debug("Enregistrement de l'image du vêtement dans S3", urlS3);
-                if (form.image?.uri) {
-                    const bufferImage = await fetch(form.image.uri).then((response) => response.blob())
-                    return callPUTBinaryBackend(urlS3, bufferImage)
-                        .then((response) => {
-                            console.log("Image du vêtement enregistrée avec succès dans S3", response);
-                            showToast("Image du vêtement enregistrée avec succès", ToastDuration.SHORT);
-                        })
-                        .catch((e) => {
-                            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
-                            return false;
-                        });
-                } else {
-                    console.error("Image URI is missing or invalid.");
-                }
-            })
-            .catch((e) => {
-                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
-                return false;
-            });
-
-    }
 }
 
 
@@ -432,7 +454,7 @@ export function validateForm(form: FormVetementModel | null,
 
     if (!errors) {
         // Enregistrement du formulaire 
-        saveVetement(form, setForm, setErrorsForm, onCloseForm);
+        saveVetement({ form, setForm, setErrorsForm, onCloseForm });
     }
 }
 /**
@@ -458,12 +480,6 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean, s
 }
 
 
-export type FormModelProps = {
-    form: FormVetementModel,
-    setForm: Function,
-    setErrorForm: Function,
-    onCloseForm: Function
-};
 
 /**
  * Validation du formulaire pour archivage du vêtement
@@ -473,16 +489,13 @@ export type FormModelProps = {
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm(form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
+export function archiveForm({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
-    saveVetement(form, setForm, setErrorsForm, onCloseForm);
+    saveVetement({ form, setForm, setErrorsForm, onCloseForm });
 
 }
 
