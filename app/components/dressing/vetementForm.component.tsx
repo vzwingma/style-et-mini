@@ -10,7 +10,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
-import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, archiveForm, deleteForm, FormModelProps, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm } from '@/app/controllers/vetementForm.controller';
+import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm, archiveForm, deleteForm, FormModelProps } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
 import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
@@ -59,7 +59,7 @@ export type VetementsFormParamsTypeProps = {
 export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, onCloseForm }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
-    const [errorForm, setErrorForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
+    const [errorsForm, setErrorsForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
 
     const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
@@ -130,14 +130,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             // recalcul de la taille de l'image suivant la mise en page
             renderFormImage = resizeImage(form.image, 250);
         }
-
         return (
             <View style={styles.body}>
                 <View style={{justifyContent: 'center', alignItems: 'center' }}>
                     <View>
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             {form.image &&
-                                <Image source={{ uri: renderFormImage.contenu }} style={[styles.photo, {width: renderFormImage.largeur, height: renderFormImage.hauteur}]} />} 
+                                <Image source={{ uri: renderFormImage.displayUri }} style={[styles.photo, {width: renderFormImage.largeur, height: renderFormImage.hauteur}]} />} 
                             {!form.image &&
                                 <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
                             {form.petiteTaille &&
@@ -149,21 +148,21 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
-                        <TextInput style={errorForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.libelleInError ? 'red' : 'gray'}
+                        <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
-                            placeholder={!errorForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorForm?.libelleMessage + ''}
-                            onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorForm)} />
+                            placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorsForm?.libelleMessage + ''}
+                            onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Type")}</ThemedText>
                         <Dropdown
-                            style={!errorForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            style={!errorsForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
                             labelField="libelle" valueField="id"
-                            placeholder={!errorForm?.typeInError ? 'Selectionnez un type' : errorForm?.typeMessage + ''}
+                            placeholder={!errorsForm?.typeInError ? 'Selectionnez un type' : errorsForm?.typeMessage + ''}
                             value={form?.type}
                             onChange={(type: ParamTypeVetementsModel) => setTypeForm(type, setForm)}
                             renderItem={renderTypeItem}
@@ -174,12 +173,12 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Taille")}</ThemedText>
                         <Dropdown
-                            style={!errorForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            style={!errorsForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
                             data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
                             labelField="libelle" valueField="id"
-                            placeholder={!errorForm?.tailleInError ? 'Selectionnez une taille' : errorForm?.tailleMessage + ''}
+                            placeholder={!errorsForm?.tailleInError ? 'Selectionnez une taille' : errorsForm?.tailleMessage + ''}
                             value={form?.taille}
                             onChange={(taille: ParamTailleVetementsModel) => setTailleForm(taille, setForm)}
                             renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={styles.icon} />}
@@ -200,15 +199,15 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Usage(s)")}</ThemedText>
                         <ThemedView style={styles.filtre}><ThemedText type="subtitle">
                             <MultiSelect
-                                style={!errorForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                                style={!errorsForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                                 selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                                 mode='modal'
                                 data={getUsagesForm(paramsUsagesVetements, dressing)}
                                 labelField="libelle" valueField="id"
-                                placeholder={!errorForm?.usageInError ? 'Selectionnez des usages' : errorForm?.usageMessage + ''}
+                                placeholder={!errorsForm?.usageInError ? 'Selectionnez des usages' : errorsForm?.usageMessage + ''}
                                 value={form?.usagesListe}
-                                onChange={usage => setUsagesForm(usage, paramsUsagesVetements, setForm, setErrorForm)}
+                                onChange={usage => setUsagesForm(usage, paramsUsagesVetements, setForm, setErrorsForm)}
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
@@ -244,13 +243,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <View style={{ flexDirection: 'row' }}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Etat")}</ThemedText>
                             <Dropdown
-                                style={!errorForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                                style={!errorsForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                                 mode='modal'
                                 maxHeight={300}
                                 data={getEtatsForm(paramsEtatVetements, dressing)}
                                 labelField="libelle" valueField="id"
-                                placeholder={!errorForm?.tailleInError ? 'Selectionnez un état' : errorForm?.etatMessage + ''}
+                                placeholder={!errorsForm?.tailleInError ? 'Selectionnez un état' : errorsForm?.etatMessage + ''}
                                 value={form?.etat}
                                 onChange={(etat: ParamEtatVetementsModel) => setEtatForm(etat, setForm)}
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-condition-outline.png')} style={styles.icon} />}
@@ -260,12 +259,12 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Marque")}</ThemedText>
                         <Dropdown
-                            style={!errorForm?.marqueInError || form?.marque ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorForm?.marqueInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            style={!errorsForm?.marqueInError || form?.marque ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.marqueInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
                             data={getMarquesForm(paramsMarquesVetements, dressing, form)}
                             labelField="libelle" valueField="id"
-                            placeholder={!errorForm?.marqueInError ? 'Selectionnez une marque' : errorForm?.marqueMessage + ''}
+                            placeholder={!errorsForm?.marqueInError ? 'Selectionnez une marque' : errorsForm?.marqueMessage + ''}
                             value={form?.marque}
                             onChange={(marque: ParamMarqueVetementsModel) => setMarqueForm(marque, setForm)}
                             renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={styles.icon} />}
@@ -280,18 +279,20 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix d'achat</ThemedText>
-                        <TextInput style={errorForm?.prixAchatInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.prixAchatInError ? 'red' : 'gray'}
+                        <TextInput style={errorsForm?.prixAchatInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixAchatInError ? 'red' : 'gray'}
                             value={form?.prixAchat ?? ''}
-                            placeholder={!errorForm?.prixAchatMessage ? 'Saisir le prix d\'achat (facultatif)' : errorForm?.prixAchatMessage + ''}
+                            placeholder={!errorsForm?.prixAchatMessage ? 'Saisir le prix d\'achat (facultatif)' : errorsForm?.prixAchatMessage + ''}
                             onChangeText={prix => setPrixAchatForm(prix, setForm)} />
+                            <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix neuf</ThemedText>
-                        <TextInput style={errorForm?.prixNeufInError ? styles.inputError : styles.input} placeholderTextColor={errorForm?.prixNeufInError ? 'red' : 'gray'}
+                        <TextInput style={errorsForm?.prixNeufInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixNeufInError ? 'red' : 'gray'}
                             value={form?.prixNeuf ?? ''}
-                            placeholder={!errorForm?.prixNeufMessage ? 'Saisir le prix neuf(facultatif)' : errorForm?.prixNeufMessage + ''}
+                            placeholder={!errorsForm?.prixNeufMessage ? 'Saisir le prix neuf (facultatif)' : errorsForm?.prixNeufMessage + ''}
                             onChangeText={prix => setPrixNeufForm(prix, setForm)} />
+                             <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
                     </View>                                        
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
@@ -325,10 +326,10 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }: FormModelProps, setModalDialog: Function) {
+    function archiveFormModalConfirmation({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps, setModalDialog: Function) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
-            ackModalCallback={() => archiveForm(form, setForm, setErrorForm, onCloseForm)}
+            ackModalCallback={() => archiveForm({form, setForm, setErrorsForm, onCloseForm})}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
@@ -341,9 +342,9 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-    function deleteFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }: FormModelProps, setModalDialog: Function) {
+    function deleteFormModalConfirmation({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps, setModalDialog: Function) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
-            ackModalCallback={() => deleteForm(form, setForm, setErrorForm, onCloseForm)}
+            ackModalCallback={() => deleteForm(form, setForm, setErrorsForm, onCloseForm)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
@@ -355,15 +356,15 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
             <ThemedView style={styles.title}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorForm, onCloseForm)}>
+                    <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorsForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id
                      && <>
-                            <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
+                            <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorsForm: setErrorsForm, onCloseForm }, setModalDialog)}>
                                 {renderArchiveIcon()}
                             </Pressable>
-                            <Pressable onPress={() => deleteFormModalConfirmation({ form, setForm, setErrorForm, onCloseForm }, setModalDialog)}>
+                            <Pressable onPress={() => deleteFormModalConfirmation({ form, setForm, setErrorsForm: setErrorsForm, onCloseForm }, setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
                         </>
@@ -371,7 +372,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 </View>
 
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
-                <Pressable onPress={() => validateForm(form, setForm, setErrorForm, onCloseForm)}>
+                <Pressable onPress={() => validateForm(form, setForm, setErrorsForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>
             </ThemedView>

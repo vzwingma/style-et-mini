@@ -34,7 +34,7 @@ interface FormVetementModel {
     prixNeuf?    : string | null;
     prixAchat?   : string | null;
 
-    etat         : ParamEtatVetementsModel;
+    etat         : ParamEtatVetementsModel | null;
     description  : string | null;
     statut       : StatutVetementEnum;
 }
@@ -48,7 +48,11 @@ interface FormVetementModel {
 export function transformFormToVetementModel(form: FormVetementModel): VetementModel {
     const vetement: VetementModel = {
         id              : form.id,
-        image           : form.image,
+        image           : {
+            s3uri       : form.image?.s3uri,
+            hauteur     : form.image?.hauteur,
+            largeur     : form.image?.largeur
+        },
         dressing        : form.dressing,
         libelle         : form.libelle,
         type: {
@@ -108,10 +112,15 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
  */
 export function transformVetementToFormModel(form: FormVetementModel, vetementInEdition: VetementModel, dressing: DressingModel,
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) : FormVetementModel{
+
         return {
             ...form,
             id              : vetementInEdition.id,
-            image           : vetementInEdition.image,
+            image           : {
+                s3uri       : vetementInEdition.image?.s3uri,
+                hauteur     : vetementInEdition.image?.hauteur,
+                largeur     : vetementInEdition.image?.largeur
+            },  
             libelle         : vetementInEdition.libelle,
             dressing        : dressing,
             type            : paramsTypeVetements?.find((type) => type.id === vetementInEdition.type.id) ?? (() => { throw new Error("Type "+ vetementInEdition.type.id +" introuvable"); })(),
@@ -128,7 +137,7 @@ export function transformVetementToFormModel(form: FormVetementModel, vetementIn
 
             marque          : paramsMarquesVetements?.find((marque) => marque.id === (vetementInEdition.marque?.id ?? '67ee890c60546911d1e17c54')) ?? (() => { throw new Error("Marque " + vetementInEdition.etat?.id + " introuvable"); })(),
             collection      : vetementInEdition.collection,
-            etat            : paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id) ?? (() => { throw new Error("État " + vetementInEdition.etat?.id + " introuvable"); })(),
+            etat            : paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id) ?? null,
 
             prixAchat       : vetementInEdition.prix?.achat != null ? vetementInEdition.prix.achat.toString() : null,
             prixNeuf        : vetementInEdition.prix?.neuf != null ? vetementInEdition.prix.neuf.toString() : null,

@@ -30,7 +30,13 @@ function evaluateURL(path: string, params?: KeyValueParams[]): string {
 function startWatch(): void {
     storageWatch = new Date().getTime();
 }
-
+/**
+ * 
+ * @returns header d'authentification
+ */
+const getAuthHeader = () => {
+    return 'Basic ' + Buffer.from(API_AUTH + ':' + API_PWD, 'binary').toString('base64');
+};
 /**
  * Fin du watch de la réponse
  * @param traceId id de la trace
@@ -70,6 +76,55 @@ export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], b
     return callBackend(API_VERBS.POST, path, params, body);
 }
 
+/**
+ * Effectue un appel POST vers le backend.
+ *
+ * @param {SERVICES_URL} path - Le chemin de l'URL du service.
+ * @param {KeyValueParams[]} [params] - Les paramètres de la requête sous forme de paires clé-valeur.
+ * @param {any} [body] - Le corps de la requête à envoyer.
+ * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
+ */
+export function callPUTBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
+    return callBackend(API_VERBS.PUT, path, params);
+}
+
+
+
+/**
+ * Effectue un appel HTTP PUT vers un backend avec des données binaires (FormData).
+ *
+ * @param {SERVICES_URL} path - Le chemin ou l'URL du service backend à appeler.
+ * @param {KeyValueParams[]} [params] - Une liste optionnelle de paramètres clé-valeur à ajouter à l'URL.
+ * @param {FormData} [data] - Les données binaires à envoyer dans le corps de la requête.
+ * @returns {Promise<any>} Une promesse qui se résout avec la réponse du backend en cas de succès,
+ * ou qui est rejetée avec un message d'erreur en cas d'échec.
+ *
+ * @throws {Error} Si une erreur réseau ou une erreur HTTP se produit.
+ * ```
+ */
+export function callPUTBinaryBackend(fullURL: string, data?: any): Promise<boolean> {
+    // Calcul de l'URL complétée
+    let traceId = uuidGen().replaceAll("-", "");
+    console.log("[WS traceId=" + traceId + "] > [" + fullURL + "]");
+    // Début du watch
+    startWatch();
+
+    return fetch(fullURL, {
+        method: API_VERBS.PUT,
+        mode: "cors",
+        body: data
+    })
+        .then(res => {
+            // Fin du watch
+            stopWatch(traceId, res);
+            if (res.status >= 200 && res.status < 300) {
+                return res.ok;
+            } else {
+                throw new Error(res.status + "/" + res.statusText);
+            }
+        })
+}
+
 
 /**
  * Appelle le backend avec une requête DELETE.
@@ -101,14 +156,17 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
     startWatch();
 
     return fetch(fullURL, {
-        method: verb,
-        mode: "cors",
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + Buffer.from(API_AUTH + ':' + API_PWD, 'binary').toString('base64')
-        }),
-        body: JSON.stringify(body)
-    })
+            method: verb,
+            mode: "cors",
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Authorization': getAuthHeader(),
+            }),
+            body: JSON.stringify(body)
+        })
         .then(res => {
             // Fin du watch
             stopWatch(traceId, res);

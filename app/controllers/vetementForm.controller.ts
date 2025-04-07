@@ -7,21 +7,27 @@ import FormVetementModel, { transformFormToVetementModel, transformVetementToFor
 import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
 import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
-import { callDELETEBackend, callPOSTBackend } from "../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 import { CategorieDressingEnum, StatutVetementEnum } from "@/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
-import { v7 as uuidGen } from 'uuid';
 import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
+
+export type FormModelProps = {
+    form: FormVetementModel,
+    setForm: Function,
+    setErrorsForm: Function,
+    onCloseForm: Function
+};
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
     return typeVetements
         .filter((type) => type.categories
-                                .filter((cat) => cat === dressing.categorie)
-                                .length > 0)
+            .filter((cat) => cat === dressing.categorie)
+            .length > 0)
         .sort((t1, t2) => alphanumSort(t1.libelle, t2.libelle));
 }
 
@@ -34,8 +40,8 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
     }
     return taillesMesures
         .filter((taille) => taille.categories
-                                    .filter((cat) => cat === dressing.categorie)
-                                    .length > 0)
+            .filter((cat) => cat === dressing.categorie)
+            .length > 0)
         .filter((taille) => taille.type === form.type.type)
         .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
@@ -71,7 +77,7 @@ export function getMarquesForm(marques: ParamMarqueVetementsModel[], dressing: D
         .filter((marque: ParamMarqueVetementsModel) => marque.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .filter((marque) => marque.type === form.type.type)            
+        .filter((marque) => marque.type === form.type.type)
         .sort((m1, m2) => alphanumSort(m1.libelle, m2.libelle));
 }
 
@@ -89,7 +95,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
 
         setForm((form: FormVetementModel) => transformVetementToFormModel(form, vetementInEdition, dressing,
-                                            {paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsMarquesVetements, paramsEtatVetements}));
+            { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsMarquesVetements, paramsEtatVetements }));
     }
     else {
         setForm(() => {
@@ -99,6 +105,19 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
 }
 
 
+/**
+ * Lance une bibliothèque d'images pour permettre à l'utilisateur de sélectionner une image
+ * et met à jour le formulaire avec l'image sélectionnée.
+ *
+ * @param setForm - Fonction utilisée pour mettre à jour l'état du formulaire avec l'image sélectionnée.
+ * 
+ * @remarks
+ * Cette fonction utilise `ImagePicker.launchImageLibraryAsync` pour ouvrir la bibliothèque d'images.
+ * Elle permet l'édition de l'image avant la sélection et garantit une qualité maximale.
+ * Si l'utilisateur annule la sélection, aucune action n'est effectuée.
+ * 
+ * @returns Une promesse qui se résout une fois que l'image est sélectionnée et le formulaire mis à jour.
+ */
 export const pickImageForm = async (setForm: Function) => {
 
     // No permissions request is necessary for launching the image library
@@ -119,12 +138,13 @@ export const pickImageForm = async (setForm: Function) => {
  */
 export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, image : {
-            id: uuidGen().replace(/-/g, "").substring(0, 24),
-            contenu: image.uri,
-            largeur: image.width, 
-            hauteur: image.height 
-        }}
+        return {
+            ...form, image: {
+                localUri: image.uri,
+                largeur : image.width,
+                hauteur : image.height
+            }
+        }
     });
 }
 
@@ -282,7 +302,7 @@ export function setCollectionForm(collection: string, setForm: Function) {
  */
 export function setPrixNeufForm(prix: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, prixNeuf: prix?.replace(",",".") }
+        return { ...form, prixNeuf: prix?.replace(",", ".") }
     });
 }
 
@@ -293,7 +313,7 @@ export function setPrixNeufForm(prix: string, setForm: Function) {
  */
 export function setPrixAchatForm(prix: string, setForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, prixAchat: prix?.replace(",",".") }
+        return { ...form, prixAchat: prix?.replace(",", ".") }
     });
 }
 
@@ -316,10 +336,7 @@ export function razAndcloseForm(
  * sauvegarde du vêtement
  * @param form formulaire à sauvegarder
  */
-function saveVetement(form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
+function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
 
     let params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
@@ -327,15 +344,77 @@ function saveVetement(form: FormVetementModel,
     ];
 
     const vetement: VetementModel = transformFormToVetementModel(form);
+
+    if (form.image?.localUri !== null && form.image?.localUri !== undefined) {
+        console.log("Enregistrement de l'image du vêtement", vetement.id);
+        //  Appel au backend pour récupérer une URL S3
+        callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
+            .then(async (response) => {
+                const urlS3 = response.url;
+                const uriImage = response.s3uri
+                console.debug("Enregistrement de l'image du vêtement ", uriImage, " dans S3", urlS3);
+                if (form.image?.localUri) {
+                    fetch(form.image.localUri)
+                        .then((response) => response.blob())
+                        .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
+                        .then((responseToS3) => console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3))
+                        .then(() => {
+                            if (vetement.image) {
+                                vetement.image.s3uri = uriImage;
+                            }
+                            saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, onCloseForm });
+                        })
+                        .catch((e) => {
+                            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                            return false;
+                        })
+                } else {
+                    console.error("L'URI de l'image est nulle ou indéfinie");
+                }
+            })
+            .catch((e) => {
+                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                return false;
+            });
+
+    }
+    else {
+        saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, onCloseForm });
+    }
+}
+
+
+/**
+ * Sauvegarde les attributs d'un vêtement en appelant un service backend.
+ * 
+ * @param vetement - Le modèle du vêtement à sauvegarder.
+ * @param params - Tableau de paramètres contenant une clé et une valeur pour le service.
+ * @param formProps - Objet contenant les propriétés du formulaire :
+ *   - `form` : Les données actuelles du formulaire.
+ *   - `setForm` : Fonction pour mettre à jour les données du formulaire.
+ *   - `setErrorsForm` : Fonction pour définir les erreurs du formulaire.
+ *   - `onCloseForm` : Fonction pour fermer le formulaire.
+ * 
+ * @remarks
+ * Cette fonction détermine si le vêtement est en mode création ou mise à jour
+ * en fonction de la présence d'un identifiant (`id`) dans le modèle du vêtement.
+ * Elle effectue un appel POST au backend pour sauvegarder les données et gère
+ * les retours en affichant des notifications de succès ou d'erreur.
+ * 
+ * @throws Une erreur est affichée dans la console et une notification est montrée
+ * si l'appel au backend échoue.
+ */
+function saveVetementAttributs(vetement : VetementModel, params : { key: SERVICES_PARAMS; value: string; }[], { form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
+    
     const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
     console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
     const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
-
     //  Appel au backend pour sauvegarder le vêtement
-
     callPOSTBackend(url, params, vetement)
         .then((response) => {
-            console.log("Vêtement enregistré avec succès", response);
+            console.log("Attributs du vêtement enregistrés avec succès", response);
             showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
             razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
         })
@@ -377,17 +456,17 @@ export function validateForm(form: FormVetementModel | null,
         return;
     }
 
-    validateAttribute("libelle" , form.libelle === undefined || form.libelle === ""
+    validateAttribute("libelle", form.libelle === undefined || form.libelle === ""
         , setErrorsForm, "Le libellé du vêtement est obligatoire");
-    validateAttribute("type"    , form.type === undefined || form.type === null
+    validateAttribute("type", form.type === undefined || form.type === null
         , setErrorsForm, "Le type de vêtement est obligatoire");
-    validateAttribute("taille"  , form.taille === undefined || form.taille === null
+    validateAttribute("taille", form.taille === undefined || form.taille === null
         , setErrorsForm, "La taille du vêtement est obligatoire");
-    validateAttribute("usage"   , form.usages === undefined || form.usages === null || form.usages.length === 0
+    validateAttribute("usage", form.usages === undefined || form.usages === null || form.usages.length === 0
         , setErrorsForm, "Au moins un usage est obligatoire");
-    validateAttribute("marque"  , form.marque === undefined || form.marque === null
+    validateAttribute("marque", form.marque === undefined || form.marque === null
         , setErrorsForm, "La marque est obligatoire");
-    validateAttribute("etat"    , form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
+    validateAttribute("etat", form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
         , setErrorsForm, "L'état du vêtement est obligatoire");
     validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
         , setErrorsForm, "Le prix d'achat doit être au format numérique");
@@ -396,10 +475,9 @@ export function validateForm(form: FormVetementModel | null,
 
     if (!errors) {
         // Enregistrement du formulaire 
-        saveVetement(form, setForm, setErrorsForm, onCloseForm);
+        saveVetement({ form, setForm, setErrorsForm, onCloseForm });
     }
 }
-
 /**
  * Valide un attribut et met à jour les erreurs du formulaire en conséquence.
  *
@@ -408,27 +486,21 @@ export function validateForm(form: FormVetementModel | null,
  * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
  * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
  */
-function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string){
+function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string) {
     if (attributeCheckFail) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, [attributeName+"InError"]: true, [attributeName+"Message"]: errorMessage }
+            return { ...errors, [attributeName + "InError"]: true, [attributeName + "Message"]: errorMessage }
         });
     }
     else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors,[attributeName+"InError"]: false, [attributeName+"Message"]: null }
+            return { ...errors, [attributeName + "InError"]: false, [attributeName + "Message"]: null }
         });
     }
 }
 
 
-export type FormModelProps = {
-    form: FormVetementModel,
-    setForm: Function,
-    setErrorForm: Function,
-    onCloseForm: Function
-};
 
 /**
  * Validation du formulaire pour archivage du vêtement
@@ -438,16 +510,13 @@ export type FormModelProps = {
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm(form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
+export function archiveForm({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
 
     console.log("Validation du formulaire pour archivage", form);
-    form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE :  StatutVetementEnum.ACTIF);
+    form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
-    saveVetement(form, setForm, setErrorsForm, onCloseForm);
+    saveVetement({ form, setForm, setErrorsForm, onCloseForm });
 
 }
 
