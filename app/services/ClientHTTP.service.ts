@@ -76,10 +76,22 @@ export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], b
     return callBackend(API_VERBS.POST, path, params, body);
 }
 
+/**
+ * Effectue un appel POST vers le backend.
+ *
+ * @param {SERVICES_URL} path - Le chemin de l'URL du service.
+ * @param {KeyValueParams[]} [params] - Les paramètres de la requête sous forme de paires clé-valeur.
+ * @param {any} [body] - Le corps de la requête à envoyer.
+ * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
+ */
+export function callPUTBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
+    return callBackend(API_VERBS.PUT, path, params);
+}
+
 
 
 /**
- * Effectue un appel HTTP POST vers un backend avec des données binaires (FormData).
+ * Effectue un appel HTTP PUT vers un backend avec des données binaires (FormData).
  *
  * @param {SERVICES_URL} path - Le chemin ou l'URL du service backend à appeler.
  * @param {KeyValueParams[]} [params] - Une liste optionnelle de paramètres clé-valeur à ajouter à l'URL.
@@ -90,35 +102,27 @@ export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], b
  * @throws {Error} Si une erreur réseau ou une erreur HTTP se produit.
  * ```
  */
-export function callPOSTBinaryBackend(path: SERVICES_URL, params?: KeyValueParams[], data?: FormData): Promise<any> {
+export function callPUTBinaryBackend(fullURL: string, data?: any): Promise<boolean> {
     // Calcul de l'URL complétée
-    const fullURL = evaluateURL(path, params);
-
     let traceId = uuidGen().replaceAll("-", "");
     console.log("[WS traceId=" + traceId + "] > [" + fullURL + "]");
     // Début du watch
     startWatch();
 
-    return new Promise((resolve, reject) => {
-        let formFetch = new XMLHttpRequest();
-        formFetch.open('POST', fullURL, true, API_AUTH, API_PWD);
-        formFetch.setRequestHeader('Content-Type', 'multipart/form-data');
-        formFetch.setRequestHeader('Authorization', getAuthHeader());
-        formFetch.onload = function() {
-            if (formFetch.status >= 200 && formFetch.status < 300) {
-                console.log(formFetch.response);
-                stopWatch(traceId, formFetch.response);
-                resolve(formFetch.response);
+    return fetch(fullURL, {
+        method: API_VERBS.PUT,
+        mode: "cors",
+        body: data
+    })
+        .then(res => {
+            // Fin du watch
+            stopWatch(traceId, res);
+            if (res.status >= 200 && res.status < 300) {
+                return res.ok;
             } else {
-                reject(formFetch.statusText);
+                throw new Error(res.status + "/" + res.statusText);
             }
-        }
-        formFetch.onerror = function() {
-            console.error("[WS traceId=" + traceId + "] < Erreur lors de l'appel HTTP [" + fullURL + "]", formFetch.statusText);
-            reject(formFetch.statusText);
-        }
-        formFetch.send(data);
-    });
+        })
 }
 
 
@@ -152,17 +156,17 @@ function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParam
     startWatch();
 
     return fetch(fullURL, {
-        method: verb,
-        mode: "cors",
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Accept-Charset': 'utf-8',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Authorization': getAuthHeader(),
-        }),
-        body: JSON.stringify(body)
-    })
+            method: verb,
+            mode: "cors",
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Authorization': getAuthHeader(),
+            }),
+            body: JSON.stringify(body)
+        })
         .then(res => {
             // Fin du watch
             stopWatch(traceId, res);
