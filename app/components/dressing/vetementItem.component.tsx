@@ -27,7 +27,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
                 <View style={styles.photoFrame}>
-                    {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.nom }} style={[styles.photo, { width: vetementImageToShow.largeur, height: vetementImageToShow.hauteur }]} />}
+                    {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.displayUri }} style={[styles.photo, { width: vetementImageToShow.largeur, height: vetementImageToShow.hauteur }]} />}
                     {!vetementImageToShow   && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
                         style={[styles.iconBig]} />}
                     {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
