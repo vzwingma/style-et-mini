@@ -118,7 +118,7 @@ export function transformVetementToFormModel(form: FormVetementModel, vetementIn
             ...form,
             id              : vetementInEdition.id,
             image           : {
-                s3uri       : API_S3_URL + vetementInEdition.image?.s3uri,
+                s3uri       : vetementInEdition.image?.s3uri,
                 hauteur     : vetementInEdition.image?.hauteur,
                 largeur     : vetementInEdition.image?.largeur
             },  

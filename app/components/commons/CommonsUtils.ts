@@ -1,5 +1,6 @@
 import VetementImageModel from "@/app/models/vetements.image.model";
 import VetementModel from "@/app/models/vetements.model";
+import { API_S3_URL } from "@/constants/APIconstants";
 
 // Fonction de tri alphanumérique
 /**
@@ -106,17 +107,20 @@ export function resizeImage(image: VetementImageModel, maxSize: number): Vetemen
         if (ratioImage > 1) {
             return {
                 ...clonedImage,
+                displayUri: image?.localUri ?? API_S3_URL + image?.s3uri,
                 largeur: maxSize,
                 hauteur: maxSize / ratioImage
             };
         } else {
             return {
                 ...clonedImage,
+                displayUri: image?.localUri ?? API_S3_URL + image?.s3uri,
                 largeur: maxSize * ratioImage,
                 hauteur: maxSize
             };
         }
     }
+        
     return { ...image }; // Return a cloned object even if no resizing is done
 }
 
