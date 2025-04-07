@@ -345,7 +345,7 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
 
     const vetement: VetementModel = transformFormToVetementModel(form);
 
-    if (form.image !== null && form.image !== undefined) {
+    if (form.image !== null && form.image !== undefined && form.image.localUri !== null && form.image.localUri !== undefined) {
         console.log("Enregistrement de l'image du vêtement", vetement.id);
         //  Appel au backend pour récupérer une URL S3
         callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)

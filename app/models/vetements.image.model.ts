@@ -4,6 +4,7 @@
 interface VetementImageModel {
     localUri?           : string;
     s3uri?              : string;
+    displayUri?         : string;
     readonly hauteur?   : number;
     readonly largeur?   : number;
 }
