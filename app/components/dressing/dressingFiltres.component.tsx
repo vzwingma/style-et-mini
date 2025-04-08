@@ -1,12 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedView } from "../commons/views/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
 
 import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
 import { setVetementsFiltres as applyFiltresOnVetements } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/vetementFiltre.model";
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
 import { styles } from "./dressingList.style";
@@ -102,7 +101,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
      * @returns {JSX.Element} La vue thématisée avec le composant MultiSelect.
      */
     return (
-        <ThemedView style={styles.filtresBar}>
+        <View style={styles.filtresBar}>
             <View style={styles.filtresBar}>
                 <MultiSelect
                     style={styles.dropdown} containerStyle={styles.listStyle} itemTextStyle={styles.listItemStyle}
@@ -120,6 +119,6 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
                     renderSelectedItem={renderSelectedItem}
                 />
             </View>
-        </ThemedView>
+        </View>
     );
 }

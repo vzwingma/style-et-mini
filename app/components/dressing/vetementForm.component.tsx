@@ -2,7 +2,6 @@ import { Image, Pressable, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '../../constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
@@ -197,7 +196,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     }
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Usage(s)")}</ThemedText>
-                        <ThemedView style={styles.filtre}><ThemedText type="subtitle">
+                        <View style={styles.filtre}><ThemedText type="subtitle">
                             <MultiSelect
                                 style={!errorsForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -211,11 +210,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
-                        </ThemedText></ThemedView>
+                        </ThemedText></View>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Saisons</ThemedText>
-                        <ThemedView style={styles.filtre}><ThemedText type="subtitle">
+                        <View style={styles.filtre}><ThemedText type="subtitle">
                             <MultiSelect
                                 style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -229,7 +228,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
-                        </ThemedText></ThemedView>
+                        </ThemedText></View>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
@@ -354,7 +353,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         <>
             {modalDialog}
 
-            <ThemedView style={styles.title}>
+            <View style={styles.title}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorsForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
@@ -375,7 +374,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 <Pressable onPress={() => validateForm(form, setForm, setErrorsForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>
-            </ThemedView>
+            </View>
 
             {getPanelFormContent()}
         </>

@@ -1,8 +1,7 @@
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import DressingModel from '../models/dressing.model';
 import { DressingComponent } from '../components/dressing/dressing.component';
-import { ThemedView } from '../components/commons/views/ThemedView';
 import { Colors } from '../constants/Colors';
 
 
@@ -36,14 +35,15 @@ export default function DressingScreen({ dressing }: DressingScreenProps) {
   }
 
   return (
-    <ThemedView style={styles.stepContainer}>
+    <View style={styles.stepContainer}>
       {getPanelContent()}
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   stepContainer: {
-    width: '100%'
+    width: '100%',
+    backgroundColor: Colors.dark.background,
   }
 });

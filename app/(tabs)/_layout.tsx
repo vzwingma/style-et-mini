@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { ThemedView } from '../components/commons/views/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-
-
 import { ThemedText } from '../components/commons/views/ThemedText';
 
 import HomeScreen from '.';
@@ -112,9 +109,9 @@ export default function TabLayout() {
         backendConnexionData={backendConnexionData}
         setRefreshing={setRefreshing}>
 
-        <ThemedView style={tabStyles.titleContainer}>
+        <View style={tabStyles.titleContainer}>
           {getPanelContent()}
-        </ThemedView>
+        </View>
 
       </ParallaxScrollView>
 
@@ -166,6 +163,7 @@ export const tabStyles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     height: '100%',
+    backgroundColor: Colors.dark.background,
   },
 
   tabsViewbox: {

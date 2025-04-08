@@ -1,5 +1,4 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { ThemedView } from "../commons/views/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
@@ -83,7 +82,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
     return (
         <>
-            <ThemedView style={styles.title}>
+            <View style={styles.title}>
                 <ThemedText type="subtitle" style={{color: Colors.app.color}}>{vetementsAffiches?.length} vêtement{vetementsAffiches?.length > 1 ? "s" : ""}</ThemedText>
                 <View style={{flexDirection: "row", gap: 10, alignItems: "center"}}>
                 <Pressable onPress={() => openAddEditVetement()}>
@@ -93,7 +92,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                     <MaterialCommunityIcons size={28} name={toggleAllItems ? "chevron-double-up": "chevron-double-down"} style={styles.titleIcon} />
                 </Pressable>
                 </View>
-            </ThemedView>
+            </View>
 
             <View>
                 <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches} />
