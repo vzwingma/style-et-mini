@@ -7,8 +7,8 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
-import { APP_MOBILE_NAME, APP_MOBILE_VERSION } from '@/constants/AppEnum';
-import { Colors } from '@/constants/Colors';
+import { APP_MOBILE_NAME, APP_MOBILE_VERSION } from '@/app/constants/AppEnum';
+import { Colors } from '@/app/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';

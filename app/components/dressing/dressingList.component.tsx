@@ -3,7 +3,7 @@ import { ThemedView } from "../commons/views/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "../../../app/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
 import { groupeVetementByType } from "@/app/controllers/dressingList.controller";
 import { useState } from "react";

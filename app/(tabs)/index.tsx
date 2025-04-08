@@ -4,7 +4,7 @@ import { ThemedText } from '../components/commons/views/ThemedText';
 import { ThemedView } from '../components/commons/views/ThemedView';
 import { useContext } from 'react';
 import { AppContext } from '../services/AppContextProvider';
-import { Tabs } from '@/constants/TabsEnums';
+import { Tabs } from './../constants/TabsEnums';
 import DressingTabComponent from '../components/home/dressingTab.component';
 
 
