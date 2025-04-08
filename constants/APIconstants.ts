@@ -3,7 +3,7 @@
 /**
  * L'URL de l'API.
  */
-export const API_URL  = process.env.BACKEND_URL  ?? process.env.EXPO_PUBLIC_BACKEND_URL  ?? "http://192.168.1.145:5000/";
+export const API_URL  = process.env.BACKEND_URL  ?? process.env.EXPO_PUBLIC_BACKEND_URL  ?? "http://10.122.22.221:5000/";
 export const API_AUTH = process.env.BACKEND_AUTH ?? process.env.EXPO_PUBLIC_BACKEND_AUTH ?? "dev";
 export const API_PWD  = process.env.BACKEND_PWD  ?? process.env.EXPO_PUBLIC_BACKEND_PWD  ?? "dev";
 
