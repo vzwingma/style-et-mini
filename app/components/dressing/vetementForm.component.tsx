@@ -2,7 +2,7 @@ import { Image, Pressable, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/ThemedView';
+import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '@/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { Ionicons } from '@expo/vector-icons';

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/app/components/commons/views/ThemedText';
-import { ThemedView } from '@/app/components/commons/ThemedView';
+import { ThemedText } from '../components/commons/views/ThemedText';
+import { ThemedView } from '../components/commons/views/ThemedView';
 import { useContext } from 'react';
 import { AppContext } from '../services/AppContextProvider';
 import { Tabs } from '@/constants/TabsEnums';

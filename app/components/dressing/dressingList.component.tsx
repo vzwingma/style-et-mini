@@ -1,5 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { ThemedView } from "../commons/ThemedView";
+import { ThemedView } from "../commons/views/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements.model";

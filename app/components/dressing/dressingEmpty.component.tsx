@@ -2,7 +2,7 @@ import { StyleSheet, Pressable, Image } from 'react-native'
 
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/ThemedView';
+import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '@/constants/Colors';
 
 

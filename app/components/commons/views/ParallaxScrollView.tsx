@@ -7,13 +7,13 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
-import { ThemedView } from '@/app/components/commons/ThemedView';
 import { APP_MOBILE_NAME, APP_MOBILE_VERSION } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import BackendConfigModel from '@/app/models/backendConfig.model';
+import { ThemedView } from './ThemedView';
 
 const HEADER_HEIGHT = 100;
 
