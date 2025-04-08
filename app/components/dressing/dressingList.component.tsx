@@ -84,7 +84,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     return (
         <>
             <ThemedView style={styles.title}>
-                <ThemedText type="subtitle">{vetementsAffiches?.length} vêtement{vetementsAffiches?.length > 1 ? "s" : ""}</ThemedText>
+                <ThemedText type="title">{vetementsAffiches?.length} vêtement{vetementsAffiches?.length > 1 ? "s" : ""}</ThemedText>
                 <View style={{flexDirection: "row", gap: 10, alignItems: "center"}}>
                 <Pressable onPress={() => openAddEditVetement()}>
                     <Ionicons size={28} name="add-outline" color={Colors.dark.text} />

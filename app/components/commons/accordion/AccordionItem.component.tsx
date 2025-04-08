@@ -45,9 +45,9 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
         <TouchableOpacity style={styles.accordHeader} onPress={ toggleItem }>
           <View style={styles.accordHeader}>
             <Text style={styles.groupeLabel}>{ title }</Text>
-            <Image source={icon} style={styles.icon} />
+            <Image source={icon} style={[styles.icon, {marginRight: 15}]} />
           </View>
-          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' } size={20} color="#bbb" />
+          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' } size={20} style={styles.icon} />
         </TouchableOpacity>
         { expanded && <View style={styles.accordBody}>{ children }</View> }
       </View>
@@ -61,22 +61,26 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       paddingTop: 4
     },
     accordHeader: {
-      backgroundColor: Colors.app.color,
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      height: 25
+      height: 35,
+      backgroundColor: Colors.app.color,
+      borderTopLeftRadius: 8,
+      borderBottomRightRadius: 8,
     },
     groupeLabel: {
-      paddingLeft: 5,
-      paddingTop: 2,
+      paddingLeft: 15,
+      paddingTop: 6,
       color: 'white',
+      fontSize: 16,
+
     },
     icon: {
-      marginTop: 2,
+      marginTop: 6,
       marginRight: 5,
-      width: 20,
-      height: 20,
+      width: 25,
+      height: 25,
       color: 'white',
       tintColor: 'white',
   },
