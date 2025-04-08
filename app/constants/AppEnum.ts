@@ -4,15 +4,18 @@ export const APP_MOBILE_NAME = "Style et Mini";
 
 
 // Enumération des menus de l'application
-export enum MenuParametragesEnum {
-  MENU_TYPE_VETEMENTS   = 'Type de vêtements',
-  MENU_TAILLES          = 'Tailles et Mesures',
-  MENU_USAGES           = 'Usages',
-  MENU_ETATS            = 'Etats',
-  MENU_MARQUES          = 'Marques',
-}
+export const menusParametrages = {
+    "Paramétrages": [
+      { titre: 'Type de vêtements',   icone: require('@/assets/icons/clothes-outline.png') },
+      { titre: 'Tailles et Mesures',  icone: require('@/assets/icons/size-outline.png') },
+      { titre: 'Usages',              icone: require('@/assets/icons/clothes-usage-outline.png') },
+      { titre: 'Etats',               icone: require('@/assets/icons/clothes-condition-outline.png')},
+      { titre: 'Marques',             icone: require('@/assets/icons/brand-outline.png') }],
+    "Dressing": [
+      { titre: 'Dressing',            icone: require('@/assets/icons/clothes-outline.png') },
 
-
+    ]
+  };
 
 
 // catégorie de dressing (enfant ou adulte)

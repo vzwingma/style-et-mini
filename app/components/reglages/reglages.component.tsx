@@ -1,9 +1,10 @@
-import { StyleSheet, Pressable, View } from 'react-native'
+import { StyleSheet, Pressable, View, ScrollView, Image } from 'react-native'
 import Modal from 'react-native-modal';
 import React, { useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import { MenuParametragesEnum } from '../../constants/AppEnum';
+import { menusParametrages } from '../../constants/AppEnum';
+import ParamEtatsVetements from './parametrages.component';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -22,8 +23,8 @@ import { MenuParametragesEnum } from '../../constants/AppEnum';
  **/
 export default function ReglagesComponent() {
 
-  const [open, setOpen] = useState(true);
-  const [menu, setMenu] = useState<MenuParametragesEnum | null>(null);
+  const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState<any | null>(null);
 
 
   /** Ouverture/Fermeture du menu */
@@ -33,67 +34,78 @@ export default function ReglagesComponent() {
   };
 
 
-  const menus = [
-    MenuParametragesEnum.MENU_TYPE_VETEMENTS,
-    MenuParametragesEnum.MENU_TAILLES,
-    MenuParametragesEnum.MENU_USAGES,
-    MenuParametragesEnum.MENU_ETATS,
-    MenuParametragesEnum.MENU_MARQUES,
-  ];
 
 
 
   return (
-    <View style={styles.container}>
-      <View style={styles.title}>
-        <ThemedText type="subtitle" style={{ color: Colors.app.color }}>Paramétrages</ThemedText>
+    <>
+      <View style={styles.container}>
+
+        {
+          (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe, index) => (
+            <View>
+              <View key={index} style={styles.title}>
+                <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
+              </View>
+              {menusParametrages[keyGroupe].map((itemParam, index) => (
+                <View key={index} style={styles.menuItem} >
+                  <Image source={itemParam.icone} style={styles.icon} />
+                  <ThemedText type='default' onPress={() => toggleOpen({ item: itemParam })}>{itemParam.titre}</ThemedText>
+                </View>
+              ))}
+            </View>
+
+          ))
+        }
       </View>
 
-      {
-        menus.map((item, index) => (
-          <View key={index} style={styles.menuItem} >
-            <ThemedText type='default' onPress={() => toggleOpen({ item })}>{item}</ThemedText>
-          </View>
-        ))
-      }
-
-
-      {<Modal presentationStyle='overFullScreen' isVisible={open} animationIn='slideInRight' animationOut='slideOutRight'>
-        <Pressable onPress={() => setOpen(false)} style={{ flex: 1, backgroundColor: Colors.dark.background, opacity: 0.8 }} >
+      {<Modal presentationStyle='fullScreen' isVisible={open} animationIn='slideInRight' animationOut='slideOutRight' >
+        <Pressable onPress={() => setOpen(false)}  >
           <View style={styles.body}>
-            <ThemedText type='title'>Paramètres</ThemedText>
-
+            <ThemedText type='title'>{menu}</ThemedText>
+            <ScrollView contentInsetAdjustmentBehavior="automatic">
+              <ParamEtatsVetements />
+            </ScrollView>
           </View>
         </Pressable>
-      </Modal>
-      }
-    </View>
+      </Modal>}
+
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     zIndex: 0,
     width: '100%'
   },
   title: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    color: Colors.app.color,
-    padding: 5,
+    padding: 10,
     borderColor: Colors.app.color,
     borderTopWidth: 3,
     borderBottomWidth: 3,
     borderRadius: 8,
+    height: 50,
   },
   body: {
-    flex: 1,
+    justifyContent: 'center',
     width: '100%',
+    height: '100%',
+    backgroundColor: Colors.app.background,
+    borderColor: 'red',
+    borderWidth: 1,
+
   },
+  icon: {
+    marginRight: 5,
+    width: 20,
+    height: 20,
+    tintColor: 'white',
+},  
   menuItem: {
+    flexDirection: 'row',
     padding: 10,
     height: 44,
     cursor: 'pointer',
