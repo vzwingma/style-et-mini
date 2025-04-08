@@ -1,10 +1,10 @@
-import { Tabs } from "@/constants/TabsEnums";
+import { Tabs } from "../../../constants/TabsEnums";
 import { Image, StyleSheet } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "../../../constants/Colors";
 import { getTabIcon, TabBarIcon } from "./TabBarIcon";
-import { ThemedView } from "../ThemedView";
+import { ThemedView } from "../views/ThemedView";
 import { ThemedText } from "../views/ThemedText";
-import { CategorieDressingEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum } from "@/app/constants/AppEnum";
 import DressingModel from "@/app/models/dressing.model";
 
 // Propriétés des onglets

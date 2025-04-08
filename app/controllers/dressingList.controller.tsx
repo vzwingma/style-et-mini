@@ -1,4 +1,4 @@
-import { CaracteristiqueVetementEnum} from "@/constants/AppEnum";
+import { CaracteristiqueVetementEnum} from "../constants/AppEnum";
 import DressingListFiltreModel from "../models/vetementFiltre.model";
 import VetementModel from "../models/vetements.model";
 /**

@@ -1,4 +1,4 @@
-import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
+import { SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import DressingModel from "./dressing.model";
 import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
 import VetementImageModel from "./vetements.image.model";

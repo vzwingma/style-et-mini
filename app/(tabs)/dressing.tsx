@@ -1,9 +1,10 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
-import { ThemedView } from '@/app/components/commons/ThemedView';
-import { Colors } from '@/constants/Colors';
 import DressingModel from '../models/dressing.model';
 import { DressingComponent } from '../components/dressing/dressing.component';
+import { ThemedView } from '../components/commons/views/ThemedView';
+import { Colors } from '../constants/Colors';
+
 
 
 

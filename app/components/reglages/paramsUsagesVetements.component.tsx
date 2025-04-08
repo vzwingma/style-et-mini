@@ -1,13 +1,13 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/app/components/commons/views/ThemedText';
-import { ThemedView } from '@/app/components/commons/ThemedView';
 import { useContext, useEffect, useState } from 'react';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '../../constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ParamListItem } from './typeParamsListItem.component';
 import { getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
 import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
+import { ThemedView } from '../commons/views/ThemedView';
+import { ThemedText } from '../commons/views/ThemedText';
 
 
 export default function ParamUsagesVetements() {

@@ -2,11 +2,11 @@ import { StyleSheet, SectionList, Pressable } from 'react-native'
 import Modal from 'react-native-modal';
 import React, { useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/ThemedView';
-import { Colors } from '@/constants/Colors';
+import { ThemedView } from '../commons/views/ThemedView';
+import { Colors } from '../../constants/Colors';
 import ParamTypesVetements from './paramsTypeVetements.component';
 import ParamTaillesMesures from './paramsTaillesMesures.component';
-import { MenuParametragesEnum } from '@/constants/AppEnum';
+import { MenuParametragesEnum } from '../../constants/AppEnum';
 import ParamUsagesVetements from './paramsUsagesVetements.component';
 import ParamEtatsVetements from './paramsEtatsVetements.component';
 import ParamMarquesVetements from './paramsMarquesVetements.component';

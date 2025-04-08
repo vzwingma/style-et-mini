@@ -1,7 +1,6 @@
-import VetementImageModel from "@/app/models/vetements.image.model";
-import VetementModel from "@/app/models/vetements.model";
-import { API_S3_URL } from "@/constants/APIconstants";
-
+import { API_S3_URL } from "../../constants/APIconstants";
+import VetementImageModel from "../../models/vetements.image.model";
+import VetementModel from "../../models/vetements.model";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.

@@ -10,8 +10,8 @@ L'application "Style & Mini" permet aux utilisateurs de gérer leur dressing vir
 - Ajouter et éditer des vêtements avec des détails tels que le type, la taille, les usages, les couleurs et la description.
 - Visualiser les vêtements ajoutés dans différentes catégories.
 - Paramétrer les types de vêtements, les tailles et les usages.
-- **Nouveau**: Rechercher des vêtements par nom, type ou couleur.
-- **Nouveau**: Ajouter des photos aux vêtements pour une meilleure visualisation.
+- Filtrer des vêtements par nom, type ou couleur.
+- Ajouter des photos aux vêtements pour une meilleure visualisation.
 
 L'application utilise le routage basé sur les fichiers pour une navigation fluide et est compatible avec les plateformes Android et Web.
 
