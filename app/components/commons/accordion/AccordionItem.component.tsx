@@ -47,7 +47,7 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
             <Text style={styles.groupeLabel}>{ title }</Text>
             <Image source={icon} style={[styles.icon, {marginRight: 15}]} />
           </View>
-          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' } size={20} style={styles.icon} />
+          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' } size={20} style={[styles.icon]} />
         </TouchableOpacity>
         { expanded && <View style={styles.accordBody}>{ children }</View> }
       </View>
@@ -77,7 +77,7 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
 
     },
     icon: {
-      marginTop: 6,
+      marginTop: 5,
       marginRight: 5,
       width: 25,
       height: 25,
