@@ -7,8 +7,11 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5
+        color: Colors.app.color,
+        padding: 5,
+        borderColor: Colors.app.color,
+        borderWidth: 3,
+        borderRadius: 8,
     },
 
     groupeContainer: {
