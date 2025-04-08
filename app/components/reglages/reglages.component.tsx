@@ -1,7 +1,6 @@
 import { StyleSheet, SectionList, Pressable } from 'react-native'
-
+import Modal from 'react-native-modal';
 import React, { useState } from 'react';
-import MenuDrawer from 'react-native-side-drawer';
 import { ThemedText } from '../commons/views/ThemedText';
 import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '../../constants/Colors';
@@ -59,7 +58,6 @@ export default function ReglagesComponent() {
   const drawerContent = () => {
     return (
       <Pressable style={styles.animatedBox}>
-
         {
           menuContent(menu)
         }
@@ -95,6 +93,19 @@ export default function ReglagesComponent() {
         style={{ width: '100%', height: 685 }}
       />
 
+      { <Modal presentationStyle='overFullScreen' isVisible={open} animationIn='slideInRight' animationOut='slideOutRight'
+              >
+        <Pressable onPress={() => setOpen(false)} style={{ flex: 1, backgroundColor: Colors.dark.background, opacity: 0.8 }} >
+        <ThemedView style={styles.body}>
+          <ThemedText type='title'>Paramètres</ThemedText>
+          
+          </ThemedView>
+          </Pressable>
+      </Modal>
+      }
+{ /** 
+ * 
+
       <MenuDrawer
         open={!open}
         position={'right'}
@@ -104,6 +115,7 @@ export default function ReglagesComponent() {
         overlay={true}
         opacity={0.8}
       />
+       */}
     </ThemedView>
   );
 }
