@@ -1,4 +1,4 @@
-import { Colors } from "@/app/constants/Colors";
+import { Colors } from "./../../../../app/constants/Colors";
 import { useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 

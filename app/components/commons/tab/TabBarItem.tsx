@@ -1,6 +1,6 @@
-import { Tabs } from "@/app/constants/TabsEnums";
+import { Tabs } from "../../../constants/TabsEnums";
 import { Image, StyleSheet } from "react-native";
-import { Colors } from "@/app/constants/Colors";
+import { Colors } from "../../../constants/Colors";
 import { getTabIcon, TabBarIcon } from "./TabBarIcon";
 import { ThemedView } from "../views/ThemedView";
 import { ThemedText } from "../views/ThemedText";

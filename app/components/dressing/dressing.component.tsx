@@ -2,13 +2,13 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
-import { Colors } from '@/app/constants/Colors';
-import DressingModel from '@/app/models/dressing.model';
+import { Colors } from './../../constants/Colors';
+import DressingModel from './../../models/dressing.model';
 import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent } from './vetementForm.component';
-import { loadVetementsDressing } from '@/app/controllers/dressing.controller';
+import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
-import VetementModel from '@/app/models/vetements.model';
+import VetementModel from './../../models/vetements.model';
 
 
 /**

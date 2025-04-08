@@ -1,9 +1,9 @@
-import { Colors } from "@/app/constants/Colors";
-import { Tabs } from "@/app/constants/TabsEnums";
+import { Colors } from "./../../../constants/Colors";
+import { Tabs } from "./../../../constants/TabsEnums";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, StyleSheet } from "react-native";
 import { getTabIcon } from "./TabBarIcon";
-import { CategorieDressingEnum } from "@/app/constants/AppEnum";
+import { CategorieDressingEnum } from "./../../../constants/AppEnum";
 
 
 /**
