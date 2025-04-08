@@ -64,7 +64,7 @@ export default function TabLayout() {
       console.log("(Re)Chargement de l'application...");
       connectToBackend({ setIsLoading, storeConnexionData, setError });
     }
-  }, [refreshing, setIsLoading, setError, storeConnexionData, tab]);
+  }, [refreshing, setIsLoading, setError]);
 
 
   useEffect(() => {
