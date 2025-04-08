@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/app/components/commons/views/ThemedText';
-import { ThemedView } from '@/app/components/commons/ThemedView';
+import { ThemedView } from '@/app/components/commons/views/ThemedView';
 import { useContext, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';

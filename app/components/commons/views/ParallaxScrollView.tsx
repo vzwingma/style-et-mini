@@ -7,7 +7,7 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
-import { ThemedView } from '@/app/components/commons/ThemedView';
+import { ThemedView } from '@/app/components/commons/views/ThemedView';
 import { APP_MOBILE_NAME, APP_MOBILE_VERSION } from '@/constants/AppEnum';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';

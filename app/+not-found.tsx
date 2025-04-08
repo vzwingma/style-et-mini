@@ -1,6 +1,6 @@
 import { Link, Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
-import { ThemedView } from '@/app/components/commons/ThemedView';
+import { ThemedView } from '@/app/components/commons/views/ThemedView';
 import { ThemedText } from '@/app/components/commons/views/ThemedText';
 
 

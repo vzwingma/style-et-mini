@@ -3,7 +3,7 @@ import { StyleSheet, SectionList, Pressable } from 'react-native'
 import React, { useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/ThemedView';
+import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '@/constants/Colors';
 import ParamTypesVetements from './paramsTypeVetements.component';
 import ParamTaillesMesures from './paramsTaillesMesures.component';

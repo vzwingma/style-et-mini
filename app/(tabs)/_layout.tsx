@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import ParallaxScrollView from '@/app/components/commons/views/ParallaxScrollView';
-import { ThemedView } from '@/app/components/commons/ThemedView';
+import { ThemedView } from '@/app/components/commons/views/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
