@@ -3,7 +3,7 @@ import ParamTailleVetementsModel from "./params/paramTailleVetements.model";
 import ParamUsageVetementsModel from "./params/paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
-import { SaisonVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
+import { SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
 import VetementImageModel from "./vetements.image.model";
 import ParamMarqueVetementsModel from "./params/paramMarqueVetements.model";

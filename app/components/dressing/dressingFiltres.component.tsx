@@ -3,12 +3,12 @@ import { ThemedView } from "../commons/views/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, View, Image } from "react-native";
 import VetementModel from "@/app/models/vetements.model";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "@/app/constants/Colors";
 import { setVetementsFiltres as applyFiltresOnVetements } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import DressingListFiltreModel from "@/app/models/vetementFiltre.model";
-import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/constants/AppEnum";
+import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import { styles } from "./dressingList.style";
 import { calculFiltresPossibles, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingFiltres.controller";
 
@@ -47,7 +47,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
     useEffect(() => {
         // Mise à jour de l'affichage des vêtements en fonction des filtres sélectionnés
         setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
-    }, [selectedFiltres]);
+    }, [selectedFiltres, setVetementsAffiches, vetementsInDressing]);
     
     /**
      * Rendu d'un élément de filtre dans la liste de dressing.

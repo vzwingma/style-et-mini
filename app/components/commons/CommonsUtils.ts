@@ -1,6 +1,6 @@
 import VetementImageModel from "@/app/models/vetements.image.model";
 import VetementModel from "@/app/models/vetements.model";
-import { API_S3_URL } from "@/constants/APIconstants";
+import { API_S3_URL } from "@/app/constants/APIconstants";
 
 // Fonction de tri alphanumérique
 /**

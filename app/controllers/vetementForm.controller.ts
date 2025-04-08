@@ -1,4 +1,4 @@
-import { SERVICES_PARAMS, SERVICES_URL } from "@/constants/APIconstants";
+import { SERVICES_PARAMS, SERVICES_URL } from "@/app/constants/APIconstants";
 import { alphanumSort, checkPriceFormat, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements.model";
@@ -11,7 +11,7 @@ import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBacken
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import { CategorieDressingEnum, StatutVetementEnum } from "@/constants/AppEnum";
+import { CategorieDressingEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
 

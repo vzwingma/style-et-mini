@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/app/constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { resizeImage } from '../commons/CommonsUtils';
 

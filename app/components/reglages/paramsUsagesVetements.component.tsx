@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { useContext, useEffect, useState } from 'react';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/app/constants/Colors';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ParamListItem } from './typeParamsListItem.component';
 import { getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';

@@ -1,6 +1,6 @@
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
-import { CategorieDressingEnum } from '@/constants/AppEnum';
+import { CategorieDressingEnum } from '@/app/constants/AppEnum';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**

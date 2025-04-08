@@ -2,7 +2,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from 'react-native-side-drawer';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/app/constants/Colors';
 import DressingModel from '@/app/models/dressing.model';
 import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent } from './vetementForm.component';
@@ -46,7 +46,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
     // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
     if (openVetementForm) return;
     loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
-  }, [openVetementForm]);
+  }, [openVetementForm, dressing.id]);
 
   // Changement de l'état du formulaire de vêtement si le dressing change
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Colors, Fonts } from '@/constants/Colors';
+import { Colors, Fonts } from '@/app/constants/Colors';
 
 export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'tab' | 'italic';

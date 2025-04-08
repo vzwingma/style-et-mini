@@ -3,7 +3,7 @@
  * https://docs.expo.dev/guides/color-schemes/
  */
 
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/app/constants/Colors';
 
 export function useThemeColor(
   colorName: keyof typeof Colors.dark

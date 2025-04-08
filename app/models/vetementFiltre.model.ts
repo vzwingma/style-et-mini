@@ -1,4 +1,4 @@
-import { CaracteristiqueVetementEnum } from "@/constants/AppEnum";
+import { CaracteristiqueVetementEnum } from "@/app/constants/AppEnum";
 
 /**
  * Modèle représentant un filtre pour la liste des vêtements

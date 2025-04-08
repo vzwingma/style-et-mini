@@ -1,5 +1,5 @@
 import BackendConfigModel from "@/app/models/backendConfig.model";
-import { SERVICES_URL } from "@/constants/APIconstants";
+import { SERVICES_URL } from "@/app/constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
 import { callGETBackend } from "../services/ClientHTTP.service";

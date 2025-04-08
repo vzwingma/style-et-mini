@@ -1,22 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import ParallaxScrollView from '@/app/components/commons/views/ParallaxScrollView';
 import { ThemedView } from '../components/commons/views/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { Colors } from '@/constants/Colors';
+
 
 import { ThemedText } from '../components/commons/views/ThemedText';
-import { Tabs } from '@/constants/TabsEnums';
+
 import HomeScreen from '.';
-import { getHeaderIcon, getHeaderTitle } from '@/app/components/commons/tab/TabHeader';
-import BackendConfigModel from '@/app/models/backendConfig.model';
-import { AppContext } from '@/app/services/AppContextProvider';
+
 import connectToBackend, { getDressings } from '../controllers/index.controller';
 import DressingScreen from './dressing';
-import { TabBarItems } from '@/app/components/commons/tab/TabBarItem';
 import ReglageScreen from './reglages';
 import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
 import DressingModel from '../models/dressing.model';
+import { Tabs } from '@/app/constants/TabsEnums';
+import { AppContext } from '../services/AppContextProvider';
+import { Colors } from '@/app/constants/Colors';
+import ParallaxScrollView from '../components/commons/views/ParallaxScrollView';
+import { getHeaderIcon, getHeaderTitle } from '../components/commons/tab/TabHeader';
+import { TabBarItems } from '../components/commons/tab/TabBarItem';
+import BackendConfigModel from '../models/backendConfig.model';
 
 export default function TabLayout() {
 
@@ -61,7 +64,7 @@ export default function TabLayout() {
       console.log("(Re)Chargement de l'application...");
       connectToBackend({ setIsLoading, storeConnexionData, setError });
     }
-  }, [refreshing, setIsLoading, setError]);
+  }, [refreshing, setIsLoading, setError, storeConnexionData, tab]);
 
 
   useEffect(() => {
@@ -69,8 +72,8 @@ export default function TabLayout() {
     if(tab === Tabs.INDEX && isLoading === false) {
       console.log("(Re)Chargement de la configuration...");
       getParamsTaillesVetements ({ setTaillesMesures, setError, setIsLoading });
-      getParamsUsagesVetements  ({  setUsages, setError, setIsLoading });
-      getParamsTypeVetements    ({    setTypeVetements, setError, setIsLoading });
+      getParamsUsagesVetements  ({ setUsages, setError, setIsLoading });
+      getParamsTypeVetements    ({ setTypeVetements, setError, setIsLoading });
       getParamsMarquesVetements ({ setMarques, setError, setIsLoading });
 
       getParamsEtatsVetements({   setEtats, setError, setIsLoading });

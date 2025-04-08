@@ -1,4 +1,4 @@
-import { API_AUTH, API_PWD, API_URL, API_VERBS, KeyValueParams, SERVICES_URL } from '@/constants/APIconstants';
+import { API_AUTH, API_PWD, API_URL, API_VERBS, KeyValueParams, SERVICES_URL } from '@/app/constants/APIconstants';
 import 'react-native-get-random-values';
 import { v7 as uuidGen } from 'uuid';
 import { Buffer } from 'buffer';
