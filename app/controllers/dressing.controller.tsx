@@ -1,4 +1,4 @@
-import { SERVICES_PARAMS, SERVICES_URL } from "@/app/constants/APIconstants";
+import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
 import { callGETBackend } from "../services/ClientHTTP.service";
