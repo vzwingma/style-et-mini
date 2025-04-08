@@ -5,6 +5,7 @@ import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
 import { menusParametrages } from '../../constants/AppEnum';
 import ParamEtatsVetements from './parametrages.component';
+import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -24,23 +25,18 @@ import ParamEtatsVetements from './parametrages.component';
 export default function ReglagesComponent() {
 
   const [open, setOpen] = useState(false);
-  const [menu, setMenu] = useState<any | null>(null);
+  const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
 
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpen(item: any): void {
-    setMenu(item?.item);
+  function toggleOpen(menu: MenuParametragesModel ): void {
+    setMenu(menu);
     setOpen(!open);
   };
-
-
-
-
 
   return (
     <>
       <View style={styles.container}>
-
         {
           (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe, index) => (
             <View>
@@ -50,7 +46,7 @@ export default function ReglagesComponent() {
               {menusParametrages[keyGroupe].map((itemParam, index) => (
                 <View key={index} style={styles.menuItem} >
                   <Image source={itemParam.icone} style={styles.icon} />
-                  <ThemedText type='default' onPress={() => toggleOpen({ item: itemParam })}>{itemParam.titre}</ThemedText>
+                  <ThemedText type='default' onPress={() => toggleOpen(itemParam)}>{itemParam.titre}</ThemedText>
                 </View>
               ))}
             </View>
@@ -62,7 +58,10 @@ export default function ReglagesComponent() {
       {<Modal presentationStyle='fullScreen' isVisible={open} animationIn='slideInRight' animationOut='slideOutRight' >
         <Pressable onPress={() => setOpen(false)}  >
           <View style={styles.body}>
-            <ThemedText type='title'>{menu}</ThemedText>
+            <View style={styles.menuItem}>
+            <Image source={menu?.icone} style={styles.icon} />
+            <ThemedText type='title'>{menu?.titre}</ThemedText>
+            </View>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
               <ParamEtatsVetements />
             </ScrollView>
@@ -94,9 +93,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: Colors.app.background,
-    borderColor: 'red',
-    borderWidth: 1,
-
+    padding: 5,
   },
   icon: {
     marginRight: 5,

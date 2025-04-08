@@ -1,11 +1,13 @@
 import Constants from 'expo-constants';
+import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
+
 export const APP_MOBILE_VERSION = Constants.expoConfig?.version ?? "0.0.0";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 
 // Enumération des menus de l'application
-export const menusParametrages = {
-    "Paramétrages": [
+export const menusParametrages : { [key: string]: MenuParametragesModel[] } = {
+    "Paramétrages" : [
       { titre: 'Type de vêtements',   icone: require('@/assets/icons/clothes-outline.png') },
       { titre: 'Tailles et Mesures',  icone: require('@/assets/icons/size-outline.png') },
       { titre: 'Usages',              icone: require('@/assets/icons/clothes-usage-outline.png') },
@@ -16,7 +18,7 @@ export const menusParametrages = {
 
     ]
   };
-
+  
 
 // catégorie de dressing (enfant ou adulte)
 export enum CategorieDressingEnum {
