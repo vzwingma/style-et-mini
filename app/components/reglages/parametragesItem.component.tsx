@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
 import { CategorieDressingEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
@@ -39,14 +39,18 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 <ThemedText type="subtitle">{parametreVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
                 { !editParametrage && !isUnselected && <Pressable onPress={() => setEditParametrage(true)}>
-                    <Ionicons size={20} name="pencil-outline" style={styles.titleIcon} />
+                    <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
-                {/* editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
+                { editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
-                </Pressable> */
+                </Pressable> 
                 }
                 { editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
                     <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
+                </Pressable>
+                }
+                { editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
+                    <Image source={require('@/assets/icons/bin-outline.png')} tintColor={'white'} style={styles.titleIcon} />
                 </Pressable>
                 }
                 </View>
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     titleSelected: {
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
         borderBottomColor: Colors.app.color,
     },
     titleIcon: {
@@ -143,6 +147,8 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         borderRadius: 2,
         margin: 5,
+        height: 20,
+        width: 20,
     },
 }
 );
