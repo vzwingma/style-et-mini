@@ -30,7 +30,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
 
     const isSelected = parametreInEdition !== null && parametreInEdition === parametreVetements.id;
     const isUnselected = parametreInEdition !== null && parametreInEdition !== parametreVetements.id;
-
+    const isLibelleMarqueAutres = parametreVetements.libelle === '... Autres';
     return (
         <View style={[styles.container, 
                      isSelected ? styles.containerSelected : null,
@@ -38,18 +38,22 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
             <View style={[styles.title, editParametrage ? styles.titleSelected : null]}>
                 <ThemedText type="subtitle">{parametreVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
-                { !editParametrage && !isUnselected && <Pressable onPress={() => setEditParametrage(true)}>
+                { !editParametrage && !isUnselected && !isLibelleMarqueAutres &&
+                <Pressable onPress={() => setEditParametrage(true)}>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
-                { editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
+                { editParametrage &&
+                <Pressable onPress={() => setEditParametrage(false)}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
                 </Pressable> 
                 }
-                { editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
+                { editParametrage && 
+                <Pressable onPress={() => setEditParametrage(false)}>
                     <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
                 </Pressable>
                 }
-                { editParametrage && <Pressable onPress={() => setEditParametrage(false)}>
+                { editParametrage && 
+                <Pressable onPress={() => setEditParametrage(false)}>
                     <Image source={require('@/assets/icons/bin-outline.png')} tintColor={'white'} style={styles.titleIcon} />
                 </Pressable>
                 }
