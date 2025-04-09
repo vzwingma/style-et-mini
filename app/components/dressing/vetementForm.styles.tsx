@@ -125,7 +125,9 @@ export const styles = StyleSheet.create({
         cursor: 'pointer',
         margin: 10,
     },
-
+    rowItems: {
+        flexDirection: 'row', 
+        alignItems: 'center'},
 
     // Style de la liste déroulante d'un dropdown
     listStyle: {

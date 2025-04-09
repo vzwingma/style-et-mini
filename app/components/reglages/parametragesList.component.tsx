@@ -10,7 +10,6 @@ import { ParametragesVetementEnum } from '@/app/constants/AppEnum';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 import { ParametragesItemComponent } from './parametragesItem.component';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from '../dressing/dressingList.style';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort } from '../commons/CommonsUtils';
 
@@ -30,6 +29,19 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
     taillesMesures, setTaillesMesures,
     marques, setMarques,
     usages, setUsages } = useContext(AppContext)!;
+
+  const [parametreInEdition, setParametreEdition] = useState<string | null>(null);
+
+  useEffect(() => {
+    setParametreEdition(null);
+  }, [typeParametrage]);
+
+
+  useEffect(() => {
+    console.log("Paramètre en édition : " + parametreInEdition);
+  }, [parametreInEdition]);
+
+
   /**
  *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
  * et à changement d'onglet
@@ -75,15 +87,15 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
     } else {
       switch (typeParametrage.class) {
         case ParametragesVetementEnum.TYPE:
-          return showPanelParametres(typeVetements, typeParametrage)
+          return showPanelParametres(typeVetements)
         case ParametragesVetementEnum.TAILLES:
-          return showPanelParametres(taillesMesures, typeParametrage)
+          return showPanelParametres(taillesMesures)
         case ParametragesVetementEnum.MARQUES:
-          return showPanelParametres(marques, typeParametrage)
+          return showPanelParametres(marques)
         case ParametragesVetementEnum.USAGES:
-          return showPanelParametres(usages, typeParametrage)
+          return showPanelParametres(usages)
         case ParametragesVetementEnum.ETATS:
-          return showPanelParametres(etats, typeParametrage)
+          return showPanelParametres(etats)
         default:
           return null;
       }
@@ -97,7 +109,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
    * @param {ParamUsageVetementsModel[] | undefined} parametresVetements - La liste des usages de vêtements à afficher. Peut être indéfinie.
    * @returns {React.JSX.Element} Un élément JSX représentant le panneau avec la liste des usages de vêtements.
    */
-  function showPanelParametres(parametresVetements: ParamGenericVetementsModel[] | undefined, typeParametrage: MenuParametragesModel): React.JSX.Element {
+  function showPanelParametres(parametresVetements: ParamGenericVetementsModel[] | undefined): React.JSX.Element {
     let parametresListe: JSX.Element[] = [];
     if (parametresVetements !== undefined) {
 
@@ -106,11 +118,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
       parametresVetements.forEach((item: ParamGenericVetementsModel) => {
 
         parametresListe.push(
-          <ParametragesItemComponent
-            key={item.id}
-            parametreVetements={item}
-            typeParametrage={typeParametrage.class}
-          />
+          <ParametragesItemComponent key={item.id} parametreVetements={item} setParametreEdition={setParametreEdition} parametreInEdition={parametreInEdition}/>
         );
       });
     }
@@ -132,7 +140,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
         </View>
 
         <Pressable >
-          <Ionicons size={28} name="add-outline" style={styles.titleIcon} />
+          <Ionicons size={20} name="add-outline" style={style2s.titleIcon} />
         </Pressable>
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -152,7 +160,7 @@ const style2s = StyleSheet.create({
     backgroundColor: Colors.app.color,
     borderColor: Colors.app.color,
     color: "white",
-},
+  },
   body: {
     justifyContent: 'center',
     width: '100%',
@@ -166,5 +174,12 @@ const style2s = StyleSheet.create({
     height: 20,
     color: 'white',
     tintColor: 'white',
-},
+  },
+  titleIcon: {
+    color: Colors.dark.text,
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 20,
+    margin: 5,
+  },
 });
