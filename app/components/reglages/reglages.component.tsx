@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View, ScrollView, Image } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 import Modal from 'react-native-modal';
 import React, { useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
@@ -33,13 +33,13 @@ export const ReglagesComponent: React.FC = () => {
     <>
       <View style={styles.container}>
         {
-          (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe, index) => (
-            <View key={index} >
+          (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe) => (
+            <View key={keyGroupe} >
               <View style={styles.title}>
                 <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
               </View>
-              {menusParametrages[keyGroupe].map((itemParam, index) => (
-                <View key={index} style={styles.menuItem} >
+              {menusParametrages[keyGroupe].map((itemParam) => (
+                <View key={itemParam.titre} style={styles.menuItem} >
                   <Image source={itemParam.icone} style={styles.icon} />
                   <ThemedText type='default' onPress={() => toggleOpen(itemParam)}>{itemParam.titre}</ThemedText>
                 </View>

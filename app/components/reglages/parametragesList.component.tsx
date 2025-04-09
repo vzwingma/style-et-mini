@@ -30,10 +30,10 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
     marques, setMarques,
     usages, setUsages } = useContext(AppContext)!;
 
-  const [parametreInEdition, setParametreEdition] = useState<string | null>(null);
+  const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
 
   useEffect(() => {
-    setParametreEdition(null);
+    setParametreInEdition(null);
   }, [typeParametrage]);
 
 
@@ -118,7 +118,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
       parametresVetements.forEach((item: ParamGenericVetementsModel) => {
 
         parametresListe.push(
-          <ParametragesItemComponent key={item.id} parametreVetements={item} setParametreEdition={setParametreEdition} parametreInEdition={parametreInEdition}/>
+          <ParametragesItemComponent key={item.id} parametreVetements={item} setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition}/>
         );
       });
     }

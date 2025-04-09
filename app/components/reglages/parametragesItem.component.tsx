@@ -11,7 +11,7 @@ import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 
 export type ParametragesItemComponentProps = {
     readonly parametreVetements: any
-    setParametreEdition: (idParametre: string | null) => void
+    setParametreInEdition: (idParametre: string | null) => void
     parametreInEdition: string | null
 };
 /**
@@ -19,12 +19,12 @@ export type ParametragesItemComponentProps = {
  * @param typeVetements : TypeVetementsModel
  * @returns item de la liste des types de vêtements
  */
-export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametreVetements, setParametreEdition, parametreInEdition }: ParametragesItemComponentProps) => {
+export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametreVetements, setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
 
     const [editParametrage, setEditParametrage] = useState(false);
 
     useEffect(() => {
-        setParametreEdition(editParametrage ? parametreVetements.id : null);
+        setParametreInEdition(editParametrage ? parametreVetements.id : null);
     }, [editParametrage]);
 
 
