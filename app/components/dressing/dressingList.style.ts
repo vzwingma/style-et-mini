@@ -1,4 +1,4 @@
-import { Colors, Fonts } from "../../constants/Colors";
+import { Colors, Fonts } from "@/app/constants/Colors";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -7,10 +7,19 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        backgroundColor: Colors.app.color,
-        padding: 5
+        color: Colors.app.color,
+        padding: 5,
+        borderColor: Colors.app.color,
+        borderTopWidth: 3,
+        borderBottomWidth: 3,
+        borderRadius: 8,
     },
-
+    titleIcon: {
+        color: Colors.dark.text, 
+        borderColor: Colors.app.color, 
+        borderWidth: 2, 
+        borderRadius: 20
+    },
     groupeContainer: {
         flexDirection: 'row',
         alignItems: 'center'

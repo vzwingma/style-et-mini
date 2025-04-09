@@ -1,8 +1,7 @@
-import { StyleSheet, Pressable, Image } from 'react-native'
+import { StyleSheet, Pressable, Image, View } from 'react-native'
 
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '../../constants/Colors';
 
 
@@ -27,7 +26,7 @@ export type DressingComponentProps = {
 export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ openAddVetement }: DressingComponentProps) => {
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.icon ]}  />
 
       <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de vêtements</ThemedText>
@@ -35,7 +34,7 @@ export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ open
       <Pressable onPress={openAddVetement} style={styles.menuItem}>
           <ThemedText type="title" style={{marginTop: 10}}>Ajoutez un vêtement</ThemedText>
       </Pressable>
-    </ThemedView>
+    </View>
   );
 }
 

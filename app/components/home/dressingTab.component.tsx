@@ -1,6 +1,5 @@
 import DressingModel from "@/app/models/dressing.model";
-import { Image, Pressable, StyleSheet } from "react-native";
-import { ThemedView } from "../commons/views/ThemedView";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Tabs } from "../../constants/TabsEnums";
 import { getHomeIcon } from "../commons/tab/TabBarIcon";
@@ -22,10 +21,10 @@ type DressingTabComponentProps = {
 
     return (
       <Pressable onPress={() => selectNewTab(Tabs.DRESSING, dressing.id)}>
-        <ThemedView style={styles.container}>
+        <View style={styles.container}>
           <Image source={getHomeIcon(dressing.categorie)} style={[styles.icon]} />
           <ThemedText type="subtitle" style={{height: 35, top: 5}}>{dressing.libelle}</ThemedText>
-        </ThemedView>
+        </View>
       </Pressable>
     );
 
@@ -38,7 +37,7 @@ type DressingTabComponentProps = {
       zIndex: 0,
       alignItems: 'center',
       borderColor: 'grey',
-      borderWidth: 0.5
+      borderWidth: 0.5,
     },
   
     icon: {

@@ -1,16 +1,11 @@
-import { StyleSheet, SectionList, Pressable } from 'react-native'
-
+import { StyleSheet, View, Image } from 'react-native'
+import Modal from 'react-native-modal';
 import React, { useState } from 'react';
-import MenuDrawer from 'react-native-side-drawer';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '../../constants/Colors';
-import ParamTypesVetements from './paramsTypeVetements.component';
-import ParamTaillesMesures from './paramsTaillesMesures.component';
-import { MenuParametragesEnum } from '../../constants/AppEnum';
-import ParamUsagesVetements from './paramsUsagesVetements.component';
-import ParamEtatsVetements from './paramsEtatsVetements.component';
-import ParamMarquesVetements from './paramsMarquesVetements.component';
+import { menusParametrages } from '../../constants/AppEnum';
+import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
+import { ParametragesListComponent } from './parametragesList.component';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -18,136 +13,91 @@ import ParamMarquesVetements from './paramsMarquesVetements.component';
  * @returns {JSX.Element} Le composant de l'écran de réglages.
  *
  * @component
- * @example
- * return (
- *   <ReglagesComponent />
- * )
- *
  * @remarks
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export default function ReglagesComponent() {
+export const ReglagesComponent: React.FC = () => {
 
-  const [open, setOpen] = useState(true);
-  const [menu, setMenu] = useState<MenuParametragesEnum | null>(null);
+  const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
 
 
   /** Ouverture/Fermeture du menu */
-  function toggleOpen(item: any): void {
-    setMenu(item?.item);
+  function toggleOpen(menu: MenuParametragesModel ): void {
+    setMenu(menu);
     setOpen(!open);
   };
 
-  const menuContent = (menu: MenuParametragesEnum | null) => {
-    switch (menu) {
-      case MenuParametragesEnum.MENU_TYPE_VETEMENTS:
-        return <ParamTypesVetements />
-      case MenuParametragesEnum.MENU_TAILLES:
-        return <ParamTaillesMesures />
-      case MenuParametragesEnum.MENU_USAGES:
-        return <ParamUsagesVetements />
-      case MenuParametragesEnum.MENU_ETATS:
-        return <ParamEtatsVetements />
-        case MenuParametragesEnum.MENU_MARQUES:
-          return <ParamMarquesVetements />        
-      default:
-        return <></>
-    }
-  };
-
-  const drawerContent = () => {
-    return (
-      <Pressable style={styles.animatedBox}>
-
-        {
-          menuContent(menu)
-        }
-      </Pressable>
-    );
-  };
-
-
   return (
-    <ThemedView style={styles.container}>
-      <SectionList
-        sections={[
-          {
-            title: 'Paramétrages', data:
-              [
-                MenuParametragesEnum.MENU_TYPE_VETEMENTS,
-                MenuParametragesEnum.MENU_TAILLES,
-                MenuParametragesEnum.MENU_USAGES,
-                MenuParametragesEnum.MENU_ETATS,
-                MenuParametragesEnum.MENU_MARQUES,
-              ]
-          },
-        ]}
-        renderItem={({ item }) => <ThemedView style={styles.menuItem} >
-          <ThemedText type='default' onPress={() => toggleOpen({ item })}>{item}</ThemedText>
-        </ThemedView>}
-        renderSectionHeader={({ section }) => (
-          <ThemedView style={styles.menuHeader}>
-            <ThemedText type="title">{section.title}</ThemedText>
-          </ThemedView>
-        )}
-        keyExtractor={item => `basicListEntry-${item}`}
-        style={{ width: '100%', height: 685 }}
-      />
+    <>
+      <View style={styles.container}>
+        {
+          (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe) => (
+            <View key={keyGroupe} >
+              <View style={styles.title}>
+                <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
+              </View>
+              {menusParametrages[keyGroupe].map((itemParam) => (
+                <View key={itemParam.titre} style={styles.menuItem} >
+                  <Image source={itemParam.icone} style={styles.icon} />
+                  <ThemedText type='default' onPress={() => toggleOpen(itemParam)}>{itemParam.titre}</ThemedText>
+                </View>
+              ))}
+            </View>
 
-      <MenuDrawer
-        open={!open}
-        position={'right'}
-        drawerContent={drawerContent()}
-        drawerPercentage={98}
-        animationTime={250}
-        overlay={true}
-        opacity={0.8}
-      />
-    </ThemedView>
+          ))
+        }
+      </View>
+
+      {<Modal presentationStyle='overFullScreen' isVisible={open} 
+              animationIn='slideInRight' animationOut='slideOutRight'
+              propagateSwipe={true}
+              onBackdropPress={() => setOpen(false)}
+              style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>          
+      {
+        (menu !== null && menu !== undefined) && <ParametragesListComponent typeParametrage={menu} closeDrawer={() => setOpen(false)} />
+      }
+
+      </Modal>}
+
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'column',
     zIndex: 0,
-    width: '100%',
-    borderColor: 'red',
-    borderWidth: 1,
+    width: '100%'
   },
-  animatedBox: {
-    flex: 1,
-    zIndex: 1,
-    top: 130,
-    left: 15,
-    width: '100%',
-    backgroundColor: Colors.dark.background,
-    borderColor: 'grey',
-    borderWidth: 1,
-    overflow: 'scroll',
-
+  title: {
+    padding: 10,
+    borderColor: Colors.app.color,
+    borderTopWidth: 3,
+    borderBottomWidth: 3,
+    borderRadius: 8,
+    height: 50,
+    flexDirection: 'row',
   },
   body: {
-    flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    height: '100%',
+    backgroundColor: Colors.app.background,
+    padding: 5,
   },
-
-
+  icon: {
+    marginRight: 5,
+    width: 20,
+    height: 20,
+    tintColor: 'white',
+  },  
   menuItem: {
+    flexDirection: 'row',
     padding: 10,
     height: 44,
     cursor: 'pointer',
-  },
-  menuHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontWeight: 'bold',
   },
 });

@@ -1,8 +1,7 @@
 import { Tabs } from "../../../constants/TabsEnums";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Colors } from "../../../constants/Colors";
 import { getTabIcon, TabBarIcon } from "./TabBarIcon";
-import { ThemedView } from "../views/ThemedView";
 import { ThemedText } from "../views/ThemedText";
 import { CategorieDressingEnum } from "@/app/constants/AppEnum";
 import DressingModel from "@/app/models/dressing.model";
@@ -32,22 +31,22 @@ interface TabBarIconsProps {
  */
 export function TabBarItems({ activeTab, thisTab, selectNewTab, activeDressing }: Readonly<TabBarItemsProps>): JSX.Element {
   // Si l'onglet actif est le même que celui-ci, on ne fait rien
-  return <ThemedView style={tabStyles.tabsItem} 
-                      onPointerDown={() => selectNewTab(thisTab, activeDressing?.id)} 
-                      onTouchEnd={() => selectNewTab(thisTab, activeDressing?.id)}>
-    { getTabBarIcon({ activeTab, activeDressing, thisTab }) }
+  return <View style={tabStyles.tabsItem}
+    onPointerDown={() => selectNewTab(thisTab, activeDressing?.id)}
+    onTouchEnd={() => selectNewTab(thisTab, activeDressing?.id)}>
+    {getTabBarIcon({ activeTab, activeDressing, thisTab })}
     <ThemedText type='tab'>{activeDressing?.libelle ?? thisTab.toString()}</ThemedText>
-  </ThemedView>;
+  </View>;
 }
 
 
-function getTabBarIcon({ activeTab, activeDressing, thisTab}: Readonly<TabBarIconsProps>): JSX.Element {
-  const selectedTab : boolean = activeTab === thisTab;
+function getTabBarIcon({ activeTab, activeDressing, thisTab }: Readonly<TabBarIconsProps>): JSX.Element {
+  const selectedTab: boolean = activeTab === thisTab;
   switch (thisTab) {
     case Tabs.INDEX:
       return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     case Tabs.DRESSING:
-      return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer'}} />
+      return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer' }} />
     case Tabs.REGLAGES:
       return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     default:

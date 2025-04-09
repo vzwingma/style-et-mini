@@ -2,7 +2,6 @@ import { Image, Pressable, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ThemedView } from '../commons/views/ThemedView';
 import { Colors } from '../../constants/Colors';
 import VetementModel from '@/app/models/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
@@ -45,6 +44,37 @@ export type VetementsFormParamsTypeProps = {
     paramsMarquesVetements?: ParamMarqueVetementsModel[];
 };
 
+    /**
+     * Retourne un élément JSX avec une étiquette obligatoire.
+     *
+     * @param {string} label - Le texte de l'étiquette.
+     * @returns {React.JSX.Element} Un élément JSX contenant l'étiquette avec un astérisque rouge pour indiquer qu'elle est obligatoire.
+     */
+    export const renderLabelMandatory = (label: string): React.JSX.Element => {
+        return (<><ThemedText style={{ color: 'red' }}>* </ThemedText><ThemedText>{label}</ThemedText></>);
+    }
+
+
+    /**
+     * Rendu d'un élément sélectionné avec une option de désélection.
+     *
+     * @param {any} item - L'élément sélectionné à afficher.
+     * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
+     * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
+     */
+    export const renderSelectedItem = (item: any, unSelect?: any): React.JSX.Element => (
+        <Pressable
+            style={styles.selectedStyle}
+            onPress={() => unSelect?.(item)}>
+            <View style={styles.rowItems}>
+                <ThemedText type="default">{item.libelle} </ThemedText>
+                { unSelect &&
+                   <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+                }
+            </View>
+        </Pressable>
+    );
+
 
 /**
  * Composant de formulaire pour ajouter ou éditer un vêtement dans le dressing.
@@ -77,34 +107,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
 
 
-    /**
-     * Retourne un élément JSX avec une étiquette obligatoire.
-     *
-     * @param {string} label - Le texte de l'étiquette.
-     * @returns {React.JSX.Element} Un élément JSX contenant l'étiquette avec un astérisque rouge pour indiquer qu'elle est obligatoire.
-     */
-    const renderLabelMandatory = (label: string): React.JSX.Element => {
-        return (<><ThemedText style={{ color: 'red' }}>* </ThemedText><ThemedText>{label}</ThemedText></>);
-    }
 
-
-    /**
-     * Rendu d'un élément sélectionné avec une option de désélection.
-     *
-     * @param {any} item - L'élément sélectionné à afficher.
-     * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
-     * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
-     */
-    const renderSelectedItem = (item: any, unSelect: any): React.JSX.Element => (
-        <Pressable
-            style={styles.selectedStyle}
-            onPress={() => unSelect?.(item)}>
-            <View style={{ flexDirection: 'row' }}>
-                <ThemedText type="default">{item.libelle} </ThemedText>
-                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
-            </View>
-        </Pressable>
-    );
 
 
     /**
@@ -114,7 +117,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @returns {React.JSX.Element} - Un élément JSX représentant l'élément de type vêtement.
      */
     const renderTypeItem = (item: ParamTypeVetementsModel): React.JSX.Element => (
-        <View style={[styles.listItemStyle, { flexDirection: 'row' }]}>
+        <View style={[styles.listItemStyle, styles.rowItems]}>
             <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
             <ThemedText style={{ top: 15 }}>{item.libelle}</ThemedText>
         </View>
@@ -132,7 +135,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         }
         return (
             <View style={styles.body}>
-                <View style={{justifyContent: 'center', alignItems: 'center' }}>
+                <View style={styles.rowItems}>
                     <View>
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             {form.image &&
@@ -146,7 +149,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 </View>
                 <View style={styles.form}>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
@@ -154,7 +157,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Type")}</ThemedText>
                         <Dropdown
                             style={!errorsForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
@@ -170,7 +173,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         />
                     </View>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Taille")}</ThemedText>
                         <Dropdown
                             style={!errorsForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
@@ -187,7 +190,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie
                         && TypeTailleEnum.VETEMENTS === form.type?.type
-                        && <View style={{ flexDirection: 'row' }}>
+                        && <View style={styles.rowItems}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
                             <BouncyCheckbox
                                 fillColor={Colors.app.color}
@@ -195,9 +198,9 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
                         </View>
                     }
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Usage(s)")}</ThemedText>
-                        <ThemedView style={styles.filtre}><ThemedText type="subtitle">
+                        <View style={styles.filtre}><ThemedText type="subtitle">
                             <MultiSelect
                                 style={!errorsForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -211,11 +214,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
-                        </ThemedText></ThemedView>
+                        </ThemedText></View>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Saisons</ThemedText>
-                        <ThemedView style={styles.filtre}><ThemedText type="subtitle">
+                        <View style={styles.filtre}><ThemedText type="subtitle">
                             <MultiSelect
                                 style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -229,9 +232,9 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
-                        </ThemedText></ThemedView>
+                        </ThemedText></View>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
                         <TextInput style={styles.input} placeholderTextColor={'gray'}
                             value={form?.couleurs ?? ''}
@@ -240,7 +243,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     </View>                    
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie &&
-                        <View style={{ flexDirection: 'row' }}>
+                        <View style={styles.rowItems}>
                             <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Etat")}</ThemedText>
                             <Dropdown
                                 style={!errorsForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
@@ -256,7 +259,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             />
                         </View>
                     }
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Marque")}</ThemedText>
                         <Dropdown
                             style={!errorsForm?.marqueInError || form?.marque ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
@@ -270,14 +273,14 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={styles.icon} />}
                         />
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Collection</ThemedText>
                         <TextInput style={styles.input} placeholderTextColor={'gray'}
                             value={form?.collection ?? ''}
                             placeholder={'Indiquez la collection (facultatif)'}
                             onChangeText={collection => setCollectionForm(collection, setForm)} />
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix d'achat</ThemedText>
                         <TextInput style={errorsForm?.prixAchatInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixAchatInError ? 'red' : 'gray'}
                             value={form?.prixAchat ?? ''}
@@ -286,7 +289,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
                     </View>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix neuf</ThemedText>
                         <TextInput style={errorsForm?.prixNeufInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixNeufInError ? 'red' : 'gray'}
                             value={form?.prixNeuf ?? ''}
@@ -294,7 +297,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             onChangeText={prix => setPrixNeufForm(prix, setForm)} />
                              <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
                     </View>                                        
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
                         <TextInput style={[styles.input, { minHeight: 50 }]} placeholderTextColor={'gray'}
                             scrollEnabled={true}
@@ -354,8 +357,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         <>
             {modalDialog}
 
-            <ThemedView style={styles.title}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={styles.title}>
+                <View style={styles.rowItems}>
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorsForm, onCloseForm)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
@@ -375,7 +378,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 <Pressable onPress={() => validateForm(form, setForm, setErrorsForm, onCloseForm)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>
-            </ThemedView>
+            </View>
 
             {getPanelFormContent()}
         </>

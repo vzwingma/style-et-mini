@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '../components/commons/views/ThemedText';
-import { ThemedView } from '../components/commons/views/ThemedView';
 import { useContext } from 'react';
 import { AppContext } from '../services/AppContextProvider';
 import { Tabs } from './../constants/TabsEnums';
 import DressingTabComponent from '../components/home/dressingTab.component';
+import { Colors } from '../constants/Colors';
 
 
 /**
@@ -34,7 +34,7 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
 
 
   return (
-    <ThemedView style={styles.titleContainer}>
+    <View style={styles.titleContainer}>
       {backendConnexionData?.env !== "PROD"
         && <ThemedText type="title">Environnement : {backendConnexionData?.env}</ThemedText>
       }
@@ -43,7 +43,7 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
           return <DressingTabComponent key={"dressTab" + dressing.id} dressing={dressing} selectNewTab={selectNewTab} />
         })
       }
-    </ThemedView>);
+    </View>);
 }
 
 
@@ -55,5 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: 8,
+    backgroundColor: Colors.dark.background,
   }
 });
