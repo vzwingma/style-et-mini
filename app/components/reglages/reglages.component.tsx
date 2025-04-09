@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
 import { menusParametrages } from '../../constants/AppEnum';
-import ParamEtatsVetements from './parametrages.component';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
+import { ParametragesListComponent } from './parametragesList.component';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -13,16 +13,11 @@ import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
  * @returns {JSX.Element} Le composant de l'écran de réglages.
  *
  * @component
- * @example
- * return (
- *   <ReglagesComponent />
- * )
- *
  * @remarks
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export default function ReglagesComponent() {
+export const ReglagesComponent: React.FC = () => {
 
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
@@ -39,8 +34,8 @@ export default function ReglagesComponent() {
       <View style={styles.container}>
         {
           (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe, index) => (
-            <View>
-              <View key={index} style={styles.title}>
+            <View key={index} >
+              <View style={styles.title}>
                 <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
               </View>
               {menusParametrages[keyGroupe].map((itemParam, index) => (
@@ -55,18 +50,15 @@ export default function ReglagesComponent() {
         }
       </View>
 
-      {<Modal presentationStyle='fullScreen' isVisible={open} animationIn='slideInRight' animationOut='slideOutRight' >
-        <Pressable onPress={() => setOpen(false)}  >
-          <View style={styles.body}>
-            <View style={styles.menuItem}>
-            <Image source={menu?.icone} style={styles.icon} />
-            <ThemedText type='title'>{menu?.titre}</ThemedText>
-            </View>
-            <ScrollView contentInsetAdjustmentBehavior="automatic">
-              <ParamEtatsVetements />
-            </ScrollView>
-          </View>
-        </Pressable>
+      {<Modal presentationStyle='overFullScreen' isVisible={open} 
+              animationIn='slideInRight' animationOut='slideOutRight'
+              propagateSwipe={true}
+              onBackdropPress={() => setOpen(false)}
+              style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>          
+      {
+        (menu !== null && menu !== undefined) && <ParametragesListComponent typeParametrage={menu} closeDrawer={() => setOpen(false)} />
+      }
+
       </Modal>}
 
     </>
@@ -87,6 +79,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderRadius: 8,
     height: 50,
+    flexDirection: 'row',
   },
   body: {
     justifyContent: 'center',
@@ -100,7 +93,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     tintColor: 'white',
-},  
+  },  
   menuItem: {
     flexDirection: 'row',
     padding: 10,

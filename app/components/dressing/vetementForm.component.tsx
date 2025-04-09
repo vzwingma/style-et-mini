@@ -44,6 +44,37 @@ export type VetementsFormParamsTypeProps = {
     paramsMarquesVetements?: ParamMarqueVetementsModel[];
 };
 
+    /**
+     * Retourne un élément JSX avec une étiquette obligatoire.
+     *
+     * @param {string} label - Le texte de l'étiquette.
+     * @returns {React.JSX.Element} Un élément JSX contenant l'étiquette avec un astérisque rouge pour indiquer qu'elle est obligatoire.
+     */
+    export const renderLabelMandatory = (label: string): React.JSX.Element => {
+        return (<><ThemedText style={{ color: 'red' }}>* </ThemedText><ThemedText>{label}</ThemedText></>);
+    }
+
+
+    /**
+     * Rendu d'un élément sélectionné avec une option de désélection.
+     *
+     * @param {any} item - L'élément sélectionné à afficher.
+     * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
+     * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
+     */
+    export const renderSelectedItem = (item: any, unSelect?: any): React.JSX.Element => (
+        <Pressable
+            style={styles.selectedStyle}
+            onPress={() => unSelect?.(item)}>
+            <View style={{ flexDirection: 'row' }}>
+                <ThemedText type="default">{item.libelle} </ThemedText>
+                { unSelect &&
+                   <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+                }
+            </View>
+        </Pressable>
+    );
+
 
 /**
  * Composant de formulaire pour ajouter ou éditer un vêtement dans le dressing.
@@ -76,34 +107,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
 
 
-    /**
-     * Retourne un élément JSX avec une étiquette obligatoire.
-     *
-     * @param {string} label - Le texte de l'étiquette.
-     * @returns {React.JSX.Element} Un élément JSX contenant l'étiquette avec un astérisque rouge pour indiquer qu'elle est obligatoire.
-     */
-    const renderLabelMandatory = (label: string): React.JSX.Element => {
-        return (<><ThemedText style={{ color: 'red' }}>* </ThemedText><ThemedText>{label}</ThemedText></>);
-    }
 
-
-    /**
-     * Rendu d'un élément sélectionné avec une option de désélection.
-     *
-     * @param {any} item - L'élément sélectionné à afficher.
-     * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
-     * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
-     */
-    const renderSelectedItem = (item: any, unSelect: any): React.JSX.Element => (
-        <Pressable
-            style={styles.selectedStyle}
-            onPress={() => unSelect?.(item)}>
-            <View style={{ flexDirection: 'row' }}>
-                <ThemedText type="default">{item.libelle} </ThemedText>
-                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
-            </View>
-        </Pressable>
-    );
 
 
     /**

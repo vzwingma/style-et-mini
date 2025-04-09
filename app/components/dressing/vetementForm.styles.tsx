@@ -91,8 +91,7 @@ export const styles = StyleSheet.create({
     filtre: {
         flex: 1,
         marginTop: 5,
-        padding: 0,
-        backgroundColor: Colors.app.backgroundLight,
+        padding: 0
     },
     icon: {
         marginRight: 5,
@@ -157,9 +156,11 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         margin: 1,
         paddingLeft: 10,
+        paddingRight: 5,
         marginTop: 5,
         marginRight: 5,
         padding: 1,
+        height: 25,
         cursor: 'pointer',
     },
     selectedTextStyle: {

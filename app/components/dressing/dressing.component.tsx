@@ -26,11 +26,6 @@ export type DressingComponentProps = {
  * @returns {JSX.Element} Le composant de l'écran 
  *
  * @component
- * @example
- * return (
- *   <ReglagesComponent />
- * )
- *
  * @remarks
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.

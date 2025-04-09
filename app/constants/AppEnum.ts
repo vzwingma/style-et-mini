@@ -5,27 +5,6 @@ export const APP_MOBILE_VERSION = Constants.expoConfig?.version ?? "0.0.0";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 
-// Enumération des menus de l'application
-export const menusParametrages : { [key: string]: MenuParametragesModel[] } = {
-    "Paramétrages" : [
-      { titre: 'Type de vêtements',   icone: require('@/assets/icons/clothes-outline.png') },
-      { titre: 'Tailles et Mesures',  icone: require('@/assets/icons/size-outline.png') },
-      { titre: 'Usages',              icone: require('@/assets/icons/clothes-usage-outline.png') },
-      { titre: 'Etats',               icone: require('@/assets/icons/clothes-condition-outline.png')},
-      { titre: 'Marques',             icone: require('@/assets/icons/brand-outline.png') }],
-    "Dressing": [
-      { titre: 'Dressing',            icone: require('@/assets/icons/clothes-outline.png') },
-
-    ]
-  };
-  
-
-// catégorie de dressing (enfant ou adulte)
-export enum CategorieDressingEnum {
-  BEBE    = 'BEBE',
-  ENFANT  = 'ENFANT',
-  ADULTE  = 'ADULTE'
-}
 
 /**
  * Enumération représentant les différentes caractéristiques d'un vêtement.
@@ -47,6 +26,58 @@ export enum CaracteristiqueVetementEnum {
   SAISON    = 'SAISON'
 }
 
+/**
+ * Enumération représentant les différents paramètres liés aux vêtements.
+ * 
+ * - `TYPE` : Type de vêtement (exemple : chemise, pantalon, etc.).
+ * - `TAILLES` : Tailles disponibles pour les vêtements.
+ * - `MARQUES` : Marques associées aux vêtements.
+ * - `USAGES` : Usages ou occasions pour lesquels les vêtements sont destinés.
+ * - `ETATS` : États des vêtements (exemple : neuf, usagé, etc.).
+ * - `DRESSING` : Référence au dressing ou à l'organisation des vêtements.
+ */
+export enum ParametragesVetementEnum {
+  TYPE      = 'TYPE',
+  TAILLES   = 'TAILLES',
+  MARQUES   = 'MARQUES',
+  USAGES    = 'USAGES',
+  ETATS     = 'ETATS',
+  DRESSING  = 'DRESSING'
+}
+
+// Enumération des menus de l'application
+export const menusParametrages : { [key: string]: MenuParametragesModel[] } = {
+    "Paramétrages" : [
+      { titre: 'Type de vêtements',
+        icone: require('@/assets/icons/clothes-outline.png'),
+        class: ParametragesVetementEnum.TYPE },
+      { titre: 'Tailles et Mesures', 
+        icone: require('@/assets/icons/size-outline.png'),
+        class: ParametragesVetementEnum.TAILLES },
+      { titre: 'Usages',
+        icone: require('@/assets/icons/clothes-usage-outline.png'),
+        class: ParametragesVetementEnum.USAGES },
+      { titre: 'Etats',
+        icone: require('@/assets/icons/clothes-condition-outline.png'),
+        class: ParametragesVetementEnum.ETATS },
+      { titre: 'Marques',
+        icone: require('@/assets/icons/brand-outline.png'),
+        class: ParametragesVetementEnum.MARQUES }],
+    "Dressing": [
+      { titre: 'Dressing', 
+         icone: require('@/assets/icons/clothes-outline.png'),
+        class: ParametragesVetementEnum.DRESSING },
+    ]
+  };
+  
+
+// catégorie de dressing (enfant ou adulte)
+export enum CategorieDressingEnum {
+  BEBE    = 'BEBE',
+  ENFANT  = 'ENFANT',
+  ADULTE  = 'ADULTE'
+}
+
 
 /**
  * Enumération représentant les différents types de tailles.
@@ -56,8 +87,8 @@ export enum CaracteristiqueVetementEnum {
  * @property {string} CHAUSSURES - Représente les tailles pour les chaussures.
  */
 export enum TypeTailleEnum {
-  VETEMENTS = 'VETEMENTS',
-  CHAUSSURES = 'CHAUSSURES'
+  VETEMENTS   = 'VETEMENTS',
+  CHAUSSURES  = 'CHAUSSURES'
 }
 
 // Enumération des statuts de vêtements
