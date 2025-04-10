@@ -1,36 +1,36 @@
-import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
-import { CategorieDressingEnum, getLibelleTypeTailleEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
-import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementForm.component";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Dropdown, MultiSelect } from "react-native-element-dropdown";
-import { initForm, setCategoriesForm, setLibelleForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
+import { cancelForm, initForm, validateForm } from "@/app/controllers/parametragesForm.controller";
 import { ParametragesFormComponent } from "./parametragesForm.component";
+import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
+import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
+import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 
 
 export type ParametragesItemComponentProps = {
-    readonly parametreVetements: any
-    setParametreInEdition: (idParametre: string | null) => void
-    parametreInEdition: string | null
+    readonly parametrageVetements   : ParamGenericVetementsModel
+    readonly typeParametrage        : ParametragesVetementEnum
+    setParametreInEdition           : (idParametre: string | null) => void
+    parametreInEdition              : string | null
 };
 /**
  * 
  * @param typeVetements : TypeVetementsModel
  * @returns item de la liste des types de vêtements
  */
-export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametreVetements: parametrageVetements, setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
+export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage, setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
 
     const [editParametrage, setEditParametrage] = useState(false);
-    const [form, setForm] = useState({} as any);
-
+    const [form, setForm] = useState({} as ParamVetementsFormModel | null);
 
     useEffect(() => {
         setParametreInEdition(editParametrage ? parametrageVetements.id : null);
         if(editParametrage) {
-            initForm(parametrageVetements, setForm)
+            initForm(typeParametrage, parametrageVetements, setForm)
         }
         else {
             setForm(null);
@@ -58,24 +58,20 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
                 { editParametrage &&
-                <Pressable onPress={() => setEditParametrage(false)}>
+                <Pressable onPress={() => validateForm(form, setEditParametrage, setForm)}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
                 </Pressable> 
                 }
                 { editParametrage && 
-                <Pressable onPress={() => setEditParametrage(false)}>
+                <Pressable onPress={() => cancelForm(form, setEditParametrage, setForm)}>
                     <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
-                </Pressable>
-                }
-                { editParametrage && 
-                <Pressable onPress={() => setEditParametrage(false)}>
-                    <Image source={require('@/assets/icons/bin-outline.png')} tintColor={'white'} style={styles.titleIcon} />
                 </Pressable>
                 }
                 </View>
             </View>
             { /** Formulaire  */}
             <ParametragesFormComponent
+                key={"form_"+typeParametrage+"_" + parametrageVetements.id}
                 parametrageVetements={parametrageVetements}
                 editParametrage={editParametrage}
                 form={form} 

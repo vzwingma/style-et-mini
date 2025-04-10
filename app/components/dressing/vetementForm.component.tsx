@@ -13,7 +13,6 @@ import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsages
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
-import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
 import { getTypeVetementIcon, resizeImage } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
@@ -88,14 +87,13 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
 
-    const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
-
     const {
         typeVetements   : paramsTypeVetements,
         taillesMesures  : paramsTaillesMesures,
         usages          : paramsUsagesVetements,
         etats           : paramsEtatVetements,
-        marques         : paramsMarquesVetements
+        marques         : paramsMarquesVetements,
+        modalDialog, setModalDialog
     } = useContext(AppContext)!;
 
     useEffect(() => {
@@ -250,7 +248,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 labelField="libelle" valueField="id"
                                 placeholder={!errorsForm?.tailleInError ? 'Selectionnez un état' : errorsForm?.etatMessage + ''}
                                 value={form?.etat}
-                                onChange={(etat: ParamEtatVetementsModel) => setEtatForm(etat, setForm)}
+                                onChange={(etat: ParamGenericVetementsModel) => setEtatForm(etat, setForm)}
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-condition-outline.png')} style={styles.icon} />}
                             />
                         </View>

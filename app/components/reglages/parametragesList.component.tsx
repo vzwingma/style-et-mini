@@ -20,8 +20,7 @@ export type ParametragesVetements = {
 export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ parametrages, typeParametrage, closeDrawer }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
-
-
+    
   useEffect(() => {
     setParametreInEdition(null);
   }, [typeParametrage]);
@@ -42,12 +41,21 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
     let parametresListe: JSX.Element[] = [];
     if (parametresVetements !== undefined && parametresVetements !== null) {
 
-      parametresVetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
+      parametresVetements.sort((v1, v2) => {
+        if(v1.tri !== undefined && v2.tri !== undefined) {
+          return v1.tri - v2.tri;
+        }
+        else{
+          return alphanumSort(v1.libelle, v2.libelle)
+        }
+      });
 
       parametresVetements.forEach((item: ParamGenericVetementsModel) => {
         parametresListe.push(
-          <ParametragesItemComponent key={"item_" + item.id} parametreVetements={item} 
-                                     setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
+          <ParametragesItemComponent key={"item_"+typeParametrage.class+"_" + item.id} 
+                                    typeParametrage={typeParametrage.class} 
+                                    parametrageVetements={item} 
+                                    setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
         );
       });
     }

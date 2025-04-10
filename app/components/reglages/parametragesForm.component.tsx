@@ -5,15 +5,15 @@ import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
 import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementForm.component";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
-import { setCategoriesForm, setLibelleForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
+import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 
 
 export type ParametragesFormComponentProps = {
     readonly parametrageVetements: any
-    editParametrage: boolean,
-    form : ParamVetementsFormModel,
-    setForm: Function
+    editParametrage : boolean,
+    form            : ParamVetementsFormModel | null,
+    setForm         : Function
 };
 /**
  * 
@@ -24,8 +24,6 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
 
 
     return (<>
-
-            { /** Formulaire  */}
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Nom") : "Nom"}</ThemedText>
                 {!editParametrage ? 
@@ -78,6 +76,22 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                         onChange={item => setTypeForm(item, setForm)}
                     />
                      }
+                    </View>
+                </View>
+            }
+            {(form?.tri || parametrageVetements.tri) &&
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Tri") : "Tri"}</ThemedText>
+                    <View style={[stylesForm.filtre, stylesForm.rowItems]}>
+                    {!editParametrage ? 
+                        <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.tri}</ThemedText>
+                    :
+                        <TextInput style={stylesForm.input}
+                            value={form?.tri?.toString() ?? ''}
+                            placeholder={'Indiquez le rang de tri'}
+                            keyboardType="numeric"
+                            onChangeText={tri => setTriForm(tri, setForm)} />
+                    }
                     </View>
                 </View>
             }
