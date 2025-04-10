@@ -128,7 +128,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      */
     const getPanelFormContent = () => {
 
-        let renderFormImage = {} as VetementImageModel;
+        let renderFormImage = null as VetementImageModel | null;
         if (form.image) {
             // recalcul de la taille de l'image suivant la mise en page
             renderFormImage = resizeImage(form.image, 250);
@@ -136,11 +136,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         return (
             <View style={styles.body}>
                 <View style={styles.rowItems}>
-                    <View>
+                    <View style={{width: '100%'}}>
                         <Pressable onPress={() => pickImageForm(setForm)}>
-                            {form.image &&
+                            {renderFormImage &&
                                 <Image source={{ uri: renderFormImage.displayUri }} style={[styles.photo, {width: renderFormImage.largeur, height: renderFormImage.hauteur}]} />} 
-                            {!form.image &&
+                            {!renderFormImage &&
                                 <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
                             {form.petiteTaille &&
                                 <Image source={require('@/assets/icons/small-size-outline.png')} style={[styles.iconSmall]} />}

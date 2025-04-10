@@ -97,7 +97,11 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
  *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
  *          retourne l'image d'origine.
  */
-export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel {
+export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel | null {
+
+    if(!image || (!image.s3uri && !image.localUri)) {
+        return null;
+    }
 
     if (image?.largeur && image?.hauteur) {
         const ratioImage = image.largeur / image.hauteur;

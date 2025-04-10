@@ -36,7 +36,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                      isSelected ? styles.containerSelected : null,
                      isUnselected ? styles.containerUnselected : null]}>
             { /** Icones  */}
-            <View style={[styles.title, editParametrage ? styles.titleSelected : null]}>
+            <View style={styles.title}>
                 <ThemedText type="subtitle">{parametreVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
                 { !editParametrage && !isUnselected && !isLibelleMarqueAutres &&
@@ -142,8 +142,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 5,
-    },
-    titleSelected: {
         borderBottomWidth: 1,
         borderBottomColor: Colors.app.color,
     },

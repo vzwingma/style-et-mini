@@ -38,6 +38,8 @@ type DressingTabComponentProps = {
       alignItems: 'center',
       borderColor: 'grey',
       borderWidth: 0.5,
+      borderStartStartRadius: 30,
+      borderEndEndRadius: 30
     },
   
     icon: {
