@@ -62,7 +62,7 @@ export const ReglagesComponent: React.FC = () => {
  * @param {MenuParametragesModel} typeParametrage - Le type de paramétrage à utiliser pour récupérer les données.
  * @returns {ParamGenericVetementsModel[] | null} - Une liste des paramètres génériques correspondants ou `null` si le type de paramétrage n'est pas reconnu.
  */
-function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] | null {
+function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] {
   switch (typeParametrage.class) {
           case ParametragesVetementEnum.TYPE:
             return typeVetements
@@ -75,7 +75,7 @@ function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVe
           case ParametragesVetementEnum.ETATS:
             return etats
           default:
-            return null;
+            return [];
         }
 }
 

@@ -12,7 +12,7 @@ import { alphanumSort } from '../commons/CommonsUtils';
 
 
 export type ParametragesVetements = {
-  parametrages: ParamGenericVetementsModel[] | null;
+  parametrages: ParamGenericVetementsModel[];
   readonly typeParametrage: MenuParametragesModel;
   closeDrawer: () => void;
 };
@@ -21,10 +21,15 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
 
+
   useEffect(() => {
     setParametreInEdition(null);
   }, [typeParametrage]);
 
+
+  function addParametrage() {
+    setParametreInEdition("new");
+  }
 
 
   /**
@@ -37,11 +42,12 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
     let parametresListe: JSX.Element[] = [];
     if (parametresVetements !== undefined && parametresVetements !== null) {
 
-      parametresVetements.sort((a, b) => alphanumSort(a.libelle, b.libelle));
+      parametresVetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
 
       parametresVetements.forEach((item: ParamGenericVetementsModel) => {
         parametresListe.push(
-          <ParametragesItemComponent key={item.id} parametreVetements={item} setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
+          <ParametragesItemComponent key={"item_" + item.id} parametreVetements={item} 
+                                     setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
         );
       });
     }
@@ -62,7 +68,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
           <ThemedText type="subtitle">{typeParametrage.titre}</ThemedText>
         </View>
 
-        <Pressable >
+        <Pressable onPress={() => addParametrage()}>
           <Ionicons size={20} name="add-outline" style={style2s.titleIcon} />
         </Pressable>
       </View>

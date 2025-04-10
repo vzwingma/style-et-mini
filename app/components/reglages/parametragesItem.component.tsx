@@ -7,6 +7,7 @@ import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementFo
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
+import { initForm, setCategoriesForm, setLibelleForm, setTypeForm } from "@/app/controllers/parametragesItem.controller";
 
 
 export type ParametragesItemComponentProps = {
@@ -22,15 +23,27 @@ export type ParametragesItemComponentProps = {
 export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametreVetements, setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
 
     const [editParametrage, setEditParametrage] = useState(false);
+    const [form, setForm] = useState({} as any);
+
 
     useEffect(() => {
         setParametreInEdition(editParametrage ? parametreVetements.id : null);
+        if(editParametrage) {
+            initForm(parametreVetements, setForm)
+        }
+        else {
+            setForm(null);
+        }
+
     }, [editParametrage]);
 
 
     const isSelected = parametreInEdition !== null && parametreInEdition === parametreVetements.id;
     const isUnselected = parametreInEdition !== null && parametreInEdition !== parametreVetements.id;
     const isLibelleMarqueAutres = parametreVetements.libelle === '... Autres';
+
+
+
     return (
         <View style={[styles.container, 
                      isSelected ? styles.containerSelected : null,
@@ -62,17 +75,18 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
             </View>
             { /** Formulaire  */}
             <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Nom") : "Nom"}</ThemedText>
                 {!editParametrage ? 
                     <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametreVetements.libelle}</ThemedText>
                 :
-                    <TextInput style={stylesForm.input} aria-disabled={true}
-                        value={parametreVetements.libelle ?? ''}
-                        placeholder={'Indiquez le nom'} />
+                    <TextInput style={stylesForm.input}
+                        value={form?.libelle ?? ''}
+                        placeholder={'Indiquez le nom'}
+                        onChangeText={(libelle : string) => {setLibelleForm(libelle, setForm)}} />
                 }
             </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>Catégories</ThemedText>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Catégories") : "Catégories"}</ThemedText>
                 <View style={[stylesForm.filtre, stylesForm.rowItems]}>
                     {!editParametrage ? 
                         parametreVetements.categories?.map((categorie: CategorieDressingEnum) => {
@@ -86,17 +100,17 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                         mode='modal'
                         data={Object.values(CategorieDressingEnum).map(saison => ({ id: saison, libelle: saison }))}
                         labelField="libelle" valueField="id"
-                        placeholder={''}
-                        value={parametreVetements.categories?.map((categorie : CategorieDressingEnum) => (categorie.toString())) ?? []}
-                        onChange={item => { console.log(item); }}
+                        placeholder={'Sélectionner une ou plusieurs catégories'}
+                        value={form?.categories?.map((categorie : CategorieDressingEnum) => (categorie.toString())) ?? []}
+                        onChange={item => { setCategoriesForm(item, setForm)}}
                         renderSelectedItem={renderSelectedItem}
                     />
                      }
                 </View>
             </View>
-            {parametreVetements.type &&
+            {(form?.type || parametreVetements.type) &&
                 <View style={stylesForm.rowItems}>
-                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>Type</ThemedText>
+                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Type") : "Type"}</ThemedText>
                     <View style={[stylesForm.filtre, stylesForm.rowItems]}>
                     {!editParametrage ? 
                             renderSelectedItem({ id: parametreVetements.type, libelle: parametreVetements.type }, null)
@@ -107,9 +121,9 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                         mode='modal'
                         data={Object.values(TypeTailleEnum).map(type => ({ id: type, libelle: type }))}
                         labelField="libelle" valueField="id"
-                        placeholder={''}
-                        value={parametreVetements.type}
-                        onChange={item => { console.log(item); }}
+                        placeholder={'Sélectionner un type : Chaussure ou Vêtement'}
+                        value={form?.type}
+                        onChange={item => setTypeForm(item, setForm)}
                     />
                      }
                     </View>
