@@ -126,8 +126,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * 
      * @returns Formulaire de vêtement
      */
-    const getPanelFormContent = () => {
-
+    const PanelFormContent: React.FC = (): React.JSX.Element | null => {
         let renderFormImage = null as VetementImageModel | null;
         if (form.image) {
             // recalcul de la taille de l'image suivant la mise en page
@@ -380,7 +379,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 </Pressable>
             </View>
 
-            {getPanelFormContent()}
+            <PanelFormContent/>
         </>
     );
 }
