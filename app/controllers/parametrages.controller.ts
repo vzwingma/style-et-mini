@@ -1,12 +1,9 @@
 import { callGETBackend } from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
-import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
-import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
-import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
 import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 import { SetStateAction } from "react";
-import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
+import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPITypeVetementsProps = {
@@ -62,7 +59,7 @@ export function getParamsTypeVetements({setTypeVetements, setError, setIsLoading
   setIsLoading(true);
   // Appel du backend
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS)
-    .then((typeVetements : ParamTypeVetementsModel[]) => {
+    .then((typeVetements : ParamGenericVetementsModel[]) => {
       setTypeVetements(typeVetements);
       setIsLoading(false);
     })
@@ -96,7 +93,7 @@ export function getParamsMarquesVetements({setMarques, setError, setIsLoading}: 
     setIsLoading(true);
     // Appel du backend
     callGETBackend(SERVICES_URL.SERVICE_PARAMS_MARQUES)
-      .then((marquesVetements : ParamMarqueVetementsModel[]) => {
+      .then((marquesVetements : ParamGenericVetementsModel[]) => {
         setMarques(marquesVetements);
         setIsLoading(false);
       })
@@ -130,7 +127,7 @@ export function getParamsTaillesVetements({setTaillesMesures, setError, setIsLoa
   setIsLoading(true);
   // Appel du service externe
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES)
-    .then((tailleVetements : ParamTailleVetementsModel[]) => {
+    .then((tailleVetements : ParamGenericVetementsModel[]) => {
       setTaillesMesures(tailleVetements);
       setIsLoading(false);
     })
@@ -157,7 +154,7 @@ export function getParamsUsagesVetements({setUsages, setError, setIsLoading}: Fu
   setIsLoading(true);
   // Appel du service externe 
   callGETBackend(SERVICES_URL.SERVICE_PARAMS_USAGES)
-    .then((usageVetements : ParamUsageVetementsModel[]) => {
+    .then((usageVetements : ParamGenericVetementsModel[]) => {
       setUsages(usageVetements);
       setIsLoading(false);
     })

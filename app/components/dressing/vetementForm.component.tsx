@@ -11,9 +11,6 @@ import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/form.vetements.model';
 import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm, archiveForm, deleteForm, FormModelProps } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
-import ParamTypeVetementsModel from '@/app/models/params/paramTypeVetements.model';
-import ParamTailleVetementsModel from '@/app/models/params/paramTailleVetements.model';
-import ParamUsageVetementsModel from '@/app/models/params/paramUsageVetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
 import ParamEtatVetementsModel from '@/app/models/params/paramEtatVetements.model';
@@ -21,7 +18,7 @@ import { getTypeVetementIcon, resizeImage } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
 import VetementImageModel from '@/app/models/vetements.image.model';
-import ParamMarqueVetementsModel from '@/app/models/params/paramMarqueVetements.model';
+import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 
 
 /**
@@ -37,11 +34,11 @@ export type VetementFormComponentProps = {
  * Propriétés du composant VetementFormComponent.
  */
 export type VetementsFormParamsTypeProps = {
-    paramsTypeVetements?: ParamTypeVetementsModel[];
-    paramsTaillesMesures?: ParamTailleVetementsModel[];
-    paramsUsagesVetements?: ParamUsageVetementsModel[];
-    paramsEtatVetements?: ParamEtatVetementsModel[];
-    paramsMarquesVetements?: ParamMarqueVetementsModel[];
+    paramsTypeVetements?    : ParamGenericVetementsModel[];
+    paramsTaillesMesures?   : ParamGenericVetementsModel[];
+    paramsUsagesVetements?  : ParamGenericVetementsModel[];
+    paramsEtatVetements?    : ParamGenericVetementsModel[];
+    paramsMarquesVetements? : ParamGenericVetementsModel[];
 };
 
     /**
@@ -116,7 +113,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @param {ParamTypeVetementsModel} item - L'élément de type vêtement à afficher.
      * @returns {React.JSX.Element} - Un élément JSX représentant l'élément de type vêtement.
      */
-    const renderTypeItem = (item: ParamTypeVetementsModel): React.JSX.Element => (
+    const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Element => (
         <View style={[styles.listItemStyle, styles.rowItems]}>
             <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
             <ThemedText style={{ top: 15 }}>{item.libelle}</ThemedText>
@@ -166,7 +163,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.typeInError ? 'Selectionnez un type' : errorsForm?.typeMessage + ''}
                             value={form?.type}
-                            onChange={(type: ParamTypeVetementsModel) => setTypeForm(type, setForm)}
+                            onChange={(type: ParamGenericVetementsModel) => setTypeForm(type, setForm)}
                             renderItem={renderTypeItem}
                             renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-outline.png')} style={styles.icon} />}
                         />
@@ -182,7 +179,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.tailleInError ? 'Selectionnez une taille' : errorsForm?.tailleMessage + ''}
                             value={form?.taille}
-                            onChange={(taille: ParamTailleVetementsModel) => setTailleForm(taille, setForm)}
+                            onChange={(taille: ParamGenericVetementsModel) => setTailleForm(taille, setForm)}
                             renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={styles.icon} />}
                         />
                     </View>
@@ -199,7 +196,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     }
                     <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Usage(s)")}</ThemedText>
-                        <View style={styles.filtre}><ThemedText type="subtitle">
+                        <View style={styles.filtre}><View style={{ width: '100%' }}>
                             <MultiSelect
                                 style={!errorsForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -213,11 +210,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
-                        </ThemedText></View>
+                        </View></View>
                     </View>
                     <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Saisons</ThemedText>
-                        <View style={styles.filtre}><ThemedText type="subtitle">
+                        <View style={styles.filtre}><View style={{ width: '100%' }}>
                             <MultiSelect
                                 style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
@@ -231,7 +228,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
-                        </ThemedText></View>
+                        </View></View>
                     </View>
                     <View style={styles.rowItems}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
@@ -268,7 +265,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.marqueInError ? 'Selectionnez une marque' : errorsForm?.marqueMessage + ''}
                             value={form?.marque}
-                            onChange={(marque: ParamMarqueVetementsModel) => setMarqueForm(marque, setForm)}
+                            onChange={(marque: ParamGenericVetementsModel) => setMarqueForm(marque, setForm)}
                             renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={styles.icon} />}
                         />
                     </View>

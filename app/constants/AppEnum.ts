@@ -91,6 +91,18 @@ export enum TypeTailleEnum {
   CHAUSSURES  = 'CHAUSSURES'
 }
 
+export function getLibelleTypeTailleEnum(enumTille: TypeTailleEnum): string  {
+  switch (enumTille) {
+    case TypeTailleEnum.VETEMENTS:
+      return "Vêtements";
+    case TypeTailleEnum.CHAUSSURES:
+      return "Chaussures/Chaussettes";
+    default:
+      return "Inconnu";
+  }
+}
+
+
 // Enumération des statuts de vêtements
 export enum SaisonVetementEnum {
   ETE       = "ETE", 

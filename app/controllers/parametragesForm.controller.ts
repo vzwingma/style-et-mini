@@ -12,7 +12,6 @@ import ParamVetementsFormModel from "../models/params/paramVetementsForm.model";
      * @param setForm - Une fonction permettant de définir l'état du formulaire avec les données fournies.
      */
     export function initForm(parametreVetements : ParamGenericVetementsModel, setForm: Function) {
-        console.log("initForm", parametreVetements);
         setForm({
             id          : parametreVetements.id,
             libelle     : parametreVetements.libelle,
@@ -29,7 +28,7 @@ import ParamVetementsFormModel from "../models/params/paramVetementsForm.model";
  */
 export function setLibelleForm(libelle: string, setForm: Function) {
     setForm((form: ParamVetementsFormModel) => {
-        return { ...form, type: libelle }
+        return { ...form, libelle: libelle }
     });
 }
 
