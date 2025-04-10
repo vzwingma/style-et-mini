@@ -35,6 +35,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
         <View style={[styles.container, 
                      isSelected ? styles.containerSelected : null,
                      isUnselected ? styles.containerUnselected : null]}>
+            { /** Icones  */}
             <View style={[styles.title, editParametrage ? styles.titleSelected : null]}>
                 <ThemedText type="subtitle">{parametreVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
@@ -59,6 +60,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 }
                 </View>
             </View>
+            { /** Formulaire  */}
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
                 {!editParametrage ? 
@@ -124,8 +126,8 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
         backgroundColor: Colors.app.background,
-        borderColor: Colors.app.background,
-        borderWidth: 1,
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 2,
     },
     containerSelected: {
         borderColor: Colors.app.color,

@@ -53,6 +53,7 @@ export const ReglagesComponent: React.FC = () => {
       {<Modal presentationStyle='overFullScreen' isVisible={open} 
               animationIn='slideInRight' animationOut='slideOutRight'
               propagateSwipe={true}
+              onBackButtonPress={() => setOpen(false)}
               onBackdropPress={() => setOpen(false)}
               style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>          
       {
