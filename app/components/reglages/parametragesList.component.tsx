@@ -1,12 +1,8 @@
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
-import { AppContext } from '../../services/AppContextProvider';
-
-import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
 import { ThemedText } from '../commons/views/ThemedText';
-import { ParametragesVetementEnum } from '@/app/constants/AppEnum';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 import { ParametragesItemComponent } from './parametragesItem.component';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,19 +12,12 @@ import { alphanumSort } from '../commons/CommonsUtils';
 
 
 export type ParametragesVetements = {
+  parametrages: ParamGenericVetementsModel[] | null;
   readonly typeParametrage: MenuParametragesModel;
   closeDrawer: () => void;
 };
 
-export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer }: ParametragesVetements) => {
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const { etats, setEtats,
-    typeVetements, setTypeVetements,
-    taillesMesures, setTaillesMesures,
-    marques, setMarques,
-    usages, setUsages } = useContext(AppContext)!;
+export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ parametrages, typeParametrage, closeDrawer }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
 
@@ -37,71 +26,6 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
   }, [typeParametrage]);
 
 
-  useEffect(() => {
-    console.log("Paramètre en édition : " + parametreInEdition);
-  }, [parametreInEdition]);
-
-
-  /**
- *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
- * et à changement d'onglet
- * */
-  useEffect(() => {
-    console.log("(Re)Chargement des paramètres " + typeParametrage.titre + "...");
-    switch (typeParametrage.class) {
-      case ParametragesVetementEnum.TYPE:
-        getParamsTypeVetements({ setTypeVetements, setError, setIsLoading });
-        break;
-      case ParametragesVetementEnum.TAILLES:
-        getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
-        break;
-      case ParametragesVetementEnum.MARQUES:
-        getParamsMarquesVetements({ setMarques, setError, setIsLoading });
-        break;
-      case ParametragesVetementEnum.USAGES:
-        getParamsUsagesVetements({ setUsages, setError, setIsLoading });
-        break;
-      case ParametragesVetementEnum.ETATS:
-        getParamsEtatsVetements({ setEtats, setError, setIsLoading });
-        break;
-      default:
-        break;
-    }
-
-  }, [])
-
-
-  /**
-   * Retourne le contenu du panneau en fonction de l'état de chargement, d'erreur ou des usages.
-   *
-   * @returns {React.JSX.Element} Un élément JSX représentant le contenu du panneau.
-   * - Si les données sont en cours de chargement, retourne un indicateur d'activité.
-   * - Si une erreur est survenue, retourne un texte thématisé affichant le message d'erreur.
-   * - Sinon, retourne le panneau des usages.
-   */
-  function getPanelContent(): React.JSX.Element | null {
-    if (isLoading) {
-      return <ActivityIndicator size={'large'} color={Colors.app.color} />
-    } else if (error !== null) {
-      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
-    } else {
-      switch (typeParametrage.class) {
-        case ParametragesVetementEnum.TYPE:
-          return showPanelParametres(typeVetements)
-        case ParametragesVetementEnum.TAILLES:
-          return showPanelParametres(taillesMesures)
-        case ParametragesVetementEnum.MARQUES:
-          return showPanelParametres(marques)
-        case ParametragesVetementEnum.USAGES:
-          return showPanelParametres(usages)
-        case ParametragesVetementEnum.ETATS:
-          return showPanelParametres(etats)
-        default:
-          return null;
-      }
-    }
-  }
-
 
   /**
    * Affiche un panneau contenant une liste d'éléments d'usage de vêtements.
@@ -109,16 +33,15 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
    * @param {ParamUsageVetementsModel[] | undefined} parametresVetements - La liste des usages de vêtements à afficher. Peut être indéfinie.
    * @returns {React.JSX.Element} Un élément JSX représentant le panneau avec la liste des usages de vêtements.
    */
-  function showPanelParametres(parametresVetements: ParamGenericVetementsModel[] | undefined): React.JSX.Element {
+  function showPanelParametres(parametresVetements: ParamGenericVetementsModel[] | null): React.JSX.Element {
     let parametresListe: JSX.Element[] = [];
-    if (parametresVetements !== undefined) {
+    if (parametresVetements !== undefined && parametresVetements !== null) {
 
       parametresVetements.sort((a, b) => alphanumSort(a.libelle, b.libelle));
 
       parametresVetements.forEach((item: ParamGenericVetementsModel) => {
-
         parametresListe.push(
-          <ParametragesItemComponent key={item.id} parametreVetements={item} setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition}/>
+          <ParametragesItemComponent key={item.id} parametreVetements={item} setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
         );
       });
     }
@@ -144,7 +67,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
         </Pressable>
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {getPanelContent()}
+        {showPanelParametres(parametrages)}
       </ScrollView>
     </View>
   );

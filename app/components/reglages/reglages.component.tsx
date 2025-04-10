@@ -1,11 +1,14 @@
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, ActivityIndicator } from 'react-native'
 import Modal from 'react-native-modal';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import { menusParametrages } from '../../constants/AppEnum';
+import { menusParametrages, ParametragesVetementEnum } from '../../constants/AppEnum';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
+import { AppContext } from '@/app/services/AppContextProvider';
+import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
+import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -23,47 +26,111 @@ export const ReglagesComponent: React.FC = () => {
   const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
 
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const { etats, setEtats,
+    typeVetements, setTypeVetements,
+    taillesMesures, setTaillesMesures,
+    marques, setMarques,
+    usages, setUsages } = useContext(AppContext)!;
+
+
+
+  /**
+ *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
+ * et à changement d'onglet
+ * */
+  useEffect(() => {
+    console.log("(Re)Chargement des paramètres...");
+    getParamsTypeVetements({ setTypeVetements, setError, setIsLoading });
+    getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
+    getParamsMarquesVetements({ setMarques, setError, setIsLoading });
+    getParamsUsagesVetements({ setUsages, setError, setIsLoading });
+    getParamsEtatsVetements({ setEtats, setError, setIsLoading });
+  }, [])
+
   /** Ouverture/Fermeture du menu */
-  function toggleOpen(menu: MenuParametragesModel ): void {
+  function toggleOpen(menu: MenuParametragesModel): void {
     setMenu(menu);
     setOpen(!open);
   };
 
-  return (
-    <>
-      <View style={styles.container}>
-        {
-          (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe) => (
-            <View key={keyGroupe} >
-              <View style={styles.title}>
-                <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
-              </View>
-              {menusParametrages[keyGroupe].map((itemParam) => (
-                <View key={itemParam.titre} style={styles.menuItem} >
-                  <Image source={itemParam.icone} style={styles.icon} />
-                  <ThemedText type='default' onPress={() => toggleOpen(itemParam)}>{itemParam.titre}</ThemedText>
-                </View>
-              ))}
-            </View>
 
-          ))
+function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] | null {
+  switch (typeParametrage.class) {
+          case ParametragesVetementEnum.TYPE:
+            return typeVetements
+          case ParametragesVetementEnum.TAILLES:
+            return taillesMesures
+          case ParametragesVetementEnum.MARQUES:
+            return marques
+          case ParametragesVetementEnum.USAGES:
+            return usages
+          case ParametragesVetementEnum.ETATS:
+            return etats
+          default:
+            return null;
         }
-      </View>
+}
 
-      {<Modal presentationStyle='overFullScreen' isVisible={open} 
-              animationIn='slideInRight' animationOut='slideOutRight'
-              propagateSwipe={true}
-              onBackButtonPress={() => setOpen(false)}
-              onBackdropPress={() => setOpen(false)}
-              style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>          
-      {
-        (menu !== null && menu !== undefined) && <ParametragesListComponent typeParametrage={menu} closeDrawer={() => setOpen(false)} />
-      }
+  /**
+   * Génère le contenu du panneau en fonction de l'état actuel de l'application.
+   *
+   * @returns {React.JSX.Element | null} 
+   * - Un indicateur d'activité si le chargement est en cours.
+   * - Un message d'erreur si une erreur est survenue.
+   * - Une liste de menus paramétrables avec leurs éléments associés, ainsi qu'un modal pour les détails.
+   *
+   * @description
+   * - Si `isLoading` est vrai, affiche un indicateur de chargement.
+   * - Si `error` n'est pas nul, affiche un message d'erreur.
+   * - Sinon, affiche une liste de groupes de menus avec leurs éléments, et un modal pour afficher les détails d'un menu sélectionné.
+   *
+   */
+  const PanelContent: React.FC = (): React.JSX.Element | null => {
+    if (isLoading) {
+      return <ActivityIndicator size={'large'} color={Colors.app.color} />
+    } else if (error !== null) {
+      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
+    } else {
+      return <>
+        <View style={styles.container}>
+          {
+            (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe) => (
+              <View key={keyGroupe} >
+                <View style={styles.title}>
+                  <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
+                </View>
+                {menusParametrages[keyGroupe].map((itemParam) => (
+                  <View key={itemParam.titre} style={styles.menuItem} >
+                    <Image source={itemParam.icone} style={styles.icon} />
+                    <ThemedText type='default' onPress={() => toggleOpen(itemParam)}>{itemParam.titre}</ThemedText>
+                  </View>
+                ))}
+              </View>
 
-      </Modal>}
+            ))
+          }
+        </View>
 
-    </>
-  );
+        {<Modal presentationStyle='overFullScreen' isVisible={open}
+          animationIn='slideInRight' animationOut='slideOutRight'
+          propagateSwipe={true}
+          onBackButtonPress={() => setOpen(false)}
+          onBackdropPress={() => setOpen(false)}
+          style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+          {
+            (menu !== null && menu !== undefined) 
+            && <ParametragesListComponent parametrages={getParametrages(menu)} typeParametrage={menu} closeDrawer={() => setOpen(false)} />
+          }
+
+        </Modal>}
+
+      </>
+    }
+
+  }
+  return <PanelContent/>;
 }
 
 const styles = StyleSheet.create({
@@ -94,7 +161,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     tintColor: 'white',
-  },  
+  },
   menuItem: {
     flexDirection: 'row',
     padding: 10,
