@@ -1,3 +1,4 @@
+import ParamVetementsFormModel from "../models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "./AppEnum";
 
 
@@ -54,6 +55,48 @@ export enum SERVICES_URL {
 }
 
 
+
+/**
+ * Retourne l'URL du service API correspondant au type de paramètre fourni.
+ *
+ * @param form - Objet contenant les informations nécessaires pour déterminer l'URL.
+ *   - `typeParam` : Le type de paramètre (exemple : TYPE, TAILLES, MARQUES, etc.).
+ *   - `id` : Identifiant optionnel pour un paramètre spécifique.
+ *
+ * @returns L'URL du service API sous forme de `SERVICES_PARAMS` si le type de paramètre est valide,
+ *          ou `null` si le type de paramètre est inconnu.
+ *
+ * @remarks
+ * - Si un `id` est fourni dans le formulaire, il sera ajouté à l'URL générée.
+ * - En cas de type de paramètre inconnu, une erreur sera loguée dans la console.
+ */
+export function getUrlAPIParametres(form: ParamVetementsFormModel) : SERVICES_URL | null {
+    let url = '';
+    switch (form.typeParam) {
+        case ParametragesVetementEnum.TYPE:
+            url = SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS;
+            break;
+        case ParametragesVetementEnum.TAILLES:
+            url = SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES;
+            break;
+        case ParametragesVetementEnum.MARQUES:
+            url = SERVICES_URL.SERVICE_PARAMS_MARQUES;
+            break;
+        case ParametragesVetementEnum.ETATS:
+            url = SERVICES_URL.SERVICE_PARAMS_ETATS;
+            break;
+        case ParametragesVetementEnum.USAGES:
+            url = SERVICES_URL.SERVICE_PARAMS_USAGES;
+            break;
+        default:
+            console.error("Type de paramètre inconnu", form.typeParam);
+            return null;
+    };
+    if(form.id !== null && form.id !== undefined && form.id !== "") {
+        url = url + "/" + SERVICES_PARAMS.ID_PARAM;
+    }
+    return url as SERVICES_URL;
+}
 /**
  * Paramètres clé-valeur pour les URL
  */

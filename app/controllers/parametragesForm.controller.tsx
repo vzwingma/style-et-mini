@@ -1,5 +1,5 @@
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
+import { getUrlAPIParametres, SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
@@ -115,34 +115,6 @@ export function validateForm(form : ParamVetementsFormModel | null, setEditParam
     }
 }
 
-
-function getUrlAPIParametres(form: ParamVetementsFormModel) : string {
-    let url = '';
-    switch (form.typeParam) {
-        case ParametragesVetementEnum.TYPE:
-            url = SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS;
-            break;
-        case ParametragesVetementEnum.TAILLES:
-            url = SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES;
-            break;
-        case ParametragesVetementEnum.MARQUES:
-            url = SERVICES_URL.SERVICE_PARAMS_MARQUES;
-            break;
-        case ParametragesVetementEnum.ETATS:
-            url = SERVICES_URL.SERVICE_PARAMS_ETATS;
-            break;
-        case ParametragesVetementEnum.USAGES:
-            url = SERVICES_URL.SERVICE_PARAMS_USAGES;
-            break;
-        default:
-            console.error("Type de paramètre inconnu", form.typeParam);
-            return 'inconnu';
-    };
-    if(form.id !== null && form.id !== undefined && form.id !== "") {
-        url = url + "/" + SERVICES_PARAMS.ID_PARAM;
-    }
-    return url;
-}
 
 
 /**

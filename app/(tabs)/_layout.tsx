@@ -63,7 +63,9 @@ export default function TabLayout() {
     }
   }, [refreshing, setIsLoading, setError]);
 
-
+  /**
+   * A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
+   */
   useEffect(() => {
     setError(null);
     if(tab === Tabs.INDEX && isLoading === false) {
