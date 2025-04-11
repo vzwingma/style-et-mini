@@ -60,7 +60,7 @@ export const ReglagesComponent: React.FC = () => {
  */
 function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] {
   switch (typeParametrage.class) {
-          case ParametragesVetementEnum.TYPE:
+          case ParametragesVetementEnum.TYPES:
             return typeVetements
           case ParametragesVetementEnum.TAILLES:
             return taillesMesures

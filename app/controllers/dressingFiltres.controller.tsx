@@ -37,7 +37,7 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
 
   let filtres: VetementFiltreModel[] = [];
 
-  const filtresTypes = addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPE);
+  const filtresTypes = addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPES);
   const filtresTaille = addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES);  
   const filtresUsages = addCaracteristiqueInFilter(vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES);
   const filtresMarques = addCaracteristiqueInFilter(vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES);
@@ -46,8 +46,8 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
 
   // Recalcul des filtres disponibles
   return filtres.concat(
-    filtresTypes.length ? { id: CaracteristiqueVetementEnum.TYPE, libelle: '', type: CaracteristiqueVetementEnum.TYPE, typeLibelle: CaracteristiqueVetementEnum.TYPE, isType: true } : [],
-    addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPE),
+    filtresTypes.length ? { id: CaracteristiqueVetementEnum.TYPES, libelle: '', type: CaracteristiqueVetementEnum.TYPES, typeLibelle: CaracteristiqueVetementEnum.TYPES, isType: true } : [],
+    addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPES),
 
     filtresTaille.length ? { id: CaracteristiqueVetementEnum.TAILLES, libelle: '', type: CaracteristiqueVetementEnum.TAILLES, typeLibelle: CaracteristiqueVetementEnum.TAILLES, isType: true } : [],
     addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES),

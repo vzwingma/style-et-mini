@@ -48,7 +48,7 @@ export function transformFormToParamVetements(form: ParamVetementsFormModel, typ
         case ParametragesVetementEnum.TAILLES:
             parametreVetements = { ...parametreVetements, type: form.type, tri: form.tri };
             break;
-        case ParametragesVetementEnum.TYPE:
+        case ParametragesVetementEnum.TYPES:
         case ParametragesVetementEnum.MARQUES:
             parametreVetements = { ...parametreVetements, type: form.type };
             break;

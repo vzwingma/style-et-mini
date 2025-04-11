@@ -10,7 +10,7 @@ export const APP_MOBILE_NAME = "Style et Mini";
  * Enumération représentant les différentes caractéristiques d'un vêtement.
  * 
  * @enum {string}
- * @property {string} TYPE - Le type de vêtement (exemple : chemise, pantalon, etc.).
+ * @property {string} TYPES - Le type de vêtement (exemple : chemise, pantalon, etc.).
  * @property {string} TAILLES - Les tailles disponibles pour le vêtement.
  * @property {string} MARQUES - Les marques associées au vêtement.
  * @property {string} USAGES - Les usages possibles du vêtement (exemple : sport, travail, etc.).
@@ -18,7 +18,7 @@ export const APP_MOBILE_NAME = "Style et Mini";
  * @property {string} SAISON - La saison associée au vêtement (exemple : été, hiver, etc.).
  */
 export enum CaracteristiqueVetementEnum {
-  TYPE      = 'TYPE',
+  TYPES     = 'TYPES',
   TAILLES   = 'TAILLES',
   MARQUES   = 'MARQUES',
   USAGES    = 'USAGES',
@@ -37,7 +37,7 @@ export enum CaracteristiqueVetementEnum {
  * - `DRESSING` : Référence au dressing ou à l'organisation des vêtements.
  */
 export enum ParametragesVetementEnum {
-  TYPE      = 'TYPE',
+  TYPES     = 'TYPES',
   TAILLES   = 'TAILLES',
   MARQUES   = 'MARQUES',
   USAGES    = 'USAGES',
@@ -50,7 +50,7 @@ export const menusParametrages : { [key: string]: MenuParametragesModel[] } = {
     "Paramétrages" : [
       { titre: 'Type de vêtements',
         icone: require('@/assets/icons/clothes-outline.png'),
-        class: ParametragesVetementEnum.TYPE },
+        class: ParametragesVetementEnum.TYPES },
       { titre: 'Tailles et Mesures', 
         icone: require('@/assets/icons/size-outline.png'),
         class: ParametragesVetementEnum.TAILLES },

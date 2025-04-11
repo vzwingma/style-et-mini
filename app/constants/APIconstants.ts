@@ -41,7 +41,7 @@ const GET_PARAMS = ROOT_URI+"/params/vetements/";
 export enum SERVICES_URL {
     SERVICE_CONFIG = ROOT_URI+"/status",
     
-    SERVICE_PARAMS_TYPE_VETEMENTS   = GET_PARAMS + ParametragesVetementEnum.TYPE,
+    SERVICE_PARAMS_TYPE_VETEMENTS   = GET_PARAMS + ParametragesVetementEnum.TYPES,
     SERVICE_PARAMS_TAILLES_MESURES  = GET_PARAMS + ParametragesVetementEnum.TAILLES,
     SERVICE_PARAMS_USAGES           = GET_PARAMS + ParametragesVetementEnum.USAGES,
     SERVICE_PARAMS_MARQUES          = GET_PARAMS + ParametragesVetementEnum.MARQUES,
@@ -73,7 +73,7 @@ export enum SERVICES_URL {
 export function getUrlAPIParametres(form: ParamVetementsFormModel) : SERVICES_URL | null {
     let url = '';
     switch (form.typeParam) {
-        case ParametragesVetementEnum.TYPE:
+        case ParametragesVetementEnum.TYPES:
             url = SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS;
             break;
         case ParametragesVetementEnum.TAILLES:
