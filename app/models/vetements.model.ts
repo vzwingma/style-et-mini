@@ -26,6 +26,6 @@ interface VetementModel {
 
     readonly prix?       : VetementPrixModel;
     readonly description?: string | null;
-    statut              : StatutVetementEnum;
+    statut               : StatutVetementEnum;
 }
 export default VetementModel;
