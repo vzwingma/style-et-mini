@@ -106,7 +106,7 @@ export function razAndCloseForm(form : ParamVetementsFormModel | null,
  * @param setForm - Fonction pour mettre à jour l'état du formulaire.
  */
 export function validateForm(form : ParamVetementsFormModel | null, setEditParametrage: (value: React.SetStateAction<boolean>) => void, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
-    console.log("Enregistrement du formulaire", form);
+    console.trace("Enregistrement du formulaire", form);
     if(form?.isModified) {
         saveParametresVetement(form, setEditParametrage, setForm);
     }
@@ -132,7 +132,6 @@ export function validateForm(form : ParamVetementsFormModel | null, setEditParam
 function saveParametresVetement(form : ParamVetementsFormModel, setEditParametrage: (value: React.SetStateAction<boolean>) => void, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
     
     const paramVetement : ParamGenericVetementsModel = transformFormToParamVetements(form, form.typeParam);
-    console.log("Enregistrement du paramètre", paramVetement);
 
     const isEdition = (paramVetement.id !== null && paramVetement.id !== "" && paramVetement.id !== undefined);
     console.log((isEdition ? "Mise à jour" : "Création") + " du paramètre", form.typeParam, paramVetement);
@@ -144,7 +143,7 @@ function saveParametresVetement(form : ParamVetementsFormModel, setEditParametra
     //  Appel au backend pour sauvegarder le vêtement
     callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
         .then((response) => {
-            console.log("Attributs du vêtement enregistrés avec succès", response);
+            console.log("Paramètrage ", response, " de vêtements enregistrés avec succès", response);
             showToast("Paramètre "+ form.typeParam+" enregistré avec succès", ToastDuration.SHORT);
             razAndCloseForm(form, setEditParametrage, setForm);
         })

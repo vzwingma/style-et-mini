@@ -45,8 +45,10 @@ export function transformFormToParamVetements(form: ParamVetementsFormModel, typ
     
     // Complétion des éléments spécifiques au type de paramétrage
     switch (typeParametrage) {
-        case ParametragesVetementEnum.TYPE:
         case ParametragesVetementEnum.TAILLES:
+            parametreVetements = { ...parametreVetements, type: form.type, tri: form.tri };
+            break;
+        case ParametragesVetementEnum.TYPE:
         case ParametragesVetementEnum.MARQUES:
             parametreVetements = { ...parametreVetements, type: form.type };
             break;
