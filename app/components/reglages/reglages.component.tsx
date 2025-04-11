@@ -7,8 +7,8 @@ import { menusParametrages, ParametragesVetementEnum } from '../../constants/App
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '@/app/controllers/parametrages.controller';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
+import { getAllParamsVetements } from '@/app/controllers/parametrages.controller';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -42,11 +42,7 @@ export const ReglagesComponent: React.FC = () => {
  * */
   useEffect(() => {
     console.log("(Re)Chargement des paramètres...");
-    getParamsTypeVetements({ setTypeVetements, setError, setIsLoading });
-    getParamsTaillesVetements({ setTaillesMesures, setError, setIsLoading });
-    getParamsMarquesVetements({ setMarques, setError, setIsLoading });
-    getParamsUsagesVetements({ setUsages, setError, setIsLoading });
-    getParamsEtatsVetements({ setEtats, setError, setIsLoading });
+    getAllParamsVetements ({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques,  setError, setIsLoading });
   }, [])
 
   /** Ouverture/Fermeture du menu */

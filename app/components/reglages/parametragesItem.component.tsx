@@ -4,7 +4,7 @@ import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { cancelForm, initForm, validateForm } from "@/app/controllers/parametragesForm.controller";
+import { razAndCloseForm, initForm, validateForm } from "@/app/controllers/parametragesForm.controller";
 import { ParametragesFormComponent } from "./parametragesForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
@@ -63,7 +63,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 </Pressable> 
                 }
                 { editParametrage && 
-                <Pressable onPress={() => cancelForm(form, setEditParametrage, setForm)}>
+                <Pressable onPress={() => razAndCloseForm(form, setEditParametrage, setForm)}>
                     <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
                 </Pressable>
                 }

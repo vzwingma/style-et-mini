@@ -1,4 +1,5 @@
 import { CategorieDressingEnum, ParametragesVetementEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
+import ParamGenericVetementsModel from "./paramGenericVetements.model";
 
 /**
  * Modèle représentant un type générique de param de vetements
@@ -33,14 +34,14 @@ interface ParamVetementsFormModel {
  *   - Pour `ETATS`, la propriété `tri` est ajoutée.
  * - Si le type de paramétrage ne correspond à aucun cas, aucun élément spécifique n'est ajouté.
  */
-export function transformFormToParamVetements(form: ParamVetementsFormModel, typeParametrage: ParametragesVetementEnum) {
+export function transformFormToParamVetements(form: ParamVetementsFormModel, typeParametrage: ParametragesVetementEnum) : ParamGenericVetementsModel {
 
     // recopie des éléments communs
     let parametreVetements = {
         id         : form.id,
         libelle    : form.libelle,
         categories : form.categories,
-    } as ParamVetementsFormModel;
+    } as ParamGenericVetementsModel;
     
     // Complétion des éléments spécifiques au type de paramétrage
     switch (typeParametrage) {
@@ -56,5 +57,25 @@ export function transformFormToParamVetements(form: ParamVetementsFormModel, typ
     }
     return parametreVetements;
 }
+
+/**
+ * Transforme un objet de type `ParamGenericVetementsModel` en un objet de type `ParamVetementsFormModel`.
+ *
+ * @param typeParametrage - Le type de paramétrage associé, de type `ParametragesVetementEnum`.
+ * @param parametreVetements - L'objet contenant les paramètres génériques des vêtements, de type `ParamGenericVetementsModel`.
+ * @returns Un objet de type `ParamVetementsFormModel` contenant les informations transformées.
+ */
+export function tranformParamVetementToForm(typeParametrage : ParametragesVetementEnum, parametreVetements: ParamGenericVetementsModel) {
+    return {
+        id          : parametreVetements.id,
+        typeParam   : typeParametrage,
+        libelle     : parametreVetements.libelle,
+        categories  : parametreVetements.categories,
+        type        : parametreVetements.type,
+        tri         : parametreVetements.tri,
+        isModified  : false,
+    } as ParamVetementsFormModel;
+}
+
 
 export default ParamVetementsFormModel;

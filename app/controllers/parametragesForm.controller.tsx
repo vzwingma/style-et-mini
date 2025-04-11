@@ -1,6 +1,9 @@
+import { showToast, ToastDuration } from "../components/commons/AndroidToast";
+import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
-import ParamVetementsFormModel, { transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
+import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
+import { callPOSTBackend } from "../services/ClientHTTP.service";
 
 
 
@@ -11,16 +14,8 @@ import ParamVetementsFormModel, { transformFormToParamVetements } from "../model
      * incluant `id`, `libelle`, `categories` et `type`.
      * @param setForm - Une fonction permettant de définir l'état du formulaire avec les données fournies.
      */
-    export function initForm(typeParametrage : ParametragesVetementEnum,parametreVetements : ParamGenericVetementsModel, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
-        setForm({
-            id          : parametreVetements.id,
-            typeParam   : typeParametrage,
-            libelle     : parametreVetements.libelle,
-            categories  : parametreVetements.categories,
-            type        : parametreVetements.type,
-            tri         : parametreVetements.tri,
-            isModified  : false,
-        });
+    export function initForm(typeParametrage : ParametragesVetementEnum ,parametreVetements : ParamGenericVetementsModel, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+        setForm(tranformParamVetementToForm(typeParametrage, parametreVetements));
     }
 
 
@@ -78,7 +73,7 @@ export function setCategoriesForm(categories: string[], setForm: Function) {
 
 
 
-export function cancelForm(form : ParamVetementsFormModel | null, 
+export function razAndCloseForm(form : ParamVetementsFormModel | null, 
                            setEditParametrage: (value: React.SetStateAction<boolean>) => void, 
                            setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
     /*
@@ -113,10 +108,77 @@ export function cancelForm(form : ParamVetementsFormModel | null,
 export function validateForm(form : ParamVetementsFormModel | null, setEditParametrage: (value: React.SetStateAction<boolean>) => void, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
     console.log("Enregistrement du formulaire", form);
     if(form?.isModified) {
-        const paramVetement = transformFormToParamVetements(form, form.typeParam);
-        console.log("Enregistrement du paramètre", paramVetement);
+        saveParametresVetement(form, setEditParametrage, setForm);
     }
     else{
-        cancelForm(form, setEditParametrage, setForm);
+        razAndCloseForm(form, setEditParametrage, setForm);
     }
+}
+
+
+function getUrlAPIParametres(form: ParamVetementsFormModel) : string {
+    let url = '';
+    switch (form.typeParam) {
+        case ParametragesVetementEnum.TYPE:
+            url = SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS;
+            break;
+        case ParametragesVetementEnum.TAILLES:
+            url = SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES;
+            break;
+        case ParametragesVetementEnum.MARQUES:
+            url = SERVICES_URL.SERVICE_PARAMS_MARQUES;
+            break;
+        case ParametragesVetementEnum.ETATS:
+            url = SERVICES_URL.SERVICE_PARAMS_ETATS;
+            break;
+        case ParametragesVetementEnum.USAGES:
+            url = SERVICES_URL.SERVICE_PARAMS_USAGES;
+            break;
+        default:
+            console.error("Type de paramètre inconnu", form.typeParam);
+            return 'inconnu';
+    };
+    if(form.id !== null && form.id !== undefined && form.id !== "") {
+        url = url + "/" + SERVICES_PARAMS.ID_PARAM;
+    }
+    return url;
+}
+
+
+/**
+ * Enregistre les paramètres d'un vêtement en appelant le backend.
+ *
+ * @param form - Le modèle de formulaire contenant les paramètres du vêtement à enregistrer.
+ * @param setEditParametrage - Fonction permettant de mettre à jour l'état d'édition du paramétrage.
+ * @param setForm - Fonction permettant de réinitialiser ou de mettre à jour le formulaire.
+ *
+ * Cette fonction transforme le formulaire en un modèle générique de paramètres de vêtements,
+ * puis détermine s'il s'agit d'une création ou d'une mise à jour. Elle effectue un appel POST
+ * au backend pour sauvegarder les données. En cas de succès, un message de confirmation est affiché
+ * et le formulaire est réinitialisé. En cas d'erreur, un message d'erreur est affiché.
+ */
+function saveParametresVetement(form : ParamVetementsFormModel, setEditParametrage: (value: React.SetStateAction<boolean>) => void, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+    
+    const paramVetement : ParamGenericVetementsModel = transformFormToParamVetements(form, form.typeParam);
+    console.log("Enregistrement du paramètre", paramVetement);
+
+    const isEdition = (paramVetement.id !== null && paramVetement.id !== "" && paramVetement.id !== undefined);
+    console.log((isEdition ? "Mise à jour" : "Création") + " du paramètre", form.typeParam, paramVetement);
+
+    let params = [
+        { key: SERVICES_PARAMS.ID_PARAM, value: String(form.id) },
+    ];
+
+    //  Appel au backend pour sauvegarder le vêtement
+    callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
+        .then((response) => {
+            console.log("Attributs du vêtement enregistrés avec succès", response);
+            showToast("Paramètre "+ form.typeParam+" enregistré avec succès", ToastDuration.SHORT);
+            razAndCloseForm(form, setEditParametrage, setForm);
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
+            return false;
+        });
 }

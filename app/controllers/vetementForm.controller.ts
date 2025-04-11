@@ -4,16 +4,12 @@ import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements.model";
 import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
 import FormVetementModel, { transformFormToVetementModel, transformVetementToFormModel } from "../models/form.vetements.model";
-import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
-import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
-import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
 import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
-import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
 import { CategorieDressingEnum, StatutVetementEnum } from "../constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
-import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
+import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 
 export type FormModelProps = {
     form: FormVetementModel,
@@ -23,7 +19,7 @@ export type FormModelProps = {
 };
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
-export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], dressing: DressingModel): ParamTypeVetementsModel[] {
+export function getTypeVetementsForm(typeVetements: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
     return typeVetements
         .filter((type) => type.categories
             .filter((cat) => cat === dressing.categorie)
@@ -34,7 +30,7 @@ export function getTypeVetementsForm(typeVetements: ParamTypeVetementsModel[], d
 
 
 // Filtre les tailles de mesures en fonction de la catégorie du dressing et du type de vêtement
-export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamTailleVetementsModel[] {
+export function getTaillesMesuresForm(taillesMesures: ParamGenericVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamGenericVetementsModel[] {
     if (form?.type === undefined || form?.type === null) {
         return [];
     }
@@ -48,9 +44,9 @@ export function getTaillesMesuresForm(taillesMesures: ParamTailleVetementsModel[
 
 
 // Filtre les usages en fonction de la catégorie du dressing
-export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: DressingModel): ParamUsageVetementsModel[] {
+export function getUsagesForm(usages: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
     return usages
-        .filter((usage: ParamUsageVetementsModel) => usage.categories
+        .filter((usage: ParamGenericVetementsModel) => usage.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
         .sort((u1, u2) => alphanumSort(u1.libelle, u2.libelle));
@@ -59,9 +55,9 @@ export function getUsagesForm(usages: ParamUsageVetementsModel[], dressing: Dres
 
 
 // Filtre les état en fonction de la catégorie du dressing
-export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: DressingModel): ParamEtatVetementsModel[] {
+export function getEtatsForm(etats: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
     return etats
-        .filter((etat: ParamEtatVetementsModel) => etat.categories
+        .filter((etat: ParamGenericVetementsModel) => etat.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
         .sort((e1, e2) => numSort(e1.tri, e2.tri));
@@ -69,12 +65,12 @@ export function getEtatsForm(etats: ParamEtatVetementsModel[], dressing: Dressin
 
 
 // Filtre les marques en fonction de la catégorie du dressing et du type de vêtement
-export function getMarquesForm(marques: ParamMarqueVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamMarqueVetementsModel[] {
+export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: DressingModel, form: FormVetementModel | null): ParamGenericVetementsModel[] {
     if (form?.type === undefined || form?.type === null) {
         return [];
     }
     return marques
-        .filter((marque: ParamMarqueVetementsModel) => marque.categories
+        .filter((marque: ParamGenericVetementsModel) => marque.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
         .filter((marque) => marque.type === form.type.type)
@@ -171,7 +167,7 @@ export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypeForm(type: ParamTypeVetementsModel, setForm: Function) {
+export function setTypeForm(type: ParamGenericVetementsModel, setForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, type: type }
     });
@@ -182,7 +178,7 @@ export function setTypeForm(type: ParamTypeVetementsModel, setForm: Function) {
  * @param taille 
  * @param setForm 
  */
-export function setTailleForm(taille: ParamTailleVetementsModel, setForm: Function) {
+export function setTailleForm(taille: ParamGenericVetementsModel, setForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, taille: taille }
     });
@@ -208,9 +204,9 @@ export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
  * @param paramsUsagesVetements liste des usages de vêtements
  * @param setForm formulaire à mettre à jour
  */
-export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamUsageVetementsModel[], setForm: Function, setErrorsForm: Function) {
+export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamGenericVetementsModel[], setForm: Function, setErrorsForm: Function) {
 
-    let usages: ParamUsageVetementsModel[] = [];
+    let usages: ParamGenericVetementsModel[] = [];
     usageIdsListe.forEach((usageId) => {
         let usageModel = paramsUsagesVetements.find((u) => u.id === usageId);
         if (usageModel !== undefined) {
@@ -231,7 +227,7 @@ export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: Pa
  * @param etat 
  * @param setForm 
  */
-export function setEtatForm(etat: ParamEtatVetementsModel, setForm: Function) {
+export function setEtatForm(etat: ParamGenericVetementsModel, setForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, etat: etat }
     });
@@ -278,7 +274,7 @@ export function setDescriptionForm(description: string, setForm: Function) {
  * @param marque description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setMarqueForm(marque: ParamMarqueVetementsModel, setForm: Function) {
+export function setMarqueForm(marque: ParamGenericVetementsModel, setForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, marque: marque }
     });

@@ -34,7 +34,10 @@ export function alphanumSort(a: string, b: string) {
  *          une valeur positive si `a` est supérieur à `b`, 
  *          ou 0 si les deux sont égaux.
  */
-export function numSort(a: number, b: number) {
+export function numSort(a: number | undefined, b: number | undefined) {
+    if(a === undefined || b === undefined) {
+        return 0;
+    }
     return a - b;
 }
 

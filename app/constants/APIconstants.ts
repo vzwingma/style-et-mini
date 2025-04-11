@@ -1,3 +1,4 @@
+import { ParametragesVetementEnum } from "./AppEnum";
 
 
 /**
@@ -22,14 +23,15 @@ export enum API_VERBS {
  */
 export const enum SERVICES_PARAMS {
     ID_DRESSING = "<IDD>",
-    ID_VETEMENT = "<IDV>"
+    ID_VETEMENT = "<IDV>",
+    ID_PARAM    = "<IDP>"
 }
 
 /**
  * L'URI racine pour les requêtes API.
  */
 const ROOT_URI   = "api/v1";
-const GET_PARAMS = ROOT_URI+"/params/vetements";
+const GET_PARAMS = ROOT_URI+"/params/vetements/";
 
 
 /**
@@ -38,11 +40,11 @@ const GET_PARAMS = ROOT_URI+"/params/vetements";
 export enum SERVICES_URL {
     SERVICE_CONFIG = ROOT_URI+"/status",
     
-    SERVICE_PARAMS_TYPE_VETEMENTS   = GET_PARAMS+"/types",
-    SERVICE_PARAMS_TAILLES_MESURES  = GET_PARAMS+"/taillesMesures",
-    SERVICE_PARAMS_USAGES           = GET_PARAMS+"/usages",
-    SERVICE_PARAMS_MARQUES          = GET_PARAMS+"/marques",
-    SERVICE_PARAMS_ETATS            = GET_PARAMS+"/etats",
+    SERVICE_PARAMS_TYPE_VETEMENTS   = GET_PARAMS + ParametragesVetementEnum.TYPE,
+    SERVICE_PARAMS_TAILLES_MESURES  = GET_PARAMS + ParametragesVetementEnum.TAILLES,
+    SERVICE_PARAMS_USAGES           = GET_PARAMS + ParametragesVetementEnum.USAGES,
+    SERVICE_PARAMS_MARQUES          = GET_PARAMS + ParametragesVetementEnum.MARQUES,
+    SERVICE_PARAMS_ETATS            = GET_PARAMS + ParametragesVetementEnum.ETATS,
 
     SERVICE_DRESSINGS       = ROOT_URI              +"/dressing",
     SERVICE_DRESSING_BY_ID  = SERVICE_DRESSINGS     +"/"+SERVICES_PARAMS.ID_DRESSING,

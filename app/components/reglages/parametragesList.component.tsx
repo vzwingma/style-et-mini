@@ -7,7 +7,7 @@ import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetement
 import { ParametragesItemComponent } from './parametragesItem.component';
 import { Ionicons } from '@expo/vector-icons';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
-import { alphanumSort } from '../commons/CommonsUtils';
+import { alphanumSort, numSort } from '../commons/CommonsUtils';
 
 
 
@@ -43,7 +43,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
 
       parametresVetements.sort((v1, v2) => {
         if(v1.tri !== undefined && v2.tri !== undefined) {
-          return v1.tri - v2.tri;
+          return numSort(v1.tri, v2.tri);
         }
         else{
           return alphanumSort(v1.libelle, v2.libelle)

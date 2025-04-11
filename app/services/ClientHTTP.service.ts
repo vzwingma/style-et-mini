@@ -72,7 +72,7 @@ export function callGETBackend(path: SERVICES_URL, params?: KeyValueParams[]): P
  * @param {any} [body] - Le corps de la requête à envoyer.
  * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
  */
-export function callPOSTBackend(path: SERVICES_URL, params?: KeyValueParams[], body?: any): Promise<any> {
+export function callPOSTBackend(path: SERVICES_URL | string, params?: KeyValueParams[], body?: any): Promise<any> {
     return callBackend(API_VERBS.POST, path, params, body);
 }
 
@@ -146,7 +146,7 @@ export function callDELETEBackend(path: SERVICES_URL, params?: KeyValueParams[])
  * @param body body de la requête (optionnel)
  * @returns réponse
  */
-function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParams[], body?: JSON): Promise<any> {
+function callBackend(verb: API_VERBS, path: SERVICES_URL | string, params?: KeyValueParams[], body?: JSON): Promise<any> {
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(path, params);
 

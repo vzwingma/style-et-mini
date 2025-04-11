@@ -8,7 +8,7 @@ import HomeScreen from '.';
 import connectToBackend, { getDressings } from '../controllers/index.controller';
 import DressingScreen from './dressing';
 import ReglageScreen from './reglages';
-import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
+import { getAllParamsVetements } from '../controllers/parametrages.controller';
 import DressingModel from '../models/dressing.model';
 import { Tabs } from './../constants/TabsEnums';
 import { AppContext } from '../services/AppContextProvider';
@@ -68,12 +68,7 @@ export default function TabLayout() {
     setError(null);
     if(tab === Tabs.INDEX && isLoading === false) {
       console.log("(Re)Chargement de la configuration...");
-      getParamsTaillesVetements ({ setTaillesMesures, setError, setIsLoading });
-      getParamsUsagesVetements  ({ setUsages, setError, setIsLoading });
-      getParamsTypeVetements    ({ setTypeVetements, setError, setIsLoading });
-      getParamsMarquesVetements ({ setMarques, setError, setIsLoading });
-
-      getParamsEtatsVetements({   setEtats, setError, setIsLoading });
+      getAllParamsVetements ({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques,  setError, setIsLoading });
   
       getDressings({ setIsLoading, setDressings, setError });
     }
