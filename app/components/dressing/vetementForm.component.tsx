@@ -99,7 +99,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         return (
             <View style={styles.body}>
                 <View style={styles.rowItems}>
-                    <View style={{ width: '100%' }}>
+                    <View style={{width: '100%', alignItems: 'center'}}>
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             {renderFormImage &&
                                 <Image source={{ uri: renderFormImage.displayUri }} style={[styles.photo, { width: renderFormImage.largeur, height: renderFormImage.hauteur }]} />}
