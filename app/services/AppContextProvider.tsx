@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import BackendConfigModel from "../models/backendConfig.model";
-import ParamTypeVetementsModel from "../models/params/paramTypeVetements.model";
-import ParamTailleVetementsModel from "../models/params/paramTailleVetements.model";
 import DressingModel from "../models/dressing.model";
-import ParamUsageVetementsModel from "../models/params/paramUsageVetements.model";
-import ParamEtatVetementsModel from "../models/params/paramEtatVetements.model";
-import ParamMarqueVetementsModel from "../models/params/paramMarqueVetements.model";
+import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 
 
 /**
@@ -15,23 +11,26 @@ type AppContextType = {
     backendConnexionData: BackendConfigModel | undefined;
     setBackendConnexionData: React.Dispatch<React.SetStateAction<BackendConfigModel | undefined>>;
     
-    typeVetements: ParamTypeVetementsModel[];
-    setTypeVetements: React.Dispatch<React.SetStateAction<ParamTypeVetementsModel[] | []>>;
+    typeVetements: ParamGenericVetementsModel[];
+    setTypeVetements: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[] | []>>;
 
-    taillesMesures: ParamTailleVetementsModel[];
-    setTaillesMesures: React.Dispatch<React.SetStateAction<ParamTailleVetementsModel[] | []>>;
+    taillesMesures: ParamGenericVetementsModel[];
+    setTaillesMesures: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[] | []>>;
 
-    usages: ParamUsageVetementsModel[];
-    setUsages: React.Dispatch<React.SetStateAction<ParamUsageVetementsModel[] | []>>;
+    usages: ParamGenericVetementsModel[];
+    setUsages: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[] | []>>;
 
-    marques: ParamTypeVetementsModel[];
-    setMarques: React.Dispatch<React.SetStateAction<ParamTypeVetementsModel[] | []>>;
+    marques: ParamGenericVetementsModel[];
+    setMarques: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[] | []>>;
 
-    etats: ParamEtatVetementsModel[];
-    setEtats: React.Dispatch<React.SetStateAction<ParamEtatVetementsModel[] | []>>;
+    etats: ParamGenericVetementsModel[];
+    setEtats: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[] | []>>;
 
     dressings: DressingModel[] | []; 
     setDressings: React.Dispatch<React.SetStateAction<DressingModel[] | []>>;
+
+    modalDialog: JSX.Element | null;
+    setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
 };
 
 
@@ -43,15 +42,16 @@ export const AppContext = React.createContext<AppContextType | null>(null);
  * @returns  provider
  */
 export function AppContextProvider({ children }: Readonly<{ children: React.ReactNode }>) : JSX.Element {
-    const [backendConnexionData, setBackendConnexionData]   = useState<BackendConfigModel>();  // State to store the response data
-    const [typeVetements, setTypeVetements]                 = useState<ParamTypeVetementsModel[]>([]);
-    const [taillesMesures, setTaillesMesures]               = useState<ParamTailleVetementsModel[]>([]);
-    const [usages, setUsages]                               = useState<ParamUsageVetementsModel[]>([]);
-    const [marques, setMarques]                             = useState<ParamMarqueVetementsModel[]>([]);
-    const [etats, setEtats]                                 = useState<ParamEtatVetementsModel[]>([]);
+    const [backendConnexionData,    setBackendConnexionData]   = useState<BackendConfigModel>();  // State to store the response data
+    const [typeVetements,           setTypeVetements]          = useState<ParamGenericVetementsModel[]>([]);
+    const [taillesMesures,          setTaillesMesures]         = useState<ParamGenericVetementsModel[]>([]);
+    const [usages,                  setUsages]                 = useState<ParamGenericVetementsModel[]>([]);
+    const [marques,                 setMarques]                = useState<ParamGenericVetementsModel[]>([]);
+    const [etats,                   setEtats]                  = useState<ParamGenericVetementsModel[]>([]);
 
-    const [dressings, setDressings]                         = useState<DressingModel[]>([]);
+    const [dressings, setDressings]                             = useState<DressingModel[]>([]);
 
+    const [modalDialog, setModalDialog]                         = useState<JSX.Element | null>(null);
 
     const contextValue = React.useMemo(() => ({
         backendConnexionData,
@@ -67,7 +67,9 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         usages,
         setUsages,
         etats,
-        setEtats
+        setEtats,
+        modalDialog,
+        setModalDialog
     }), [
         backendConnexionData,
         typeVetements,
@@ -75,7 +77,8 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         marques,
         usages,
         dressings,
-        etats
+        etats,
+        modalDialog,
     ]);
 
     return (

@@ -1,6 +1,6 @@
 import { API_S3_URL } from "../../constants/APIconstants";
-import VetementImageModel from "../../models/vetements.image.model";
-import VetementModel from "../../models/vetements.model";
+import VetementImageModel from "../../models/vetements/vetements.image.model";
+import VetementModel from "../../models/vetements/vetements.model";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
@@ -34,7 +34,10 @@ export function alphanumSort(a: string, b: string) {
  *          une valeur positive si `a` est supérieur à `b`, 
  *          ou 0 si les deux sont égaux.
  */
-export function numSort(a: number, b: number) {
+export function numSort(a: number | undefined, b: number | undefined) {
+    if(a === undefined || b === undefined) {
+        return 0;
+    }
     return a - b;
 }
 
@@ -97,7 +100,11 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
  *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
  *          retourne l'image d'origine.
  */
-export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel {
+export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel | null {
+
+    if(!image || (!image.s3uri && !image.localUri)) {
+        return null;
+    }
 
     if (image?.largeur && image?.hauteur) {
         const ratioImage = image.largeur / image.hauteur;

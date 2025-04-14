@@ -2,7 +2,7 @@ import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../models/dressing.model";
 import { callGETBackend } from "../services/ClientHTTP.service";
-import VetementModel from "../models/vetements.model";
+import VetementModel from "../models/vetements/vetements.model";
 
 // Propriétés de l'appel d'API pour le dressing
 type FunctionCallAPIDressingProps = {

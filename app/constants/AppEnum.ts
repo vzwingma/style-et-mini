@@ -5,12 +5,13 @@ export const APP_MOBILE_VERSION = Constants.expoConfig?.version ?? "0.0.0";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 
-
+export const ID_NEW_ELEMENT = "-1::NEW"; // ID d'un nouvel élément à ajouter
+export const ID_MARQUE_AUTRES = '67ee890c60546911d1e17c54'; // ID d'une marque "... Autres"
 /**
  * Enumération représentant les différentes caractéristiques d'un vêtement.
  * 
  * @enum {string}
- * @property {string} TYPE - Le type de vêtement (exemple : chemise, pantalon, etc.).
+ * @property {string} TYPES - Le type de vêtement (exemple : chemise, pantalon, etc.).
  * @property {string} TAILLES - Les tailles disponibles pour le vêtement.
  * @property {string} MARQUES - Les marques associées au vêtement.
  * @property {string} USAGES - Les usages possibles du vêtement (exemple : sport, travail, etc.).
@@ -18,7 +19,7 @@ export const APP_MOBILE_NAME = "Style et Mini";
  * @property {string} SAISON - La saison associée au vêtement (exemple : été, hiver, etc.).
  */
 export enum CaracteristiqueVetementEnum {
-  TYPE      = 'TYPE',
+  TYPES     = 'TYPES',
   TAILLES   = 'TAILLES',
   MARQUES   = 'MARQUES',
   USAGES    = 'USAGES',
@@ -37,7 +38,7 @@ export enum CaracteristiqueVetementEnum {
  * - `DRESSING` : Référence au dressing ou à l'organisation des vêtements.
  */
 export enum ParametragesVetementEnum {
-  TYPE      = 'TYPE',
+  TYPES     = 'TYPES',
   TAILLES   = 'TAILLES',
   MARQUES   = 'MARQUES',
   USAGES    = 'USAGES',
@@ -50,7 +51,7 @@ export const menusParametrages : { [key: string]: MenuParametragesModel[] } = {
     "Paramétrages" : [
       { titre: 'Type de vêtements',
         icone: require('@/assets/icons/clothes-outline.png'),
-        class: ParametragesVetementEnum.TYPE },
+        class: ParametragesVetementEnum.TYPES },
       { titre: 'Tailles et Mesures', 
         icone: require('@/assets/icons/size-outline.png'),
         class: ParametragesVetementEnum.TAILLES },
@@ -90,6 +91,18 @@ export enum TypeTailleEnum {
   VETEMENTS   = 'VETEMENTS',
   CHAUSSURES  = 'CHAUSSURES'
 }
+
+export function getLibelleTypeTailleEnum(enumTaille: TypeTailleEnum): string  {
+  switch (enumTaille) {
+    case TypeTailleEnum.VETEMENTS:
+      return "Vêtements";
+    case TypeTailleEnum.CHAUSSURES:
+      return "Chaussures/Chaussettes";
+    default:
+      return "Inconnu";
+  }
+}
+
 
 // Enumération des statuts de vêtements
 export enum SaisonVetementEnum {

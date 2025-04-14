@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import VetementModel from '@/app/models/vetements.model';
+import VetementModel from '@/app/models/vetements/vetements.model';
 import { resizeImage } from '../commons/CommonsUtils';
 
 
@@ -22,11 +22,11 @@ export type VetementItemComponentProps = {
 export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, editVetement }: VetementItemComponentProps) => {
     
     const vetementImageToShow = vetement.image ? resizeImage(vetement.image, 100) : null;
-    
+
     return (
         <Pressable onPress={() => editVetement(vetement)}>
             <View key={vetement.id} style={styles.body}>
-                <View style={styles.photoFrame}>
+                <View style={[styles.photoFrame, !vetementImageToShow ? { borderColor: Colors.app.backgroundLight, borderWidth: 1, } : null]}>
                     {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.displayUri }} style={[styles.photo, { width: vetementImageToShow.largeur, height: vetementImageToShow.hauteur }]} />}
                     {!vetementImageToShow   && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
                         style={[styles.iconBig]} />}
@@ -58,9 +58,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: Colors.app.backgroundLight,
-        borderWidth: 1,
+        justifyContent: 'center'
     },
     photo: {
         cursor: 'pointer',

@@ -1,118 +1,90 @@
-import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
-import { CategorieDressingEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
-import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementForm.component";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Dropdown, MultiSelect } from "react-native-element-dropdown";
+import { razAndCloseForm, initForm, validateForm } from "@/app/controllers/parametragesForm.controller";
+import { ParametragesFormComponent } from "./parametragesForm.component";
+import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
+import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
+import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
+import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/form.errors.params.model";
 
 
+/**
+ * * @description Composant d'un item de la liste des paramètres
+ * @param {ParametragesItemComponentProps} props - Propriétés du composant
+ * @returns {JSX.Element} - Composant d'un item de la liste des paramètres
+ * @component
+ */
 export type ParametragesItemComponentProps = {
-    readonly parametreVetements: any
-    setParametreInEdition: (idParametre: string | null) => void
-    parametreInEdition: string | null
+    readonly parametrageVetements   : ParamGenericVetementsModel
+    readonly typeParametrage        : ParametragesVetementEnum
+    setParametreInEdition           : (idParametreToEdit: string | null) => void
+    parametreInEdition              : string | null,
+    refreshListeParametresCallback  : (typeParam: ParametragesVetementEnum) => void
 };
+
+
 /**
  * 
- * @param typeVetements : TypeVetementsModel
- * @returns item de la liste des types de vêtements
+ * @param param0 : ParametragesItemComponentProps
+ * @returns Composant d'un item de la liste des paramètres
  */
-export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametreVetements, setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
+export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage, 
+    setParametreInEdition, parametreInEdition, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
 
-    const [editParametrage, setEditParametrage] = useState(false);
-
+    const [form, setForm] = useState({} as ParamVetementsFormModel | null);
+    const [errorsForm, setErrorsForm] = useState<ErrorsFormParametrageModel>(defaultErrorsFormParametrageModel);
     useEffect(() => {
-        setParametreInEdition(editParametrage ? parametreVetements.id : null);
-    }, [editParametrage]);
+        if(parametreInEdition !== null) {
+            initForm(typeParametrage, parametrageVetements, setForm)
+        }
+        else {
+            setForm(null);
+        }
+
+    }, [parametreInEdition]);
 
 
-    const isSelected = parametreInEdition !== null && parametreInEdition === parametreVetements.id;
-    const isUnselected = parametreInEdition !== null && parametreInEdition !== parametreVetements.id;
-    const isLibelleMarqueAutres = parametreVetements.libelle === '... Autres';
+    const isSelected = parametreInEdition !== null && parametreInEdition === parametrageVetements.id;
+    const isUnselected = parametreInEdition !== null && parametreInEdition !== parametrageVetements.id;
+    const isLibelleMarqueAutres = parametrageVetements.libelle === '... Autres';
+
     return (
         <View style={[styles.container, 
                      isSelected ? styles.containerSelected : null,
                      isUnselected ? styles.containerUnselected : null]}>
-            <View style={[styles.title, editParametrage ? styles.titleSelected : null]}>
-                <ThemedText type="subtitle">{parametreVetements.libelle}</ThemedText>
+            { /** Icones  */}
+            <View style={styles.title}>
+                <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
-                { !editParametrage && !isUnselected && !isLibelleMarqueAutres &&
-                <Pressable onPress={() => setEditParametrage(true)}>
+                { parametreInEdition === null && !isLibelleMarqueAutres &&
+                <Pressable onPress={() => setParametreInEdition(parametrageVetements.id)}>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
-                { editParametrage &&
-                <Pressable onPress={() => setEditParametrage(false)}>
+                { isSelected &&
+                <Pressable onPress={() => validateForm(form, setErrorsForm, setParametreInEdition, refreshListeParametres)}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
                 </Pressable> 
                 }
-                { editParametrage && 
-                <Pressable onPress={() => setEditParametrage(false)}>
+                { isSelected && 
+                <Pressable onPress={() => razAndCloseForm(setParametreInEdition)}>
                     <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
                 </Pressable>
                 }
-                { editParametrage && 
-                <Pressable onPress={() => setEditParametrage(false)}>
-                    <Image source={require('@/assets/icons/bin-outline.png')} tintColor={'white'} style={styles.titleIcon} />
-                </Pressable>
-                }
                 </View>
             </View>
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
-                {!editParametrage ? 
-                    <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametreVetements.libelle}</ThemedText>
-                :
-                    <TextInput style={stylesForm.input} aria-disabled={true}
-                        value={parametreVetements.libelle ?? ''}
-                        placeholder={'Indiquez le nom'} />
-                }
-            </View>
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>Catégories</ThemedText>
-                <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!editParametrage ? 
-                        parametreVetements.categories?.map((categorie: CategorieDressingEnum) => {
-                            return renderSelectedItem({ id: categorie, libelle: categorie }, null);
-                        }) ?? ''
-                    :
-                    <MultiSelect
-                        style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                        iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                        selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
-                        mode='modal'
-                        data={Object.values(CategorieDressingEnum).map(saison => ({ id: saison, libelle: saison }))}
-                        labelField="libelle" valueField="id"
-                        placeholder={''}
-                        value={parametreVetements.categories?.map((categorie : CategorieDressingEnum) => (categorie.toString())) ?? []}
-                        onChange={item => { console.log(item); }}
-                        renderSelectedItem={renderSelectedItem}
-                    />
-                     }
-                </View>
-            </View>
-            {parametreVetements.type &&
-                <View style={stylesForm.rowItems}>
-                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>Type</ThemedText>
-                    <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!editParametrage ? 
-                            renderSelectedItem({ id: parametreVetements.type, libelle: parametreVetements.type }, null)
-                        :
-                    <Dropdown
-                        style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                        iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                        mode='modal'
-                        data={Object.values(TypeTailleEnum).map(type => ({ id: type, libelle: type }))}
-                        labelField="libelle" valueField="id"
-                        placeholder={''}
-                        value={parametreVetements.type}
-                        onChange={item => { console.log(item); }}
-                    />
-                     }
-                    </View>
-                </View>
-            }
+            { /** Formulaire  */}
+            <ParametragesFormComponent
+                key={"form_"+typeParametrage+"_" + parametrageVetements.id}
+                parametrageVetements={parametrageVetements}
+                paramIsInEdition={isSelected}
+                form={form} 
+                setForm={setForm}
+                errorsForm={errorsForm}
+                setErrorsForm={setErrorsForm}/>
         </View>
     );
 };
@@ -124,8 +96,8 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
         backgroundColor: Colors.app.background,
-        borderColor: Colors.app.background,
-        borderWidth: 1,
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 2,
     },
     containerSelected: {
         borderColor: Colors.app.color,
@@ -140,8 +112,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 5,
-    },
-    titleSelected: {
         borderBottomWidth: 1,
         borderBottomColor: Colors.app.color,
     },

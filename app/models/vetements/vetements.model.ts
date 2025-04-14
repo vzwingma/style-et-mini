@@ -1,5 +1,5 @@
 import { SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
-import DressingModel from "./dressing.model";
+import DressingModel from "../dressing.model";
 import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
 import VetementImageModel from "./vetements.image.model";
 import VetementPrixModel from "./vetements.prix.model";
@@ -26,6 +26,6 @@ interface VetementModel {
 
     readonly prix?       : VetementPrixModel;
     readonly description?: string | null;
-    statut              : StatutVetementEnum;
+    statut               : StatutVetementEnum;
 }
 export default VetementModel;
