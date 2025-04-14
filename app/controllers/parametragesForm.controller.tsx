@@ -105,7 +105,9 @@ export function razAndCloseForm(form : ParamVetementsFormModel | null,
  * @param setEditParametrage - Fonction pour mettre à jour l'état d'édition du paramétrage.
  * @param setForm - Fonction pour mettre à jour l'état du formulaire.
  */
-export function validateForm(form : ParamVetementsFormModel | null, setEditParametrage: (value: React.SetStateAction<boolean>) => void, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+export function validateForm(form : ParamVetementsFormModel | null, 
+                             setEditParametrage: (value: React.SetStateAction<boolean>) => void, 
+                             setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
     console.trace("Enregistrement du formulaire", form);
     if(form?.isModified) {
         saveParametresVetement(form, setEditParametrage, setForm);
@@ -129,7 +131,9 @@ export function validateForm(form : ParamVetementsFormModel | null, setEditParam
  * au backend pour sauvegarder les données. En cas de succès, un message de confirmation est affiché
  * et le formulaire est réinitialisé. En cas d'erreur, un message d'erreur est affiché.
  */
-function saveParametresVetement(form : ParamVetementsFormModel, setEditParametrage: (value: React.SetStateAction<boolean>) => void, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+function saveParametresVetement(form : ParamVetementsFormModel, 
+                                setEditParametrage: (value: React.SetStateAction<boolean>) => void, 
+                                setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
     
     const paramVetement : ParamGenericVetementsModel = transformFormToParamVetements(form, form.typeParam);
 

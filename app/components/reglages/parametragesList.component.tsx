@@ -8,22 +8,28 @@ import { ParametragesItemComponent } from './parametragesItem.component';
 import { Ionicons } from '@expo/vector-icons';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort, numSort } from '../commons/CommonsUtils';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { getParametrages } from '@/app/controllers/parametrages.controller';
 
 
 
 export type ParametragesVetements = {
-  parametrages: ParamGenericVetementsModel[];
   readonly typeParametrage: MenuParametragesModel;
   closeDrawer: () => void;
 };
 
-export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ parametrages, typeParametrage, closeDrawer }: ParametragesVetements) => {
+export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
-    
+
+
+
+
+  /** Reinit au moment des types de paramétrages */
   useEffect(() => {
     setParametreInEdition(null);
   }, [typeParametrage]);
+
 
 
   function addParametrage() {
@@ -37,29 +43,30 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
    * @param {ParamUsageVetementsModel[] | undefined} parametresVetements - La liste des usages de vêtements à afficher. Peut être indéfinie.
    * @returns {React.JSX.Element} Un élément JSX représentant le panneau avec la liste des usages de vêtements.
    */
-  function showPanelParametres(parametresVetements: ParamGenericVetementsModel[] | null): React.JSX.Element {
+  function showPanelParametres(): React.JSX.Element[] {
     let parametresListe: JSX.Element[] = [];
-    if (parametresVetements !== undefined && parametresVetements !== null) {
+    const parametresVetements: ParamGenericVetementsModel[] | null = getParametrages(typeParametrage)
 
+    if (parametresVetements !== undefined && parametresVetements !== null) {
       parametresVetements.sort((v1, v2) => {
-        if(v1.tri !== undefined && v2.tri !== undefined) {
+        if (v1.tri !== undefined && v2.tri !== undefined) {
           return numSort(v1.tri, v2.tri);
         }
-        else{
+        else {
           return alphanumSort(v1.libelle, v2.libelle)
         }
       });
 
       parametresVetements.forEach((item: ParamGenericVetementsModel) => {
         parametresListe.push(
-          <ParametragesItemComponent key={"item_"+typeParametrage.class+"_" + item.id} 
-                                    typeParametrage={typeParametrage.class} 
-                                    parametrageVetements={item} 
-                                    setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
+          <ParametragesItemComponent key={"item_" + typeParametrage.class + "_" + item.id}
+            typeParametrage={typeParametrage.class}
+            parametrageVetements={item}
+            setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
         );
       });
     }
-    return <>{parametresListe}</>;
+    return parametresListe;
   }
 
 
@@ -81,7 +88,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ par
         </Pressable>
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {showPanelParametres(parametrages)}
+        {showPanelParametres()}
       </ScrollView>
     </View>
   );
@@ -97,6 +104,8 @@ const style2s = StyleSheet.create({
     backgroundColor: Colors.app.color,
     borderColor: Colors.app.color,
     color: "white",
+    borderRadius: 8,
+    padding: 5,
   },
   body: {
     justifyContent: 'center',

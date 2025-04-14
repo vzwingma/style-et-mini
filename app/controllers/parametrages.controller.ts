@@ -1,8 +1,11 @@
 import { callGETBackend } from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
-import { SetStateAction } from "react";
+import { SetStateAction, useContext } from "react";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
+import MenuParametragesModel from "../models/params/menuParametrage.model";
+import { ParametragesVetementEnum } from "../constants/AppEnum";
+import { AppContext } from "../services/AppContextProvider";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPIAllParamsVetementsProps = {
@@ -21,6 +24,34 @@ type FunctionCallAPIParamVetementsProps = {
   setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 
+
+
+/**
+ * Récupère les paramètres génériques des vêtements en fonction du type de paramétrage fourni.
+ *
+ * @param {MenuParametragesModel} typeParametrage - Le type de paramétrage à utiliser pour récupérer les données.
+ * @returns {ParamGenericVetementsModel[] | null} - Une liste des paramètres génériques correspondants ou `null` si le type de paramétrage n'est pas reconnu.
+ */
+export function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] {
+
+  const { etats, typeVetements, taillesMesures, marques, usages } = useContext(AppContext)!;
+
+  switch (typeParametrage.class) {
+    case ParametragesVetementEnum.TYPES:
+      return typeVetements
+    case ParametragesVetementEnum.TAILLES:
+      return taillesMesures
+    case ParametragesVetementEnum.MARQUES:
+      return marques
+    case ParametragesVetementEnum.USAGES:
+      return usages
+    case ParametragesVetementEnum.ETATS:
+      return etats
+    default:
+      return [];
+  }
+}
+
 /**
  * Récupère tous les paramètres génériques des vêtements en effectuant des appels API pour chaque type de paramètre.
  *
@@ -37,16 +68,16 @@ type FunctionCallAPIParamVetementsProps = {
  */
 export async function getAllParamsVetements({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques, setError, setIsLoading }: FunctionCallAPIAllParamsVetementsProps) {
   const types = [
-    { url: SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS,  setter: setTypeVetements },
+    { url: SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS, setter: setTypeVetements },
     { url: SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES, setter: setTaillesMesures },
-    { url: SERVICES_URL.SERVICE_PARAMS_USAGES,          setter: setUsages },
-    { url: SERVICES_URL.SERVICE_PARAMS_ETATS,           setter: setEtats },
-    { url: SERVICES_URL.SERVICE_PARAMS_MARQUES,         setter: setMarques }
+    { url: SERVICES_URL.SERVICE_PARAMS_USAGES, setter: setUsages },
+    { url: SERVICES_URL.SERVICE_PARAMS_ETATS, setter: setEtats },
+    { url: SERVICES_URL.SERVICE_PARAMS_MARQUES, setter: setMarques }
   ];
 
   setIsLoading(true);
-  const loadDataParametrages = await Promise.all(types.map(async (type) => { return await getParamsVetements({ urlAPIParams: type.url, setParams: type.setter, setError })}));
-  console.log(loadDataParametrages.filter(p => p === true).flat().length + " types de paramètres chargés." , loadDataParametrages);
+  const loadDataParametrages = await Promise.all(types.map(async (type) => { return await getParamsVetements({ urlAPIParams: type.url, setParams: type.setter, setError }) }));
+  console.log(loadDataParametrages.filter(p => p === true).flat().length + " types de paramètres chargés.", loadDataParametrages);
   setIsLoading(false);
 }
 
@@ -61,7 +92,7 @@ export async function getAllParamsVetements({ setTypeVetements, setTaillesMesure
  *
  * @returns {void}
  */
-export function getParamsVetements({ urlAPIParams, setParams, setError}: FunctionCallAPIParamVetementsProps): Promise<boolean> {
+export function getParamsVetements({ urlAPIParams, setParams, setError }: FunctionCallAPIParamVetementsProps): Promise<boolean> {
 
   return new Promise((resolve, reject) => {
     // Appel du backend

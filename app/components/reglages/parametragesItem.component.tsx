@@ -22,7 +22,8 @@ export type ParametragesItemComponentProps = {
  * @param typeVetements : TypeVetementsModel
  * @returns item de la liste des types de vêtements
  */
-export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage, setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
+export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage, 
+    setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
 
     const [editParametrage, setEditParametrage] = useState(false);
     const [form, setForm] = useState({} as ParamVetementsFormModel | null);
@@ -58,7 +59,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
                 { editParametrage &&
-                <Pressable onPress={() => validateForm(form, setEditParametrage, setForm)}>
+                <Pressable onPress={() => validateForm(form, setEditParametrage, setForm )}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
                 </Pressable> 
                 }

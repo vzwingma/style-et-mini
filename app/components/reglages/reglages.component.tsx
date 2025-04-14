@@ -28,11 +28,7 @@ export const ReglagesComponent: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const { etats, setEtats,
-    typeVetements, setTypeVetements,
-    taillesMesures, setTaillesMesures,
-    marques, setMarques,
-    usages, setUsages } = useContext(AppContext)!;
+  const { setEtats, setTypeVetements, setTaillesMesures, setMarques, setUsages } = useContext(AppContext)!;
 
 
 
@@ -52,28 +48,6 @@ export const ReglagesComponent: React.FC = () => {
   };
 
 
-/**
- * Récupère les paramètres génériques des vêtements en fonction du type de paramétrage fourni.
- *
- * @param {MenuParametragesModel} typeParametrage - Le type de paramétrage à utiliser pour récupérer les données.
- * @returns {ParamGenericVetementsModel[] | null} - Une liste des paramètres génériques correspondants ou `null` si le type de paramétrage n'est pas reconnu.
- */
-function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] {
-  switch (typeParametrage.class) {
-          case ParametragesVetementEnum.TYPES:
-            return typeVetements
-          case ParametragesVetementEnum.TAILLES:
-            return taillesMesures
-          case ParametragesVetementEnum.MARQUES:
-            return marques
-          case ParametragesVetementEnum.USAGES:
-            return usages
-          case ParametragesVetementEnum.ETATS:
-            return etats
-          default:
-            return [];
-        }
-}
 
   /**
    * Génère le contenu du panneau en fonction de l'état actuel de l'application.
@@ -123,7 +97,8 @@ function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVe
           style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
           {
             (menu !== null && menu !== undefined) 
-            && <ParametragesListComponent parametrages={getParametrages(menu)} typeParametrage={menu} closeDrawer={() => setOpen(false)} />
+            && <ParametragesListComponent typeParametrage={menu} 
+                                          closeDrawer={() => setOpen(false)} />
           }
 
         </Modal>}
