@@ -62,7 +62,7 @@ export const ReglagesComponent: React.FC = () => {
    * - Sinon, affiche une liste de groupes de menus avec leurs éléments, et un modal pour afficher les détails d'un menu sélectionné.
    *
    */
-  const PanelContent: React.FC = (): React.JSX.Element | null => {
+  function getPanelContent(): React.JSX.Element | null {
     if (isLoading) {
       return <ActivityIndicator size={'large'} color={Colors.app.color} />
     } else if (error !== null) {
@@ -106,7 +106,8 @@ export const ReglagesComponent: React.FC = () => {
     }
 
   }
-  return <PanelContent/>;
+  
+  return getPanelContent() ;
 }
 
 const styles = StyleSheet.create({
