@@ -488,15 +488,10 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
     if (attributeCheckFail) {
         errors = true;
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, [attributeName + "InError"]: true }
-        });
     }
-    else {
-        setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, [attributeName + "InError"]: false }
-        });
-    }
+    setErrorsForm((errors: ErrorsFormVetementModel) => {
+        return { ...errors, [attributeName + "InError"]: attributeCheckFail }
+    });
 }
 
 
