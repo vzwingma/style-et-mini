@@ -1,11 +1,11 @@
-import DressingModel from "./dressing.model";
+import DressingModel from "../dressing.model";
 import VetementModel from "./vetements.model";
 import { ID_MARQUE_AUTRES, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import VetementImageModel from "./vetements.image.model";
 
-import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
-import { getPriceValue } from "../components/commons/CommonsUtils";
-import ParamGenericVetementsModel from "./params/paramGenericVetements.model";
+import { VetementsFormParamsTypeProps } from "../../components/dressing/vetementForm.component";
+import { getPriceValue } from "../../components/commons/CommonsUtils";
+import ParamGenericVetementsModel from "../params/paramGenericVetements.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire

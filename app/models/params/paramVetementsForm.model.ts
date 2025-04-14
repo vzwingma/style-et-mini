@@ -29,7 +29,7 @@ export function initNewForm(typeParametrage : ParametragesVetementEnum) : ParamV
         typeParam   : typeParametrage,
         libelle     : "",
         categories  : [],
-        isModified  : false,
+        isModified  : true,
     } as ParamVetementsFormModel;
 
     switch (typeParametrage) {
@@ -107,7 +107,7 @@ export function tranformParamVetementToForm(typeParametrage : ParametragesVeteme
         categories  : parametreVetements.categories,
         type        : parametreVetements.type,
         tri         : parametreVetements.tri,
-        isModified  : false,
+        isModified  : parametreVetements.id === ID_NEW_ELEMENT ? true : false,
     } as ParamVetementsFormModel;
 }
 

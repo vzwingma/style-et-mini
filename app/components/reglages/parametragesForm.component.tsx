@@ -7,7 +7,7 @@ import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementFo
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
-import ErrorsFormParametrageModel from "@/app/models/form.errors.params.model";
+import ErrorsFormParametrageModel from "@/app/models/params/form.errors.params.model";
 
 
 export type ParametragesFormComponentProps = {
@@ -48,13 +48,13 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                     }) ?? ''
                     : <View style={{ width: '100%' }}>
                         <MultiSelect
-                            style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                            style={!errorsForm?.categoriesInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.categoriesInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
                             mode='modal'
                             data={Object.values(CategorieDressingEnum).map(saison => ({ id: saison, libelle: saison }))}
                             labelField="libelle" valueField="id"
-                            placeholder={'Sélectionner des catégories'}
+                            placeholder={!errorsForm?.categoriesInError ? 'Selectionnez des catégories' : errorsForm?.categoriesMessage + ''}
                             value={form?.categories?.map((categorie: CategorieDressingEnum) => (categorie.toString())) ?? []}
                             onChange={item => { setCategoriesForm(item, setForm) }}
                             renderSelectedItem={renderSelectedItem}
@@ -70,12 +70,12 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                         renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type }, null)
                         :
                         <Dropdown
-                            style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                            style={!errorsForm?.typeInError || form?.type ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.typeInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             mode='modal'
                             data={Object.values(TypeTailleEnum).map(type => ({ id: type, libelle: getLibelleTypeTailleEnum(type) }))}
                             labelField="libelle" valueField="id"
-                            placeholder={'Sélectionner un type : Chaussure ou Vêtement'}
+                            placeholder={!errorsForm?.typeInError ? 'Selectionnez un type' : errorsForm?.typeMessage}
                             value={form?.type}
                             onChange={item => setTypeForm(item, setForm)}
                         />
@@ -90,9 +90,9 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                     {!paramIsInEdition ?
                         <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.tri}</ThemedText>
                         :
-                        <TextInput style={stylesForm.input}
+                        <TextInput style={errorsForm?.triInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.triInError ? 'red' : 'gray'}
                             value={form?.tri?.toString() ?? ''}
-                            placeholder={'Indiquez le rang de tri'}
+                            placeholder={!errorsForm?.triInError ? 'Indiquez le rang de tri' : errorsForm?.triMessage}
                             keyboardType="numeric"
                             onChangeText={tri => setTriForm(tri, setForm)} />
                     }

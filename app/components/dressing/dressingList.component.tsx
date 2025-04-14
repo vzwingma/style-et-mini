@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, ScrollView, View } from "react-native";
-import VetementModel from "@/app/models/vetements.model";
+import VetementModel from "@/app/models/vetements/vetements.model";
 import { Colors } from "../../../app/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
 import { groupeVetementByType } from "@/app/controllers/dressingList.controller";

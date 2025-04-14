@@ -1,9 +1,9 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import { alphanumSort, checkPriceFormat, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
-import VetementModel from "../models/vetements.model";
-import ErrorsFormVetementModel from "../models/form.errors.vetements.model";
-import FormVetementModel, { transformFormToVetementModel, transformVetementToFormModel } from "../models/form.vetements.model";
+import VetementModel from "../models/vetements/vetements.model";
+import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
+import FormVetementModel, { transformFormToVetementModel, transformVetementToFormModel } from "../models/vetements/form.vetements.model";
 import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "../services/ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";

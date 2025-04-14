@@ -3,20 +3,20 @@ import { Image, Pressable, TextInput, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import VetementModel from '@/app/models/vetements.model';
+import VetementModel from '@/app/models/vetements/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
-import FormVetementModel from '@/app/models/form.vetements.model';
+import FormVetementModel from '@/app/models/vetements/form.vetements.model';
 import { razAndcloseForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm, archiveForm, deleteForm, FormModelProps } from '@/app/controllers/vetementForm.controller';
-import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/form.errors.vetements.model';
+import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
 import { getTypeVetementIcon, resizeImage } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
-import VetementImageModel from '@/app/models/vetements.image.model';
+import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 
 

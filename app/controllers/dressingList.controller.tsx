@@ -1,6 +1,6 @@
 import { CaracteristiqueVetementEnum} from "../constants/AppEnum";
-import DressingListFiltreModel from "../models/vetementFiltre.model";
-import VetementModel from "../models/vetements.model";
+import DressingListFiltreModel from "../models/vetements/vetementFiltre.model";
+import VetementModel from "../models/vetements/vetements.model";
 /**
  * Groupe les vêtements par type.
  *

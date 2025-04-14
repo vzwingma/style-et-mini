@@ -1,7 +1,7 @@
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import { getUrlAPIParametres, SERVICES_PARAMS } from "../constants/APIconstants";
 import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
-import ErrorsFormParametrageModel from "../models/form.errors.params.model";
+import ErrorsFormParametrageModel from "../models/params/form.errors.params.model";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
 import { callPOSTBackend } from "../services/ClientHTTP.service";
@@ -118,35 +118,6 @@ export function razAndCloseForm(setParametreInEdition: (idParametreToEdit: strin
 }
 
 
-/**
- * export function initNewForm(typeParametrage : ParametragesVetementEnum) : ParamVetementsFormModel {
-     let form : ParamVetementsFormModel = {
-         id          : ID_NEW_ELEMENT,
-         typeParam   : typeParametrage,
-         libelle     : "",
-         categories  : [],
-         isModified  : false,
-     } as ParamVetementsFormModel;
- 
-     switch (typeParametrage) {
-         case ParametragesVetementEnum.TAILLES:
-             form = { ...form, type: TypeTailleEnum.VETEMENTS, tri: 0 };
-             break;
-         case ParametragesVetementEnum.TYPES:
-         case ParametragesVetementEnum.MARQUES:
-             form = { ...form, type: TypeTailleEnum.VETEMENTS };
-             break;
-         case ParametragesVetementEnum.ETATS:
-             form = { ...form, tri: 0 };
-         default:
-             break;
-     }
-     return form;
- }
- 
- */
-
-
 let errors = false;
 /**
  * Valide et enregistre un formulaire de paramètres de vêtements.
@@ -175,7 +146,7 @@ export function validateForm(form: ParamVetementsFormModel | null,
         errors = true;
         setErrorsForm((errors: ErrorsFormParametrageModel) => {
             return {
-                ...errors, libelleInError: true, typeInError: true, tri: true, categoriesInError: true
+                ...errors, libelleInError: true, typeInError: true, triInError: true, categoriesInError: true
             }
         });
         return;

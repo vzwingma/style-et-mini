@@ -8,7 +8,7 @@ import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent } from './vetementForm.component';
 import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
-import VetementModel from './../../models/vetements.model';
+import VetementModel from '../../models/vetements/vetements.model';
 
 
 /**

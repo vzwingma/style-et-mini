@@ -1,8 +1,8 @@
 import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
-import VetementCaracteristiquesModel from "../models/vetementCaracteristique.model";
-import VetementModel from "../models/vetements.model";
+import VetementCaracteristiquesModel from "../models/vetements/vetementCaracteristique.model";
+import VetementModel from "../models/vetements/vetements.model";
 import { alphanumSort } from "../components/commons/CommonsUtils";
-import VetementFiltreModel from "../models/vetementFiltre.model";
+import VetementFiltreModel from "../models/vetements/vetementFiltre.model";
 
 
 /**
