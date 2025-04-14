@@ -1,6 +1,6 @@
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
@@ -8,8 +8,10 @@ import { ParametragesItemComponent } from './parametragesItem.component';
 import { Ionicons } from '@expo/vector-icons';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort, numSort } from '../commons/CommonsUtils';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import { getParametrages } from '@/app/controllers/parametrages.controller';
+import { getParamsVetements } from '@/app/controllers/parametrages.controller';
+import { AppContext } from '@/app/services/AppContextProvider';
+import { ParametragesVetementEnum } from '@/app/constants/AppEnum';
+import { SERVICES_URL } from '@/app/constants/APIconstants';
 
 
 
@@ -21,8 +23,7 @@ export type ParametragesVetements = {
 export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
-
-
+  const { etats, setEtats, typeVetements, setTypeVetements, taillesMesures, setTaillesMesures, marques, setMarques, usages, setUsages } = useContext(AppContext)!;
 
 
   /** Reinit au moment des types de paramétrages */
@@ -34,6 +35,98 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
 
   function addParametrage() {
     setParametreInEdition("new");
+  }
+
+
+/**
+ * Récupère les paramètres génériques des vêtements en fonction du type de paramétrage fourni.
+ *
+ * @param {MenuParametragesModel} typeParametrage - Le type de paramétrage à utiliser pour récupérer les données.
+ * @returns {ParamGenericVetementsModel[] | null} - Une liste des paramètres génériques correspondants ou `null` si le type de paramétrage n'est pas reconnu.
+ */
+function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] {
+
+  switch (typeParametrage.class) {
+    case ParametragesVetementEnum.TYPES:
+      return typeVetements
+    case ParametragesVetementEnum.TAILLES:
+      return taillesMesures
+    case ParametragesVetementEnum.MARQUES:
+      return marques
+    case ParametragesVetementEnum.USAGES:
+      return usages
+    case ParametragesVetementEnum.ETATS:
+      return etats
+    default:
+      return [];
+  }
+}
+
+  /**
+   * Rafraîchit la liste des paramètres en fonction du type de paramètre spécifié.
+   *
+   * @param typeParam - Le type de paramètre à utiliser pour le rafraîchissement. 
+   *                    Il doit être une valeur de l'énumération `ParametragesVetementEnum`.
+   *
+   * Cette fonction effectue un appel à l'API pour récupérer les paramètres des vêtements
+   * en utilisant l'URL définie dans `SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS`.
+   * Les paramètres récupérés sont ensuite mis à jour via la fonction `setTypeVetements`.
+   * En cas d'erreur, celle-ci est capturée et affichée dans la console.
+   */
+  function refreshListeParametres(typeParam: ParametragesVetementEnum) {
+    const params = getParametresForRefresh(typeParam);
+    if(params === null) {
+      console.error("Erreur lors de la récupération des paramètres", typeParam);
+      return;
+    }
+    getParamsVetements({
+      urlAPIParams: params?.urlAPIParams,
+      setParams: params?.setParams,
+      setError: (e => console.error(e))
+    });
+  } 
+
+/**
+ * Récupère les paramètres nécessaires pour rafraîchir les données en fonction du type de paramétrage.
+ *
+ * @param typeParametrage - Le type de paramétrage à traiter, basé sur l'énumération `ParametragesVetementEnum`.
+ * @returns Un objet contenant :
+ * - `urlAPIParams` : L'URL du service API correspondant au type de paramétrage.
+ * - `setParams` : La fonction à appeler pour définir les paramètres.
+ * 
+ * Retourne `null` si le type de paramétrage n'est pas pris en charge.
+ */
+function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { urlAPIParams: SERVICES_URL; setParams: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[] | []>> } | null {
+  switch (typeParametrage) {
+    case ParametragesVetementEnum.TYPES:
+      return {
+        urlAPIParams: SERVICES_URL.SERVICE_PARAMS_TYPE_VETEMENTS,
+        setParams: setTypeVetements,
+      }
+    case ParametragesVetementEnum.TAILLES:
+      return {
+        urlAPIParams: SERVICES_URL.SERVICE_PARAMS_TAILLES_MESURES,
+        setParams: setTaillesMesures,
+      }
+    case ParametragesVetementEnum.MARQUES:
+      return {
+        urlAPIParams: SERVICES_URL.SERVICE_PARAMS_MARQUES,
+        setParams: setMarques,
+      }
+    case ParametragesVetementEnum.USAGES:
+      return {
+        urlAPIParams: SERVICES_URL.SERVICE_PARAMS_USAGES,
+        setParams: setUsages,
+      }
+    case ParametragesVetementEnum.ETATS:
+      return {
+        urlAPIParams: SERVICES_URL.SERVICE_PARAMS_ETATS,
+        setParams: setEtats,
+      }
+    default:
+      return null
+    };
+    
   }
 
 
@@ -57,12 +150,13 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
         }
       });
 
-      parametresVetements.forEach((item: ParamGenericVetementsModel) => {
+      parametresVetements.forEach((parametrage: ParamGenericVetementsModel) => {
         parametresListe.push(
-          <ParametragesItemComponent key={"item_" + typeParametrage.class + "_" + item.id}
+          <ParametragesItemComponent key={"item_" + typeParametrage.class + "_" + parametrage.id}
             typeParametrage={typeParametrage.class}
-            parametrageVetements={item}
-            setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition} />
+            parametrageVetements={parametrage}
+            setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition}
+            refreshListeParametresCallback= {refreshListeParametres}/>
         );
       });
     }

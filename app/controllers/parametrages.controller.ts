@@ -27,32 +27,6 @@ type FunctionCallAPIParamVetementsProps = {
 
 
 /**
- * Récupère les paramètres génériques des vêtements en fonction du type de paramétrage fourni.
- *
- * @param {MenuParametragesModel} typeParametrage - Le type de paramétrage à utiliser pour récupérer les données.
- * @returns {ParamGenericVetementsModel[] | null} - Une liste des paramètres génériques correspondants ou `null` si le type de paramétrage n'est pas reconnu.
- */
-export function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVetementsModel[] {
-
-  const { etats, typeVetements, taillesMesures, marques, usages } = useContext(AppContext)!;
-
-  switch (typeParametrage.class) {
-    case ParametragesVetementEnum.TYPES:
-      return typeVetements
-    case ParametragesVetementEnum.TAILLES:
-      return taillesMesures
-    case ParametragesVetementEnum.MARQUES:
-      return marques
-    case ParametragesVetementEnum.USAGES:
-      return usages
-    case ParametragesVetementEnum.ETATS:
-      return etats
-    default:
-      return [];
-  }
-}
-
-/**
  * Récupère tous les paramètres génériques des vêtements en effectuant des appels API pour chaque type de paramètre.
  *
  * @param {FunctionCallAPIAllParamsVetementsProps} props - Les propriétés de la fonction.

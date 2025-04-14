@@ -11,7 +11,7 @@ import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.mode
 
 export type ParametragesFormComponentProps = {
     readonly parametrageVetements: any
-    editParametrage : boolean,
+    paramIsInEdition : boolean,
     form            : ParamVetementsFormModel | null,
     setForm         : Function
 };
@@ -20,13 +20,13 @@ export type ParametragesFormComponentProps = {
  * @param typeVetements : TypeVetementsModel
  * @returns item de la liste des types de vêtements
  */
-export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps> = ({ parametrageVetements, editParametrage, form, setForm }: ParametragesFormComponentProps) => {
+export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps> = ({ parametrageVetements, paramIsInEdition, form, setForm }: ParametragesFormComponentProps) => {
 
 
     return (<>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Nom") : "Nom"}</ThemedText>
-                {!editParametrage ? 
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Nom") : "Nom"}</ThemedText>
+                {!paramIsInEdition ? 
                     <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.libelle}</ThemedText>
                 :
                     <TextInput style={stylesForm.input}
@@ -36,9 +36,9 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                 }
             </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Catégories") : "Catégories"}</ThemedText>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Catégories") : "Catégories"}</ThemedText>
                 <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!editParametrage ? 
+                    {!paramIsInEdition ? 
                         parametrageVetements.categories?.map((categorie: CategorieDressingEnum) => {
                             return renderSelectedItem({ id: categorie, libelle: categorie }, null);
                         }) ?? ''
@@ -60,9 +60,9 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
             </View>
             {(form?.type || parametrageVetements.type) &&
                 <View style={stylesForm.rowItems}>
-                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Type") : "Type"}</ThemedText>
+                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Type") : "Type"}</ThemedText>
                     <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!editParametrage ? 
+                    {!paramIsInEdition ? 
                             renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type }, null)
                         :
                     <Dropdown
@@ -81,9 +81,9 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
             }
             {(form?.tri || parametrageVetements.tri) &&
                 <View style={stylesForm.rowItems}>
-                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{editParametrage ? renderLabelMandatory("Tri") : "Tri"}</ThemedText>
+                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Tri") : "Tri"}</ThemedText>
                     <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!editParametrage ? 
+                    {!paramIsInEdition ? 
                         <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.tri}</ThemedText>
                     :
                         <TextInput style={stylesForm.input}

@@ -14,8 +14,9 @@ import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetement
 export type ParametragesItemComponentProps = {
     readonly parametrageVetements   : ParamGenericVetementsModel
     readonly typeParametrage        : ParametragesVetementEnum
-    setParametreInEdition           : (idParametre: string | null) => void
-    parametreInEdition              : string | null
+    setParametreInEdition           : (idParametreToEdit: string | null) => void
+    parametreInEdition              : string | null,
+    refreshListeParametresCallback  : (typeParam: ParametragesVetementEnum) => void
 };
 /**
  * 
@@ -23,28 +24,30 @@ export type ParametragesItemComponentProps = {
  * @returns item de la liste des types de vêtements
  */
 export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage, 
-    setParametreInEdition, parametreInEdition }: ParametragesItemComponentProps) => {
+    setParametreInEdition, parametreInEdition, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
 
-    const [editParametrage, setEditParametrage] = useState(false);
     const [form, setForm] = useState({} as ParamVetementsFormModel | null);
 
+
+    function editParametrageItem(edit: boolean) {
+        setParametreInEdition(edit ? parametrageVetements.id : null);
+    }
+
+
     useEffect(() => {
-        setParametreInEdition(editParametrage ? parametrageVetements.id : null);
-        if(editParametrage) {
+        if(parametreInEdition !== null) {
             initForm(typeParametrage, parametrageVetements, setForm)
         }
         else {
             setForm(null);
         }
 
-    }, [editParametrage]);
+    }, [parametreInEdition]);
 
 
     const isSelected = parametreInEdition !== null && parametreInEdition === parametrageVetements.id;
     const isUnselected = parametreInEdition !== null && parametreInEdition !== parametrageVetements.id;
     const isLibelleMarqueAutres = parametrageVetements.libelle === '... Autres';
-
-
 
     return (
         <View style={[styles.container, 
@@ -54,17 +57,17 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
             <View style={styles.title}>
                 <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
-                { !editParametrage && !isUnselected && !isLibelleMarqueAutres &&
-                <Pressable onPress={() => setEditParametrage(true)}>
+                { parametreInEdition === null && !isLibelleMarqueAutres &&
+                <Pressable onPress={() => editParametrageItem(true)}>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
-                { editParametrage &&
-                <Pressable onPress={() => validateForm(form, setEditParametrage, setForm )}>
+                { isSelected &&
+                <Pressable onPress={() => validateForm(form, setParametreInEdition, refreshListeParametres)}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
                 </Pressable> 
                 }
-                { editParametrage && 
-                <Pressable onPress={() => razAndCloseForm(form, setEditParametrage, setForm)}>
+                { isSelected && 
+                <Pressable onPress={() => razAndCloseForm(setParametreInEdition)}>
                     <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
                 </Pressable>
                 }
@@ -74,7 +77,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
             <ParametragesFormComponent
                 key={"form_"+typeParametrage+"_" + parametrageVetements.id}
                 parametrageVetements={parametrageVetements}
-                editParametrage={editParametrage}
+                paramIsInEdition={parametreInEdition !== null}
                 form={form} 
                 setForm={setForm}/>
         </View>
