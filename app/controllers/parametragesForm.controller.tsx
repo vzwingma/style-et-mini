@@ -46,9 +46,9 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypeForm(type: TypeTailleEnum, setForm: Function) {
+export function setTypeForm(type: { id : TypeTailleEnum, libelle: string}, setForm: Function) {
     setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, type: type }
+        return { ...form, isModified: true, type: type.id }
     });
 }
 
@@ -58,6 +58,7 @@ export function setTypeForm(type: TypeTailleEnum, setForm: Function) {
  * @param setForm fonction de mise à jour du formulaire
  */
 export function setCategoriesForm(categories: string[], setForm: Function) {
+    
     setForm((form: ParamVetementsFormModel) => {
         return { ...form, isModified: true, categories: categories }
     });
@@ -116,6 +117,7 @@ export function razAndCloseForm(setParametreInEdition: (idParametreToEdit: strin
     } */
     setParametreInEdition(null);
 }
+
 
 
 let errors = false;

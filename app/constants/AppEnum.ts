@@ -92,8 +92,8 @@ export enum TypeTailleEnum {
   CHAUSSURES  = 'CHAUSSURES'
 }
 
-export function getLibelleTypeTailleEnum(enumTille: TypeTailleEnum): string  {
-  switch (enumTille) {
+export function getLibelleTypeTailleEnum(enumTaille: TypeTailleEnum): string  {
+  switch (enumTaille) {
     case TypeTailleEnum.VETEMENTS:
       return "Vêtements";
     case TypeTailleEnum.CHAUSSURES:

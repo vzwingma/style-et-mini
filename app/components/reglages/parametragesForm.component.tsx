@@ -52,7 +52,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                             iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.categoriesInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
                             mode='modal'
-                            data={Object.values(CategorieDressingEnum).map(saison => ({ id: saison, libelle: saison }))}
+                            data={Object.values(CategorieDressingEnum).map(categorie => ({ id: categorie, libelle: categorie }))}
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.categoriesInError ? 'Selectionnez des catégories' : errorsForm?.categoriesMessage + ''}
                             value={form?.categories?.map((categorie: CategorieDressingEnum) => (categorie.toString())) ?? []}
@@ -83,7 +83,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                 </View>
             </View>
         }
-        {(form?.tri || parametrageVetements.tri) &&
+        {(form?.tri !== undefined || parametrageVetements.tri !== undefined) &&
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Tri") : "Tri"}</ThemedText>
                 <View style={[stylesForm.filtre, stylesForm.rowItems]}>
