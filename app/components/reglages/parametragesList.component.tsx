@@ -33,12 +33,6 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
   }, [typeParametrage]);
 
 
-
-  function addParametrage() {
-    setParametreInEdition(ID_NEW_ELEMENT);
-  }
-
-
 /**
  * Récupère les paramètres génériques des vêtements en fonction du type de paramétrage fourni.
  *
@@ -80,6 +74,7 @@ function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVe
       console.error("Erreur lors de la récupération des paramètres", typeParam);
       return;
     }
+    setParametreInEdition(null);
     getParamsVetements({
       urlAPIParams: params?.urlAPIParams,
       setParams: params?.setParams,
@@ -190,7 +185,7 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
           <ThemedText type="subtitle">{typeParametrage.titre}</ThemedText>
         </View>
 
-        <Pressable onPress={() => addParametrage()}>
+        <Pressable onPress={() => setParametreInEdition(ID_NEW_ELEMENT)}>
           <Ionicons size={20} name="add-outline" style={style2s.titleIcon} />
         </Pressable>
       </View>

@@ -65,7 +65,7 @@ export const menusParametrages : { [key: string]: MenuParametragesModel[] } = {
         icone: require('@/assets/icons/brand-outline.png'),
         class: ParametragesVetementEnum.MARQUES }],
     "Dressing": [
-      { titre: 'Dressing', 
+      { titre: 'Garde robe', 
          icone: require('@/assets/icons/clothes-outline.png'),
         class: ParametragesVetementEnum.DRESSING },
     ]
