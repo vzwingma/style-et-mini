@@ -16,7 +16,7 @@ export type FormModelProps = {
     form: FormVetementModel,
     setForm: Function,
     setErrorsForm: Function,
-    onCloseForm: Function
+    closeFormCallBack : ()=> void
 };
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -86,8 +86,8 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
-    setForm: Function,
-    { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) {
+                         setForm: Function,
+                        { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) {
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
 
@@ -322,10 +322,11 @@ export function setPrixAchatForm(prix: string, setForm: Function) {
 export function razAndcloseForm(
     form: FormVetementModel,
     setForm: Function,
-    setErrorsForm: Function, onCloseForm: Function) {
+    setErrorsForm: Function, 
+    onCloseForm: Function) {
     initForm(form?.dressing, null, setForm, {});
     setErrorsForm(null);
-    onCloseForm();
+    onCloseForm(null);
 }
 
 
@@ -333,7 +334,7 @@ export function razAndcloseForm(
  * sauvegarde du vêtement
  * @param form formulaire à sauvegarder
  */
-function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
+function saveVetement({ form, setForm, setErrorsForm, closeFormCallBack }: FormModelProps) {
 
     let params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
@@ -359,7 +360,7 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
                             if (vetement.image) {
                                 vetement.image.s3uri = uriImage;
                             }
-                            saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, onCloseForm });
+                            saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, closeFormCallBack });
                         })
                         .catch((e) => {
                             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -378,7 +379,7 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
 
     }
     else {
-        saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, onCloseForm });
+        saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, closeFormCallBack });
     }
 }
 
@@ -403,7 +404,7 @@ function saveVetement({ form, setForm, setErrorsForm, onCloseForm }: FormModelPr
  * @throws Une erreur est affichée dans la console et une notification est montrée
  * si l'appel au backend échoue.
  */
-function saveVetementAttributs(vetement : VetementModel, params : { key: SERVICES_PARAMS; value: string; }[], { form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
+function saveVetementAttributs(vetement : VetementModel, params : { key: SERVICES_PARAMS; value: string; }[], { form, setForm, setErrorsForm, closeFormCallBack }: FormModelProps) {
     
     const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
     console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
@@ -413,7 +414,7 @@ function saveVetementAttributs(vetement : VetementModel, params : { key: SERVICE
         .then((response) => {
             console.log("Attributs du vêtement enregistrés avec succès", response);
             showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
-            razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
+            razAndcloseForm(form, setForm, setErrorsForm, closeFormCallBack);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -434,7 +435,7 @@ let errors = false;
 export function validateForm(form: FormVetementModel | null,
     setForm: Function,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    onCloseForm: Function) {
+    closeFormCallBack: ()=> void) {
 
     console.log("Validation du formulaire", form);
     errors = false;
@@ -473,7 +474,7 @@ export function validateForm(form: FormVetementModel | null,
 
     if (!errors) {
         // Enregistrement du formulaire 
-        saveVetement({ form, setForm, setErrorsForm, onCloseForm });
+        saveVetement({ form, setForm, setErrorsForm, closeFormCallBack });
     }
 }
 /**
@@ -504,13 +505,13 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm({ form, setForm, setErrorsForm, onCloseForm }: FormModelProps) {
+export function archiveForm({ form, setForm, setErrorsForm, closeFormCallBack }: FormModelProps) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
-    saveVetement({ form, setForm, setErrorsForm, onCloseForm });
+    saveVetement({ form, setForm, setErrorsForm, closeFormCallBack });
 
 }
 

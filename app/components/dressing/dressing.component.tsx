@@ -41,7 +41,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
     // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
     if (openVetementForm) return;
     loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
-  }, [openVetementForm, dressing.id]);
+  }, [openVetementForm]);
 
   // Changement de l'état du formulaire de vêtement si le dressing change
   useEffect(() => {
@@ -82,7 +82,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
             onBackButtonPress={() => setOpenVetementForm(false)}
             onBackdropPress={() => setOpenVetementForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
+            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={toggleOpenVetementForm}></VetementFormComponent>
 
           </Modal>
         </>);

@@ -3,11 +3,11 @@ import { ThemedText } from "../commons/views/ThemedText";
 import { CategorieDressingEnum, getLibelleTypeTailleEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
-import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementForm.component";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import ErrorsFormParametrageModel from "@/app/models/params/form.errors.params.model";
+import { renderLabelMandatory, renderSelectedItem } from "../commons/CommonsUtils";
 
 
 export type ParametragesFormComponentProps = {

@@ -21,6 +21,19 @@ export type ParametragesVetements = {
   closeDrawer: () => void;
 };
 
+/**
+ * Composant React représentant une liste de paramètres pour les vêtements.
+ * 
+ * Ce composant affiche une liste de paramètres en fonction du type de paramétrage sélectionné.
+ * Il permet également d'ajouter, de modifier ou de rafraîchir les paramètres via des interactions utilisateur.
+ * 
+ * @param {ParametragesVetements} props - Les propriétés du composant.
+ * @param {MenuParametragesModel} props.typeParametrage - Le type de paramétrage à afficher (types, tailles, marques, usages, états).
+ * @param {() => void} props.closeDrawer - Fonction de rappel pour fermer le panneau latéral.
+ * 
+ * @returns {React.FC<ParametragesVetements>} Un composant React fonctionnel affichant la liste des paramètres.
+ * 
+ */
 export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);

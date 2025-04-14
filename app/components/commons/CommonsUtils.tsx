@@ -1,6 +1,10 @@
+import { Pressable, View } from "react-native";
 import { API_S3_URL } from "../../constants/APIconstants";
 import VetementImageModel from "../../models/vetements/vetements.image.model";
 import VetementModel from "../../models/vetements/vetements.model";
+import { ThemedText } from "./views/ThemedText";
+import { Ionicons } from "@expo/vector-icons";
+import { styles } from "../dressing/vetementForm.styles";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
@@ -205,3 +209,36 @@ export function getTypeVetementIcon(typeVetements: string): any {
             return require('@/assets/icons/clothes-outline.png');
     }
 }
+
+
+
+/**
+ * Retourne un élément JSX avec une étiquette obligatoire.
+ *
+ * @param {string} label - Le texte de l'étiquette.
+ * @returns {React.JSX.Element} Un élément JSX contenant l'étiquette avec un astérisque rouge pour indiquer qu'elle est obligatoire.
+ */
+export const renderLabelMandatory = (label: string): React.JSX.Element => {
+    return (<><ThemedText style={{ color: 'red' }}>* </ThemedText><ThemedText>{label}</ThemedText></>);
+}
+
+
+/**
+ * Rendu d'un élément sélectionné avec une option de désélection.
+ *
+ * @param {any} item - L'élément sélectionné à afficher.
+ * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
+ * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
+ */
+export const renderSelectedItem = (item: any, unSelect?: any): React.JSX.Element => (
+    <Pressable
+        style={styles.selectedStyle}
+        onPress={() => unSelect?.(item)}>
+        <View style={styles.rowItems}>
+            <ThemedText type="default">{item.libelle} </ThemedText>
+            {unSelect &&
+                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+            }
+        </View>
+    </Pressable>
+);
