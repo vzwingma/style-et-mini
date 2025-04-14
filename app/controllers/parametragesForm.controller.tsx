@@ -101,7 +101,7 @@ export function setTriForm(tri: string, setForm: Function) {
  */
 export function razAndCloseForm(setParametreInEdition: (idParametreToEdit: string | null) => void) {
     /*
-    TODO : A revoir Modal in modal
+
     if(form?.isModified) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous annuler vos modifications ?'}
             ackModalCallback={() => {
