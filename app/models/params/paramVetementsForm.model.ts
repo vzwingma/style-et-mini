@@ -42,6 +42,7 @@ export function initNewForm(typeParametrage : ParametragesVetementEnum) : ParamV
             break;
         case ParametragesVetementEnum.ETATS:
             form = { ...form, tri: 0 };
+            break;
         default:
             break;
     }
@@ -86,6 +87,7 @@ export function transformFormToParamVetements(form: ParamVetementsFormModel, typ
             break;
         case ParametragesVetementEnum.ETATS:
             parametreVetements = { ...parametreVetements, tri: form.tri };
+            break;
         default:
             break;
     }
@@ -107,7 +109,7 @@ export function tranformParamVetementToForm(typeParametrage : ParametragesVeteme
         categories  : parametreVetements.categories,
         type        : parametreVetements.type,
         tri         : parametreVetements.tri,
-        isModified  : parametreVetements.id === ID_NEW_ELEMENT ? true : false,
+        isModified  : parametreVetements.id === ID_NEW_ELEMENT,
     } as ParamVetementsFormModel;
 }
 

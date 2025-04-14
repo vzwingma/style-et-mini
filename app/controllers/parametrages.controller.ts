@@ -1,11 +1,8 @@
 import { callGETBackend } from "../services/ClientHTTP.service";
 import { SERVICES_URL } from "../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
-import { SetStateAction, useContext } from "react";
+import { SetStateAction } from "react";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
-import MenuParametragesModel from "../models/params/menuParametrage.model";
-import { ParametragesVetementEnum } from "../constants/AppEnum";
-import { AppContext } from "../services/AppContextProvider";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPIAllParamsVetementsProps = {

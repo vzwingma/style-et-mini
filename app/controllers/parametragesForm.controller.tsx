@@ -163,7 +163,7 @@ export function validateForm(form: ParamVetementsFormModel | null,
     };
 
     if (form.typeParam === ParametragesVetementEnum.TAILLES || form.typeParam === ParametragesVetementEnum.ETATS) {
-        validateAttribute("tri", form.tri === null || isNaN(form.tri ? form.tri : NaN)
+        validateAttribute("tri", form.tri === null || isNaN(form.tri ?? NaN)
             , setErrorsForm);
     }
     if (!errors) {
@@ -190,16 +190,12 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>) {
     if (attributeCheckFail) {
         errors = true;
-        setErrorsForm((errors: ErrorsFormParametrageModel) => {
-            return { ...errors, [attributeName + "InError"]: true }
-        });
     }
-    else {
-        setErrorsForm((errors: ErrorsFormParametrageModel) => {
-            return { ...errors, [attributeName + "InError"]: false }
-        });
-    }
+    setErrorsForm((errors: ErrorsFormParametrageModel) => {
+        return { ...errors, [attributeName + "InError"]: attributeCheckFail }
+    });
 }
+
 
 /**
  * Enregistre les paramètres d'un vêtement en appelant le backend.

@@ -3,11 +3,10 @@ import Modal from 'react-native-modal';
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import { menusParametrages, ParametragesVetementEnum } from '../../constants/AppEnum';
+import { menusParametrages } from '../../constants/AppEnum';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
-import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 import { getAllParamsVetements } from '@/app/controllers/parametrages.controller';
 
 /**
