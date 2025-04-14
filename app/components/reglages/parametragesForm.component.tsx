@@ -10,10 +10,10 @@ import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.mode
 
 
 export type ParametragesFormComponentProps = {
-    readonly parametrageVetements: any
-    paramIsInEdition : boolean,
-    form            : ParamVetementsFormModel | null,
-    setForm         : Function
+    readonly parametrageVetements   : any
+    paramIsInEdition                : boolean,
+    form                            : ParamVetementsFormModel | null,
+    setForm                         : Function
 };
 /**
  * 
@@ -23,78 +23,78 @@ export type ParametragesFormComponentProps = {
 export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps> = ({ parametrageVetements, paramIsInEdition, form, setForm }: ParametragesFormComponentProps) => {
 
 
-    return (<>
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Nom") : "Nom"}</ThemedText>
-                {!paramIsInEdition ? 
-                    <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.libelle}</ThemedText>
+    return (<View key={"form_" + parametrageVetements.id}>
+        <View style={stylesForm.rowItems}>
+            <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Nom") : "Nom"}</ThemedText>
+            {!paramIsInEdition ?
+                <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.libelle}</ThemedText>
                 :
-                    <TextInput style={stylesForm.input}
-                        value={form?.libelle ?? ''}
-                        placeholder={'Indiquez le nom'}
-                        onChangeText={libelle => setLibelleForm(libelle, setForm)} />
+                <TextInput style={stylesForm.input}
+                    value={form?.libelle ?? ''}
+                    placeholder={'Indiquez le nom'}
+                    onChangeText={libelle => setLibelleForm(libelle, setForm)} />
+            }
+        </View>
+        <View style={stylesForm.rowItems}>
+            <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Catégories") : "Catégories"}</ThemedText>
+            <View style={[stylesForm.filtre, stylesForm.rowItems]}>
+                {!paramIsInEdition ?
+                    parametrageVetements.categories?.map((categorie: CategorieDressingEnum) => {
+                        return renderSelectedItem({ id: categorie, libelle: categorie }, null);
+                    }) ?? ''
+                    : <View style={{ width: '100%' }}>
+                        <MultiSelect
+                            style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                            selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
+                            mode='modal'
+                            data={Object.values(CategorieDressingEnum).map(saison => ({ id: saison, libelle: saison }))}
+                            labelField="libelle" valueField="id"
+                            placeholder={'Sélectionner des catégories'}
+                            value={form?.categories?.map((categorie: CategorieDressingEnum) => (categorie.toString())) ?? []}
+                            onChange={item => { setCategoriesForm(item, setForm) }}
+                            renderSelectedItem={renderSelectedItem}
+                        /></View>
                 }
             </View>
+        </View>
+        {(form?.type || parametrageVetements.type) &&
             <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Catégories") : "Catégories"}</ThemedText>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Type") : "Type"}</ThemedText>
                 <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!paramIsInEdition ? 
-                        parametrageVetements.categories?.map((categorie: CategorieDressingEnum) => {
-                            return renderSelectedItem({ id: categorie, libelle: categorie }, null);
-                        }) ?? ''
-                    :<View style={{ width: '100%' }}>
-                    <MultiSelect
-                        style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                        iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                        selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
-                        mode='modal'
-                        data={Object.values(CategorieDressingEnum).map(saison => ({ id: saison, libelle: saison }))}
-                        labelField="libelle" valueField="id"
-                        placeholder={'Sélectionner des catégories'}
-                        value={form?.categories?.map((categorie : CategorieDressingEnum) => (categorie.toString())) ?? []}
-                        onChange={item => { setCategoriesForm(item, setForm)}}
-                        renderSelectedItem={renderSelectedItem}
-                    /></View>
-                     }
+                    {!paramIsInEdition ?
+                        renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type }, null)
+                        :
+                        <Dropdown
+                            style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                            mode='modal'
+                            data={Object.values(TypeTailleEnum).map(type => ({ id: type, libelle: getLibelleTypeTailleEnum(type) }))}
+                            labelField="libelle" valueField="id"
+                            placeholder={'Sélectionner un type : Chaussure ou Vêtement'}
+                            value={form?.type}
+                            onChange={item => setTypeForm(item, setForm)}
+                        />
+                    }
                 </View>
             </View>
-            {(form?.type || parametrageVetements.type) &&
-                <View style={stylesForm.rowItems}>
-                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Type") : "Type"}</ThemedText>
-                    <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!paramIsInEdition ? 
-                            renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type }, null)
-                        :
-                    <Dropdown
-                        style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                        iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                        mode='modal'
-                        data={Object.values(TypeTailleEnum).map(type => ({ id: type, libelle: getLibelleTypeTailleEnum(type) }))}
-                        labelField="libelle" valueField="id"
-                        placeholder={'Sélectionner un type : Chaussure ou Vêtement'}
-                        value={form?.type}
-                        onChange={item => setTypeForm(item, setForm)}
-                    />
-                     }
-                    </View>
-                </View>
-            }
-            {(form?.tri || parametrageVetements.tri) &&
-                <View style={stylesForm.rowItems}>
-                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Tri") : "Tri"}</ThemedText>
-                    <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!paramIsInEdition ? 
+        }
+        {(form?.tri || parametrageVetements.tri) &&
+            <View style={stylesForm.rowItems}>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Tri") : "Tri"}</ThemedText>
+                <View style={[stylesForm.filtre, stylesForm.rowItems]}>
+                    {!paramIsInEdition ?
                         <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.tri}</ThemedText>
-                    :
+                        :
                         <TextInput style={stylesForm.input}
                             value={form?.tri?.toString() ?? ''}
                             placeholder={'Indiquez le rang de tri'}
                             keyboardType="numeric"
                             onChangeText={tri => setTriForm(tri, setForm)} />
                     }
-                    </View>
                 </View>
-            }
-        </>
+            </View>
+        }
+    </View>
     );
 };

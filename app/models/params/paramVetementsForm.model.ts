@@ -1,4 +1,4 @@
-import { CategorieDressingEnum, ParametragesVetementEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
+import { CategorieDressingEnum, ID_NEW_ELEMENT, ParametragesVetementEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "./paramGenericVetements.model";
 
 /**
@@ -15,6 +15,38 @@ interface ParamVetementsFormModel {
 
 }
 
+
+/**
+ * Transforme un objet de type `ParamGenericVetementsModel` en un objet de type `ParamVetementsFormModel`.
+ *
+ * @param typeParametrage - Le type de paramétrage associé, de type `ParametragesVetementEnum`.
+ * @param parametreVetements - L'objet contenant les paramètres génériques des vêtements, de type `ParamGenericVetementsModel`.
+ * @returns Un objet de type `ParamVetementsFormModel` contenant les informations transformées.
+ */
+export function initNewForm(typeParametrage : ParametragesVetementEnum) : ParamVetementsFormModel {
+    let form : ParamVetementsFormModel = {
+        id          : ID_NEW_ELEMENT,
+        typeParam   : typeParametrage,
+        libelle     : "",
+        categories  : [],
+        isModified  : false,
+    } as ParamVetementsFormModel;
+
+    switch (typeParametrage) {
+        case ParametragesVetementEnum.TAILLES:
+            form = { ...form, type: TypeTailleEnum.VETEMENTS, tri: 0 };
+            break;
+        case ParametragesVetementEnum.TYPES:
+        case ParametragesVetementEnum.MARQUES:
+            form = { ...form, type: TypeTailleEnum.VETEMENTS };
+            break;
+        case ParametragesVetementEnum.ETATS:
+            form = { ...form, tri: 0 };
+        default:
+            break;
+    }
+    return form;
+}
 
 
 /**
@@ -38,7 +70,7 @@ export function transformFormToParamVetements(form: ParamVetementsFormModel, typ
 
     // recopie des éléments communs
     let parametreVetements = {
-        id         : form.id,
+        id         : form.id === ID_NEW_ELEMENT ? null : form.id,
         libelle    : form.libelle,
         categories : form.categories,
     } as ParamGenericVetementsModel;

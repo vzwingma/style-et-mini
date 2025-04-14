@@ -10,8 +10,9 @@ import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort, numSort } from '../commons/CommonsUtils';
 import { getParamsVetements } from '@/app/controllers/parametrages.controller';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { ParametragesVetementEnum } from '@/app/constants/AppEnum';
+import { ID_NEW_ELEMENT, ParametragesVetementEnum } from '@/app/constants/AppEnum';
 import { SERVICES_URL } from '@/app/constants/APIconstants';
+import { initNewForm } from '@/app/models/params/paramVetementsForm.model';
 
 
 
@@ -34,7 +35,7 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
 
 
   function addParametrage() {
-    setParametreInEdition("new");
+    setParametreInEdition(ID_NEW_ELEMENT);
   }
 
 
@@ -149,6 +150,18 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
           return alphanumSort(v1.libelle, v2.libelle)
         }
       });
+
+
+      if(parametreInEdition !== null && parametreInEdition === ID_NEW_ELEMENT) {
+        parametresListe.push(
+          <ParametragesItemComponent key={"item_" + typeParametrage.class + "_" + parametreInEdition}
+            typeParametrage={typeParametrage.class}
+            parametrageVetements={initNewForm(typeParametrage.class)}
+            setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition}
+            refreshListeParametresCallback= {refreshListeParametres}/>
+        );
+      }
+
 
       parametresVetements.forEach((parametrage: ParamGenericVetementsModel) => {
         parametresListe.push(

@@ -51,7 +51,7 @@ export async function getAllParamsVetements({ setTypeVetements, setTaillesMesure
 
   setIsLoading(true);
   const loadDataParametrages = await Promise.all(types.map(async (type) => { return await getParamsVetements({ urlAPIParams: type.url, setParams: type.setter, setError }) }));
-  console.log(loadDataParametrages.filter(p => p === true).flat().length + " types de paramètres chargés.", loadDataParametrages);
+  console.log(loadDataParametrages.filter(p => p === true).flat().length + " types de paramètres chargés.");
   setIsLoading(false);
 }
 

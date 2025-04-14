@@ -5,7 +5,7 @@ export const APP_MOBILE_VERSION = Constants.expoConfig?.version ?? "0.0.0";
 export const APP_MOBILE_NAME = "Style et Mini";
 
 
-
+export const ID_NEW_ELEMENT = "-1::NEW"; // ID d'un nouvel élément à ajouter
 /**
  * Enumération représentant les différentes caractéristiques d'un vêtement.
  * 

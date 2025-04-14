@@ -1,5 +1,5 @@
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import { getUrlAPIParametres, SERVICES_PARAMS } from "../constants/APIconstants";
+import { getUrlAPIParametres, KeyValueParams, SERVICES_PARAMS } from "../constants/APIconstants";
 import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
@@ -156,11 +156,10 @@ function saveParametresVetement(form: ParamVetementsFormModel): Promise<Parametr
 
         const isEdition = (paramVetement.id !== null && paramVetement.id !== "" && paramVetement.id !== undefined);
         console.log((isEdition ? "Mise à jour" : "Création") + " du paramètre", form.typeParam, paramVetement);
-
-        let params = [
-            { key: SERVICES_PARAMS.ID_PARAM, value: String(form.id) },
-        ];
-
+        let params;
+        if(isEdition) {
+            params = [{ key: SERVICES_PARAMS.ID_PARAM, value: String(paramVetement.id) }];
+        }
         //  Appel au backend pour sauvegarder le vêtement
         callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
             .then((response) => {

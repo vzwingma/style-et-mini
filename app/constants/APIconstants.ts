@@ -1,5 +1,5 @@
 import ParamVetementsFormModel from "../models/params/paramVetementsForm.model";
-import { ParametragesVetementEnum } from "./AppEnum";
+import { ID_NEW_ELEMENT, ParametragesVetementEnum } from "./AppEnum";
 
 
 /**
@@ -92,7 +92,7 @@ export function getUrlAPIParametres(form: ParamVetementsFormModel) : SERVICES_UR
             console.error("Type de paramètre inconnu", form.typeParam);
             return null;
     };
-    if(form.id !== null && form.id !== undefined && form.id !== "") {
+    if(form.id !== null && form.id !== undefined && form.id !== ID_NEW_ELEMENT) {
         url = url + "/" + SERVICES_PARAMS.ID_PARAM;
     }
     return url as SERVICES_URL;

@@ -11,6 +11,12 @@ import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 
 
+/**
+ * * @description Composant d'un item de la liste des paramètres
+ * @param {ParametragesItemComponentProps} props - Propriétés du composant
+ * @returns {JSX.Element} - Composant d'un item de la liste des paramètres
+ * @component
+ */
 export type ParametragesItemComponentProps = {
     readonly parametrageVetements   : ParamGenericVetementsModel
     readonly typeParametrage        : ParametragesVetementEnum
@@ -18,21 +24,17 @@ export type ParametragesItemComponentProps = {
     parametreInEdition              : string | null,
     refreshListeParametresCallback  : (typeParam: ParametragesVetementEnum) => void
 };
+
+
 /**
  * 
- * @param typeVetements : TypeVetementsModel
- * @returns item de la liste des types de vêtements
+ * @param param0 : ParametragesItemComponentProps
+ * @returns Composant d'un item de la liste des paramètres
  */
 export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage, 
     setParametreInEdition, parametreInEdition, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
 
     const [form, setForm] = useState({} as ParamVetementsFormModel | null);
-
-
-    function editParametrageItem(edit: boolean) {
-        setParametreInEdition(edit ? parametrageVetements.id : null);
-    }
-
 
     useEffect(() => {
         if(parametreInEdition !== null) {
@@ -58,7 +60,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
                 <View style={stylesForm.rowItems}>
                 { parametreInEdition === null && !isLibelleMarqueAutres &&
-                <Pressable onPress={() => editParametrageItem(true)}>
+                <Pressable onPress={() => setParametreInEdition(parametrageVetements.id)}>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
                 { isSelected &&
@@ -77,7 +79,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
             <ParametragesFormComponent
                 key={"form_"+typeParametrage+"_" + parametrageVetements.id}
                 parametrageVetements={parametrageVetements}
-                paramIsInEdition={parametreInEdition !== null}
+                paramIsInEdition={isSelected}
                 form={form} 
                 setForm={setForm}/>
         </View>
