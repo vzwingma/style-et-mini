@@ -4,54 +4,54 @@
  */
 interface ErrorsFormVetementModel {
     libelleInError  : boolean;
-    libelleMessage  : string | null;
+    readonly libelleMessage  : string;
 
     typeInError  : boolean;
-    typeMessage  : string | null;
+    readonly typeMessage  : string;
 
     tailleInError  : boolean;
-    tailleMessage  : string | null;
+    readonly tailleMessage  : string;
 
     usageInError  : boolean;
-    usageMessage  : string | null;
+    readonly usageMessage  : string;
 
     marqueInError  : boolean;
-    marqueMessage  : string | null;
+    readonly marqueMessage  : string;
 
     etatInError  : boolean;
-    etatMessage  : string | null; 
+    readonly etatMessage  : string; 
     
     prixNeufInError  : boolean;
-    prixNeufMessage  : string | null;
+    readonly prixNeufMessage  : string;
 
     prixAchatInError  : boolean;
-    prixAchatMessage  : string | null;
+    readonly prixAchatMessage  : string;
 }
 
 export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
     libelleInError  : false,
-    libelleMessage  : null,
+    libelleMessage  : "Le libellé du vêtement est obligatoire",
     
     typeInError     : false,
-    typeMessage     : null,
+    typeMessage     : "Le type de vêtement est obligatoire",
     
     tailleInError   : false,
-    tailleMessage   : null,
+    tailleMessage   : "La taille du vêtement est obligatoire",
     
     usageInError    : false,
-    usageMessage    : null,
+    usageMessage    : "Au moins un usage est obligatoire",
 
     marqueInError   : false,
-    marqueMessage   : null,
+    marqueMessage   : "La marque est obligatoire",
 
     etatInError     : false,
-    etatMessage     : null,
+    etatMessage     : "L'état du vêtement est obligatoire",
 
     prixNeufInError : false,
-    prixNeufMessage : null,
+    prixNeufMessage : "Le prix neuf doit être au format numérique",
 
     prixAchatInError: false,
-    prixAchatMessage: null
+    prixAchatMessage: "Le prix d'achat doit être au format numérique"
 }
 
 export default ErrorsFormVetementModel;

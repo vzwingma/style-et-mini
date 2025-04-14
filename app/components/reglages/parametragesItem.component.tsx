@@ -9,6 +9,7 @@ import { ParametragesFormComponent } from "./parametragesForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
+import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/form.errors.params.model";
 
 
 /**
@@ -35,7 +36,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     setParametreInEdition, parametreInEdition, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
 
     const [form, setForm] = useState({} as ParamVetementsFormModel | null);
-
+    const [errorsForm, setErrorsForm] = useState<ErrorsFormParametrageModel>(defaultErrorsFormParametrageModel);
     useEffect(() => {
         if(parametreInEdition !== null) {
             initForm(typeParametrage, parametrageVetements, setForm)
@@ -64,7 +65,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                     <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
                 </Pressable> }
                 { isSelected &&
-                <Pressable onPress={() => validateForm(form, setParametreInEdition, refreshListeParametres)}>
+                <Pressable onPress={() => validateForm(form, setErrorsForm, setParametreInEdition, refreshListeParametres)}>
                     <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
                 </Pressable> 
                 }
@@ -81,7 +82,9 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 parametrageVetements={parametrageVetements}
                 paramIsInEdition={isSelected}
                 form={form} 
-                setForm={setForm}/>
+                setForm={setForm}
+                errorsForm={errorsForm}
+                setErrorsForm={setErrorsForm}/>
         </View>
     );
 };

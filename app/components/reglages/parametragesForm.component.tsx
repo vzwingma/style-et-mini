@@ -7,20 +7,24 @@ import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementFo
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
+import ErrorsFormParametrageModel from "@/app/models/form.errors.params.model";
 
 
 export type ParametragesFormComponentProps = {
     readonly parametrageVetements   : any
     paramIsInEdition                : boolean,
     form                            : ParamVetementsFormModel | null,
-    setForm                         : Function
+    setForm                         : React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>,
+    errorsForm                      : ErrorsFormParametrageModel | null,
+    setErrorsForm                   : React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>
 };
 /**
  * 
  * @param typeVetements : TypeVetementsModel
  * @returns item de la liste des types de vêtements
  */
-export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps> = ({ parametrageVetements, paramIsInEdition, form, setForm }: ParametragesFormComponentProps) => {
+export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps> = ({ parametrageVetements, paramIsInEdition, 
+    form, setForm, errorsForm, setErrorsForm }: ParametragesFormComponentProps) => {
 
 
     return (<View key={"form_" + parametrageVetements.id}>
@@ -29,10 +33,10 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
             {!paramIsInEdition ?
                 <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.libelle}</ThemedText>
                 :
-                <TextInput style={stylesForm.input}
+                <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                     value={form?.libelle ?? ''}
-                    placeholder={'Indiquez le nom'}
-                    onChangeText={libelle => setLibelleForm(libelle, setForm)} />
+                    placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom du paramètre' : errorsForm?.libelleMessage + ''}
+                    onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
             }
         </View>
         <View style={stylesForm.rowItems}>

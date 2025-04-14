@@ -1,6 +1,7 @@
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import { getUrlAPIParametres, KeyValueParams, SERVICES_PARAMS } from "../constants/APIconstants";
+import { getUrlAPIParametres, SERVICES_PARAMS } from "../constants/APIconstants";
 import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
+import ErrorsFormParametrageModel from "../models/form.errors.params.model";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
 import { callPOSTBackend } from "../services/ClientHTTP.service";
@@ -24,9 +25,18 @@ export function initForm(typeParametrage: ParametragesVetementEnum, parametreVet
 * @param type type de vêtements
 * @param setForm  fonction de mise à jour du formulaire
 */
-export function setLibelleForm(libelle: string, setForm: Function) {
-    setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, libelle: libelle }
+export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>, 
+                                setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>) {
+    if(libelle) {
+        setErrorsForm((errors: ErrorsFormParametrageModel) => {
+            return { ...errors, libelleInError: false }
+        })
+    };
+    setForm((form: ParamVetementsFormModel | null) => {
+        if (!form) {
+            return null; // Handle the case where form is null
+        }
+        return { ...form, isModified: true, libelle: libelle };
     });
 }
 
@@ -109,6 +119,36 @@ export function razAndCloseForm(setParametreInEdition: (idParametreToEdit: strin
 
 
 /**
+ * export function initNewForm(typeParametrage : ParametragesVetementEnum) : ParamVetementsFormModel {
+     let form : ParamVetementsFormModel = {
+         id          : ID_NEW_ELEMENT,
+         typeParam   : typeParametrage,
+         libelle     : "",
+         categories  : [],
+         isModified  : false,
+     } as ParamVetementsFormModel;
+ 
+     switch (typeParametrage) {
+         case ParametragesVetementEnum.TAILLES:
+             form = { ...form, type: TypeTailleEnum.VETEMENTS, tri: 0 };
+             break;
+         case ParametragesVetementEnum.TYPES:
+         case ParametragesVetementEnum.MARQUES:
+             form = { ...form, type: TypeTailleEnum.VETEMENTS };
+             break;
+         case ParametragesVetementEnum.ETATS:
+             form = { ...form, tri: 0 };
+         default:
+             break;
+     }
+     return form;
+ }
+ 
+ */
+
+
+let errors = false;
+/**
  * Valide et enregistre un formulaire de paramètres de vêtements.
  * Si le formulaire a été modifié, il est transformé et enregistré.
  * Sinon, l'édition du formulaire est annulée.
@@ -118,24 +158,75 @@ export function razAndCloseForm(setParametreInEdition: (idParametreToEdit: strin
  * @param setForm - Fonction pour mettre à jour l'état du formulaire.
  */
 export function validateForm(form: ParamVetementsFormModel | null,
-                             setEditParametrage: (idParametreToEdit: string | null) => void,
-                             refreshListeParametres: (typeParam: ParametragesVetementEnum) => void) {
+    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>,
+    setEditParametrage: (idParametreToEdit: string | null) => void,
+    refreshListeParametres: (typeParam: ParametragesVetementEnum) => void) {
     console.trace("Enregistrement du formulaire", form);
-    if (form?.isModified) {
-        saveParametresVetement(form)
-        .then(() => {
-            refreshListeParametres(form.typeParam);
-        })
-        .catch((e) => {
-            console.error("Erreur lors de l'enregistrement du formulaire", e);
-        });
-    }
-    else {
+    if (!form?.isModified) {
         razAndCloseForm(setEditParametrage);
+        return;
+    }
+
+
+    console.log("Validation du formulaire", form);
+    errors = false;
+    if (form === null) {
+        console.error("Le formulaire est vide");
+        errors = true;
+        setErrorsForm((errors: ErrorsFormParametrageModel) => {
+            return {
+                ...errors, libelleInError: true, typeInError: true, tri: true, categoriesInError: true
+            }
+        });
+        return;
+    }
+
+    validateAttribute("libelle", form.libelle === undefined || form.libelle === "", setErrorsForm);
+    validateAttribute("categories", form.categories === undefined || form.categories === null || form.categories.length === 0
+        , setErrorsForm);
+    if (form.typeParam === ParametragesVetementEnum.TAILLES || form.typeParam === ParametragesVetementEnum.MARQUES || form.typeParam === ParametragesVetementEnum.TYPES) {
+        validateAttribute("type", form.type === undefined || form.type === null
+            , setErrorsForm);
+    };
+
+    if (form.typeParam === ParametragesVetementEnum.TAILLES || form.typeParam === ParametragesVetementEnum.ETATS) {
+        validateAttribute("tri", form.tri === null || isNaN(form.tri ? form.tri : NaN)
+            , setErrorsForm);
+    }
+    if (!errors) {
+        // Enregistrement du formulaire 
+        saveParametresVetement(form)
+            .then(() => {
+                refreshListeParametres(form.typeParam);
+            })
+            .catch((e) => {
+                console.error("Erreur lors de l'enregistrement du formulaire", e);
+            });
     }
 }
 
-
+/**
+ * Valide un attribut et met à jour les erreurs du formulaire en conséquence.
+ *
+ * @param attributeName - Le nom de l'attribut à valider.
+ * @param attributeCheckFail - Indique si la validation de l'attribut a échoué (true si échec, false sinon).
+ * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
+ * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
+ */
+function validateAttribute(attributeName: string, attributeCheckFail: boolean, 
+    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>) {
+    if (attributeCheckFail) {
+        errors = true;
+        setErrorsForm((errors: ErrorsFormParametrageModel) => {
+            return { ...errors, [attributeName + "InError"]: true }
+        });
+    }
+    else {
+        setErrorsForm((errors: ErrorsFormParametrageModel) => {
+            return { ...errors, [attributeName + "InError"]: false }
+        });
+    }
+}
 
 /**
  * Enregistre les paramètres d'un vêtement en appelant le backend.
@@ -157,7 +248,7 @@ function saveParametresVetement(form: ParamVetementsFormModel): Promise<Parametr
         const isEdition = (paramVetement.id !== null && paramVetement.id !== "" && paramVetement.id !== undefined);
         console.log((isEdition ? "Mise à jour" : "Création") + " du paramètre", form.typeParam, paramVetement);
         let params;
-        if(isEdition) {
+        if (isEdition) {
             params = [{ key: SERVICES_PARAMS.ID_PARAM, value: String(paramVetement.id) }];
         }
         //  Appel au backend pour sauvegarder le vêtement

@@ -11,6 +11,7 @@ import { CategorieDressingEnum, StatutVetementEnum } from "../constants/AppEnum"
 import * as ImagePicker from 'expo-image-picker';
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 
+
 export type FormModelProps = {
     form: FormVetementModel,
     setForm: Function,
@@ -157,7 +158,7 @@ export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm
     });
     if (libelle) {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, libelleInError: false, libelleMessage: null }
+            return { ...errors, libelleInError: false }
         });
     }
 }
@@ -432,7 +433,7 @@ let errors = false;
  */
 export function validateForm(form: FormVetementModel | null,
     setForm: Function,
-    setErrorsForm: Function,
+    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
     onCloseForm: Function) {
 
     console.log("Validation du formulaire", form);
@@ -442,32 +443,33 @@ export function validateForm(form: FormVetementModel | null,
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
             return {
-                ...errors, libelleInError: true, libelleMessage: "Le libellé du vêtement est obligatoire"
-                , typeInError: true, typeMessage: "Le type de vêtement est obligatoire"
-                , tailleInError: true, tailleMessage: "La taille du vêtement est obligatoire"
-                , usageInError: true, usageMessage: "Au moins un usage est obligatoire"
-                , etatInError: true, etatMessage: "Au moins un état est obligatoire"
+                ...errors, libelleInError: true
+                , typeInError: true
+                , tailleInError: true
+                , usageInError: true
+                , etatInError: true
+                , marqueInError: true
             }
         });
         return;
     }
 
     validateAttribute("libelle", form.libelle === undefined || form.libelle === ""
-        , setErrorsForm, "Le libellé du vêtement est obligatoire");
+        , setErrorsForm);
     validateAttribute("type", form.type === undefined || form.type === null
-        , setErrorsForm, "Le type de vêtement est obligatoire");
+        , setErrorsForm);
     validateAttribute("taille", form.taille === undefined || form.taille === null
-        , setErrorsForm, "La taille du vêtement est obligatoire");
+        , setErrorsForm);
     validateAttribute("usage", form.usages === undefined || form.usages === null || form.usages.length === 0
-        , setErrorsForm, "Au moins un usage est obligatoire");
+        , setErrorsForm);
     validateAttribute("marque", form.marque === undefined || form.marque === null
-        , setErrorsForm, "La marque est obligatoire");
+        , setErrorsForm);
     validateAttribute("etat", form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
-        , setErrorsForm, "L'état du vêtement est obligatoire");
+        , setErrorsForm);
     validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
-        , setErrorsForm, "Le prix d'achat doit être au format numérique");
+        , setErrorsForm);
     validateAttribute("prixNeuf", !checkPriceFormat(form.prixNeuf)
-        , setErrorsForm, "Le prix neuf doit être au format numérique");
+        , setErrorsForm);
 
     if (!errors) {
         // Enregistrement du formulaire 
@@ -482,16 +484,17 @@ export function validateForm(form: FormVetementModel | null,
  * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
  * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
  */
-function validateAttribute(attributeName: string, attributeCheckFail: boolean, setErrorsForm: Function, errorMessage: string) {
+function validateAttribute(attributeName: string, attributeCheckFail: boolean, 
+    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
     if (attributeCheckFail) {
         errors = true;
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, [attributeName + "InError"]: true, [attributeName + "Message"]: errorMessage }
+            return { ...errors, [attributeName + "InError"]: true }
         });
     }
     else {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
-            return { ...errors, [attributeName + "InError"]: false, [attributeName + "Message"]: null }
+            return { ...errors, [attributeName + "InError"]: false }
         });
     }
 }

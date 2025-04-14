@@ -1,14 +1,11 @@
-import ParamTypeVetementsModel from "./params/paramTypeVetements.model";
-import ParamTailleVetementsModel from "./params/paramTailleVetements.model";
-import ParamUsageVetementsModel from "./params/paramUsageVetements.model";
 import DressingModel from "./dressing.model";
 import VetementModel from "./vetements.model";
-import { SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
-import ParamEtatVetementsModel from "./params/paramEtatVetements.model";
+import { ID_MARQUE_AUTRES, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import VetementImageModel from "./vetements.image.model";
-import ParamMarqueVetementsModel from "./params/paramMarqueVetements.model";
+
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import { getPriceValue } from "../components/commons/CommonsUtils";
+import ParamGenericVetementsModel from "./params/paramGenericVetements.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -19,22 +16,22 @@ interface FormVetementModel {
     libelle      : string;
     image?       : VetementImageModel | null;
     
-    type         : ParamTypeVetementsModel;
-    taille       : ParamTailleVetementsModel;
+    type         : ParamGenericVetementsModel;
+    taille       : ParamGenericVetementsModel;
     petiteTaille : boolean;
     
-    usages       : ParamUsageVetementsModel[];
+    usages       : ParamGenericVetementsModel[];
     usagesListe  : string[];
     
     saisons      : SaisonVetementEnum[];
     couleurs?    : string | null;
     collection?  : string | null;
-    marque       : ParamMarqueVetementsModel;
+    marque       : ParamGenericVetementsModel;
     
     prixNeuf?    : string | null;
     prixAchat?   : string | null;
 
-    etat         : ParamEtatVetementsModel | null;
+    etat         : ParamGenericVetementsModel | null;
     description  : string | null;
     statut       : StatutVetementEnum;
 }
@@ -64,7 +61,7 @@ export function transformFormToVetementModel(form: FormVetementModel): VetementM
             libelle     : form.taille.libelle,
             petite      : form.petiteTaille,
         },
-        usages: form.usages.map((usage: ParamUsageVetementsModel) => {
+        usages: form.usages.map((usage: ParamGenericVetementsModel) => {
             return {
                 id      : usage.id,
                 libelle : usage.libelle
@@ -130,12 +127,12 @@ export function transformVetementToFormModel(form: FormVetementModel, vetementIn
             usagesListe     : vetementInEdition.usages?.map((usage) => usage.id).filter((id): id is string => id !== undefined) ?? [],
             usages          : vetementInEdition.usages
                                 .map((usage) => paramsUsagesVetements?.find((u) => u.id === usage.id))
-                                .filter((usage): usage is ParamUsageVetementsModel => usage !== undefined),
+                                .filter((usage): usage is ParamGenericVetementsModel => usage !== undefined),
             
             saisons         : vetementInEdition.saisons ?? [],
             couleurs        : vetementInEdition.couleurs,
 
-            marque          : paramsMarquesVetements?.find((marque) => marque.id === (vetementInEdition.marque?.id ?? '67ee890c60546911d1e17c54')) ?? (() => { throw new Error("Marque " + vetementInEdition.etat?.id + " introuvable"); })(),
+            marque          : paramsMarquesVetements?.find((marque) => marque.id === (vetementInEdition.marque?.id ?? ID_MARQUE_AUTRES)) ?? (() => { throw new Error("Marque " + vetementInEdition.etat?.id + " introuvable"); })(),
             collection      : vetementInEdition.collection,
             etat            : paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id) ?? null,
 
