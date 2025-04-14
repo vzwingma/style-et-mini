@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
-import MenuDrawer from 'react-native-side-drawer';
+import Modal from 'react-native-modal';
 import { Colors } from './../../constants/Colors';
 import DressingModel from './../../models/dressing.model';
 import { DressingEmptyComponent } from './dressingEmpty.component';
@@ -70,7 +70,22 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
     else if (vetements?.length !== 0) {
-      return (openVetementForm === false && <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
+      return (
+        <>
+          <View style={styles.container}>
+            <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />
+          </View>
+
+          <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}
+            animationIn='slideInRight' animationOut='slideOutRight'
+            propagateSwipe={true}
+            onBackButtonPress={() => setOpenVetementForm(false)}
+            onBackdropPress={() => setOpenVetementForm(false)}
+            style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
+
+          </Modal>
+        </>);
     }
     else {
       return <DressingEmptyComponent openAddVetement={() => toggleOpenVetementForm(null)} />
@@ -78,26 +93,14 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
   }
 
 
-  return (
-    <View style={styles.container}>
-      {getPanelContent()}
-      <MenuDrawer
-        open={openVetementForm}
-        position={'right'}
-        drawerContent={
-          <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
-        }
-        drawerPercentage={98}
-        animationTime={250}
-        overlay={true}
-        opacity={0.3} />
-    </View>
-  );
+  return (getPanelContent());
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    flexDirection: 'column',
     zIndex: 0,
-    minHeight: 1200,
+    width: '100%'
   }
 });

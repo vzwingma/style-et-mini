@@ -1,4 +1,4 @@
-import { Image, Pressable, TextInput, View } from 'react-native'
+import { Image, Pressable, ScrollView, TextInput, View } from 'react-native'
 
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
@@ -349,8 +349,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
     return (
         <>
-            {modalDialog}
-
             <View style={styles.title}>
                 <View style={styles.rowItems}>
                     <Pressable onPress={() => razAndcloseForm(form, setForm, setErrorsForm, onCloseForm)}>
@@ -373,8 +371,9 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>
             </View>
-
-            {getPanelFormContent()}
+            <ScrollView contentInsetAdjustmentBehavior="automatic">
+                {getPanelFormContent()}
+            </ScrollView>
         </>
     );
 }
