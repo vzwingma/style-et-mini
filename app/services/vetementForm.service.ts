@@ -6,13 +6,6 @@ import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBacken
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 
 
-export type FormModelProps = {
-    form: FormVetementModel,
-    setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
-    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    validateFormCallBack: (vetement: VetementModel) => void
-};
-
 
 /**
  * sauvegarde du vêtement

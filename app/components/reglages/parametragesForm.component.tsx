@@ -8,10 +8,11 @@ import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/ap
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import ErrorsFormParametrageModel from "@/app/models/params/form.errors.params.model";
 import { renderLabelMandatory, renderSelectedItem } from "../commons/CommonsUtils";
+import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 
 
 export type ParametragesFormComponentProps = {
-    readonly parametrageVetements   : any
+    readonly parametrageVetements   : ParamGenericVetementsModel
     paramIsInEdition                : boolean,
     form                            : ParamVetementsFormModel | null,
     setForm                         : React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>,
@@ -99,6 +100,10 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                 </View>
             </View>
         }
+        <View style={stylesForm.rowItems}>
+            <ThemedText type="defaultSemiBold" style={stylesForm.label}>Nb vêtements</ThemedText>
+            <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.nombreVetements}</ThemedText>
+        </View>        
     </View>
     );
 };

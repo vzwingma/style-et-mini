@@ -65,18 +65,16 @@ export async function getAllParamsVetements({ setTypeVetements, setTaillesMesure
  */
 export function getParamsVetements({ urlAPIParams, setParams, setError }: FunctionCallAPIParamVetementsProps): Promise<boolean> {
 
-  return new Promise((resolve, reject) => {
     // Appel du backend
-    callGETBackend(urlAPIParams)
+  return callGETBackend(urlAPIParams)
       .then((paramsVetements: ParamGenericVetementsModel[]) => {
         setParams(paramsVetements)
-        resolve(true);
+        return true;
       })
       .catch((e) => {
         setError(e);
-        reject(e);
         console.error('Une erreur s\'est produite lors de la connexion au backend', e);
         showToast("Erreur de connexion au backend", ToastDuration.SHORT);
+        return e;
       });
-  });
 }

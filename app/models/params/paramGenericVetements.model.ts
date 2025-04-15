@@ -9,5 +9,6 @@ interface ParamGenericVetementsModel {
     readonly categories : CategorieDressingEnum[];
     readonly type?      : TypeTailleEnum; 
     readonly tri?       : number;
+    readonly nombreVetements?: number;
 }
 export default ParamGenericVetementsModel;

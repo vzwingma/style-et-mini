@@ -9,7 +9,7 @@ import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import FormVetementModel from '@/app/models/vetements/form.vetements.model';
-import { razForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm, archiveForm, deleteForm, FormModelProps } from '@/app/controllers/vetementForm.controller';
+import { getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm, archiveForm, deleteForm } from '@/app/controllers/vetementForm.controller';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
@@ -70,6 +70,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
     useEffect(() => {
         initForm(dressing, vetementInEdition, setForm, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements });
+        setModalDialog(null);
     }, [dressing, vetementInEdition, paramsEtatVetements, paramsMarquesVetements, paramsTaillesMesures, paramsTypeVetements, paramsUsagesVetements]);
 
 
@@ -295,10 +296,10 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation({ form, setForm, setErrorsForm }: FormModelProps, validateFormCallBack: (vetement: VetementModel) => void, setModalDialog: Function) {
+    function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (vetement: VetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
-            ackModalCallback={() => archiveForm({ form, setForm, setErrorsForm} , validateFormCallBack)}
+            ackModalCallback={() => archiveForm(form , validateFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
@@ -311,9 +312,9 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
 */ 
-    function deleteFormModalConfirmation({ form, setForm, setErrorsForm }: FormModelProps, deleteFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void, setModalDialog: Function) {
+    function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
-            ackModalCallback={() => deleteForm(form, setForm, setErrorsForm, deleteFormCallBack)}
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
@@ -324,15 +325,14 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             {modalDialog}
             <View style={styles.title}>
                 <View style={styles.rowItems}>
-                    <Pressable onPress={() => { closeFormCallBack(); 
-                                                razForm(form, setForm, setErrorsForm) }}>
+                    <Pressable onPress={closeFormCallBack}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && <>
-                            <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorsForm }, validateFormCallBack, setModalDialog)}>
+                            <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
                                 {renderArchiveIcon()}
                             </Pressable>
-                            <Pressable onPress={() => deleteFormModalConfirmation({form, setForm, setErrorsForm}, deleteFormCallBack, setModalDialog)}>
+                            <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
                         </>
@@ -340,7 +340,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                 </View>
 
                 <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} un vêtement</ThemedText>
-                <Pressable onPress={() => validateForm(form, setForm, setErrorsForm, validateFormCallBack)}>
+                <Pressable onPress={() => validateForm(form, setErrorsForm, validateFormCallBack)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>
             </View>
