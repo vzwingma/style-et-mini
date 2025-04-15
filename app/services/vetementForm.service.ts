@@ -1,6 +1,5 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import VetementModel from "../models/vetements/vetements.model";
-import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
 import FormVetementModel, { transformFormToVetementModel } from "../models/vetements/form.vetements.model";
 import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "./ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
