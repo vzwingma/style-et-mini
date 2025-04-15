@@ -8,7 +8,10 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         backgroundColor: Colors.app.color,
-        padding: 5
+        borderColor: Colors.app.color,
+        color: "white",
+        borderRadius: 8,
+        padding: 5,
     },
     body: {
         width: '100%',

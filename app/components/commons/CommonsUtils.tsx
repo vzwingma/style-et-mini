@@ -230,8 +230,9 @@ export const renderLabelMandatory = (label: string): React.JSX.Element => {
  * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
  * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
  */
-export const renderSelectedItem = (item: any, unSelect?: any): React.JSX.Element => (
+export const renderSelectedItem = (item: any, unSelect?: any, index?: number): React.JSX.Element => (
     <Pressable
+        key={index}
         style={styles.selectedStyle}
         onPress={() => unSelect?.(item)}>
         <View style={styles.rowItems}>
