@@ -1,22 +1,21 @@
-import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import { alphanumSort, checkPriceFormat, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements/vetements.model";
-import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
-import FormVetementModel, { transformFormToVetementModel, transformVetementToFormModel } from "../models/vetements/form.vetements.model";
-import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "../services/ClientHTTP.service";
-import { showToast, ToastDuration } from "../components/commons/AndroidToast";
+import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from "../models/vetements/form.errors.vetements.model";
+import FormVetementModel, { transformVetementToFormModel } from "../models/vetements/form.vetements.model";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
-import { CategorieDressingEnum, StatutVetementEnum } from "../constants/AppEnum";
+import { CategorieDressingEnum, SaisonVetementEnum, StatutVetementEnum } from "../constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
+import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
+import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 
 
 export type FormModelProps = {
-    form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    closeFormCallBack : ()=> void
+    form                : FormVetementModel,
+    setForm             : React.Dispatch<React.SetStateAction<FormVetementModel>>,
+    setErrorsForm       : React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
+    validateFormCallBack: (vetement : VetementModel)=> void
 };
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -86,7 +85,7 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
-                         setForm: Function,
+                         setForm : Function,
                         { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) {
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
@@ -115,7 +114,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
  * 
  * @returns Une promesse qui se résout une fois que l'image est sélectionnée et le formulaire mis à jour.
  */
-export const pickImageForm = async (setForm: Function) => {
+export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) => {
 
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -133,7 +132,7 @@ export const pickImageForm = async (setForm: Function) => {
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Function) {
+export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return {
             ...form, image: {
@@ -152,7 +151,7 @@ export function setImageForm(image: ImagePicker.ImagePickerAsset, setForm: Funct
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm: Function) {
+export function setLibelleForm(libelle: string, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: Function) {
     setForm((form: FormVetementModel) => {
         return { ...form, libelle: libelle }
     });
@@ -168,7 +167,7 @@ export function setLibelleForm(libelle: string, setForm: Function, setErrorsForm
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypeForm(type: ParamGenericVetementsModel, setForm: Function) {
+export function setTypeForm(type: ParamGenericVetementsModel, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, type: type }
     });
@@ -179,7 +178,7 @@ export function setTypeForm(type: ParamGenericVetementsModel, setForm: Function)
  * @param taille 
  * @param setForm 
  */
-export function setTailleForm(taille: ParamGenericVetementsModel, setForm: Function) {
+export function setTailleForm(taille: ParamGenericVetementsModel, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, taille: taille }
     });
@@ -192,7 +191,7 @@ export function setTailleForm(taille: ParamGenericVetementsModel, setForm: Funct
  * @param petiteTaille 
  * @param setForm 
  */
-export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
+export function setPetiteTailleForm(petiteTaille: boolean, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, petiteTaille: petiteTaille }
     });
@@ -205,7 +204,7 @@ export function setPetiteTailleForm(petiteTaille: boolean, setForm: Function) {
  * @param paramsUsagesVetements liste des usages de vêtements
  * @param setForm formulaire à mettre à jour
  */
-export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamGenericVetementsModel[], setForm: Function, setErrorsForm: Function) {
+export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamGenericVetementsModel[], setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: Function) {
 
     let usages: ParamGenericVetementsModel[] = [];
     usageIdsListe.forEach((usageId) => {
@@ -228,7 +227,7 @@ export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: Pa
  * @param etat 
  * @param setForm 
  */
-export function setEtatForm(etat: ParamGenericVetementsModel, setForm: Function) {
+export function setEtatForm(etat: ParamGenericVetementsModel, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, etat: etat }
     });
@@ -240,10 +239,17 @@ export function setEtatForm(etat: ParamGenericVetementsModel, setForm: Function)
  * @param saisonsString 
  * @param setForm 
  */
-export function setSaisonForm(saisons: string[], setForm: Function) {
+export function setSaisonForm(saisonsString: string[], setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
+    let saisons: SaisonVetementEnum[] = [];
+    saisonsString.forEach((saison) => {
+        let saisonModel = Object.values(SaisonVetementEnum).find((s) => s === saison);
+        if (saisonModel !== undefined) {
+            saisons.push(saisonModel);
+        }
+    });
     setForm((form: FormVetementModel) => {
         return { ...form, saisons: saisons }
-    });
+    })
 }
 
 /**
@@ -251,7 +257,7 @@ export function setSaisonForm(saisons: string[], setForm: Function) {
  * @param couleurs liste des couleurs
  * @param setForm formulaire à mettre à jour
  */
-export function setCouleursForm(couleurs: string, setForm: Function) {
+export function setCouleursForm(couleurs: string, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, couleurs: couleurs }
     }
@@ -263,7 +269,7 @@ export function setCouleursForm(couleurs: string, setForm: Function) {
  * @param description description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setDescriptionForm(description: string, setForm: Function) {
+export function setDescriptionForm(description: string, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, description: description }
     });
@@ -275,7 +281,7 @@ export function setDescriptionForm(description: string, setForm: Function) {
  * @param marque description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setMarqueForm(marque: ParamGenericVetementsModel, setForm: Function) {
+export function setMarqueForm(marque: ParamGenericVetementsModel, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, marque: marque }
     });
@@ -286,7 +292,7 @@ export function setMarqueForm(marque: ParamGenericVetementsModel, setForm: Funct
  * @param collection description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setCollectionForm(collection: string, setForm: Function) {
+export function setCollectionForm(collection: string, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, collection: collection }
     });
@@ -297,7 +303,7 @@ export function setCollectionForm(collection: string, setForm: Function) {
  * @param prix description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setPrixNeufForm(prix: string, setForm: Function) {
+export function setPrixNeufForm(prix: string, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, prixNeuf: prix?.replace(",", ".") }
     });
@@ -308,7 +314,7 @@ export function setPrixNeufForm(prix: string, setForm: Function) {
  * @param prix description du vêtement
  * @param setForm formulaire à mettre à jour
  */
-export function setPrixAchatForm(prix: string, setForm: Function) {
+export function setPrixAchatForm(prix: string, setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, prixAchat: prix?.replace(",", ".") }
     });
@@ -316,112 +322,16 @@ export function setPrixAchatForm(prix: string, setForm: Function) {
 
 
 /**
- * Validation du formulaire
+ * Remise à zéro du formulaire
  */
 
-export function razAndcloseForm(
-    form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function, 
-    onCloseForm: Function) {
+export function razForm( form: FormVetementModel,
+                        setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>,
+                        setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
     initForm(form?.dressing, null, setForm, {});
-    setErrorsForm(null);
-    onCloseForm(null);
+    setErrorsForm(defaultErrorsFormVetementModel);
 }
 
-
-/**
- * sauvegarde du vêtement
- * @param form formulaire à sauvegarder
- */
-function saveVetement({ form, setForm, setErrorsForm, closeFormCallBack }: FormModelProps) {
-
-    let params = [
-        { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
-        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
-    ];
-
-    const vetement: VetementModel = transformFormToVetementModel(form);
-
-    if (form.image?.localUri !== null && form.image?.localUri !== undefined) {
-        console.log("Enregistrement de l'image du vêtement", vetement.id);
-        //  Appel au backend pour récupérer une URL S3
-        callPUTBackend(SERVICES_URL.SERVICE_VETEMENTS_IMAGE, params)
-            .then(async (response) => {
-                const urlS3 = response.url;
-                const uriImage = response.s3uri
-                console.debug("Enregistrement de l'image du vêtement ", uriImage, " dans S3", urlS3);
-                if (form.image?.localUri) {
-                    fetch(form.image.localUri)
-                        .then((response) => response.blob())
-                        .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
-                        .then((responseToS3) => console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3))
-                        .then(() => {
-                            if (vetement.image) {
-                                vetement.image.s3uri = uriImage;
-                            }
-                            saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, closeFormCallBack });
-                        })
-                        .catch((e) => {
-                            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                            showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
-                            return false;
-                        })
-                } else {
-                    console.error("L'URI de l'image est nulle ou indéfinie");
-                }
-            })
-            .catch((e) => {
-                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
-                return false;
-            });
-
-    }
-    else {
-        saveVetementAttributs(vetement, params, { form, setForm, setErrorsForm, closeFormCallBack });
-    }
-}
-
-
-/**
- * Sauvegarde les attributs d'un vêtement en appelant un service backend.
- * 
- * @param vetement - Le modèle du vêtement à sauvegarder.
- * @param params - Tableau de paramètres contenant une clé et une valeur pour le service.
- * @param formProps - Objet contenant les propriétés du formulaire :
- *   - `form` : Les données actuelles du formulaire.
- *   - `setForm` : Fonction pour mettre à jour les données du formulaire.
- *   - `setErrorsForm` : Fonction pour définir les erreurs du formulaire.
- *   - `onCloseForm` : Fonction pour fermer le formulaire.
- * 
- * @remarks
- * Cette fonction détermine si le vêtement est en mode création ou mise à jour
- * en fonction de la présence d'un identifiant (`id`) dans le modèle du vêtement.
- * Elle effectue un appel POST au backend pour sauvegarder les données et gère
- * les retours en affichant des notifications de succès ou d'erreur.
- * 
- * @throws Une erreur est affichée dans la console et une notification est montrée
- * si l'appel au backend échoue.
- */
-function saveVetementAttributs(vetement : VetementModel, params : { key: SERVICES_PARAMS; value: string; }[], { form, setForm, setErrorsForm, closeFormCallBack }: FormModelProps) {
-    
-    const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
-    console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
-    const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
-    //  Appel au backend pour sauvegarder le vêtement
-    callPOSTBackend(url, params, vetement)
-        .then((response) => {
-            console.log("Attributs du vêtement enregistrés avec succès", response);
-            showToast("Vêtement enregistré avec succès", ToastDuration.SHORT);
-            razAndcloseForm(form, setForm, setErrorsForm, closeFormCallBack);
-        })
-        .catch((e) => {
-            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
-            return false;
-        });
-}
 
 let errors = false;
 /**
@@ -432,10 +342,11 @@ let errors = false;
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function validateForm(form: FormVetementModel | null,
-    setForm: Function,
+export function validateForm(
+    form: FormVetementModel | null,
+    setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    closeFormCallBack: ()=> void) {
+    validateFormCallBack: (vetement : VetementModel)=> void) {
 
     console.log("Validation du formulaire", form);
     errors = false;
@@ -474,7 +385,17 @@ export function validateForm(form: FormVetementModel | null,
 
     if (!errors) {
         // Enregistrement du formulaire 
-        saveVetement({ form, setForm, setErrorsForm, closeFormCallBack });
+        callSaveVetementService(form)
+        .then((vetement) => {
+            console.log("Vêtement enregistrés avec succès", vetement);
+            validateFormCallBack(vetement);
+            razForm(form, setForm, setErrorsForm);
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
+            return false;
+        });
     }
 }
 /**
@@ -502,59 +423,28 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param form formulaire à valider
  * @param setForm fonction de mise à jour du formulaire
  * @param setErrorsForm fonction de mise à jour des erreurs
- * @param onCloseForm fonction de fermeture du formulaire
+ * @param validateFormCallBack fonction de validation du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm({ form, setForm, setErrorsForm, closeFormCallBack }: FormModelProps) {
+export function archiveForm({ form, setForm, setErrorsForm, validateFormCallBack }: FormModelProps) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
-    saveVetement({ form, setForm, setErrorsForm, closeFormCallBack });
-
-}
-
-
-/**
- * Supprime un vêtement à partir du formulaire donné.
- *
- * @param {FormVetementModel} form - Le modèle de formulaire contenant les informations du vêtement à supprimer.
- * @param {Function} setForm - Fonction pour mettre à jour l'état du formulaire.
- * @param {Function} setErrorsForm - Fonction pour mettre à jour les erreurs du formulaire.
- * @param {Function} onCloseForm - Fonction pour fermer le formulaire.
- *
- * @returns {void}
- *
- * @description
- * Cette fonction envoie une requête DELETE au backend pour supprimer le vêtement spécifié.
- * Si la suppression est réussie, un message de succès est affiché et le formulaire est réinitialisé et fermé.
- * En cas d'erreur, un message d'erreur est affiché.
- */
-function deleteVetement(form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
-
-    let params = [
-        { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
-        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
-    ];
-
-    console.log("Suppression du vêtement", form);
-    //  Appel au backend pour supprimer le vêtement
-    callDELETEBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params)
-        .then((response) => {
-            console.log("Vêtement supprimé avec succès", response);
-            showToast("Vêtement supprimé avec succès", ToastDuration.SHORT);
-            razAndcloseForm(form, setForm, setErrorsForm, onCloseForm);
+    callSaveVetementService(form)
+        .then((vetement) => {
+            console.log("Vêtement archivé avec succès", vetement);
+            validateFormCallBack(vetement);
+            razForm(form, setForm, setErrorsForm);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur de suppression du vêtement : " + e, ToastDuration.LONG);
+            showToast("Erreur d'archivage du vêtement : " + e, ToastDuration.LONG);
             return false;
         });
 }
+
 
 /**
  * Validation du formulaire pour archivage du vêtement
@@ -565,11 +455,11 @@ function deleteVetement(form: FormVetementModel,
  * @returns si le formulaire est invalide
  */
 export function deleteForm(form: FormVetementModel,
-    setForm: Function,
-    setErrorsForm: Function,
-    onCloseForm: Function) {
+    setForm : React.Dispatch<React.SetStateAction<FormVetementModel>>,
+    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
+    validateFormCallBack : (vetement: VetementModel) => void) {
     console.log("Suppression du vêtement", form.id);
     // Enregistrement du formulaire 
-    deleteVetement(form, setForm, setErrorsForm, onCloseForm);
-
+    callDeleteVetementService(form, validateFormCallBack);
+    razForm(form, setForm, setErrorsForm);
 }

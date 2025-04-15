@@ -5,7 +5,7 @@ import VetementModel from "@/app/models/vetements/vetements.model";
 import { Colors } from "../../../app/constants/Colors";
 import { VetemenItemComponent } from "./vetementItem.component";
 import { groupeVetementByType } from "@/app/controllers/dressingList.controller";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
 import { styles } from "./dressingList.style";
 import { DressingFiltreComponent } from "./dressingFiltres.component";
@@ -31,6 +31,12 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
 
     const [toggleAllItems, setToggleAllItems] = useState(false);
+
+
+    useEffect(() => {
+        setVetementsAffiches(vetementsInDressing);
+    }, [vetementsInDressing]);
+
 
     /**
      * Affiche un panneau contenant une liste de vêtements.

@@ -34,26 +34,33 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
 
   const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [vetements, setVetements] = useState([]);
+  const [vetements, setVetements] = useState<VetementModel[]>([]);
   const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
 
-  useEffect(() => {
-    // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
-    if (openVetementForm) return;
-    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
-  }, [openVetementForm]);
-
-  // Changement de l'état du formulaire de vêtement si le dressing change
+  // Rechargement des vêtements si le dressing change
   useEffect(() => {
     setOpenVetementForm(false);
     loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
   }, [dressing]);
 
 
-  /** Ouverture/Fermeture du menu */
-  function toggleOpenVetementForm(vetement?: VetementModel | null): void {
+  /**
+   * 
+   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
+   */
+  function validateFormCallBack(vetement: VetementModel): void {
+    setOpenVetementForm(false);
+    setVetements(prevVetements => prevVetements.map(v => v.id === vetement.id ? vetement : v));
+  }
+
+  /**
+   * Ouvre ou ferme le formulaire d'ajout/édition de vêtement.
+   *
+   * @param vetement - (Optionnel) Le modèle de vêtement à éditer. Si non fourni, le formulaire sera ouvert pour ajouter un nouveau vêtement.
+   */
+  function openAddEditVetement(vetement?: VetementModel | null): void {
     setVetementInEdit(vetement || null);
-    setOpenVetementForm(!openVetementForm);
+    setOpenVetementForm(true);
   };
 
 
@@ -73,7 +80,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
       return (
         <>
           <View style={styles.container}>
-            <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />
+            <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={openAddEditVetement} />
           </View>
 
           <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}
@@ -82,13 +89,13 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
             onBackButtonPress={() => setOpenVetementForm(false)}
             onBackdropPress={() => setOpenVetementForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={toggleOpenVetementForm}></VetementFormComponent>
+            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenVetementForm(false)} validateFormCallBack={validateFormCallBack}></VetementFormComponent>
 
           </Modal>
         </>);
     }
     else {
-      return <DressingEmptyComponent openAddVetement={() => toggleOpenVetementForm(null)} />
+      return <DressingEmptyComponent openAddVetement={() => openAddEditVetement(null)} />
     }
   }
 

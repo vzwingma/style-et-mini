@@ -35,7 +35,7 @@ export function groupeVetementByType(vetements: VetementModel[]): Map<string, Ve
  * en fonction de chaque groupe de filtres. Si aucun filtre n'est sélectionné, elle retourne la liste complète
  * des vêtements dans le dressing.
  */
-export function setVetementsFiltres(vetementsInDressing: VetementModel[], selectedFiltres: DressingListFiltreModel[]): VetementModel[] {
+export function applyFiltresOnVetements(vetementsInDressing: VetementModel[], selectedFiltres: DressingListFiltreModel[]): VetementModel[] {
 
   if(selectedFiltres.length === 0) {
     return vetementsInDressing;
