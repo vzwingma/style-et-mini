@@ -12,12 +12,6 @@ import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import ResultFormDeleteVetementModel from "../models/vetements/form.result.vetements.model";
 
 
-export type FormModelProps = {
-    form: FormVetementModel,
-    setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
-    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    validateFormCallBack: (vetement: VetementModel) => void
-};
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
 export function getTypeVetementsForm(typeVetements: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
@@ -322,17 +316,6 @@ export function setPrixAchatForm(prix: string, setForm: React.Dispatch<React.Set
 }
 
 
-/**
- * Remise à zéro du formulaire
- */
-
-export function razForm(form: FormVetementModel,
-    setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
-    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
-    initForm(form?.dressing, null, setForm, {});
-    setErrorsForm(defaultErrorsFormVetementModel);
-}
-
 
 let errors = false;
 /**
@@ -345,7 +328,6 @@ let errors = false;
  */
 export function validateForm(
     form: FormVetementModel | null,
-    setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
     validateFormCallBack: (vetement: VetementModel) => void) {
 
@@ -390,7 +372,6 @@ export function validateForm(
             .then((vetement) => {
                 console.log("Vêtement enregistrés avec succès", vetement);
                 validateFormCallBack(vetement);
-                razForm(form, setForm, setErrorsForm);
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -427,7 +408,7 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param validateFormCallBack fonction de validation du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm({ form, setForm, setErrorsForm, validateFormCallBack }: FormModelProps) {
+export function archiveForm(form: FormVetementModel, validateFormCallBack: (vetement: VetementModel) => void) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
@@ -437,7 +418,6 @@ export function archiveForm({ form, setForm, setErrorsForm, validateFormCallBack
         .then((vetement) => {
             console.log("Vêtement archivé avec succès", vetement);
             validateFormCallBack(vetement);
-            razForm(form, setForm, setErrorsForm);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -456,8 +436,6 @@ export function archiveForm({ form, setForm, setErrorsForm, validateFormCallBack
  * @returns si le formulaire est invalide
  */
 export function deleteForm(form: FormVetementModel,
-    setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
-    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
     validateFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void) {
     console.log("Suppression du vêtement", form.id);
     // Enregistrement du formulaire 
@@ -469,7 +447,6 @@ export function deleteForm(form: FormVetementModel,
             };
             console.log("Vêtement supprimé avec succès", resultDeleteVetement);
             validateFormCallBack(resultDeleteVetement);
-            razForm(form, setForm, setErrorsForm);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
