@@ -16,7 +16,6 @@ export type FormModelProps = {
     form: FormVetementModel,
     setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    validateFormCallBack: (vetement: VetementModel) => void
 };
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -427,7 +426,7 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param validateFormCallBack fonction de validation du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm({ form, setForm, setErrorsForm, validateFormCallBack }: FormModelProps) {
+export function archiveForm({ form, setForm, setErrorsForm }: FormModelProps, validateFormCallBack: (vetement: VetementModel) => void) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);

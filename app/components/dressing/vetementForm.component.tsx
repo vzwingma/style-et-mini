@@ -295,10 +295,10 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation({ form, setForm, setErrorsForm, validateFormCallBack }: FormModelProps, setModalDialog: Function) {
+    function archiveFormModalConfirmation({ form, setForm, setErrorsForm }: FormModelProps, validateFormCallBack: (vetement: VetementModel) => void, setModalDialog: Function) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
-            ackModalCallback={() => archiveForm({ form, setForm, setErrorsForm, validateFormCallBack })}
+            ackModalCallback={() => archiveForm({ form, setForm, setErrorsForm} , validateFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
@@ -310,17 +310,18 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
  * @param setErrorsForm fonction de mise à jour des erreurs
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
- 
-    function deleteFormModalConfirmation({ form, setForm, setErrorsForm, validateFormCallBack }: FormModelProps, setModalDialog: Function) {
+*/ 
+    function deleteFormModalConfirmation({ form, setForm, setErrorsForm }: FormModelProps, deleteFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void, setModalDialog: Function) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
-            ackModalCallback={() => deleteForm(form, setForm, setErrorsForm, validateFormCallBack)}
+            ackModalCallback={() => deleteForm(form, setForm, setErrorsForm, deleteFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
-*/
+
 
     return (
         <>
+            {modalDialog}
             <View style={styles.title}>
                 <View style={styles.rowItems}>
                     <Pressable onPress={() => { closeFormCallBack(); 
@@ -328,10 +329,10 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && <>
-                            <Pressable onPress={() => archiveForm({ form, setForm, setErrorsForm, validateFormCallBack })}>
+                            <Pressable onPress={() => archiveFormModalConfirmation({ form, setForm, setErrorsForm }, validateFormCallBack, setModalDialog)}>
                                 {renderArchiveIcon()}
                             </Pressable>
-                            <Pressable onPress={() => deleteForm(form, setForm, setErrorsForm, deleteFormCallBack)}>
+                            <Pressable onPress={() => deleteFormModalConfirmation({form, setForm, setErrorsForm}, deleteFormCallBack, setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
                         </>
