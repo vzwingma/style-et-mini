@@ -88,7 +88,7 @@ export const ReglagesComponent: React.FC = () => {
           }
         </View>
 
-        {<Modal presentationStyle='overFullScreen' isVisible={open}
+        <Modal presentationStyle='overFullScreen' isVisible={open}
           animationIn='slideInRight' animationOut='slideOutRight'
           propagateSwipe={true}
           onBackButtonPress={() => setOpen(false)}
@@ -100,13 +100,13 @@ export const ReglagesComponent: React.FC = () => {
                                           closeDrawer={() => setOpen(false)} />
           }
 
-        </Modal>}
+        </Modal>
 
       </>
     }
 
   }
-  
+
   return getPanelContent() ;
 }
 

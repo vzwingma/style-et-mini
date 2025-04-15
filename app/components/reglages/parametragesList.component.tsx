@@ -21,6 +21,19 @@ export type ParametragesVetements = {
   closeDrawer: () => void;
 };
 
+/**
+ * Composant React représentant une liste de paramètres pour les vêtements.
+ * 
+ * Ce composant affiche une liste de paramètres en fonction du type de paramétrage sélectionné.
+ * Il permet également d'ajouter, de modifier ou de rafraîchir les paramètres via des interactions utilisateur.
+ * 
+ * @param {ParametragesVetements} props - Les propriétés du composant.
+ * @param {MenuParametragesModel} props.typeParametrage - Le type de paramétrage à afficher (types, tailles, marques, usages, états).
+ * @param {() => void} props.closeDrawer - Fonction de rappel pour fermer le panneau latéral.
+ * 
+ * @returns {React.FC<ParametragesVetements>} Un composant React fonctionnel affichant la liste des paramètres.
+ * 
+ */
 export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
@@ -31,12 +44,6 @@ export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typ
   useEffect(() => {
     setParametreInEdition(null);
   }, [typeParametrage]);
-
-
-
-  function addParametrage() {
-    setParametreInEdition(ID_NEW_ELEMENT);
-  }
 
 
 /**
@@ -80,6 +87,7 @@ function getParametrages(typeParametrage: MenuParametragesModel): ParamGenericVe
       console.error("Erreur lors de la récupération des paramètres", typeParam);
       return;
     }
+    setParametreInEdition(null);
     getParamsVetements({
       urlAPIParams: params?.urlAPIParams,
       setParams: params?.setParams,
@@ -190,7 +198,7 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
           <ThemedText type="subtitle">{typeParametrage.titre}</ThemedText>
         </View>
 
-        <Pressable onPress={() => addParametrage()}>
+        <Pressable onPress={() => setParametreInEdition(ID_NEW_ELEMENT)}>
           <Ionicons size={20} name="add-outline" style={style2s.titleIcon} />
         </Pressable>
       </View>

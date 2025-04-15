@@ -3,11 +3,11 @@ import { ThemedText } from "../commons/views/ThemedText";
 import { CategorieDressingEnum, getLibelleTypeTailleEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
-import { renderLabelMandatory, renderSelectedItem } from "../dressing/vetementForm.component";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import ErrorsFormParametrageModel from "@/app/models/params/form.errors.params.model";
+import { renderLabelMandatory, renderSelectedItem } from "../commons/CommonsUtils";
 
 
 export type ParametragesFormComponentProps = {
@@ -43,8 +43,8 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
             <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Catégories") : "Catégories"}</ThemedText>
             <View style={[stylesForm.filtre, stylesForm.rowItems]}>
                 {!paramIsInEdition ?
-                    parametrageVetements.categories?.map((categorie: CategorieDressingEnum) => {
-                        return renderSelectedItem({ id: categorie, libelle: categorie }, null);
+                    parametrageVetements.categories?.map((categorie: CategorieDressingEnum, index: number) => {
+                        return renderSelectedItem({ id: categorie, libelle: categorie }, null, index);
                     }) ?? ''
                     : <View style={{ width: '100%' }}>
                         <MultiSelect
@@ -67,7 +67,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Type") : "Type"}</ThemedText>
                 <View style={[stylesForm.filtre, stylesForm.rowItems]}>
                     {!paramIsInEdition ?
-                        renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type }, null)
+                        renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type })
                         :
                         <Dropdown
                             style={!errorsForm?.typeInError || form?.type ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
