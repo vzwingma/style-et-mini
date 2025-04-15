@@ -10,7 +10,7 @@ import ParamGenericVetementsModel from "../models/params/paramGenericVetements.m
 import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import ResultFormDeleteVetementModel from "../models/vetements/form.result.vetements.model";
-
+import ImageResizer from 'react-native-image-resizer';
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -115,11 +115,17 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: true,
-        quality: 1,
+        quality: 0,
         legacy: true
     });
     if (!result.canceled) {
-        setImageForm(result.assets[0], setForm);
+        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 20, 0).then((compressedImage) => {
+            // compress image will be low size which will be use to upload to server
+            setImageForm(compressedImage, setForm);
+          }).catch((err) => {
+            console.log("Erreur lors du redimensionnement", err);
+          });
+        
     }
 };
 /**
