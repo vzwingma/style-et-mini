@@ -1,16 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedView } from "../commons/views/ThemedView";
 import { ThemedText } from "../commons/views/ThemedText";
+
 import { Pressable, View, Image } from "react-native";
-import VetementModel from "../../models/vetements.model";
-import { Colors } from "../../constants/Colors";
-import { setVetementsFiltres as applyFiltresOnVetements } from "@/app/controllers/dressingList.controller";
+import VetementModel from "@/app/models/vetements/vetements.model";
+import { applyFiltresOnVetements } from "@/app/controllers/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
-import DressingListFiltreModel from "@/app/models/vetementFiltre.model";
+import DressingListFiltreModel from "@/app/models/vetements/vetementFiltre.model";
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
 import { styles } from "./dressingList.style";
 import { calculFiltresPossibles, selectFilters as updateSelectedFilters } from "@/app/controllers/dressingFiltres.controller";
+import { Colors } from "@/app/constants/Colors";
 
 
 export type DressingFiltresComponentProps = {
@@ -47,7 +47,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
     useEffect(() => {
         // Mise à jour de l'affichage des vêtements en fonction des filtres sélectionnés
         setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
-    }, [selectedFiltres, setVetementsAffiches, vetementsInDressing]);
+    }, [selectedFiltres, setVetementsAffiches, filtresDisponibles]);
     
     /**
      * Rendu d'un élément de filtre dans la liste de dressing.
@@ -101,7 +101,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
      * @returns {JSX.Element} La vue thématisée avec le composant MultiSelect.
      */
     return (
-        <ThemedView style={styles.filtresBar}>
+        <View style={styles.filtresBar}>
             <View style={styles.filtresBar}>
                 <MultiSelect
                     style={styles.dropdown} containerStyle={styles.listStyle} itemTextStyle={styles.listItemStyle}
@@ -119,6 +119,6 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
                     renderSelectedItem={renderSelectedItem}
                 />
             </View>
-        </ThemedView>
+        </View>
     );
 }

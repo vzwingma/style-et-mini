@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { ThemedView } from '../components/commons/views/ThemedView';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-
-
 import { ThemedText } from '../components/commons/views/ThemedText';
 
 import HomeScreen from '.';
@@ -11,7 +8,7 @@ import HomeScreen from '.';
 import connectToBackend, { getDressings } from '../controllers/index.controller';
 import DressingScreen from './dressing';
 import ReglageScreen from './reglages';
-import { getParamsEtatsVetements, getParamsMarquesVetements, getParamsTaillesVetements, getParamsTypeVetements, getParamsUsagesVetements } from '../controllers/parametrages.controller';
+import { getAllParamsVetements } from '../controllers/parametrages.controller';
 import DressingModel from '../models/dressing.model';
 import { Tabs } from './../constants/TabsEnums';
 import { AppContext } from '../services/AppContextProvider';
@@ -66,17 +63,14 @@ export default function TabLayout() {
     }
   }, [refreshing, setIsLoading, setError]);
 
-
+  /**
+   * A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
+   */
   useEffect(() => {
     setError(null);
     if(tab === Tabs.INDEX && isLoading === false) {
       console.log("(Re)Chargement de la configuration...");
-      getParamsTaillesVetements ({ setTaillesMesures, setError, setIsLoading });
-      getParamsUsagesVetements  ({ setUsages, setError, setIsLoading });
-      getParamsTypeVetements    ({ setTypeVetements, setError, setIsLoading });
-      getParamsMarquesVetements ({ setMarques, setError, setIsLoading });
-
-      getParamsEtatsVetements({   setEtats, setError, setIsLoading });
+      getAllParamsVetements ({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques,  setError, setIsLoading });
   
       getDressings({ setIsLoading, setDressings, setError });
     }
@@ -112,9 +106,9 @@ export default function TabLayout() {
         backendConnexionData={backendConnexionData}
         setRefreshing={setRefreshing}>
 
-        <ThemedView style={tabStyles.titleContainer}>
+        <View style={tabStyles.titleContainer}>
           {getPanelContent()}
-        </ThemedView>
+        </View>
 
       </ParallaxScrollView>
 
@@ -166,6 +160,7 @@ export const tabStyles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     height: '100%',
+    backgroundColor: Colors.dark.background,
   },
 
   tabsViewbox: {

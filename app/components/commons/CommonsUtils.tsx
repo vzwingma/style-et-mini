@@ -1,6 +1,10 @@
+import { Pressable, View } from "react-native";
 import { API_S3_URL } from "../../constants/APIconstants";
-import VetementImageModel from "../../models/vetements.image.model";
-import VetementModel from "../../models/vetements.model";
+import VetementImageModel from "../../models/vetements/vetements.image.model";
+import VetementModel from "../../models/vetements/vetements.model";
+import { ThemedText } from "./views/ThemedText";
+import { Ionicons } from "@expo/vector-icons";
+import { styles } from "../dressing/vetementForm.styles";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
@@ -34,7 +38,10 @@ export function alphanumSort(a: string, b: string) {
  *          une valeur positive si `a` est supérieur à `b`, 
  *          ou 0 si les deux sont égaux.
  */
-export function numSort(a: number, b: number) {
+export function numSort(a: number | undefined, b: number | undefined) {
+    if(a === undefined || b === undefined) {
+        return 0;
+    }
     return a - b;
 }
 
@@ -97,7 +104,11 @@ export function vetementSort(a: VetementModel, b: VetementModel) {
  *          tout en conservant le ratio d'origine. Si l'image ou son contenu est invalide,
  *          retourne l'image d'origine.
  */
-export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel {
+export function resizeImage(image: VetementImageModel, maxSize: number): VetementImageModel | null {
+
+    if(!image || (!image.s3uri && !image.localUri)) {
+        return null;
+    }
 
     if (image?.largeur && image?.hauteur) {
         const ratioImage = image.largeur / image.hauteur;
@@ -198,3 +209,37 @@ export function getTypeVetementIcon(typeVetements: string): any {
             return require('@/assets/icons/clothes-outline.png');
     }
 }
+
+
+
+/**
+ * Retourne un élément JSX avec une étiquette obligatoire.
+ *
+ * @param {string} label - Le texte de l'étiquette.
+ * @returns {React.JSX.Element} Un élément JSX contenant l'étiquette avec un astérisque rouge pour indiquer qu'elle est obligatoire.
+ */
+export const renderLabelMandatory = (label: string): React.JSX.Element => {
+    return (<><ThemedText style={{ color: 'red' }}>* </ThemedText><ThemedText>{label}</ThemedText></>);
+}
+
+
+/**
+ * Rendu d'un élément sélectionné avec une option de désélection.
+ *
+ * @param {any} item - L'élément sélectionné à afficher.
+ * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
+ * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
+ */
+export const renderSelectedItem = (item: any, unSelect?: any, index?: number): React.JSX.Element => (
+    <Pressable
+        key={index}
+        style={styles.selectedStyle}
+        onPress={() => unSelect?.(item)}>
+        <View style={styles.rowItems}>
+            <ThemedText type="default">{item.libelle} </ThemedText>
+            {unSelect &&
+                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+            }
+        </View>
+    </Pressable>
+);

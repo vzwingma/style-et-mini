@@ -1,6 +1,6 @@
 import { CaracteristiqueVetementEnum} from "../constants/AppEnum";
-import DressingListFiltreModel from "../models/vetementFiltre.model";
-import VetementModel from "../models/vetements.model";
+import DressingListFiltreModel from "../models/vetements/vetementFiltre.model";
+import VetementModel from "../models/vetements/vetements.model";
 /**
  * Groupe les vêtements par type.
  *
@@ -35,7 +35,7 @@ export function groupeVetementByType(vetements: VetementModel[]): Map<string, Ve
  * en fonction de chaque groupe de filtres. Si aucun filtre n'est sélectionné, elle retourne la liste complète
  * des vêtements dans le dressing.
  */
-export function setVetementsFiltres(vetementsInDressing: VetementModel[], selectedFiltres: DressingListFiltreModel[]): VetementModel[] {
+export function applyFiltresOnVetements(vetementsInDressing: VetementModel[], selectedFiltres: DressingListFiltreModel[]): VetementModel[] {
 
   if(selectedFiltres.length === 0) {
     return vetementsInDressing;
@@ -70,7 +70,7 @@ export function setVetementsFiltres(vetementsInDressing: VetementModel[], select
  * @returns `true` si le vêtement correspond aux critères de filtrage, sinon `false`.
  */
 function filtreVetementByCaracteristique(vetement: VetementModel, type: CaracteristiqueVetementEnum, filtre: DressingListFiltreModel): boolean {
-  if (type === CaracteristiqueVetementEnum.TYPE) {
+  if (type === CaracteristiqueVetementEnum.TYPES) {
     return vetement.type.id === filtre.id;
   } else if (type === CaracteristiqueVetementEnum.TAILLES) {
     return vetement.taille.id === filtre.id;

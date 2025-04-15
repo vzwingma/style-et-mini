@@ -1,14 +1,15 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
-import MenuDrawer from 'react-native-side-drawer';
+import Modal from 'react-native-modal';
 import { Colors } from './../../constants/Colors';
 import DressingModel from './../../models/dressing.model';
 import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent } from './vetementForm.component';
 import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
-import VetementModel from './../../models/vetements.model';
+import VetementModel from '../../models/vetements/vetements.model';
+import ResultFormDeleteVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -26,11 +27,6 @@ export type DressingComponentProps = {
  * @returns {JSX.Element} Le composant de l'écran 
  *
  * @component
- * @example
- * return (
- *   <ReglagesComponent />
- * )
- *
  * @remarks
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
@@ -39,26 +35,43 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
 
   const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [vetements, setVetements] = useState([]);
+  const [vetements, setVetements] = useState<VetementModel[]>([]);
   const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
 
-  useEffect(() => {
-    // Récupération des vêtements du dressing si le formulaire n'est pas ouvert
-    if (openVetementForm) return;
-    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
-  }, [openVetementForm, dressing.id]);
-
-  // Changement de l'état du formulaire de vêtement si le dressing change
+  // Rechargement des vêtements si le dressing change
   useEffect(() => {
     setOpenVetementForm(false);
     loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
   }, [dressing]);
 
 
-  /** Ouverture/Fermeture du menu */
-  function toggleOpenVetementForm(vetement?: VetementModel | null): void {
+  /**
+   * 
+   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
+   */
+  function validateFormCallBack(vetement: VetementModel ): void {
+    setOpenVetementForm(false);
+    setVetements(prevVetements => prevVetements.map(v => v.id === vetement.id ? vetement : v));
+  }
+
+  /**
+   * 
+   * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
+   */
+  function deleteFormCallBack(resultDelete: ResultFormDeleteVetementModel ): void {
+    setOpenVetementForm(false);
+    setVetements(prevVetements => prevVetements.filter(v => v.id !== resultDelete.id && resultDelete.deleted));
+  }
+
+
+  /**
+   * Ouvre ou ferme le formulaire d'ajout/édition de vêtement.
+   *
+   * @param vetement - (Optionnel) Le modèle de vêtement à éditer. Si non fourni, le formulaire sera ouvert pour ajouter un nouveau vêtement.
+   */
+  function openAddEditVetement(vetement?: VetementModel | null): void {
     setVetementInEdit(vetement || null);
-    setOpenVetementForm(!openVetementForm);
+    setOpenVetementForm(true);
   };
 
 
@@ -75,34 +88,39 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
     else if (vetements?.length !== 0) {
-      return (openVetementForm === false && <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={toggleOpenVetementForm} />);
+      return (
+        <>
+          <View style={styles.container}>
+            <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={openAddEditVetement} />
+          </View>
+
+          <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}
+            animationIn='slideInRight' animationOut='slideOutRight'
+            propagateSwipe={true}
+            onBackButtonPress={() => setOpenVetementForm(false)}
+            onBackdropPress={() => setOpenVetementForm(false)}
+            style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenVetementForm(false)} 
+                                                                                 validateFormCallBack={validateFormCallBack}
+                                                                                 deleteFormCallBack={deleteFormCallBack}></VetementFormComponent>
+
+          </Modal>
+        </>);
     }
     else {
-      return <DressingEmptyComponent openAddVetement={() => toggleOpenVetementForm(null)} />
+      return <DressingEmptyComponent openAddVetement={() => openAddEditVetement(null)} />
     }
   }
 
 
-  return (
-    <View style={styles.container}>
-      {getPanelContent()}
-      <MenuDrawer
-        open={openVetementForm}
-        position={'right'}
-        drawerContent={
-          <VetementFormComponent dressing={dressing} vetement={vetementInEdit} onCloseForm={toggleOpenVetementForm}></VetementFormComponent>
-        }
-        drawerPercentage={98}
-        animationTime={250}
-        overlay={true}
-        opacity={0.3} />
-    </View>
-  );
+  return (getPanelContent());
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    flexDirection: 'column',
     zIndex: 0,
-    minHeight: 1200,
+    width: '100%'
   }
 });

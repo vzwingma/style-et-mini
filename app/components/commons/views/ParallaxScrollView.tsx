@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -13,7 +13,6 @@ import { ThemedText } from './ThemedText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import BackendConfigModel from '@/app/models/backendConfig.model';
-import { ThemedView } from './ThemedView';
 
 const HEADER_HEIGHT = 100;
 
@@ -60,7 +59,7 @@ export default function ParallaxScrollView({
 */
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
@@ -77,17 +76,17 @@ export default function ParallaxScrollView({
             headerAnimatedStyle,
           ]}>
           {headerImage}
-          <ThemedView style={styles.titleHeader}>
+          <View style={styles.titleHeader}>
             <ThemedText type="title" style={styles.appColor}>{headerTitle}</ThemedText>
-          </ThemedView>
-          <ThemedView style={styles.titleHeader}>
+          </View>
+          <View style={styles.titleHeader}>
             {backendConnexionData && getConnexionStatusIcon(backendConnexionData)}
             <ThemedText type="italic" style={{marginRight: 10, marginTop: 10}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}/{backendConnexionData?.version}</ThemedText>
-          </ThemedView>          
+          </View>          
         </Animated.View>
-        <ThemedView style={styles.content}>{children}</ThemedView>
+        <View style={styles.content}>{children}</View>
       </Animated.ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 
@@ -116,7 +115,8 @@ function getConnexionStatusIcon(backendConnexionData? : BackendConfigModel): Rea
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.dark.background,
   },
   header: {
     height: HEADER_HEIGHT,

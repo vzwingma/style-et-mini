@@ -1,6 +1,6 @@
 import React from 'react';
+import { ReglagesComponent } from '../components/reglages/reglages.component';
 
-import ReglagesComponent from '../components/reglages/reglages.component';
 
 /**
  * Composant principal pour l'écran de réglages.
