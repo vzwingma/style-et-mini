@@ -18,6 +18,7 @@ import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
 import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
+import FormResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -28,6 +29,7 @@ export type VetementFormComponentProps = {
     vetement : VetementModel | null;
     closeFormCallBack() : void;
     validateFormCallBack(vetement: VetementModel) : void;
+    deleteFormCallBack(vetement: FormResultVetementModel) : void;
 };
 
 /**
@@ -52,7 +54,7 @@ export type VetementsFormParamsTypeProps = {
  *
  * @returns {React.JSX.Element} - Un élément JSX représentant le formulaire de vêtement.
  */
-export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, closeFormCallBack, validateFormCallBack }: VetementFormComponentProps) => {
+export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
@@ -308,14 +310,14 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
  * @param setErrorsForm fonction de mise à jour des erreurs
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
- */
+ 
     function deleteFormModalConfirmation({ form, setForm, setErrorsForm, validateFormCallBack }: FormModelProps, setModalDialog: Function) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
             ackModalCallback={() => deleteForm(form, setForm, setErrorsForm, validateFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
-
+*/
 
     return (
         <>
@@ -329,7 +331,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             <Pressable onPress={() => archiveForm({ form, setForm, setErrorsForm, validateFormCallBack })}>
                                 {renderArchiveIcon()}
                             </Pressable>
-                            <Pressable onPress={() => deleteForm(form, setForm, setErrorsForm, validateFormCallBack)}>
+                            <Pressable onPress={() => deleteForm(form, setForm, setErrorsForm, deleteFormCallBack)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
                             </Pressable>
                         </>

@@ -9,6 +9,7 @@ import { VetementFormComponent } from './vetementForm.component';
 import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';
+import FormResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -48,10 +49,20 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
    * 
    * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function validateFormCallBack(vetement: VetementModel): void {
+  function validateFormCallBack(vetement: VetementModel ): void {
     setOpenVetementForm(false);
     setVetements(prevVetements => prevVetements.map(v => v.id === vetement.id ? vetement : v));
   }
+
+  /**
+   * 
+   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
+   */
+  function deleteFormCallBack(vetement: FormResultVetementModel ): void {
+    setOpenVetementForm(false);
+    setVetements(prevVetements => prevVetements.filter(v => v.id !== vetement.id));
+  }
+
 
   /**
    * Ouvre ou ferme le formulaire d'ajout/édition de vêtement.
@@ -89,7 +100,9 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
             onBackButtonPress={() => setOpenVetementForm(false)}
             onBackdropPress={() => setOpenVetementForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenVetementForm(false)} validateFormCallBack={validateFormCallBack}></VetementFormComponent>
+            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenVetementForm(false)} 
+                                                                                 validateFormCallBack={validateFormCallBack}
+                                                                                 deleteFormCallBack={deleteFormCallBack}></VetementFormComponent>
 
           </Modal>
         </>);

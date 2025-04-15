@@ -136,8 +136,7 @@ function saveVetementAttributs(vetement: VetementModel, params: { key: SERVICES_
  * Si la suppression est réussie, un message de succès est affiché et le formulaire est réinitialisé et fermé.
  * En cas d'erreur, un message d'erreur est affiché.
  */
-export function callDeleteVetementService(form: FormVetementModel,
-    validateFormCallBack: (vetement: VetementModel) => void) {
+export function callDeleteVetementService(form: FormVetementModel) : Promise<string> {
 
     let params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
@@ -146,14 +145,5 @@ export function callDeleteVetementService(form: FormVetementModel,
 
     console.log("Suppression du vêtement", form);
     //  Appel au backend pour supprimer le vêtement
-    callDELETEBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params)
-        .then((response) => {
-            console.log("Vêtement supprimé avec succès", response);
-            showToast("Vêtement supprimé avec succès", ToastDuration.SHORT);
-        })
-        .catch((e) => {
-            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur de suppression du vêtement : " + e, ToastDuration.LONG);
-            return false;
-        });
+    return callDELETEBackend(SERVICES_URL.SERVICE_VETEMENTS_BY_ID, params);
 }
