@@ -1,8 +1,8 @@
 /**
  * Modèle représentant un vetement avec le backend
  */
-interface FormResultVetementModel {
+interface ResultFormDeleteVetementModel {
     readonly id         : string;
     deleted            : boolean;
 }
-export default FormResultVetementModel;
+export default ResultFormDeleteVetementModel;

@@ -9,7 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import FormResultVetementModel from "../models/vetements/form.result.vetements.model";
+import ResultFormDeleteVetementModel from "../models/vetements/form.result.vetements.model";
 
 
 export type FormModelProps = {
@@ -458,12 +458,12 @@ export function archiveForm({ form, setForm, setErrorsForm, validateFormCallBack
 export function deleteForm(form: FormVetementModel,
     setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    validateFormCallBack: (resultDelete: FormResultVetementModel) => void) {
+    validateFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void) {
     console.log("Suppression du vêtement", form.id);
     // Enregistrement du formulaire 
     callDeleteVetementService(form)
         .then((result: any) => {
-            const resultDeleteVetement: FormResultVetementModel = {
+            const resultDeleteVetement: ResultFormDeleteVetementModel = {
                 id: result.idVetement,
                 deleted: result.deleted
             };

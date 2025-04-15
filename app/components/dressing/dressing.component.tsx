@@ -9,7 +9,7 @@ import { VetementFormComponent } from './vetementForm.component';
 import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';
-import FormResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import ResultFormDeleteVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -56,11 +56,11 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
 
   /**
    * 
-   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
+   * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function deleteFormCallBack(vetement: FormResultVetementModel ): void {
+  function deleteFormCallBack(resultDelete: ResultFormDeleteVetementModel ): void {
     setOpenVetementForm(false);
-    setVetements(prevVetements => prevVetements.filter(v => v.id !== vetement.id));
+    setVetements(prevVetements => prevVetements.filter(v => v.id !== resultDelete.id && resultDelete.deleted));
   }
 
 

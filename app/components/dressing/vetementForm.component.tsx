@@ -18,7 +18,7 @@ import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
 import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
-import FormResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import ResultFormDeleteVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -29,7 +29,7 @@ export type VetementFormComponentProps = {
     vetement : VetementModel | null;
     closeFormCallBack() : void;
     validateFormCallBack(vetement: VetementModel) : void;
-    deleteFormCallBack(vetement: FormResultVetementModel) : void;
+    deleteFormCallBack(vetement: ResultFormDeleteVetementModel) : void;
 };
 
 /**
