@@ -10,6 +10,7 @@ import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/Comm
 import { styles } from "./dressingList.style";
 import { DressingFiltreComponent } from "./dressingFiltres.component";
 import AccordionItem from "../commons/accordion/AccordionItem.component";
+import { DressingEmptyComponent } from "./dressingEmpty.component";
 
 
 
@@ -33,11 +34,6 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const [toggleAllItems, setToggleAllItems] = useState(false);
 
 
-    useEffect(() => {
-        setVetementsAffiches(vetementsInDressing);
-    }, [vetementsInDressing]);
-
-
     /**
      * Affiche un panneau contenant une liste de vêtements.
      *
@@ -50,8 +46,6 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) => {
             return alphanumSort(a[1][0]?.type.libelle, b[1][0]?.type.libelle);
         }));
-
-
 
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
@@ -99,14 +93,17 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                 </Pressable>
                 </View>
             </View>
-
+            { vetementsInDressing.length === 0 && 
+                 <DressingEmptyComponent openAddVetement={() => openAddEditVetement()} />
+            }
+            { vetementsInDressing.length > 0 && <>
             <View>
                 <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches} />
             </View>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
                 {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
-            </ScrollView>
-
+            </ScrollView></>
+            }
         </>
     );
 }

@@ -4,12 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from './../../constants/Colors';
 import DressingModel from './../../models/dressing.model';
-import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent } from './vetementForm.component';
 import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';
-import ResultFormDeleteVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -49,18 +48,24 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
    * 
    * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function validateFormCallBack(vetement: VetementModel ): void {
+  function validateFormCallBack(resultat: APIResultVetementModel ): void {
     setOpenVetementForm(false);
-    setVetements(prevVetements => prevVetements.map(v => v.id === vetement.id ? vetement : v));
+    if(resultat.created && resultat.vetement !== undefined && resultat.vetement !== null) {
+      // On ajoute le vetement à la liste
+      setVetements(prevVetements => [...prevVetements, resultat.vetement!]);
+    }
+    else if(resultat.updated || resultat.archived) {
+      setVetements(prevVetements => prevVetements.map(v => v.id === resultat.idVetement ? resultat.vetement! : v));
+    }
   }
 
   /**
    * 
    * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function deleteFormCallBack(resultDelete: ResultFormDeleteVetementModel ): void {
+  function deleteFormCallBack(resultDelete: APIResultVetementModel ): void {
     setOpenVetementForm(false);
-    setVetements(prevVetements => prevVetements.filter(v => v.id !== resultDelete.id && resultDelete.deleted));
+    setVetements(prevVetements => prevVetements.filter(v => v.id !== resultDelete.idVetement && resultDelete.deleted));
   }
 
 
@@ -87,7 +92,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else if (vetements?.length !== 0) {
+    else {
       return (
         <>
           <View style={styles.container}>
@@ -106,9 +111,6 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
 
           </Modal>
         </>);
-    }
-    else {
-      return <DressingEmptyComponent openAddVetement={() => openAddEditVetement(null)} />
     }
   }
 

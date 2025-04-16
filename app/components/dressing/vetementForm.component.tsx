@@ -18,7 +18,7 @@ import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { styles } from './vetementForm.styles';
 import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
-import ResultFormDeleteVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -28,8 +28,8 @@ export type VetementFormComponentProps = {
     dressing : DressingModel;
     vetement : VetementModel | null;
     closeFormCallBack() : void;
-    validateFormCallBack(vetement: VetementModel) : void;
-    deleteFormCallBack(vetement: ResultFormDeleteVetementModel) : void;
+    validateFormCallBack(resultat: APIResultVetementModel) : void;
+    deleteFormCallBack(resultat: APIResultVetementModel) : void;
 };
 
 /**
@@ -106,7 +106,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     <View style={{width: '100%', alignItems: 'center'}}>
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             {renderFormImage &&
-                                <Image source={{ uri: renderFormImage.displayUri }} style={[styles.photo, { width: renderFormImage.largeur, height: renderFormImage.hauteur }]} />}
+                                <Image height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={styles.photo}  />}
                             {!renderFormImage &&
                                 <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
                             {form.petiteTaille &&
@@ -296,7 +296,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (vetement: VetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (resultat: APIResultVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
             ackModalCallback={() => archiveForm(form , validateFormCallBack)}
@@ -312,7 +312,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
 */ 
-    function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: APIResultVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
             ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
             showModal={Math.random()} />;

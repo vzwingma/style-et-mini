@@ -1,8 +1,14 @@
+import VetementModel from "./vetements.model";
+
 /**
  * Modèle représentant un vetement avec le backend
  */
-interface ResultFormDeleteVetementModel {
-    readonly id         : string;
-    deleted            : boolean;
+interface APIResultVetementModel {
+    readonly idVetement : string;
+    vetement?           : VetementModel;
+    readonly created?   : boolean;
+    updated?            : boolean;
+    archived?           : boolean;
+    readonly deleted?   : boolean;
 }
-export default ResultFormDeleteVetementModel;
+export default APIResultVetementModel;
