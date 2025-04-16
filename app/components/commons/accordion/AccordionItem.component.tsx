@@ -58,7 +58,11 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
 
   const styles = StyleSheet.create({
     accordContainer: {
-      paddingTop: 4
+      borderColor: Colors.app.background,
+      borderWidth: 1,
+      borderTopLeftRadius: 8,
+      borderBottomRightRadius: 8,
+      marginBottom: 2,
     },
     accordHeader: {
       flexDirection: 'row',
