@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     /** Filtre  */
     filtresBar: {
         alignItems: 'center',
-        marginTop: 3,
+        margin: 3,
         padding: 0,
         justifyContent: 'center',
     },    

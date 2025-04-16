@@ -102,9 +102,8 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
      */
     return (
         <View style={styles.filtresBar}>
-            <View style={styles.filtresBar}>
                 <MultiSelect
-                    style={styles.dropdown} containerStyle={styles.listStyle} itemTextStyle={styles.listItemStyle}
+                    style={[styles.dropdown, {marginBottom: 3} ]} containerStyle={styles.listStyle} itemTextStyle={styles.listItemStyle}
                     iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
@@ -118,7 +117,6 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
                     renderItem={renderFilterItem}
                     renderSelectedItem={renderSelectedItem}
                 />
-            </View>
         </View>
     );
 }

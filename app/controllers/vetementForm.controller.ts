@@ -1,7 +1,7 @@
 import { alphanumSort, checkPriceFormat, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements/vetements.model";
-import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from "../models/vetements/form.errors.vetements.model";
+import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
 import FormVetementModel, { transformVetementToFormModel } from "../models/vetements/form.vetements.model";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import { CategorieDressingEnum, SaisonVetementEnum, StatutVetementEnum } from "../constants/AppEnum";
@@ -119,13 +119,7 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
         legacy: true
     });
     if (!result.canceled) {
-        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 90, 0).then((compressedImage) => {
-            // compress image will be low size which will be use to upload to server
-            setImageForm(compressedImage, setForm);
-          }).catch((err) => {
-            console.log("Erreur lors du redimensionnement", err);
-          });
-        
+        setImageForm(result.assets[0], setForm);
     }
 };
 /**

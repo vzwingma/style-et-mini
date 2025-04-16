@@ -48,10 +48,10 @@ export const defaultErrorsFormVetementModel: ErrorsFormVetementModel = {
     etatMessage     : "L'état du vêtement est obligatoire",
 
     prixNeufInError : false,
-    prixNeufMessage : "Le prix neuf doit être au format numérique",
+    prixNeufMessage : "Le prix doit être un nombre",
 
     prixAchatInError: false,
-    prixAchatMessage: "Le prix d'achat doit être au format numérique"
+    prixAchatMessage: "Le prix doit être un nombre"
 }
 
 export default ErrorsFormVetementModel;
