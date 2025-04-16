@@ -119,7 +119,7 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
         legacy: true
     });
     if (!result.canceled) {
-        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 20, 0).then((compressedImage) => {
+        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 90, 0).then((compressedImage) => {
             // compress image will be low size which will be use to upload to server
             setImageForm(compressedImage, setForm);
           }).catch((err) => {
