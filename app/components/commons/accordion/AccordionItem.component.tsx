@@ -43,7 +43,7 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
     return (
       <View style={styles.accordContainer}>
         <TouchableOpacity style={styles.accordHeader} onPress={ toggleItem }>
-          <View style={styles.accordHeader}>
+          <View style={styles.accordHeaderTitre}>
             <Text style={styles.groupeLabel}>{ title }</Text>
             <Image source={icon} style={[styles.icon, {marginRight: 15}]} />
           </View>
@@ -61,24 +61,28 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
       paddingTop: 4
     },
     accordHeader: {
-      flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      height: 35,
       backgroundColor: Colors.app.color,
       borderTopLeftRadius: 8,
       borderBottomRightRadius: 8,
     },
+    accordHeaderTitre: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      backgroundColor: Colors.app.color,
+      borderTopLeftRadius: 8,
+      padding: 2,
+    },
     groupeLabel: {
-      paddingLeft: 15,
-      paddingTop: 6,
+      paddingLeft: 10,
+      paddingTop: 5,
       color: 'white',
       fontSize: 16,
-
     },
     icon: {
-      marginTop: 5,
-      marginRight: 5,
+      margin: 5,
       width: 25,
       height: 25,
       color: 'white',
