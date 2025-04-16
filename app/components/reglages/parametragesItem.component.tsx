@@ -66,9 +66,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     }
     const [form, setForm] = useState<ParamVetementsFormModel | null>(zeroForm);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormParametrageModel>(defaultErrorsFormParametrageModel);
-    const { modalDialog, setModalDialog } = useContext(AppContext)!;
-
-
+    const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
 
     useEffect(() => {
@@ -99,7 +97,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                     { /** Icoônes édition */}
                     <View style={stylesForm.rowItems}>
                         {isUnUsed &&
-                            <Pressable onPress={() => deleteModalConfirmation(zeroForm, () => { console.log("Suppression du paramètre " + parametrageVetements.id) }, setModalDialog)}>
+                            <Pressable onPress={() => deleteModalConfirmation(zeroForm, () => refreshListeParametres(zeroForm.typeParam), setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.titleIcon} tintColor={'white'} />
 
                             </Pressable>}

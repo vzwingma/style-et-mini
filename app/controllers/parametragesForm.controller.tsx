@@ -4,7 +4,7 @@ import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
 import ErrorsFormParametrageModel from "../models/params/form.errors.params.model";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
-import { callPOSTBackend } from "../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend } from "../services/ClientHTTP.service";
 
 
 
@@ -25,9 +25,9 @@ export function initForm(typeParametrage: ParametragesVetementEnum, parametreVet
 * @param type type de vêtements
 * @param setForm  fonction de mise à jour du formulaire
 */
-export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>, 
-                                setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>) {
-    if(libelle) {
+export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>,
+    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>) {
+    if (libelle) {
         setErrorsForm((errors: ErrorsFormParametrageModel) => {
             return { ...errors, libelleInError: false }
         })
@@ -46,7 +46,7 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypeForm(type: { id : TypeTailleEnum, libelle: string}, setForm: Function) {
+export function setTypeForm(type: { id: TypeTailleEnum, libelle: string }, setForm: Function) {
     setForm((form: ParamVetementsFormModel) => {
         return { ...form, isModified: true, type: type.id }
     });
@@ -58,7 +58,7 @@ export function setTypeForm(type: { id : TypeTailleEnum, libelle: string}, setFo
  * @param setForm fonction de mise à jour du formulaire
  */
 export function setCategoriesForm(categories: string[], setForm: Function) {
-    
+
     setForm((form: ParamVetementsFormModel) => {
         return { ...form, isModified: true, categories: categories }
     });
@@ -96,25 +96,8 @@ export function setTriForm(tri: string, setForm: Function) {
  * d'une boîte de dialogue modale pour confirmer l'annulation des modifications en cas
  * de formulaire modifié.
  *
- * @todo Implémenter la gestion d'une boîte de dialogue modale pour confirmer l'annulation
- *       des modifications si le formulaire a été modifié.
  */
 export function razAndCloseForm(setParametreInEdition: (idParametreToEdit: string | null) => void) {
-    /*
-
-    if(form?.isModified) {
-        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous annuler vos modifications ?'}
-            ackModalCallback={() => {
-                setEditParametrage(false);
-                setForm(null);
-            }}
-            showModal={Math.random()} />;
-        setModalDialog(dialog);
-    }
-    else{
-
-   
-    } */
     setParametreInEdition(null);
 }
 
@@ -186,7 +169,7 @@ export function validateForm(form: ParamVetementsFormModel | null,
  * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
  * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
  */
-function validateAttribute(attributeName: string, attributeCheckFail: boolean, 
+function validateAttribute(attributeName: string, attributeCheckFail: boolean,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormParametrageModel>>) {
     if (attributeCheckFail) {
         errors = true;
@@ -210,27 +193,53 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * et le formulaire est réinitialisé. En cas d'erreur, un message d'erreur est affiché.
  */
 function saveParametresVetement(form: ParamVetementsFormModel): Promise<ParametragesVetementEnum> {
-    return new Promise((resolve, reject) => {
+    const paramVetement: ParamGenericVetementsModel = transformFormToParamVetements(form, form.typeParam);
 
-        const paramVetement: ParamGenericVetementsModel = transformFormToParamVetements(form, form.typeParam);
+    const isEdition = (paramVetement.id !== null && paramVetement.id !== "" && paramVetement.id !== undefined);
+    console.log((isEdition ? "Mise à jour" : "Création") + " du paramètre", form.typeParam, paramVetement);
+    let params;
+    if (isEdition) {
+        params = [{ key: SERVICES_PARAMS.ID_PARAM, value: String(paramVetement.id) }];
+    }
+    //  Appel au backend pour sauvegarder le vêtement
+    return callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
+        .then((response) => {
+            console.log("Paramètrage ", form.typeParam, " de vêtements enregistrés avec succès", response);
+            showToast("Paramètre " + form.typeParam + " enregistré avec succès", ToastDuration.SHORT);
+            return form.typeParam;
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
+            return e;
+        });
+}
 
-        const isEdition = (paramVetement.id !== null && paramVetement.id !== "" && paramVetement.id !== undefined);
-        console.log((isEdition ? "Mise à jour" : "Création") + " du paramètre", form.typeParam, paramVetement);
-        let params;
-        if (isEdition) {
-            params = [{ key: SERVICES_PARAMS.ID_PARAM, value: String(paramVetement.id) }];
-        }
-        //  Appel au backend pour sauvegarder le vêtement
-        callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
-            .then((response) => {
-                console.log("Paramètrage ", form.typeParam, " de vêtements enregistrés avec succès", response);
-                showToast("Paramètre " + form.typeParam + " enregistré avec succès", ToastDuration.SHORT);
-                resolve(form.typeParam);
-            })
-            .catch((e) => {
-                console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement du vêtement : " + e, ToastDuration.LONG);
-                reject(e);
-            });
-    })
+
+
+
+/**
+ * Validation du formulaire pour archivage du vêtement
+ * @param form formulaire à valider
+ * @param setForm fonction de mise à jour du formulaire
+ * @param setErrorsForm fonction de mise à jour des erreurs
+ * @param onCloseForm fonction de fermeture du formulaire
+ * @returns si le formulaire est invalide
+ */
+export function deleteForm(form: ParamVetementsFormModel,
+    validateFormCallBack: () => void) {
+    console.log("Suppression du paramètre", form.typeParam, ":", form.id);
+    // Suppression
+    const params = [{ key: SERVICES_PARAMS.ID_PARAM, value: String(form.id) }];
+    callDELETEBackend(getUrlAPIParametres(form), params)
+        .then((resultDeleteParam: any) => {
+            console.log("Paramètre supprimé avec succès", resultDeleteParam);
+            showToast("Paramètre supprimé avec succès", ToastDuration.SHORT);
+            validateFormCallBack();
+        })
+        .catch((e) => {
+            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
+            showToast("Erreur de suppression du paramètre : " + e, ToastDuration.LONG);
+            return e;
+        });
 }
