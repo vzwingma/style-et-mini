@@ -1,7 +1,7 @@
 import { alphanumSort, checkPriceFormat, numSort } from "../components/commons/CommonsUtils";
 import DressingModel from "../models/dressing.model";
 import VetementModel from "../models/vetements/vetements.model";
-import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from "../models/vetements/form.errors.vetements.model";
+import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
 import FormVetementModel, { transformVetementToFormModel } from "../models/vetements/form.vetements.model";
 import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
 import { CategorieDressingEnum, SaisonVetementEnum, StatutVetementEnum } from "../constants/AppEnum";
