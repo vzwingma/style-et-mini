@@ -34,10 +34,6 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
     const [toggleAllItems, setToggleAllItems] = useState(false);
 
 
-    useEffect(() => {
-        setVetementsAffiches(vetementsInDressing);
-    }, [vetementsInDressing]);
-
     /**
      * Affiche un panneau contenant une liste de vêtements.
      *
@@ -50,8 +46,6 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) => {
             return alphanumSort(a[1][0]?.type.libelle, b[1][0]?.type.libelle);
         }));
-
-
 
         vetementsByGroup.forEach((vetements, groupe) => {
             groupItems.push(
