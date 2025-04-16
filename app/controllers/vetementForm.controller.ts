@@ -9,8 +9,8 @@ import * as ImagePicker from 'expo-image-picker';
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import ResultFormDeleteVetementModel from "../models/vetements/form.result.vetements.model";
 import ImageResizer from 'react-native-image-resizer';
+import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
 
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -90,7 +90,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { dressing: dressing, usagesListe: [], saisons: [] }
+            return { dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF }
         });
     }
 }
@@ -119,7 +119,7 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
         legacy: true
     });
     if (!result.canceled) {
-        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 20, 0).then((compressedImage) => {
+        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 90, 0).then((compressedImage) => {
             // compress image will be low size which will be use to upload to server
             setImageForm(compressedImage, setForm);
           }).catch((err) => {
@@ -335,7 +335,7 @@ let errors = false;
 export function validateForm(
     form: FormVetementModel | null,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    validateFormCallBack: (vetement: VetementModel) => void) {
+    validateFormCallBack: (resultat: APIResultVetementModel) => void) {
 
     console.log("Validation du formulaire", form);
     errors = false;
@@ -375,9 +375,9 @@ export function validateForm(
     if (!errors) {
         // Enregistrement du formulaire 
         callSaveVetementService(form)
-            .then((vetement) => {
-                console.log("Vêtement enregistrés avec succès", vetement);
-                validateFormCallBack(vetement);
+            .then((resultat) => {
+                console.log("Vêtement enregistrés avec succès", resultat);
+                validateFormCallBack(resultat);
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -414,16 +414,20 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param validateFormCallBack fonction de validation du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm(form: FormVetementModel, validateFormCallBack: (vetement: VetementModel) => void) {
+export function archiveForm(form: FormVetementModel, validateFormCallBack: (resultat: APIResultVetementModel) => void) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
     callSaveVetementService(form)
-        .then((vetement) => {
-            console.log("Vêtement archivé avec succès", vetement);
-            validateFormCallBack(vetement);
+        .then((resultat : APIResultVetementModel) => {
+            if(resultat.updated){
+                resultat.updated = false;
+                resultat.archived = true;
+            }
+            console.log("Vêtement archivé avec succès", resultat);
+            validateFormCallBack(resultat);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
@@ -442,15 +446,11 @@ export function archiveForm(form: FormVetementModel, validateFormCallBack: (vete
  * @returns si le formulaire est invalide
  */
 export function deleteForm(form: FormVetementModel,
-    validateFormCallBack: (resultDelete: ResultFormDeleteVetementModel) => void) {
+    validateFormCallBack: (resultDelete: APIResultVetementModel) => void) {
     console.log("Suppression du vêtement", form.id);
     // Enregistrement du formulaire 
     callDeleteVetementService(form)
-        .then((result: any) => {
-            const resultDeleteVetement: ResultFormDeleteVetementModel = {
-                id: result.idVetement,
-                deleted: result.deleted
-            };
+        .then((resultDeleteVetement: APIResultVetementModel) => {
             console.log("Vêtement supprimé avec succès", resultDeleteVetement);
             validateFormCallBack(resultDeleteVetement);
         })

@@ -74,7 +74,7 @@ export function callGETBackend(path: SERVICES_URL, params?: KeyValueParams[]): P
  */
 export function callPOSTBackend(path: SERVICES_URL | null, params?: KeyValueParams[], body?: any): Promise<any> {
     if (path === null) {
-        throw new Error("Path is null");
+        throw new Error("Le chemin est null");
     }
     return callBackend(API_VERBS.POST, path, params, body);
 }
@@ -136,7 +136,10 @@ export function callPUTBinaryBackend(fullURL: string, data?: any): Promise<boole
  * @param {KeyValueParams[]} [params] - Les paramètres optionnels de la requête.
  * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
  */
-export function callDELETEBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
+export function callDELETEBackend(path: SERVICES_URL | null, params?: KeyValueParams[]): Promise<any> {
+    if (path === null) {
+        throw new Error("Le chemin est null");
+    }
     return callBackend(API_VERBS.DELETE, path, params);
 }
 
@@ -149,7 +152,7 @@ export function callDELETEBackend(path: SERVICES_URL, params?: KeyValueParams[])
  * @param body body de la requête (optionnel)
  * @returns réponse
  */
-function callBackend(verb: API_VERBS, path: SERVICES_URL | string, params?: KeyValueParams[], body?: JSON): Promise<any> {
+function callBackend(verb: API_VERBS, path: SERVICES_URL, params?: KeyValueParams[], body?: JSON): Promise<any> {
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(path, params);
 

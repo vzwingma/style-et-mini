@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Image, ActivityIndicator, Pressable } from 'react-native'
 import Modal from 'react-native-modal';
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
@@ -37,7 +37,7 @@ export const ReglagesComponent: React.FC = () => {
  * */
   useEffect(() => {
     console.log("(Re)Chargement des paramètres...");
-    getAllParamsVetements ({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques,  setError, setIsLoading });
+    getAllParamsVetements({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques, setError, setIsLoading });
   }, [])
 
   /** Ouverture/Fermeture du menu */
@@ -77,10 +77,12 @@ export const ReglagesComponent: React.FC = () => {
                   <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
                 </View>
                 {menusParametrages[keyGroupe].map((itemParam) => (
-                  <View key={itemParam.titre} style={styles.menuItem} >
-                    <Image source={itemParam.icone} style={styles.icon} />
-                    <ThemedText type='default' onPress={() => toggleOpen(itemParam)}>{itemParam.titre}</ThemedText>
-                  </View>
+                  <Pressable key={itemParam.titre} onPress={() => toggleOpen(itemParam)}>
+                    <View key={itemParam.titre} style={styles.menuItem} >
+                      <Image source={itemParam.icone} style={styles.icon} />
+                      <ThemedText type='default'>{itemParam.titre}</ThemedText>
+                    </View>
+                  </Pressable>
                 ))}
               </View>
 
@@ -95,9 +97,9 @@ export const ReglagesComponent: React.FC = () => {
           onBackdropPress={() => setOpen(false)}
           style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
           {
-            (menu !== null && menu !== undefined) 
-            && <ParametragesListComponent typeParametrage={menu} 
-                                          closeDrawer={() => setOpen(false)} />
+            (menu !== null && menu !== undefined)
+            && <ParametragesListComponent typeParametrage={menu}
+              closeDrawer={() => setOpen(false)} />
           }
 
         </Modal>
@@ -107,7 +109,7 @@ export const ReglagesComponent: React.FC = () => {
 
   }
 
-  return getPanelContent() ;
+  return getPanelContent();
 }
 
 const styles = StyleSheet.create({
@@ -142,7 +144,9 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     padding: 10,
-    height: 44,
-    cursor: 'pointer',
+    paddingTop: 20,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.app.backgroundLight,
   },
 });

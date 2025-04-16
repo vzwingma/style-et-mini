@@ -100,10 +100,12 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                 </View>
             </View>
         }
+        {!paramIsInEdition && 
         <View style={stylesForm.rowItems}>
             <ThemedText type="defaultSemiBold" style={stylesForm.label}>Nb vêtements</ThemedText>
             <ThemedText type="defaultSemiBold" style={[stylesForm.label, { width: 200 }]}>{parametrageVetements.nombreVetements}</ThemedText>
-        </View>        
+        </View> 
+        }
     </View>
     );
 };
