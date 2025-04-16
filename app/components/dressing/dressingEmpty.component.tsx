@@ -6,7 +6,7 @@ import { Colors } from '../../constants/Colors';
 
 
 export type DressingComponentProps = {
-  openAddVetement: () => void;
+  openAddVetement: Function;
 };
 /**
  * Composant principal pour un dressing
@@ -31,7 +31,7 @@ export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ open
 
       <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de vêtements</ThemedText>
 
-      <Pressable onPress={openAddVetement} style={styles.menuItem}>
+      <Pressable onPress={() => openAddVetement(null)} style={styles.menuItem}>
           <ThemedText type="title" style={{marginTop: 10}}>Ajoutez un vêtement</ThemedText>
       </Pressable>
     </View>

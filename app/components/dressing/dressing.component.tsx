@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from './../../constants/Colors';
 import DressingModel from './../../models/dressing.model';
-import { DressingEmptyComponent } from './dressingEmpty.component';
 import { VetementFormComponent } from './vetementForm.component';
 import { loadVetementsDressing } from './../../controllers/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
@@ -51,8 +50,8 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
    */
   function validateFormCallBack(resultat: APIResultVetementModel ): void {
     setOpenVetementForm(false);
-    console.log("validateFormCallBack - Vetement resultat", resultat);
-    if(resultat.created) {
+    if(resultat.created && resultat.vetement !== undefined && resultat.vetement !== null) {
+      // On ajoute le vetement à la liste
       setVetements(prevVetements => [...prevVetements, resultat.vetement!]);
     }
     else if(resultat.updated || resultat.archived) {
@@ -93,7 +92,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
     }
-    else if (vetements?.length !== 0) {
+    else {
       return (
         <>
           <View style={styles.container}>
@@ -112,9 +111,6 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
 
           </Modal>
         </>);
-    }
-    else {
-      return <DressingEmptyComponent openAddVetement={() => openAddEditVetement(null)} />
     }
   }
 

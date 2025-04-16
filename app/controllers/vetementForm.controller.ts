@@ -90,7 +90,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { dressing: dressing, usagesListe: [], saisons: [] }
+            return { dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF }
         });
     }
 }
