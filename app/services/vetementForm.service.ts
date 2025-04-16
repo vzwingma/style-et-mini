@@ -3,6 +3,7 @@ import VetementModel from "../models/vetements/vetements.model";
 import FormVetementModel, { transformFormToVetementModel } from "../models/vetements/form.vetements.model";
 import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "./ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
+import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
 
 
 
@@ -102,13 +103,13 @@ function saveVetementsImage(formImageURL: string, params: { key: SERVICES_PARAMS
  * @throws Une erreur est affichée dans la console et une notification est montrée
  * si l'appel au backend échoue.
  */
-function saveVetementAttributs(vetement: VetementModel, params: { key: SERVICES_PARAMS; value: string; }[]): Promise<any> {
+function saveVetementAttributs(vetement: VetementModel, params: { key: SERVICES_PARAMS; value: string; }[]): Promise<APIResultVetementModel> {
 
     const isEdition = (vetement.id !== null && vetement.id !== "" && vetement.id !== undefined);
     console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
     const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
     //  Appel au backend pour sauvegarder le vêtement
-    return callPOSTBackend(url, params, vetement).then(() => {return vetement; })
+    return callPOSTBackend(url, params, vetement)
 }
 
 
@@ -128,7 +129,7 @@ function saveVetementAttributs(vetement: VetementModel, params: { key: SERVICES_
  * Si la suppression est réussie, un message de succès est affiché et le formulaire est réinitialisé et fermé.
  * En cas d'erreur, un message d'erreur est affiché.
  */
-export function callDeleteVetementService(form: FormVetementModel) : Promise<string> {
+export function callDeleteVetementService(form: FormVetementModel) : Promise<APIResultVetementModel> {
 
     let params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
