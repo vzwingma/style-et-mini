@@ -115,11 +115,18 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: true,
-        quality: 0,
+        quality: 1,
         legacy: true
     });
     if (!result.canceled) {
-        setImageForm(result.assets[0], setForm);
+        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 90, 0).then((compressedImage) => {
+            // compress image will be low size which will be use to upload to server
+            setImageForm(compressedImage, setForm);
+          }).catch((err) => {
+            console.log("Erreur lors du redimensionnement", err);
+            setImageForm(result.assets[0], setForm);
+          });
+        
     }
 };
 /**
