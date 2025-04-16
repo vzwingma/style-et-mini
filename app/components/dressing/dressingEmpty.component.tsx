@@ -8,21 +8,21 @@ import { Colors } from '../../constants/Colors';
 export type DressingComponentProps = {
   openAddVetement: Function;
 };
+
+
 /**
- * Composant principal pour un dressing
- *
- * @returns {JSX.Element} Le composant de l'écran 
- *
- * @component
- * @example
- * return (
- *   <ReglagesComponent />
- * )
- *
- * @remarks
- * Ce composant utilise un menu latéral pour afficher différents paramètres.
- * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
- **/
+ * Composant React fonctionnel représentant un état vide pour le dressing.
+ * 
+ * Ce composant affiche un message et une icône lorsque le dressing ne contient
+ * pas encore de vêtements. Il propose également une action permettant d'ajouter
+ * un nouveau vêtement.
+ * 
+ * @param {DressingComponentProps} props - Les propriétés du composant.
+ * @param {Function} props.openAddVetement - Fonction appelée lors de l'appui sur le bouton
+ * pour ajouter un vêtement. Elle reçoit `null` comme paramètre.
+ * 
+ * @returns {JSX.Element} Le composant visuel pour l'état vide du dressing.
+ */
 export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ openAddVetement }: DressingComponentProps) => {
 
   return (
@@ -47,16 +47,6 @@ const styles = StyleSheet.create({
     height: 700,
     alignItems: 'center',
   },
-  animatedBox: {
-    flex: 1,
-    zIndex: 1,
-    width: '100%',
-    backgroundColor: Colors.dark.background,
-    borderColor: 'red',
-    borderWidth: 1
-
-  },
-
   menuItem: {
     padding: 10,
     cursor: 'pointer',

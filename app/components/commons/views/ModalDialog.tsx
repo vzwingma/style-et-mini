@@ -10,6 +10,25 @@ export type ModalDialogComponentProps = {
     ackModalCallback: () => void;
 };
 
+/**
+ * Composant React représentant une boîte de dialogue modale.
+ *
+ * @param {ModalDialogComponentProps} props - Les propriétés du composant.
+ * @param {string} props.text - Le texte à afficher dans la boîte de dialogue.
+ * @param {boolean} props.showModal - Indique si la boîte de dialogue doit être affichée.
+ * @param {() => void} props.ackModalCallback - Fonction de rappel appelée lorsque l'utilisateur valide la boîte de dialogue.
+ *
+ * @returns {JSX.Element} Le composant ModalDialog.
+ *
+ * @description
+ * Ce composant affiche une boîte de dialogue modale avec deux boutons : 
+ * - "Annuler" pour fermer la boîte de dialogue sans action supplémentaire.
+ * - "Valider" pour fermer la boîte de dialogue et exécuter la fonction de rappel `ackModalCallback`.
+ *
+ * La boîte de dialogue utilise une animation de type "slide" et est transparente.
+ * Le composant gère l'état de visibilité de la boîte de dialogue via le hook `useState`.
+ * L'effet `useEffect` est utilisé pour afficher la boîte de dialogue lorsque la propriété `showModal` change.
+ */
 export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text, showModal, ackModalCallback }: ModalDialogComponentProps) => {
 
 
