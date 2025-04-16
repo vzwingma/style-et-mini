@@ -33,7 +33,7 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
                     {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
                         style={[styles.iconSmall]} />}
                 </View>
-                <ThemedText type="default" style={styles.label}>{vetement.libelle}</ThemedText>
+                <View style={styles.label}><ThemedText type="default">{vetement.libelle}</ThemedText></View>
             </View>
         </Pressable>
     );
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         height:40,
         backgroundColor: Colors.app.background,
-        textAlign: 'center',
-        alignContent: 'center',
+        justifyContent: 'center',
+        alignContent: 'center'
     }
 });

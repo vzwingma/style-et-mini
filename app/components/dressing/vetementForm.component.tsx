@@ -251,7 +251,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix d'achat</ThemedText>
                         <TextInput style={errorsForm?.prixAchatInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixAchatInError ? 'red' : 'gray'}
                             value={form?.prixAchat ?? ''}
-                            placeholder={!errorsForm?.prixAchatMessage ? 'Saisir le prix d\'achat (facultatif)' : errorsForm?.prixAchatMessage + ''}
+                            placeholder={!errorsForm?.prixAchatInError ? 'Saisir le prix d\'achat (facultatif)' : errorsForm?.prixAchatMessage}
                             onChangeText={prix => setPrixAchatForm(prix, setForm)} />
                         <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
                     </View>
@@ -260,7 +260,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                         <ThemedText type="defaultSemiBold" style={styles.label}>Prix neuf</ThemedText>
                         <TextInput style={errorsForm?.prixNeufInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixNeufInError ? 'red' : 'gray'}
                             value={form?.prixNeuf ?? ''}
-                            placeholder={!errorsForm?.prixNeufMessage ? 'Saisir le prix neuf (facultatif)' : errorsForm?.prixNeufMessage + ''}
+                            placeholder={!errorsForm?.prixNeufInError ? 'Saisir le prix neuf (facultatif)' : errorsForm?.prixNeufMessage}
                             onChangeText={prix => setPrixNeufForm(prix, setForm)} />
                         <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
                     </View>
