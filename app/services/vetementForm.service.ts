@@ -1,9 +1,10 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import VetementModel from "../models/vetements/vetements.model";
 import FormVetementModel, { transformFormToVetementModel } from "../models/vetements/form.vetements.model";
-import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "./ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBackend } from "./ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
+import { callPUTS3Backend } from "./ClientS3.service";
 
 
 
@@ -21,7 +22,7 @@ export function callSaveVetementService(form: FormVetementModel): Promise<any> {
     const vetement: VetementModel = transformFormToVetementModel(form);
 
     if (form.image?.localUri !== null && form.image?.localUri !== undefined) {
-        console.log("Enregistrement de l'image du vêtement", vetement.id);
+        console.log("Enregistrement de l'image du vêtement", vetement.id ?? "[NOUVEAU]");
         return saveVetementsImage(form.image?.localUri, params)
             .then((uriImage: string) => {
                 if (vetement.image) {
@@ -34,7 +35,7 @@ export function callSaveVetementService(form: FormVetementModel): Promise<any> {
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                showToast(e, ToastDuration.LONG);
                 return false;
             });
     } else {
@@ -63,20 +64,20 @@ function saveVetementsImage(formImageURL: string, params: { key: SERVICES_PARAMS
 
                 fetch(formImageURL)
                     .then((response) => response.blob())
-                    .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
+                    .then((bufferImage) => callPUTS3Backend(urlS3, bufferImage))
                     .then((responseToS3) => {
                         console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3);
                         resolve(uriImage);
                     })
                     .catch((e) => {
-                        console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                        showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                        console.error('Une erreur s\'est produite lors de la connexion au S3', e);
+                        showToast("Err : S3 : " + e, ToastDuration.LONG);
                         reject(e);
                     })
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                showToast("Err : Presigned : " + e, ToastDuration.LONG);
                 reject(e);
             });
     });
