@@ -32,14 +32,14 @@ export function callPUTS3Backend(fullURL: string, data?: any): Promise<boolean> 
         mode: "cors",
         body: data
     })
-        .then(res => {
-            // Fin du watch
-            stopWatch(traceId, res);
-            if (res.status >= 200 && res.status < 300) {
-                return res.ok;
-            } else {
-                throw new Error(res.status + "/" + res.statusText);
-            }
-        })
+    .then(res => {
+        // Fin du watch
+        stopWatch(traceId, res);
+        if (res.status >= 200 && res.status < 300) {
+            return res.ok;
+        } else {
+            throw new Error(res.status + "/" + res.statusText);
+        }
+    })
 }
 
