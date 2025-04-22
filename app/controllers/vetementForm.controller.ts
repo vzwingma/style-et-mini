@@ -118,19 +118,8 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
         legacy: true
     });
     if (!result.canceled) {
-
-        console.log("Image sélectionnée", result.assets[0].uri, result.assets[0].width, result.assets[0].height);
         setImageForm(result.assets[0], setForm);
-        /*
-        await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 90, 0).then((compressedImage) => {
-            // compress image will be low size which will be use to upload to server
-            setImageForm(compressedImage, setForm);
-          }).catch((err) => {
-            console.log("Erreur lors du redimensionnement", ImageResizer, err);
-            
-          }); */
-        
-    }
+    };
 };
 /**
  * Enregistre le type de vêtements dans le formulaire
@@ -425,8 +414,8 @@ export function archiveForm(form: FormVetementModel, validateFormCallBack: (resu
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
     callSaveVetementService(form)
-        .then((resultat : APIResultVetementModel) => {
-            if(resultat.updated){
+        .then((resultat: APIResultVetementModel) => {
+            if (resultat.updated) {
                 resultat.updated = false;
                 resultat.archived = true;
             }
