@@ -21,7 +21,7 @@ export function callSaveVetementService(form: FormVetementModel): Promise<any> {
     const vetement: VetementModel = transformFormToVetementModel(form);
 
     if (form.image?.localUri !== null && form.image?.localUri !== undefined) {
-        console.log("Enregistrement de l'image du vêtement", vetement.id);
+        console.log("Enregistrement de l'image du vêtement", vetement.id ?? "[NOUVEAU]");
         return saveVetementsImage(form.image?.localUri, params)
             .then((uriImage: string) => {
                 if (vetement.image) {

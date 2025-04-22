@@ -71,7 +71,7 @@ export const ReglagesComponent: React.FC = () => {
       return <>
         <View style={styles.container}>
           {
-            (Object.keys(menusParametrages) as Array<keyof typeof menusParametrages>).map((keyGroupe) => (
+            (Object.keys(menusParametrages) as (keyof typeof menusParametrages)[]).map((keyGroupe) => (
               <View key={keyGroupe} >
                 <View style={styles.title}>
                   <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
