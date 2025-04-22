@@ -1,7 +1,7 @@
 import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
-import { getMarquesForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, initForm, pickImageForm, setCollectionForm, setCouleursForm, setDescriptionForm, setEtatForm, setLibelleForm, setMarqueForm, setPetiteTailleForm, setPrixAchatForm, setPrixNeufForm, setSaisonForm, setTailleForm, setTypeForm, setUsagesForm } from '@/app/controllers/vetementForm.set.controller';
+import { getEtatsForm, getMarquesForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, initForm, pickImageForm, setCollectionForm, setCouleursForm, setDescriptionForm, setEtatForm, setLibelleForm, setMarqueForm, setPetiteTailleForm, setPrixAchatForm, setPrixNeufForm, setSaisonForm, setTailleForm, setTypeForm, setUsagesForm } from '@/app/controllers/vetementForm.set.controller';
 import { archiveForm, deleteForm, validateForm } from '@/app/controllers/vetementForm.actions.controller';
 import DressingModel from '@/app/models/dressing.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
@@ -100,9 +100,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         if (form.image) {
             // recalcul de la taille de l'image suivant la mise en page
             renderFormImage = resizeImage(form.image, 250);
-        }
-        function getEtatsForm(paramsEtatVetements: ParamGenericVetementsModel[], dressing: DressingModel): any[] {
-            throw new Error('Function not implemented.');
         }
 
         return (
