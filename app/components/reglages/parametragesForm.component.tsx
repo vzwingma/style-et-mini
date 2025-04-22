@@ -53,6 +53,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                             iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.categoriesInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
                             mode='modal'
+                            backgroundColor={Colors.app.modalBackground}
                             data={Object.values(CategorieDressingEnum).map(categorie => ({ id: categorie, libelle: categorie }))}
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.categoriesInError ? 'Selectionnez des catégories' : errorsForm?.categoriesMessage + ''}
@@ -74,6 +75,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                             style={!errorsForm?.typeInError || form?.type ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
                             iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.typeInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             mode='modal'
+                            backgroundColor={Colors.app.modalBackground}
                             data={Object.values(TypeTailleEnum).map(type => ({ id: type, libelle: getLibelleTypeTailleEnum(type) }))}
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.typeInError ? 'Selectionnez un type' : errorsForm?.typeMessage}

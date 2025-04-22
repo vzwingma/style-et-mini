@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        width: '100%',
+        width: '100%'
     },
     dropdownInError: {
         marginTop: 5,

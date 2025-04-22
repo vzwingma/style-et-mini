@@ -88,7 +88,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Element => (
         <View style={[styles.listItemStyle, styles.rowItems]}>
             <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
-            <ThemedText style={{ top: 15 }}>{item.libelle}</ThemedText>
+            <ThemedText>{item.libelle}</ThemedText>
         </View>
     );
     /**
@@ -135,6 +135,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             style={!errorsForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
+                            backgroundColor={Colors.app.modalBackground}
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.typeInError ? 'Selectionnez un type' : errorsForm?.typeMessage + ''}
@@ -142,6 +143,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             onChange={(type: ParamGenericVetementsModel) => setTypeForm(type, setForm)}
                             renderItem={renderTypeItem}
                             renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-outline.png')} style={styles.icon} />}
+
                         />
                     </View>
 
@@ -151,6 +153,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             style={!errorsForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
+                            backgroundColor={Colors.app.modalBackground}
                             data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.tailleInError ? 'Selectionnez une taille' : errorsForm?.tailleMessage + ''}
@@ -178,6 +181,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                                 selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                                 mode='modal'
+                                backgroundColor={Colors.app.modalBackground}
                                 data={getUsagesForm(paramsUsagesVetements, dressing)}
                                 labelField="libelle" valueField="id"
                                 placeholder={!errorsForm?.usageInError ? 'Selectionnez des usages' : errorsForm?.usageMessage + ''}
@@ -196,6 +200,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
                                 selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                                 mode='modal'
+                                backgroundColor={Colors.app.modalBackground}
                                 data={Object.values(SaisonVetementEnum).map(saison => ({ id: saison, libelle: getLibelleSaisonVetementEnum(saison) }))}
                                 labelField="libelle" valueField="id"
                                 placeholder={'(par défaut : toutes saisons)'}
@@ -221,6 +226,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 style={!errorsForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                                 iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                                 mode='modal'
+                                backgroundColor={Colors.app.modalBackground}
                                 maxHeight={300}
                                 data={getEtatsForm(paramsEtatVetements, dressing)}
                                 labelField="libelle" valueField="id"
@@ -237,6 +243,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             style={!errorsForm?.marqueInError || form?.marque ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
                             iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.marqueInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
                             mode='modal'
+                            backgroundColor={Colors.app.modalBackground}
                             data={getMarquesForm(paramsMarquesVetements, dressing, form)}
                             labelField="libelle" valueField="id"
                             placeholder={!errorsForm?.marqueInError ? 'Selectionnez une marque' : errorsForm?.marqueMessage + ''}
