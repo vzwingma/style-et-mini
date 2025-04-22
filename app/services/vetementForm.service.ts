@@ -1,9 +1,10 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
 import VetementModel from "../models/vetements/vetements.model";
 import FormVetementModel, { transformFormToVetementModel } from "../models/vetements/form.vetements.model";
-import { callDELETEBackend, callPOSTBackend, callPUTBinaryBackend, callPUTBackend } from "./ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBackend } from "./ClientHTTP.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
 import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
+import { callPUTS3Backend } from "./ClientS3.service";
 
 
 
@@ -63,7 +64,7 @@ function saveVetementsImage(formImageURL: string, params: { key: SERVICES_PARAMS
 
                 fetch(formImageURL)
                     .then((response) => response.blob())
-                    .then((bufferImage) => callPUTBinaryBackend(urlS3, bufferImage))
+                    .then((bufferImage) => callPUTS3Backend(urlS3, bufferImage))
                     .then((responseToS3) => {
                         console.log("Image du vêtement enregistrée avec succès dans S3", responseToS3);
                         resolve(uriImage);
