@@ -1,24 +1,25 @@
-import { Image, Pressable, ScrollView, TextInput, View } from 'react-native'
+import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
-import React, { useContext, useEffect, useState } from 'react';
-import { ThemedText } from '../commons/views/ThemedText';
-import { Colors } from '../../constants/Colors';
-import VetementModel from '@/app/models/vetements/vetements.model';
-import { Ionicons } from '@expo/vector-icons';
-import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
-import { AppContext } from '@/app/services/AppContextProvider';
-import DressingModel from '@/app/models/dressing.model';
-import FormVetementModel from '@/app/models/vetements/form.vetements.model';
-import { getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, setLibelleForm, setTailleForm, setTypeForm, setUsagesForm, validateForm, setCouleursForm, setDescriptionForm, initForm, setPetiteTailleForm, setEtatForm, getEtatsForm, pickImageForm, setSaisonForm, setCollectionForm, getMarquesForm, setMarqueForm, setPrixAchatForm, setPrixNeufForm, archiveForm, deleteForm } from '@/app/controllers/vetementForm.controller';
-import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
+import { getMarquesForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, initForm, pickImageForm, setCollectionForm, setCouleursForm, setDescriptionForm, setEtatForm, setLibelleForm, setMarqueForm, setPetiteTailleForm, setPrixAchatForm, setPrixNeufForm, setSaisonForm, setTailleForm, setTypeForm, setUsagesForm } from '@/app/controllers/vetementForm.set.controller';
+import { archiveForm, deleteForm, validateForm } from '@/app/controllers/vetementForm.actions.controller';
+import DressingModel from '@/app/models/dressing.model';
+import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
+import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';
+import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import FormVetementModel from '@/app/models/vetements/form.vetements.model';
+import VetementImageModel from '@/app/models/vetements/vetements.image.model';
+import VetementModel from '@/app/models/vetements/vetements.model';
+import { AppContext } from '@/app/services/AppContextProvider';
+import { Ionicons } from '@expo/vector-icons';
+import React, { useContext, useEffect, useState } from 'react';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import { Colors } from '../../constants/Colors';
 import { getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
+import { ThemedText } from '../commons/views/ThemedText';
 import { styles } from './vetementForm.styles';
-import VetementImageModel from '@/app/models/vetements/vetements.image.model';
-import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
-import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -100,6 +101,10 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             // recalcul de la taille de l'image suivant la mise en page
             renderFormImage = resizeImage(form.image, 250);
         }
+        function getEtatsForm(paramsEtatVetements: ParamGenericVetementsModel[], dressing: DressingModel): any[] {
+            throw new Error('Function not implemented.');
+        }
+
         return (
             <View style={styles.body}>
                 <View style={styles.rowItems}>
