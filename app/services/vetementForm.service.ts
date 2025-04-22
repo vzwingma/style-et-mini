@@ -34,7 +34,7 @@ export function callSaveVetementService(form: FormVetementModel): Promise<any> {
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                showToast(e, ToastDuration.LONG);
                 return false;
             });
     } else {
@@ -69,14 +69,14 @@ function saveVetementsImage(formImageURL: string, params: { key: SERVICES_PARAMS
                         resolve(uriImage);
                     })
                     .catch((e) => {
-                        console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                        showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                        console.error('Une erreur s\'est produite lors de la connexion au S3', e);
+                        showToast("Err : S3 : " + e, ToastDuration.LONG);
                         reject(e);
                     })
             })
             .catch((e) => {
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-                showToast("Erreur d'enregistrement de l'image du vêtement : " + e, ToastDuration.LONG);
+                showToast("Err : Presigned : " + e, ToastDuration.LONG);
                 reject(e);
             });
     });

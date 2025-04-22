@@ -9,7 +9,6 @@ import * as ImagePicker from 'expo-image-picker';
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
 import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
 import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import ImageResizer from 'react-native-image-resizer';
 import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
 
 
@@ -119,13 +118,17 @@ export const pickImageForm = async (setForm: React.Dispatch<React.SetStateAction
         legacy: true
     });
     if (!result.canceled) {
+
+        console.log("Image sélectionnée", result.assets[0].uri, result.assets[0].width, result.assets[0].height);
+        setImageForm(result.assets[0], setForm);
+        /*
         await ImageResizer.createResizedImage(result.assets[0].uri, 250, 250, "JPEG", 90, 0).then((compressedImage) => {
             // compress image will be low size which will be use to upload to server
             setImageForm(compressedImage, setForm);
           }).catch((err) => {
-            console.log("Erreur lors du redimensionnement", err);
-            setImageForm(result.assets[0], setForm);
-          });
+            console.log("Erreur lors du redimensionnement", ImageResizer, err);
+            
+          }); */
         
     }
 };
