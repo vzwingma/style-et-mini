@@ -49,6 +49,8 @@ export const Colors = {
     background: '#353636',
 
     backgroundLight: '#474949',
+
+    modalBackground: '#151718CC'
   }
 }
 

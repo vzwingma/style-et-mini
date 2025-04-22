@@ -27,7 +27,7 @@ function evaluateURL(path: string, params?: KeyValueParams[]): string {
 /**
  * Début du watch de la réponse
  */
-function startWatch(): void {
+export function startWatch(): void {
     storageWatch = new Date().getTime();
 }
 /**
@@ -43,7 +43,7 @@ const getAuthHeader = () => {
  * @param res réponse
  * @returns temps de réponse en ms
  */
-function stopWatch(traceId: string, res: Response): number {
+export function stopWatch(traceId: string, res: Response): number {
     let responseTime = new Date().getTime() - storageWatch;
     console.log("[WS traceId=" + traceId + "] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "][t:" + responseTime + "ms]");
     return responseTime;
@@ -89,43 +89,6 @@ export function callPOSTBackend(path: SERVICES_URL | null, params?: KeyValuePara
  */
 export function callPUTBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
     return callBackend(API_VERBS.PUT, path, params);
-}
-
-
-
-/**
- * Effectue un appel HTTP PUT vers un backend avec des données binaires (FormData).
- *
- * @param {SERVICES_URL} path - Le chemin ou l'URL du service backend à appeler.
- * @param {KeyValueParams[]} [params] - Une liste optionnelle de paramètres clé-valeur à ajouter à l'URL.
- * @param {FormData} [data] - Les données binaires à envoyer dans le corps de la requête.
- * @returns {Promise<any>} Une promesse qui se résout avec la réponse du backend en cas de succès,
- * ou qui est rejetée avec un message d'erreur en cas d'échec.
- *
- * @throws {Error} Si une erreur réseau ou une erreur HTTP se produit.
- * ```
- */
-export function callPUTBinaryBackend(fullURL: string, data?: any): Promise<boolean> {
-    // Calcul de l'URL complétée
-    let traceId = uuidGen().replaceAll("-", "");
-    console.log("[WS traceId=" + traceId + "] > [" + fullURL + "]");
-    // Début du watch
-    startWatch();
-
-    return fetch(fullURL, {
-        method: API_VERBS.PUT,
-        mode: "cors",
-        body: data
-    })
-        .then(res => {
-            // Fin du watch
-            stopWatch(traceId, res);
-            if (res.status >= 200 && res.status < 300) {
-                return res.ok;
-            } else {
-                throw new Error(res.status + "/" + res.statusText);
-            }
-        })
 }
 
 
