@@ -7,7 +7,7 @@ import { menusParametrages } from '../../constants/AppEnum';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { getAllParamsVetements } from '@/app/controllers/parametrages.controller';
+import { getAllParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
 
 /**
  * Composant principal pour l'écran de réglages.

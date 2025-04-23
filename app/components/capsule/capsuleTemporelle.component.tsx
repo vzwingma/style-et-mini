@@ -6,7 +6,7 @@ import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import DressingModel from '@/app/models/dressing.model';
 import { InventaireListComponent } from './capsuleParamList.component';
-import { getCapsuleByParam } from '@/app/controllers/capsuleTemporelle.controller';
+import { getCapsuleByParam } from '@/app/controllers/capsule/capsuleTemporelle.controller';
 
 
 /**

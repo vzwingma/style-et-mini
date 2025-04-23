@@ -1,8 +1,8 @@
 import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { CategorieDressingEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum, TypeTailleEnum } from '@/app/constants/AppEnum';
-import { getEtatsForm, getMarquesForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, initForm, pickImageForm, setCollectionForm, setCouleursForm, setDescriptionForm, setEtatForm, setLibelleForm, setMarqueForm, setPetiteTailleForm, setPrixAchatForm, setPrixNeufForm, setSaisonForm, setTailleForm, setTypeForm, setUsagesForm } from '@/app/controllers/vetementForm.set.controller';
-import { archiveForm, deleteForm, validateForm } from '@/app/controllers/vetementForm.actions.controller';
+import { getEtatsForm, getMarquesForm, getTaillesMesuresForm, getTypeVetementsForm, getUsagesForm, initForm, pickImageForm, setCollectionForm, setCouleursForm, setDescriptionForm, setEtatForm, setLibelleForm, setMarqueForm, setPetiteTailleForm, setPrixAchatForm, setPrixNeufForm, setSaisonForm, setTailleForm, setTypeForm, setUsagesForm } from '@/app/controllers/dressing/vetementForm.set.controller';
+import { archiveForm, deleteForm, validateForm } from '@/app/controllers/dressing/vetementForm.actions.controller';
 import DressingModel from '@/app/models/dressing.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';

@@ -1,10 +1,10 @@
-import { checkPriceFormat } from "../components/commons/CommonsUtils";
-import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
-import FormVetementModel from "../models/vetements/form.vetements.model";
-import { CategorieDressingEnum, StatutVetementEnum } from "../constants/AppEnum";
-import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
-import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
+import { checkPriceFormat } from "../../components/commons/CommonsUtils";
+import ErrorsFormVetementModel from "../../models/vetements/form.errors.vetements.model";
+import FormVetementModel from "../../models/vetements/form.vetements.model";
+import { CategorieDressingEnum, StatutVetementEnum } from "../../constants/AppEnum";
+import { callDeleteVetementService, callSaveVetementService } from "../../services/vetementForm.service";
+import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
+import APIResultVetementModel from "../../models/vetements/form.result.vetements.model";
 
 
 let errors = false;
@@ -60,7 +60,7 @@ export function validateForm(
         // Enregistrement du formulaire 
         callSaveVetementService(form)
             .then((resultat) => {
-                console.log("Vêtement enregistrés avec succès", resultat);
+                console.log("Vêtement enregistré avec succès", resultat);
                 validateFormCallBack(resultat);
             })
             .catch((e) => {

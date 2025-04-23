@@ -1,6 +1,6 @@
-import CapsuleTemporelleModel from "../models/capsule/capsuleTemporelle.model";
-import DressingModel from "../models/dressing.model";
-import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
+import CapsuleTemporelleModel from "../../models/capsule/capsuleTemporelle.model";
+import DressingModel from "../../models/dressing.model";
+import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 
 
 interface ParamProps {

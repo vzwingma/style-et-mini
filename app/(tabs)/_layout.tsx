@@ -8,7 +8,7 @@ import HomeScreen from '.';
 import connectToBackend, { getDressings } from '../controllers/index.controller';
 import DressingScreen from './dressing';
 import ReglageScreen from './reglages';
-import { getAllParamsVetements } from '../controllers/parametrages.controller';
+import { getAllParamsVetements } from '../controllers/reglages/parametrages.controller';
 import DressingModel from '../models/dressing.model';
 import { Tabs } from './../constants/TabsEnums';
 import { AppContext } from '../services/AppContextProvider';
@@ -122,7 +122,7 @@ export default function TabLayout() {
               {dressingSelectionne !== undefined ?
               <>
                 <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING}    activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={() => {}} thisTab={Tabs.TENUES}          activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES}          activeDressing={dressingSelectionne} />
                 <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE}  activeDressing={dressingSelectionne} />
               </>
                  : null

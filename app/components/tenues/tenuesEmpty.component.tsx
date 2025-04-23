@@ -3,10 +3,13 @@ import { StyleSheet, Pressable, Image, View } from 'react-native'
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
+import { getTabOutfitIcon } from '../commons/tab/TabBarIcon';
+import DressingModel from '@/app/models/dressing.model';
 
 
-export type DressingComponentProps = {
-  openAddVetement: Function;
+export type TenuesComponentProps = {
+  dressing: DressingModel;
+  openAddTenue: Function;
 };
 
 
@@ -23,16 +26,16 @@ export type DressingComponentProps = {
  * 
  * @returns {JSX.Element} Le composant visuel pour l'état vide du dressing.
  */
-export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ openAddVetement }: DressingComponentProps) => {
+export const TenueEmptyComponent : React.FC<TenuesComponentProps> = ({ dressing, openAddTenue }: TenuesComponentProps) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.icon ]}  />
+      <Image source={getTabOutfitIcon(false, dressing.categorie)} style={[styles.icon ]}  />
 
-      <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de vêtements</ThemedText>
+      <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de tenues</ThemedText>
 
-      <Pressable onPress={() => openAddVetement(null)} style={styles.menuItem}>
-          <ThemedText type="title" style={{marginTop: 10}}>Ajouter un vêtement</ThemedText>
+      <Pressable onPress={() => openAddTenue(null)} style={styles.menuItem}>
+          <ThemedText type="title" style={{marginTop: 10}}>Ajouter une tenue</ThemedText>
       </Pressable>
     </View>
   );
