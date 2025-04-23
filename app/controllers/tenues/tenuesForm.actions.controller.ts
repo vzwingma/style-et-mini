@@ -1,13 +1,27 @@
 import { StatutVetementEnum } from "../../constants/AppEnum";
 import APIResultVetementModel from "../../models/vetements/form.result.vetements.model";
-import FormTenueModel, { transformFormToTenueModel } from "../../models/tenues/form.tenue.model";
+import FormTenueModel, { transformFormToTenueModel, transformTenueToFormModel } from "../../models/tenues/form.tenue.model";
 import ErrorsFormTenueModel from "../../models/tenues/form.errors.tenues.model";
 import { callPOSTBackend } from "../../services/ClientHTTP.service";
 import TenueModel from "../../models/tenues/tenue.model";
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
+import DressingModel from "@/app/models/dressing.model";
 
 
+export function initForm(dressing: DressingModel, vetementInEdition: TenueModel | null,
+    setForm: Function) {
+
+    if (vetementInEdition !== null && vetementInEdition !== undefined) {
+
+        setForm((form: FormTenueModel) => transformTenueToFormModel(form, vetementInEdition, dressing));
+    }
+    else {
+        setForm(() => {
+            return { dressing: dressing, statut: StatutVetementEnum.ACTIF }
+        });
+    }
+}
 
 
 /**
@@ -59,8 +73,7 @@ export function validateForm(
 
     if (!errors) {
         // Enregistrement du formulaire 
-        /*
-        callSaveVetementService(form)
+        callSaveTenueService(form)
             .then((resultat) => {
                 console.log("Tenue enregistrée avec succès", resultat);
                 validateFormCallBack(resultat);
@@ -69,7 +82,7 @@ export function validateForm(
                 console.error('Une erreur s\'est produite lors de la connexion au backend', e);
                 showToast("Erreur d'enregistrement de la tenue : " + e, ToastDuration.LONG);
                 return false;
-            }); */
+            });
     }
 }
 /**
@@ -99,10 +112,7 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function saveForm(form: FormTenueModel,
-    validateFormCallBack: (resultDelete: APIResultVetementModel) => void) {
-    console.log("Enregistrement de la tenue", form.id);
-
+export function callSaveTenueService(form: FormTenueModel) {
     // Enregistrement du formulaire 
     const tenue: TenueModel = transformFormToTenueModel(form);
     const isEdition = (tenue.id !== null && tenue.id !== "" && tenue.id !== undefined);
@@ -114,17 +124,7 @@ export function saveForm(form: FormTenueModel,
     ];
     const url = isEdition ? SERVICES_URL.SERVICE_TENUES_BY_ID : SERVICES_URL.SERVICE_TENUES;
     //  Appel au backend pour sauvegarder le vêtement
-    callPOSTBackend(url, params, tenue)
-
-        .then((resultDeleteVetement: APIResultVetementModel) => {
-            console.log("Vêtement supprimé avec succès", resultDeleteVetement);
-            validateFormCallBack(resultDeleteVetement);
-        })
-        .catch((e) => {
-            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur d'enregistrement de la tenue : " + e, ToastDuration.LONG);
-            return false;
-        });
+    return callPOSTBackend(url, params, tenue)
 }
 
 

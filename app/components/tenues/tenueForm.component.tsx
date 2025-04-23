@@ -17,7 +17,7 @@ import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { ThemedText } from '../commons/views/ThemedText';
 import { styles } from '../dressing/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
-import { archiveForm, deleteForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.actions.controller';
+import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.actions.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
 
 
@@ -70,7 +70,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
     } = useContext(AppContext)!;
 
     useEffect(() => {
-      //  initForm(dressing, vetementInEdition, setForm, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements });
+        initForm(dressing, vetementInEdition, setForm);
         setModalDialog(null);
     }, [dressing, vetementInEdition, paramsEtatVetements, paramsMarquesVetements, paramsTaillesMesures, paramsTypeVetements, paramsUsagesVetements]);
 

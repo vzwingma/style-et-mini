@@ -70,11 +70,19 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
 }
 
 
+
 /**
- * Met à jour le libellé du formulaire de vêtement.
+ * Initialise le formulaire pour un vêtement en édition ou crée un formulaire vide.
  *
- * @param libelle - Le nouveau libellé à définir dans le formulaire.
- * @param setForm - La fonction de mise à jour de l'état du formulaire.
+ * @param dressing - Le modèle de dressing contenant les informations globales.
+ * @param vetementInEdition - Le modèle de vêtement en cours d'édition, ou `null` si aucun vêtement n'est en édition.
+ * @param setForm - Fonction permettant de mettre à jour l'état du formulaire.
+ * @param params - Les paramètres nécessaires pour transformer ou initialiser le formulaire :
+ *   - `paramsTypeVetements` : Les types de vêtements disponibles.
+ *   - `paramsTaillesMesures` : Les tailles et mesures disponibles.
+ *   - `paramsUsagesVetements` : Les usages possibles des vêtements.
+ *   - `paramsEtatVetements` : Les états possibles des vêtements.
+ *   - `paramsMarquesVetements` : Les marques disponibles pour les vêtements.
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
     setForm: Function,

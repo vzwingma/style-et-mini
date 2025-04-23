@@ -14,7 +14,7 @@ import { callPUTS3Backend } from "./ClientS3.service";
  */
 export function callSaveVetementService(form: FormVetementModel): Promise<any> {
 
-    let params = [
+    const params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
         { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
     ];

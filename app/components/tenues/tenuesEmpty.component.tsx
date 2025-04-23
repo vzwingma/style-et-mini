@@ -5,6 +5,7 @@ import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
 import { getTabOutfitIcon } from '../commons/tab/TabBarIcon';
 import DressingModel from '@/app/models/dressing.model';
+import { stylesEmptyList } from '../dressing/dressingEmpty.component';
 
 
 export type TenuesComponentProps = {
@@ -29,36 +30,14 @@ export type TenuesComponentProps = {
 export const TenueEmptyComponent : React.FC<TenuesComponentProps> = ({ dressing, openAddTenue }: TenuesComponentProps) => {
 
   return (
-    <View style={styles.container}>
-      <Image source={getTabOutfitIcon(false, dressing.categorie)} style={[styles.icon ]}  />
+    <View style={stylesEmptyList.container}>
+      <Image source={getTabOutfitIcon(false, dressing.categorie)} style={[stylesEmptyList.icon ]}  />
 
       <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de tenues</ThemedText>
 
-      <Pressable onPress={() => openAddTenue(null)} style={styles.menuItem}>
+      <Pressable onPress={() => openAddTenue(null)} style={stylesEmptyList.menuItem}>
           <ThemedText type="title" style={{marginTop: 10}}>Ajouter une tenue</ThemedText>
       </Pressable>
     </View>
   );
 }
-
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    zIndex: 0,
-    height: 700,
-    alignItems: 'center',
-  },
-  menuItem: {
-    padding: 10,
-    cursor: 'pointer',
-  },
-  icon: {
-    tintColor: 'gray',
-    margin: 10,
-    width: 280,
-    height: 280,
-    borderColor: Colors.dark.background,
-},  
-});
