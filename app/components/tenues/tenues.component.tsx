@@ -3,11 +3,22 @@ import Modal from 'react-native-modal';
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import { menusParametrages } from '../../constants/AppEnum';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
-import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { getAllParamsVetements } from '@/app/controllers/parametrages.controller';
+import { ParametragesListComponent } from '../reglages/parametragesList.component';
+import DressingModel from '@/app/models/dressing.model';
+
+
+/**
+ * Propriétés pour le composant DressingComponent.
+ *
+ * @typedef {Object} InventaireComponent
+ * @property {DressingModel} dressing - Le modèle de dressing à afficher.
+ */
+export type TenuesComponentProps = {
+  readonly dressing: DressingModel;
+};
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -19,8 +30,7 @@ import { getAllParamsVetements } from '@/app/controllers/parametrages.controller
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const ReglagesComponent: React.FC = () => {
-
+export const TenuesComponent: React.FC<TenuesComponentProps> = ({ dressing }: TenuesComponentProps) => {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
 
@@ -70,18 +80,9 @@ export const ReglagesComponent: React.FC = () => {
     } else {
       return <>
         <View style={styles.container}>
-          <View key="param" >
-            <View style={styles.title}>
-              <ThemedText type="subtitle" style={{ color: Colors.app.color }}>Paramétrages</ThemedText>
-            </View>
-            {menusParametrages.map((itemParam) => (
-              <Pressable key={itemParam.titre} onPress={() => toggleOpen(itemParam)}>
-                <View key={itemParam.titre} style={styles.menuItem} >
-                  <Image source={itemParam.icone} style={styles.icon} />
-                  <ThemedText type='default'>{itemParam.titre}</ThemedText>
-                </View>
-              </Pressable>
-            ))}
+
+          <View style={styles.title}>
+            <ThemedText type="subtitle" style={{ color: Colors.app.color }}>Tenues</ThemedText>
           </View>
         </View>
 

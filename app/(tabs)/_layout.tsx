@@ -18,6 +18,7 @@ import { getHeaderIcon, getHeaderTitle } from '../components/commons/tab/TabHead
 import { TabBarItems } from '../components/commons/tab/TabBarItem';
 import BackendConfigModel from '../models/backendConfig.model';
 
+
 export default function TabLayout() {
 
   // État pour vérifier si l'utilisateur est connecté au backend
@@ -119,7 +120,12 @@ export default function TabLayout() {
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
 
               {dressingSelectionne !== undefined ?
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} /> : null
+              <>
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING}    activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={() => {}} thisTab={Tabs.TENUES}          activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INVENTAIRE}  activeDressing={dressingSelectionne} />
+              </>
+                 : null
               }
 
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
@@ -141,12 +147,9 @@ export default function TabLayout() {
       case Tabs.INDEX:
         return <HomeScreen selectNewTab={selectNewTab} />
       case Tabs.DRESSING:
-        if (dressing === undefined) {
-          return <ThemedText type="title" style={{ color: Colors.app.color }}>Veuillez sélectionner un dressing</ThemedText>
-        }
-        else {
-          return <DressingScreen dressing={dressing} />
-        }
+        case Tabs.TENUES:        
+        case Tabs.INVENTAIRE:
+          return <DressingScreen tab={tab} dressing={dressing} />
       case Tabs.REGLAGES:
         return <ReglageScreen />
       default:
