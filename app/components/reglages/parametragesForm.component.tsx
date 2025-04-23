@@ -6,7 +6,7 @@ import { styles as stylesForm } from "../dressing/vetementForm.styles";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
-import ErrorsFormParametrageModel from "@/app/models/params/form.errors.params.model";
+import ErrorsFormParametrageModel from "@/app/models/params/formErrorsParams.model";
 import { renderLabelMandatory, renderSelectedItem } from "../commons/CommonsUtils";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 

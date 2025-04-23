@@ -5,7 +5,7 @@ import { DressingComponent } from '../components/dressing/dressing.component';
 import { Colors } from '../constants/Colors';
 import { Tabs } from '../constants/TabsEnums';
 import { TenuesComponent } from '../components/tenues/tenues.component';
-import { InventaireComponent } from '../components/inventaire/inventaire.component';
+import { InventaireComponent } from '../components/capsuleTemporelle/capsuleTemporelle.component';
 
 
 
@@ -32,7 +32,7 @@ export default function DressingScreen({ tab, dressing }: DressingScreenProps) {
           return <DressingComponent dressing={dressing} />;
         case Tabs.TENUES:
           return <TenuesComponent dressing={dressing} />;
-        case Tabs.INVENTAIRE:
+        case Tabs.CAPSULE:
           return <InventaireComponent dressing={dressing} />;
         default:
           return <ActivityIndicator color={Colors.app.color} size="large" />;

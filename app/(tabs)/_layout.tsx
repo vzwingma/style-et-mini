@@ -123,7 +123,7 @@ export default function TabLayout() {
               <>
                 <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING}    activeDressing={dressingSelectionne} />
                 <TabBarItems activeTab={tab} selectNewTab={() => {}} thisTab={Tabs.TENUES}          activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INVENTAIRE}  activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE}  activeDressing={dressingSelectionne} />
               </>
                  : null
               }
@@ -148,7 +148,7 @@ export default function TabLayout() {
         return <HomeScreen selectNewTab={selectNewTab} />
       case Tabs.DRESSING:
         case Tabs.TENUES:        
-        case Tabs.INVENTAIRE:
+        case Tabs.CAPSULE:
           return <DressingScreen tab={tab} dressing={dressing} />
       case Tabs.REGLAGES:
         return <ReglageScreen />

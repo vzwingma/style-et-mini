@@ -76,12 +76,7 @@ export const menusParametrages: MenuParametragesModel[] =
     }
   ];
 
-export const menusInventaire: MenuParametragesModel[] =
-  [{
-    titre: 'Garde robe',
-    icone: require('@/assets/icons/clothes-outline.png'),
-    class: ParametragesVetementEnum.DRESSING
-  }]
+
 
 // catégorie de dressing (enfant ou adulte)
 export enum CategorieDressingEnum {

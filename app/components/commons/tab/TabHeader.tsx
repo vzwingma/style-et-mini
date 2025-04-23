@@ -16,7 +16,7 @@ export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
       return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
     case Tabs.DRESSING:
     case Tabs.TENUES:      
-    case Tabs.INVENTAIRE:
+    case Tabs.CAPSULE:
       return <Image source={getTabIcon(true, dressingCat)} style={[tabStyles.headerImage, { width: iconSize + 40, height: iconSize + 40, bottom: -50 }]} />
     case Tabs.REGLAGES:
       return <Ionicons size={iconSize} name="options" style={tabStyles.headerImage} />
@@ -45,7 +45,7 @@ export function getHeaderTitle(tab: Tabs, dressingName?: string) {
       return `Le dressing d${startsWithVowel ? "'" : "e "}${dressingName}`;
     case Tabs.TENUES:
       return `Les tenues d${startsWithVowel ? "'" : "e "}${dressingName}`;
-    case Tabs.INVENTAIRE:
+    case Tabs.CAPSULE:
       return `L'inventaire d${startsWithVowel ? "'" : "e "}${dressingName}`;
     case Tabs.REGLAGES:
       return "Paramètres";

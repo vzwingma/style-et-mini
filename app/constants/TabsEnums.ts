@@ -3,6 +3,6 @@
     INDEX       = 'Index',
     DRESSING    = 'Dressing',
     TENUES      = 'Tenues',
-    INVENTAIRE  = 'Inventaire',
+    CAPSULE     = 'Capsule Temporelle',
     REGLAGES    = 'Réglages',
   }

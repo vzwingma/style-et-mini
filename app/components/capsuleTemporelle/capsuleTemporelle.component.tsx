@@ -1,14 +1,12 @@
 import { StyleSheet, View, Image, ActivityIndicator, Pressable } from 'react-native'
-import Modal from 'react-native-modal';
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
-import { menusInventaire } from '../../constants/AppEnum';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { getAllParamsVetements } from '@/app/controllers/parametrages.controller';
-import { ParametragesListComponent } from '../reglages/parametragesList.component';
 import DressingModel from '@/app/models/dressing.model';
+import { InventaireListComponent } from './capsuleParamList.component';
+import { getCapsuleByParam } from '@/app/controllers/capsuleTemporelle.controller';
 
 
 /**
@@ -36,9 +34,9 @@ export const InventaireComponent: React.FC<InventaireComponentProps> = ({ dressi
   const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
 
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const { setEtats, setTypeVetements, setTaillesMesures, setMarques, setUsages } = useContext(AppContext)!;
+  const { typeVetements, taillesMesures, usages } = useContext(AppContext)!;
 
 
 
@@ -47,8 +45,8 @@ export const InventaireComponent: React.FC<InventaireComponentProps> = ({ dressi
  * et à changement d'onglet
  * */
   useEffect(() => {
-    console.log("(Re)Chargement des paramètres...");
-    getAllParamsVetements({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques, setError, setIsLoading });
+    console.log("(Re)Chargement des inventaires...");
+    getCapsuleByParam(dressing, [], { typeVetements, taillesMesures, usages });
   }, [])
 
   /** Ouverture/Fermeture du menu */
@@ -57,7 +55,7 @@ export const InventaireComponent: React.FC<InventaireComponentProps> = ({ dressi
     setOpen(!open);
   };
 
-
+  
 
   /**
    * Génère le contenu du panneau en fonction de l'état actuel de l'application.
@@ -82,19 +80,9 @@ export const InventaireComponent: React.FC<InventaireComponentProps> = ({ dressi
       return <>
         <View style={styles.container}>
 
-                <View style={styles.title}>
-                  <ThemedText type="subtitle" style={{ color: Colors.app.color }}>Inventaire</ThemedText>
-                </View>
-                {menusInventaire.map((itemInvent) => (
-                  <Pressable key={itemInvent.titre} onPress={() => toggleOpen(itemInvent)}>
-                    <View key={itemInvent.titre} style={styles.menuItem} >
-                      <Image source={itemInvent.icone} style={styles.icon} />
-                      <ThemedText type='default'>{itemInvent.titre}</ThemedText>
-                    </View>
-                  </Pressable>
-                ))}
-              </View>
-
+          <InventaireListComponent parametres={typeVetements}/>
+        </View>
+{ /* 
         <Modal presentationStyle='overFullScreen' isVisible={open}
           animationIn='slideInRight' animationOut='slideOutRight'
           propagateSwipe={true}
@@ -108,7 +96,7 @@ export const InventaireComponent: React.FC<InventaireComponentProps> = ({ dressi
           }
 
         </Modal>
-
+*/}
       </>
     }
 

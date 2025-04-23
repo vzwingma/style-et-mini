@@ -2,7 +2,7 @@
   "expo": {
     "name": "Style & Mini",
     "slug": "style-and-mini",
-    "version": "0.4.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -30,7 +30,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png",
       "name": "Style & Mini",
-      "shortName": "Style & Mini",
+      "shortName": "Style & Mini"
     },
     "plugins": [
       "expo-router",

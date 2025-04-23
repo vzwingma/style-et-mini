@@ -9,7 +9,7 @@ import { ParametragesFormComponent } from "./parametragesForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
-import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/form.errors.params.model";
+import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/formErrorsParams.model";
 import { ModalDialogComponent } from "../commons/views/ModalDialog";
 
 
