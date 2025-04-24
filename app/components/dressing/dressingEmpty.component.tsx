@@ -26,13 +26,13 @@ export type DressingComponentProps = {
 export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ openAddVetement }: DressingComponentProps) => {
 
   return (
-    <View style={styles.container}>
-      <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.icon ]}  />
+    <View style={stylesEmptyList.container}>
+      <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[stylesEmptyList.icon ]}  />
 
       <ThemedText type="subtitle" style={{marginTop: 20}}>Vous n'avez pas encore ajouté de vêtements</ThemedText>
 
-      <Pressable onPress={() => openAddVetement(null)} style={styles.menuItem}>
-          <ThemedText type="title" style={{marginTop: 10}}>Ajoutez un vêtement</ThemedText>
+      <Pressable onPress={() => openAddVetement(null)} style={stylesEmptyList.menuItem}>
+          <ThemedText type="title" style={{marginTop: 10}}>Ajouter un vêtement</ThemedText>
       </Pressable>
     </View>
   );
@@ -41,15 +41,14 @@ export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ open
 
 
 
-const styles = StyleSheet.create({
+export const stylesEmptyList = StyleSheet.create({
   container: {
     zIndex: 0,
     height: 700,
     alignItems: 'center',
   },
   menuItem: {
-    padding: 10,
-    cursor: 'pointer',
+    padding: 10
   },
   icon: {
     tintColor: 'gray',

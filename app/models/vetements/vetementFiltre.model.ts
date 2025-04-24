@@ -1,11 +1,10 @@
 import { CaracteristiqueVetementEnum } from "@/app/constants/AppEnum";
+import GenericModel from "../generic.model";
 
 /**
  * Modèle représentant un filtre pour la liste des vêtements
  */
- interface VetementFiltreModel {
-    readonly id             : string;
-    readonly libelle        : string;
+ interface VetementFiltreModel extends GenericModel {
     readonly type           : CaracteristiqueVetementEnum;
     readonly typeLibelle?   : string;
     readonly isType?        : boolean;

@@ -1,14 +1,14 @@
 import VetementModel from "./vetements.model";
 
 /**
- * Modèle représentant un vetement avec le backend
+ * Modèle représentant un résultat d'appel avec le backend
  */
-interface APIResultVetementModel {
-    readonly idVetement : string;
+interface APIResultFormVetementModel {
+    readonly id         : string;
     vetement?           : VetementModel;
     readonly created?   : boolean;
     updated?            : boolean;
     archived?           : boolean;
     readonly deleted?   : boolean;
 }
-export default APIResultVetementModel;
+export default APIResultFormVetementModel;

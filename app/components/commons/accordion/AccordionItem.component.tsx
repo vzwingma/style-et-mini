@@ -6,10 +6,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 
 type AccordionItemPros = PropsWithChildren<{
-    title: string;
-    icon?: any;
-    toggleAllItems?: boolean;
-  }>;
+  title: string;
+  icon?: any;
+  toggleAllItems?: boolean;
+}>;
 
 
 
@@ -27,75 +27,74 @@ type AccordionItemPros = PropsWithChildren<{
  * - Une icône `Ionicons` est utilisée pour indiquer l'état (ouvert/fermé) de l'accordéon.
  */
 export default function AccordionItem({ children, title, icon, toggleAllItems }: AccordionItemPros): JSX.Element {
-    const [ expanded, setExpanded ] = useState(toggleAllItems ?? false);
-    
-    useEffect(() => {
-      if (toggleAllItems !== undefined) {
-        setExpanded(toggleAllItems);
-      }
-    }
-    , [ toggleAllItems ]);
+  const [expanded, setExpanded] = useState(toggleAllItems ?? false);
 
-    function toggleItem() {
-      setExpanded(!expanded);
+  useEffect(() => {
+    if (toggleAllItems !== undefined) {
+      setExpanded(toggleAllItems);
     }
-  
-    return (
-      <View style={styles.accordContainer}>
-        <TouchableOpacity style={styles.accordHeader} onPress={ toggleItem }>
-          <View style={styles.accordHeaderTitre}>
-            <Text style={styles.groupeLabel}>{ title }</Text>
-            <Image source={icon} style={[styles.icon, {marginRight: 15}]} />
-          </View>
-          <Ionicons name={ expanded ? 'chevron-up' : 'chevron-down' } size={20} style={[styles.icon]} />
-        </TouchableOpacity>
-        { expanded && <View style={styles.accordBody}>{ children }</View> }
-      </View>
-    );
+  }
+    , [toggleAllItems]);
+
+  function toggleItem() {
+    setExpanded(!expanded);
   }
 
+  return (
+    <View style={styles.accordContainer}>
+      <TouchableOpacity style={styles.accordHeader} onPress={toggleItem}>
+        <View style={styles.accordHeaderTitre}>
+          <Text style={styles.groupeLabel}>{title}</Text>
+          <Image source={icon} style={[styles.icon, { marginRight: 15 }]} />
+        </View>
+        <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={20} style={[styles.icon]} />
+      </TouchableOpacity>
+      {expanded && <View style={styles.accordBody}>{children}</View>}
+    </View>
+  );
+}
 
 
-  const styles = StyleSheet.create({
-    accordContainer: {
-      borderColor: Colors.app.background,
-      borderWidth: 1,
-      borderTopLeftRadius: 8,
-      borderBottomRightRadius: 8,
-      marginBottom: 2,
-    },
-    accordHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      backgroundColor: Colors.app.color,
-      borderTopLeftRadius: 8,
-      borderBottomRightRadius: 8,
-    },
-    accordHeaderTitre: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      backgroundColor: Colors.app.color,
-      borderTopLeftRadius: 8,
-      padding: 2,
-    },
-    groupeLabel: {
-      paddingLeft: 10,
-      paddingTop: 5,
-      color: 'white',
-      fontSize: 16,
-    },
-    icon: {
-      margin: 5,
-      width: 25,
-      height: 25,
-      color: 'white',
-      tintColor: 'white',
+
+export const styles = StyleSheet.create({
+  accordContainer: {
+    borderColor: Colors.app.background,
+    borderWidth: 1,
+    borderTopLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    marginBottom: 2,
   },
-    accordBody: {
-      flexDirection: 'row',
-      flex: 1,
-      flexWrap: 'wrap',
-    }
-  });
-  
+  accordHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.app.color,
+    borderTopLeftRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+  accordHeaderTitre: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.app.color,
+    borderTopLeftRadius: 8,
+    padding: 2,
+  },
+  groupeLabel: {
+    paddingLeft: 10,
+    paddingTop: 5,
+    color: 'white',
+    fontSize: 16,
+  },
+  icon: {
+    margin: 5,
+    width: 25,
+    height: 25,
+    color: 'white',
+    tintColor: 'white',
+  },
+  accordBody: {
+    flexDirection: 'row',
+    flex: 1,
+    flexWrap: 'wrap',
+  }
+});

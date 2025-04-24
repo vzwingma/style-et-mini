@@ -5,10 +5,10 @@ import Modal from 'react-native-modal';
 import { Colors } from './../../constants/Colors';
 import DressingModel from './../../models/dressing.model';
 import { VetementFormComponent } from './vetementForm.component';
-import { loadVetementsDressing } from './../../controllers/dressing.controller';
+import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';
-import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import APIResultFormVetementModel from '@/app/models/vetements/form.result.vetements.model';
 
 
 /**
@@ -48,14 +48,14 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
    * 
    * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function validateFormCallBack(resultat: APIResultVetementModel ): void {
+  function validateFormCallBack(resultat: APIResultFormVetementModel ): void {
     setOpenVetementForm(false);
     if(resultat.created && resultat.vetement !== undefined && resultat.vetement !== null) {
       // On ajoute le vetement à la liste
       setVetements(prevVetements => [...prevVetements, resultat.vetement!]);
     }
     else if(resultat.updated || resultat.archived) {
-      setVetements(prevVetements => prevVetements.map(v => v.id === resultat.idVetement ? resultat.vetement! : v));
+      setVetements(prevVetements => prevVetements.map(v => v.id === resultat.id ? resultat.vetement! : v));
     }
   }
 
@@ -63,9 +63,9 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
    * 
    * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function deleteFormCallBack(resultDelete: APIResultVetementModel ): void {
+  function deleteFormCallBack(resultDelete: APIResultFormVetementModel ): void {
     setOpenVetementForm(false);
-    setVetements(prevVetements => prevVetements.filter(v => v.id !== resultDelete.idVetement && resultDelete.deleted));
+    setVetements(prevVetements => prevVetements.filter(v => v.id !== resultDelete.id && resultDelete.deleted));
   }
 
 

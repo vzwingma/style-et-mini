@@ -1,8 +1,8 @@
-import { callGETBackend } from "../services/ClientHTTP.service";
-import { SERVICES_URL } from "../constants/APIconstants";
+import { callGETBackend } from "../../services/ClientHTTP.service";
+import { SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import { SetStateAction } from "react";
-import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
+import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPIAllParamsVetementsProps = {

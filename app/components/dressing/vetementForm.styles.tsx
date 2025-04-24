@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderStartStartRadius: 10,
         borderEndEndRadius: 10,
-        cursor: 'pointer',
         margin: 10,
     },
     // Label de formulaire
@@ -165,8 +164,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         marginRight: 5,
         padding: 1,
-        height: 25,
-        cursor: 'pointer',
+        height: 25
     },
     selectedTextStyle: {
         fontSize: Fonts.app.size,

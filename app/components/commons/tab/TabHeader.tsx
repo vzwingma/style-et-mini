@@ -10,18 +10,20 @@ import { CategorieDressingEnum } from "./../../../constants/AppEnum";
  * Affiche l'image du logo de l'application suivant l'onglet sélectionné
  */
 export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
-    const iconSize = 110;
-    switch (tab) {
-      case Tabs.INDEX:
-        return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
-      case Tabs.DRESSING:
-        return <Image source={getTabIcon(true, dressingCat)} style={[tabStyles.headerImage, {width:iconSize+40, height:iconSize+40, bottom:-50}]} />
-        case Tabs.REGLAGES:
-          return <Ionicons size={iconSize} name="options" style={tabStyles.headerImage} />        
-      default:
-        return <></>;
-    }
+  const iconSize = 110;
+  switch (tab) {
+    case Tabs.INDEX:
+      return <Ionicons size={iconSize} name="home" style={tabStyles.headerImage} />
+    case Tabs.DRESSING:
+    case Tabs.TENUES:      
+    case Tabs.CAPSULE:
+      return <Image source={getTabIcon(true, dressingCat)} style={[tabStyles.headerImage, { width: iconSize + 40, height: iconSize + 40, bottom: -50 }]} />
+    case Tabs.REGLAGES:
+      return <Ionicons size={iconSize} name="options" style={tabStyles.headerImage} />
+    default:
+      return <Ionicons size={iconSize} name="alert" style={tabStyles.headerImage} />;
   }
+}
 
 
 /**
@@ -32,38 +34,39 @@ export function getHeaderIcon(tab: Tabs, dressingCat?: CategorieDressingEnum) {
  * @see Tabs
  * @see Colors
  */
-  export function getHeaderTitle(tab: Tabs, dressingName?: string) {
-    
-    switch (tab) {
-      case Tabs.INDEX:
-        return "Bienvenue";
-      case Tabs.DRESSING:
-        if (dressingName) {
-          const startsWithVowel = /^[aeiouyAEIOUY]/.test(dressingName);
+export function getHeaderTitle(tab: Tabs, dressingName?: string) {
 
-          return `Le dressing d${startsWithVowel ? "'" : "e "}${dressingName}`;
-        }
-        return "? Dressing ?";
-      case Tabs.REGLAGES:
-        return "Paramètres";
-      default:
-        return "Erreur : Onglet non défini";
-    }
+  const startsWithVowel = dressingName ? /^[aeiouyAEIOUY]/.test(dressingName) : false;
+
+  switch (tab) {
+    case Tabs.INDEX:
+      return "Bienvenue";
+    case Tabs.DRESSING:
+      return `Le dressing d${startsWithVowel ? "'" : "e "}${dressingName}`;
+    case Tabs.TENUES:
+      return `Les tenues d${startsWithVowel ? "'" : "e "}${dressingName}`;
+    case Tabs.CAPSULE:
+      return `L'inventaire d${startsWithVowel ? "'" : "e "}${dressingName}`;
+    case Tabs.REGLAGES:
+      return "Paramètres";
+    default:
+      return "Erreur : Onglet non défini";
   }
-  
+}
+
 
 export const tabStyles = StyleSheet.create({
-    headerImage: {
-      color: '#808080',
-      tintColor: '#808080',
-      position: 'absolute',
-      bottom: -20,
-      backgroundColor: Colors.dark.titlebackground,
-    },
-    domoticzLogo: {
-      width: 100,
-      height: 100,
-      position: 'absolute',
-      backgroundColor: Colors.dark.titlebackground,
-    },
-  });
+  headerImage: {
+    color: '#808080',
+    tintColor: '#808080',
+    position: 'absolute',
+    bottom: -20,
+    backgroundColor: Colors.app.background,
+  },
+  domoticzLogo: {
+    width: 100,
+    height: 100,
+    position: 'absolute',
+    backgroundColor: Colors.app.background
+  },
+});

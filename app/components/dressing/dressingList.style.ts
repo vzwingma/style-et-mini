@@ -38,7 +38,6 @@ export const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         alignItems: 'flex-start',
-        cursor: 'pointer',
         marginRight: 5
     },
     icon: {
@@ -78,7 +77,6 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 1,
         margin: 2,
-        cursor: 'pointer',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },

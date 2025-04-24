@@ -8,7 +8,7 @@ import { ParametragesItemComponent } from './parametragesItem.component';
 import { Ionicons } from '@expo/vector-icons';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort, numSort } from '../commons/CommonsUtils';
-import { getParamsVetements } from '@/app/controllers/parametrages.controller';
+import { getParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { ID_NEW_ELEMENT, ParametragesVetementEnum } from '@/app/constants/AppEnum';
 import { SERVICES_URL } from '@/app/constants/APIconstants';

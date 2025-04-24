@@ -40,8 +40,22 @@ export function getTabIcon(selectedTab : boolean, dressingCat? : CategorieDressi
     case CategorieDressingEnum.ADULTE:
       return selectedTab ? require('@/assets/icons/adult-dress.png') : require('@/assets/icons/adult-dress-outline.png');
       case CategorieDressingEnum.ENFANT:
-        return selectedTab ? require('@/assets/icons/girl-dress.png') : require('@/assets/icons/girl-dress-outline.png');      
+        return selectedTab ? require('@/assets/icons/girl-dress.png') : require('@/assets/icons/girl-dress-outline.png');
     case CategorieDressingEnum.BEBE:
       return selectedTab ? require('@/assets/icons/baby-clothes.png') : require('@/assets/icons/baby-clothes-outline.png');
+  }
+}
+/**
+ * Retourne l'icône de l'onglet sélectionné
+ * @param tab nom de l'onglet
+ * @returns l'icône de l'onglet sélectionné
+ */
+export function getTabOutfitIcon(selectedTab : boolean, dressingCat? : CategorieDressingEnum): any {
+  switch(dressingCat){
+    case CategorieDressingEnum.ADULTE:
+      return selectedTab ? require('@/assets/icons/outfit-adult.png') : require('@/assets/icons/outfit-adult-outline.png');
+      case CategorieDressingEnum.ENFANT:
+      case CategorieDressingEnum.BEBE:
+      return selectedTab ? require('@/assets/icons/outfit.png') : require('@/assets/icons/outfit-outline.png');
   }
 }

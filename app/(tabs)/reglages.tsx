@@ -19,7 +19,6 @@ import { ReglagesComponent } from '../components/reglages/reglages.component';
  **/
 export default function ReglageScreen() {
   
-  return (
-    <ReglagesComponent/>
-  );
+  return <ReglagesComponent/>
+
 }

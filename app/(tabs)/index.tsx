@@ -38,8 +38,7 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
       {backendConnexionData?.env !== "PROD"
         && <ThemedText type="title">Environnement : {backendConnexionData?.env}</ThemedText>
       }
-      {
-        dressings?.map(dressing => {
+      { dressings?.map(dressing => {
           return <DressingTabComponent key={"dressTab" + dressing.id} dressing={dressing} selectNewTab={selectNewTab} />
         })
       }
@@ -48,7 +47,7 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
 
 
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'column',
     flexWrap: 'wrap',

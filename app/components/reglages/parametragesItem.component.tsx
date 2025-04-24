@@ -4,12 +4,12 @@ import { Colors } from "@/app/constants/Colors";
 import { styles as stylesForm } from "../dressing/vetementForm.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { razAndCloseForm, initForm, validateForm, deleteForm } from "@/app/controllers/parametragesForm.controller";
+import { razAndCloseForm, initForm, validateForm, deleteForm } from "@/app/controllers/reglages/parametragesForm.controller";
 import { ParametragesFormComponent } from "./parametragesForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
-import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/form.errors.params.model";
+import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/formErrorsParams.model";
 import { ModalDialogComponent } from "../commons/views/ModalDialog";
 
 

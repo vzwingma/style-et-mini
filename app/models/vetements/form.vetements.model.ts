@@ -6,14 +6,13 @@ import VetementImageModel from "./vetements.image.model";
 import { VetementsFormParamsTypeProps } from "../../components/dressing/vetementForm.component";
 import { getPriceValue } from "../../components/commons/CommonsUtils";
 import ParamGenericVetementsModel from "../params/paramGenericVetements.model";
+import GenericModel from "../generic.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
  */
-interface FormVetementModel {
-    id           : string;
+interface FormVetementModel extends GenericModel {
     dressing     : DressingModel;
-    libelle      : string;
     image?       : VetementImageModel | null;
     
     type         : ParamGenericVetementsModel;

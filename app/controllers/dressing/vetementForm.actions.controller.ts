@@ -1,10 +1,10 @@
-import { checkPriceFormat } from "../components/commons/CommonsUtils";
-import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
-import FormVetementModel from "../models/vetements/form.vetements.model";
-import { CategorieDressingEnum, StatutVetementEnum } from "../constants/AppEnum";
-import { callDeleteVetementService, callSaveVetementService } from "../services/vetementForm.service";
-import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import APIResultVetementModel from "../models/vetements/form.result.vetements.model";
+import { checkPriceFormat } from "../../components/commons/CommonsUtils";
+import ErrorsFormVetementModel from "../../models/vetements/form.errors.vetements.model";
+import FormVetementModel from "../../models/vetements/form.vetements.model";
+import { CategorieDressingEnum, StatutVetementEnum } from "../../constants/AppEnum";
+import { callDeleteVetementService, callSaveVetementService } from "../../services/vetementForm.service";
+import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
+import APIResultFormVetementModel from "../../models/vetements/form.result.vetements.model";
 
 
 let errors = false;
@@ -19,7 +19,7 @@ let errors = false;
 export function validateForm(
     form: FormVetementModel | null,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>,
-    validateFormCallBack: (resultat: APIResultVetementModel) => void) {
+    validateFormCallBack: (resultat: APIResultFormVetementModel) => void) {
 
     console.log("Validation du formulaire", form);
     errors = false;
@@ -60,7 +60,7 @@ export function validateForm(
         // Enregistrement du formulaire 
         callSaveVetementService(form)
             .then((resultat) => {
-                console.log("Vêtement enregistrés avec succès", resultat);
+                console.log("Vêtement enregistré avec succès", resultat);
                 validateFormCallBack(resultat);
             })
             .catch((e) => {
@@ -98,14 +98,14 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param validateFormCallBack fonction de validation du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm(form: FormVetementModel, validateFormCallBack: (resultat: APIResultVetementModel) => void) {
+export function archiveForm(form: FormVetementModel, validateFormCallBack: (resultat: APIResultFormVetementModel) => void) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
     callSaveVetementService(form)
-        .then((resultat: APIResultVetementModel) => {
+        .then((resultat: APIResultFormVetementModel) => {
             if (resultat.updated) {
                 resultat.updated = false;
                 resultat.archived = true;
@@ -130,11 +130,11 @@ export function archiveForm(form: FormVetementModel, validateFormCallBack: (resu
  * @returns si le formulaire est invalide
  */
 export function deleteForm(form: FormVetementModel,
-    validateFormCallBack: (resultDelete: APIResultVetementModel) => void) {
+    validateFormCallBack: (resultDelete: APIResultFormVetementModel) => void) {
     console.log("Suppression du vêtement", form.id);
     // Enregistrement du formulaire 
     callDeleteVetementService(form)
-        .then((resultDeleteVetement: APIResultVetementModel) => {
+        .then((resultDeleteVetement: APIResultFormVetementModel) => {
             console.log("Vêtement supprimé avec succès", resultDeleteVetement);
             validateFormCallBack(resultDeleteVetement);
         })
