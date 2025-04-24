@@ -6,7 +6,7 @@ import { archiveForm, deleteForm, validateForm } from '@/app/controllers/dressin
 import DressingModel from '@/app/models/dressing.model';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
 import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';
-import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import APIResultFormVetementModel from '@/app/models/vetements/form.result.vetements.model';
 import FormVetementModel from '@/app/models/vetements/form.vetements.model';
 import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import VetementModel from '@/app/models/vetements/vetements.model';
@@ -29,8 +29,8 @@ export type VetementFormComponentProps = {
     dressing : DressingModel;
     vetement : VetementModel | null;
     closeFormCallBack() : void;
-    validateFormCallBack(resultat: APIResultVetementModel) : void;
-    deleteFormCallBack(resultat: APIResultVetementModel) : void;
+    validateFormCallBack(resultat: APIResultFormVetementModel) : void;
+    deleteFormCallBack(resultat: APIResultFormVetementModel) : void;
 };
 
 /**
@@ -305,7 +305,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (resultat: APIResultVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (resultat: APIResultFormVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
             ackModalCallback={() => archiveForm(form , validateFormCallBack)}
@@ -321,7 +321,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
 */ 
-    function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: APIResultVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: APIResultFormVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
             ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
             showModal={Math.random()} />;

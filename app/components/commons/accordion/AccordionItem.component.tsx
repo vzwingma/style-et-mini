@@ -56,7 +56,7 @@ export default function AccordionItem({ children, title, icon, toggleAllItems }:
 
 
 
-  const styles = StyleSheet.create({
+  export const styles = StyleSheet.create({
     accordContainer: {
       borderColor: Colors.app.background,
       borderWidth: 1,

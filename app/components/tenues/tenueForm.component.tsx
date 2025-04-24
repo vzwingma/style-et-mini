@@ -2,7 +2,6 @@ import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { StatutVetementEnum } from '@/app/constants/AppEnum';
 import DressingModel from '@/app/models/dressing.model';
-import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,9 +12,10 @@ import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { ThemedText } from '../commons/views/ThemedText';
 import { styles } from '../dressing/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
-import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.actions.controller';
+import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
 import TenueModel from '@/app/models/tenues/tenue.model';
+import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 
 
 
@@ -26,8 +26,8 @@ export type VetementFormComponentProps = {
     dressing : DressingModel;
     tenue : TenueModel | null;
     closeFormCallBack() : void;
-    validateFormCallBack(resultat: APIResultVetementModel) : void;
-    deleteFormCallBack(resultat: APIResultVetementModel) : void;
+    validateFormCallBack(resultat: APIResultFormTenueModel) : void;
+    deleteFormCallBack(resultat: APIResultFormTenueModel) : void;
 };
 
 
@@ -115,7 +115,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette tenue ?'}
             ackModalCallback={() => archiveForm(form , validateFormCallBack)}
@@ -131,7 +131,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
 */ 
-    function deleteFormModalConfirmation(form : FormTenueModel, deleteFormCallBack: (resultDelete: APIResultVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function deleteFormModalConfirmation(form : FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette tenue ?'}
             ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
             showModal={Math.random()} />;

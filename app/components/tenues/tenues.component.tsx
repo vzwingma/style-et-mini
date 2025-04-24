@@ -5,12 +5,12 @@ import Modal from 'react-native-modal';
 import { Colors } from '../../constants/Colors';
 import DressingModel from '../../models/dressing.model';
 
-import VetementModel from '../../models/vetements/vetements.model';
-import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
 import { TenuesListComponent } from './tenuesList.component';
 import TenueModel from '@/app/models/tenues/tenue.model';
 import { loadTenuesAndVetementsDressing } from '@/app/controllers/tenues/tenues.controller';
 import { TenueFormComponent } from './tenueForm.component';
+import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
+import VetementModel from '@/app/models/vetements/vetements.model';
 
 /**
  * Propriétés pour le composant DressingComponent.
@@ -38,7 +38,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
   const [tenues, setTenues] = useState<TenueModel[]>([]);
   const [vetements, setVetements] = useState<VetementModel[]>([]);
 
-  const [tenueInEdit, setVetementInEdit] = useState<TenueModel | null>(null);
+  const [tenueInEdit, setTenueInEdit] = useState<TenueModel | null>(null);
 
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
@@ -51,14 +51,14 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
    * 
    * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function validateFormCallBack(resultat: APIResultVetementModel ): void {
+  function validateFormCallBack(resultat: APIResultFormTenueModel ): void {
     setOpenTenueForm(false);
-    if(resultat.created && resultat.vetement !== undefined && resultat.vetement !== null) {
+    if(resultat.created && resultat.tenue !== undefined && resultat.tenue !== null) {
       // On ajoute le vetement à la liste
-      setTenues(prevVetements => [...(prevVetements), resultat.vetement!]);
+      setTenues(prevTenue => [...(prevTenue), resultat.tenue!]);
     }
     else if(resultat.updated || resultat.archived) {
-      setTenues(prevVetements => prevVetements.map(v => v.id === resultat.idVetement ? resultat.vetement! : v));
+      setTenues(prevVetements => prevVetements.map(v => v.id === resultat.id ? resultat.tenue! : v));
     }
   }
 
@@ -66,19 +66,19 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
    * 
    * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function deleteFormCallBack(resultDelete: APIResultVetementModel ): void {
+  function deleteFormCallBack(resultDelete: APIResultFormTenueModel ): void {
     setOpenTenueForm(false);
-    setTenues(prevVetements => prevVetements.filter(v => v.id !== resultDelete.idVetement && resultDelete.deleted));
+    setTenues(prevVetements => prevVetements.filter(v => v.id !== resultDelete.id && resultDelete.deleted));
   }
 
 
   /**
    * Ouvre ou ferme le formulaire d'ajout/édition de vêtement.
    *
-   * @param vetement - (Optionnel) Le modèle de vêtement à éditer. Si non fourni, le formulaire sera ouvert pour ajouter un nouveau vêtement.
+   * @param tenue - (Optionnel) Le modèle de vêtement à éditer. Si non fourni, le formulaire sera ouvert pour ajouter un nouveau vêtement.
    */
-  function openAddEditTenue(vetement?: VetementModel | null): void {
-    setVetementInEdit(vetement || null);
+  function openAddEditTenue(tenue?: TenueModel | null): void {
+    setTenueInEdit(tenue || null);
     setOpenTenueForm(true);
   };
 

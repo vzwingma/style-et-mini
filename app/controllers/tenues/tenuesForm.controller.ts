@@ -1,12 +1,12 @@
 import { StatutVetementEnum } from "../../constants/AppEnum";
-import APIResultVetementModel from "../../models/vetements/form.result.vetements.model";
 import FormTenueModel, { transformFormToTenueModel, transformTenueToFormModel } from "../../models/tenues/form.tenue.model";
 import ErrorsFormTenueModel from "../../models/tenues/form.errors.tenues.model";
-import { callPOSTBackend } from "../../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
 import TenueModel from "../../models/tenues/tenue.model";
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
 import DressingModel from "@/app/models/dressing.model";
+import APIResultFormTenueModel from "@/app/models/tenues/form.result.tenue.model";
 
 
 export function initForm(dressing: DressingModel, vetementInEdition: TenueModel | null,
@@ -53,7 +53,7 @@ let errors = false;
 export function validateForm(
     form: FormTenueModel | null,
     setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormTenueModel>>,
-    validateFormCallBack: (resultat: APIResultVetementModel) => void) {
+    validateFormCallBack: (resultat: APIResultFormTenueModel) => void) {
 
     console.log("Validation du formulaire", form);
     errors = false;
@@ -112,7 +112,7 @@ function validateAttribute(attributeName: string, attributeCheckFail: boolean,
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
  */
-export function callSaveTenueService(form: FormTenueModel) {
+function callSaveTenueService(form: FormTenueModel) {
     // Enregistrement du formulaire 
     const tenue: TenueModel = transformFormToTenueModel(form);
     const isEdition = (tenue.id !== null && tenue.id !== "" && tenue.id !== undefined);
@@ -120,7 +120,7 @@ export function callSaveTenueService(form: FormTenueModel) {
 
     const params = [
         { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
-        { key: SERVICES_PARAMS.ID_VETEMENT, value: String(form.id) }
+        { key: SERVICES_PARAMS.ID_TENUE, value: String(form.id) }
     ];
     const url = isEdition ? SERVICES_URL.SERVICE_TENUES_BY_ID : SERVICES_URL.SERVICE_TENUES;
     //  Appel au backend pour sauvegarder le vêtement
@@ -136,28 +136,27 @@ export function callSaveTenueService(form: FormTenueModel) {
  * @param validateFormCallBack fonction de validation du formulaire
  * @returns si le formulaire est invalide
  */
-export function archiveForm(form: FormTenueModel, validateFormCallBack: (resultat: APIResultVetementModel) => void) {
+export function archiveForm(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void) {
 
     console.log("Validation du formulaire pour archivage", form);
     form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
     console.log("Archivage du vêtement", form.id, form.statut);
     // Enregistrement du formulaire 
-    /*
-    callSaveVetementService(form)
-        .then((resultat: APIResultVetementModel) => {
+
+    callSaveTenueService(form)
+        .then((resultat: APIResultFormTenueModel) => {
             if (resultat.updated) {
                 resultat.updated = false;
                 resultat.archived = true;
             }
-            console.log("Vêtement archivé avec succès", resultat);
+            console.log("Tenue archivée avec succès", resultat);
             validateFormCallBack(resultat);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur d'archivage du vêtement : " + e, ToastDuration.LONG);
+            showToast("Erreur :" + e, ToastDuration.LONG);
             return false;
         });
-        */
 }
 
 
@@ -170,18 +169,23 @@ export function archiveForm(form: FormTenueModel, validateFormCallBack: (resulta
  * @returns si le formulaire est invalide
  */
 export function deleteForm(form: FormTenueModel,
-    validateFormCallBack: (resultDelete: APIResultVetementModel) => void) {
+    validateFormCallBack: (resultDelete: APIResultFormTenueModel) => void) {
     console.log("Suppression du vêtement", form.id);
-    // Enregistrement du formulaire 
-    /*
-    callDeleteVetementService(form)
-        .then((resultDeleteVetement: APIResultVetementModel) => {
-            console.log("Vêtement supprimé avec succès", resultDeleteVetement);
-            validateFormCallBack(resultDeleteVetement);
+
+    let params = [
+        { key: SERVICES_PARAMS.ID_DRESSING, value: String(form.dressing.id) },
+        { key: SERVICES_PARAMS.ID_TENUE, value: String(form.id) }
+    ];
+
+    //  Appel au backend pour supprimer le vêtement
+    callDELETEBackend(SERVICES_URL.SERVICE_TENUES_BY_ID, params)
+        .then((resultDeleteTenue: APIResultFormTenueModel) => {
+            console.log("Tenue supprimé avec succès", resultDeleteTenue);
+            validateFormCallBack(resultDeleteTenue);
         })
         .catch((e) => {
             console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur d'archivage du vêtement : " + e, ToastDuration.LONG);
+            showToast("Erreur : " + e, ToastDuration.LONG);
             return false;
-        }); */
+        }); 
 }
