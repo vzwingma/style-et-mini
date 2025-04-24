@@ -43,12 +43,12 @@ export async function loadTenuesAndVetementsDressing({ idDressing, setIsLoading,
  * En cas de succès, elle définit les vêtements chargés et désactive l'état de chargement.
  * En cas d'erreur, elle définit l'erreur, désactive l'état de chargement et affiche un toast d'erreur.
  */
-export function loadTenuesDressing(idDressing : string, setTenues: React.Dispatch<React.SetStateAction<TenueModel[]>>) {
+export function loadTenuesDressing(idDressing : string, setTenues: React.Dispatch<React.SetStateAction<TenueModel[]>>) : Promise<void> {
 
   let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
 
   // Appel du service externe de chargement du dressing
-  callGETBackend(SERVICES_URL.SERVICE_TENUES, params)
+  return callGETBackend(SERVICES_URL.SERVICE_TENUES, params)
     .then((tenues: TenueModel[]) => {
       console.log("Dressing ", tenues?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", tenues?.length, "tenues");
       setTenues(tenues);

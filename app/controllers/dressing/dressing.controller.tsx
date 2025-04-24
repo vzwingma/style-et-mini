@@ -9,7 +9,7 @@ type FunctionCallAPIDressingProps = {
   idDressing: string
   setDressing: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
@@ -42,6 +42,10 @@ export type FunctionCallAPIVetementsProps = {
 export function loadDressing({ idDressing, setDressing, setError, setIsLoading }: FunctionCallAPIDressingProps) {
 
   let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
+
+  if (setIsLoading === undefined) {
+    setIsLoading = () => { };
+  }
 
   setIsLoading(true);
   // Appel du service externe de chargement du dressing
@@ -76,20 +80,22 @@ export function loadDressing({ idDressing, setDressing, setError, setIsLoading }
  * En cas de succès, elle définit les vêtements chargés et désactive l'état de chargement.
  * En cas d'erreur, elle définit l'erreur, désactive l'état de chargement et affiche un toast d'erreur.
  */
-export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }: FunctionCallAPIVetementsProps) {
+export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }: FunctionCallAPIVetementsProps) : Promise<void> {
 
   let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
-
-  setIsLoading ? setIsLoading(true) : null;
+  if (setIsLoading === undefined) {
+    setIsLoading = () => { };
+  }
+  setIsLoading(true);
   // Appel du service externe de chargement du dressing
-  callGETBackend(SERVICES_URL.SERVICE_VETEMENTS, params)
+  return callGETBackend(SERVICES_URL.SERVICE_VETEMENTS, params)
     .then((vetements: VetementModel[]) => {
       console.log("Dressing ", vetements?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", vetements?.length, "vêtements");
-      setIsLoading ? setIsLoading(false) : null;
+      setIsLoading(false);
       setVetements(vetements);
     })
     .catch((e) => {
-      setIsLoading ? setIsLoading(false) : null;
+      setIsLoading(false);
       console.error('Une erreur s\'est produite lors du chargement du dressing', e);
       showToast("Erreur de chargement du dressing", ToastDuration.SHORT);
     });

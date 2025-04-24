@@ -77,10 +77,10 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
 
             const selectedCount = vetements.filter(v => form.vetements?.some(selectedVetement => selectedVetement.id === v.id)).length;
             let libelle = vetements[0]?.type?.libelle;
-            selectedCount > 0 ? libelle += " (" + selectedCount + " sélectionné" : null;
-            libelle += selectedCount > 1 ? "s" : "";
-            selectedCount > 0 ? libelle += ")" : "";
-
+            if(selectedCount > 0){
+                const plural = selectedCount > 1 ? "s" : "";
+                libelle += " (" + selectedCount + " sélectionné" + plural + ")";
+            }
             groupItems.push(
                 <AccordionSecondaryItem
                     title={libelle}
