@@ -1,9 +1,7 @@
 import GenericModel from "../generic.model";
 
-interface CapsuleTemporelleModel {
-    typeVetements: GenericModel;
-    taillesMesures: GenericModel;
-    usages: GenericModel;
+interface CapsuleTemporelleModel extends GenericModel {
+
     nombreVetements?: number;
 }
 export default CapsuleTemporelleModel;

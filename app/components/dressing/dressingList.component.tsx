@@ -15,7 +15,7 @@ import { DressingEmptyComponent } from "./dressingEmpty.component";
 
 
 export type DressingComponentProps = {
-    vetementsInDressing: VetementModel[];
+    vetements: VetementModel[];
     openAddEditVetement: (vetement?: VetementModel) => void;
 };
 /**
@@ -27,7 +27,7 @@ export type DressingComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetementsInDressing, openAddEditVetement }: DressingComponentProps) => {
+export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetements, openAddEditVetement }: DressingComponentProps) => {
 
     const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
 
@@ -35,10 +35,17 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
 
 
     /**
-     * Affiche un panneau contenant une liste de vêtements.
+     * Affiche une liste d'éléments React représentant des groupes de vêtements sous forme d'accordéons.
      *
-     * @param {VetementModel[] | undefined} vetements - La liste des vêtements à afficher. Peut être indéfinie.
-     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+     * @param vetementsByGroup - Une map où chaque clé est un identifiant de groupe et la valeur est un tableau de modèles de vêtements associés à ce groupe.
+     * 
+     * @returns Un tableau d'éléments React JSX représentant les groupes de vêtements triés par nom de groupe.
+     * 
+     * @remarks
+     * - Les groupes sont triés alphabétiquement par le libellé du type de vêtement.
+     * - Chaque groupe est affiché sous forme d'un élément d'accordéon avec un titre indiquant le libellé du type de vêtement et le nombre d'éléments dans le groupe.
+     * - Une icône spécifique est associée à chaque groupe via la fonction `getTypeVetementIcon`.
+     * - Les vêtements d'un groupe sont affichés en utilisant la fonction `showPanelVetements`.
      */
     function showPanelGroupeVetements(vetementsByGroup: Map<string, VetementModel[]>): React.JSX.Element[] {
         let groupItems: JSX.Element[] = [];
@@ -61,11 +68,12 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         return groupItems;
     }
 
+
     /**
-     * Affiche un panneau contenant une liste de vêtements.
+     * Affiche une liste d'éléments de vêtements sous forme de composants React.
      *
-     * @param {VetementModel[]} vetements - La liste des vêtements à afficher.
-     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+     * @param vetements - Tableau des modèles de vêtements à afficher.
+     * @returns Un tableau d'éléments JSX représentant chaque vêtement trié et rendu.
      */
     function showPanelVetements(vetements: VetementModel[]): React.JSX.Element[] {
 
@@ -93,12 +101,12 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                 </Pressable>
                 </View>
             </View>
-            { vetementsInDressing.length === 0 && 
+            { vetements.length === 0 && 
                  <DressingEmptyComponent openAddVetement={() => openAddEditVetement()} />
             }
-            { vetementsInDressing.length > 0 && <>
+            { vetements.length > 0 && <>
             <View>
-                <DressingFiltreComponent vetementsInDressing={vetementsInDressing} setVetementsAffiches={setVetementsAffiches} />
+                <DressingFiltreComponent vetementsInDressing={vetements} setVetementsAffiches={setVetementsAffiches} />
             </View>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
                 {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}

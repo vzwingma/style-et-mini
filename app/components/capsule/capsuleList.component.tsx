@@ -6,33 +6,36 @@ import { Colors } from "../../constants/Colors";
 
 import { alphanumSort } from "../commons/CommonsUtils";
 import { styles } from "../dressing/dressingList.style";
-import TenueModel from "@/app/models/tenues/tenue.model";
-import { TenueEmptyComponent } from "./tenuesEmpty.component";
 import DressingModel from "@/app/models/dressing.model";
 import { styles as styleAccord } from "../commons/accordion/AccordionItem.component";
 import { VetemenItemComponent } from "../dressing/vetementItem.component";
 import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
+import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
+import { CapsuleEmptyComponent } from "./capsuleEmpty.component";
 
 
 
-export type DressingComponentProps = {
+export type CapsulesListComponentProps = {
     dressing: DressingModel;
-    tenues: TenueModel[];
-    openAddEditTenue: (tenue?: TenueModel) => void;
+    capsules: CapsuleTemporelleModel[];
+    openAddEditCapsule: (capsule?: CapsuleTemporelleModel) => void;
 };
 
 /**
  * Composant React représentant une liste de tenues dans un dressing.
  *
- * @component
- * @param {DressingComponentProps} props - Les propriétés du composant.
+ * @param {CapsulesListComponentProps} props - Les propriétés du composant.
  * @param {DressingModel} props.dressing - Le dressing contenant les tenues.
- * @param {TenueModel[]} props.tenuesInDressing - La liste des tenues à afficher dans le dressing.
+ * @param {TenueModel[]} props.capsules - La liste des tenues à afficher dans le dressing.
  * @param {(tenue?: TenueModel) => void} props.openAddEditTenue - Fonction permettant d'ouvrir l'interface d'ajout ou d'édition d'une tenue.
  *
- * @returns {React.JSX.Element} Un élément JSX représentant la liste des tenues.
+ * @returns {React.JSX.Element} Un élément JSX affichant la liste des tenues ou un message vide si aucune tenue n'est disponible.
+ *
+ * @remarks
+ * Ce composant affiche une liste de tenues triées par ordre alphabétique. Chaque tenue est affichée avec un bouton permettant de l'éditer.
+ * Si aucune tenue n'est disponible, un composant vide est affiché avec une option pour ajouter une nouvelle tenue.
  */
-export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing, tenues, openAddEditTenue }: DressingComponentProps) => {
+export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dressing, capsules, openAddEditCapsule }: CapsulesListComponentProps) => {
 
 
     /**
@@ -41,22 +44,22 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
      * @param {VetementModel[]} tenues - La liste des tenues à afficher.
      * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
      */
-    function showPanelTenues(tenues: TenueModel[]): React.JSX.Element[] {
+    function showPanelCapsules(capsules: CapsuleTemporelleModel[]): React.JSX.Element[] {
 
         let tenuesItems: JSX.Element[] = [];
-        tenues.sort((tenue1, tenue2) => alphanumSort(tenue1.libelle, tenue2.libelle));
+        capsules.sort((tenue1, tenue2) => alphanumSort(tenue1.libelle, tenue2.libelle));
 
-        tenues.forEach((tenue) => tenuesItems.push(
+        capsules.forEach((capsule) => tenuesItems.push(
 
-            <View key={"panel"+tenue.id} style={styleAccord.accordContainer}>
-                <Pressable onPress={() => openAddEditTenue(tenue)}>
+            <View key={"panel"+capsule.id} style={styleAccord.accordContainer}>
+                <Pressable onPress={() => openAddEditCapsule(capsule)}>
                 <View style={styleAccord.accordHeaderTitre}>
-                    <Text style={styleAccord.groupeLabel}>{tenue.libelle}</Text>
+                    <Text style={styleAccord.groupeLabel}>{capsule.libelle}</Text>
                     <Ionicons size={18} name="pencil-outline" style={styleAccord.icon} />
                 </View>
                 </Pressable>
                 <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={true} >
-                {showPanelVetementsTenue(tenue.vetements ?? [])}
+                {/**  showPanelVetementsTenue(capsule.vetements ?? [])  */ }
                 </ScrollView>
             </View>));
 
@@ -83,19 +86,19 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
     return (
         <>
             <View style={[styles.title, {marginBottom: 5}]}>
-                <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{tenues?.length} tenue{tenues?.length > 1 ? "s" : ""}</ThemedText>
+                <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{capsules?.length} capsule{capsules?.length > 1 ? "s" : ""}</ThemedText>
                 <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-                    <Pressable onPress={() => openAddEditTenue()}>
+                    <Pressable onPress={() => openAddEditCapsule()}>
                         <Ionicons size={28} name="add-outline" style={styles.titleIcon} />
                     </Pressable>
                 </View>
             </View>
-            {tenues.length === 0 &&
-                <TenueEmptyComponent dressing={dressing} openAddTenue={openAddEditTenue} />
+            {capsules.length === 0 &&
+                <CapsuleEmptyComponent dressing={dressing} openAddEditCapsule={openAddEditCapsule} />
             }
-            {tenues.length > 0 && 
+            {capsules.length > 0 && 
                 <ScrollView contentInsetAdjustmentBehavior="automatic">
-                    {showPanelTenues(tenues)}
+                    {showPanelCapsules(capsules)}
                 </ScrollView>
             }
         </>

@@ -1,108 +1,114 @@
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react';
-import { ThemedText } from '../commons/views/ThemedText';
+import React, { useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
-import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
-import { AppContext } from '@/app/services/AppContextProvider';
-import DressingModel from '@/app/models/dressing.model';
-import { InventaireListComponent } from './capsuleParamList.component';
-import { getCapsuleByParam } from '@/app/controllers/capsule/capsuleTemporelle.controller';
+import { DressingComponentProps } from '../dressing/dressing.component';
+import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
+import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
+import { CapsulesListComponent } from './capsuleList.component';
+import Modal from 'react-native-modal';
 
 
 /**
- * Propriétés pour le composant DressingComponent.
+ * Composant principal pour un dressing
  *
- * @typedef {Object} InventaireComponent
- * @property {DressingModel} dressing - Le modèle de dressing à afficher.
- */
-export type InventaireComponentProps = {
-  readonly dressing: DressingModel;
-};
-
-/**
- * Composant principal pour l'écran de réglages.
- *
- * @returns {JSX.Element} Le composant de l'écran de réglages.
+ * @returns {JSX.Element} Le composant de l'écran 
  *
  * @component
  * @remarks
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const InventaireComponent: React.FC<InventaireComponentProps> = ({ dressing }: InventaireComponentProps) => {
-  const [open, setOpen] = useState(false);
-  const [menu, setMenu] = useState<MenuParametragesModel | null>(null);
+export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
+
+  const [openCapsuleForm, setOpenCapsuleForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [capsules, setCapsules] = useState<CapsuleTemporelleModel[]>([]);
 
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const { typeVetements, taillesMesures, usages } = useContext(AppContext)!;
+  const [capsuleInEdit, setCapsuleInEdit] = useState<CapsuleTemporelleModel | null>(null);
 
-
-
-  /**
- *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
- * et à changement d'onglet
- * */
+  // Rechargement des vêtements si le dressing change
   useEffect(() => {
-    console.log("(Re)Chargement des inventaires...");
-    getCapsuleByParam(dressing, [], { typeVetements, taillesMesures, usages });
-  }, [])
+    setOpenCapsuleForm(false);
 
-  /** Ouverture/Fermeture du menu */
-  function toggleOpen(menu: MenuParametragesModel): void {
-    setMenu(menu);
-    setOpen(!open);
-  };
+  }, [dressing]);
 
-  
 
   /**
-   * Génère le contenu du panneau en fonction de l'état actuel de l'application.
-   *
-   * @returns {React.JSX.Element | null} 
-   * - Un indicateur d'activité si le chargement est en cours.
-   * - Un message d'erreur si une erreur est survenue.
-   * - Une liste de menus paramétrables avec leurs éléments associés, ainsi qu'un modal pour les détails.
-   *
-   * @description
-   * - Si `isLoading` est vrai, affiche un indicateur de chargement.
-   * - Si `error` n'est pas nul, affiche un message d'erreur.
-   * - Sinon, affiche une liste de groupes de menus avec leurs éléments, et un modal pour afficher les détails d'un menu sélectionné.
-   *
+   * 
+   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
    */
-  function getPanelContent(): React.JSX.Element | null {
-    if (isLoading) {
-      return <ActivityIndicator size={'large'} color={Colors.app.color} />
-    } else if (error !== null) {
-      return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
-    } else {
-      return <>
-        <View style={styles.container}>
-
-          <InventaireListComponent parametres={typeVetements}/>
-        </View>
-{ /* 
-        <Modal presentationStyle='overFullScreen' isVisible={open}
-          animationIn='slideInRight' animationOut='slideOutRight'
-          propagateSwipe={true}
-          onBackButtonPress={() => setOpen(false)}
-          onBackdropPress={() => setOpen(false)}
-          style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-          {
-            (menu !== null && menu !== undefined)
-            && <ParametragesListComponent typeParametrage={menu}
-              closeDrawer={() => setOpen(false)} />
-          }
-
-        </Modal>
-*/}
-      </>
+  function validateFormCallBack(resultat: APIResultFormCapsuleModel ): void {
+    setOpenCapsuleForm(false);
+    if(resultat.created && resultat.capsule !== undefined && resultat.capsule !== null) {
+      // On ajoute le vetement à la liste
+      setCapsules(prevCapsule => [...(prevCapsule), resultat.capsule!]);
     }
-
+    else if(resultat.updated || resultat.archived) {
+      setCapsules(prevCapsules => prevCapsules.map(capsule => capsule.id === resultat.id ? resultat.capsule! : capsule));
+    }
   }
 
-  return getPanelContent();
+  /**
+   * 
+   * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
+   */
+  function deleteFormCallBack(resultDelete: APIResultFormCapsuleModel ): void {
+    setOpenCapsuleForm(false);
+    setCapsules(prevCapsules => prevCapsules.filter(capsule => capsule.id !== resultDelete.id && resultDelete.deleted));
+  }
+
+
+  /**
+   * Ouvre ou ferme le formulaire d'ajout/édition de vêtement.
+   *
+   * @param capsule - (Optionnel) Le modèle de capsule à éditer. Si non fourni, le formulaire sera ouvert pour ajouter une nouvelle capsule.
+   */
+  function openAddEditCapsule(capsule?: CapsuleTemporelleModel | null): void {
+    setCapsuleInEdit(capsule || null);
+    setOpenCapsuleForm(true);
+  };
+
+
+  /**
+   * Retourne le contenu du panneau en fonction de l'état actuel du dressing.
+   *
+   * @returns {JSX.Element} - Un composant JSX représentant le contenu du panneau.
+   * Si le dressing est indéfini, nul ou en cours de chargement, retourne un indicateur d'activité.
+   * Si le dressing contient des vêtements et que le formulaire de vêtement n'est pas ouvert, retourne la liste des vêtements.
+   * Sinon, retourne un composant indiquant que le dressing est vide avec une option pour ajouter un vêtement.
+   */
+  const getPanelContent = () => {
+    if (dressing === undefined || dressing === null || isLoading) {
+      return <ActivityIndicator color={Colors.app.color} size="large" />;
+    }
+    else {
+      return (
+        <>
+          <View style={styles.container}>
+            <CapsulesListComponent dressing={dressing} capsules={capsules} openAddEditCapsule={openAddEditCapsule} />
+          </View>
+
+          <Modal presentationStyle='overFullScreen' isVisible={openCapsuleForm}
+            animationIn='slideInRight' animationOut='slideOutRight'
+            propagateSwipe={true}
+            onBackButtonPress={() => setOpenCapsuleForm(false)}
+            onBackdropPress={() => setOpenCapsuleForm(false)}
+            style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+              <></>
+{ /** 
+            <TenueFormComponent dressing={dressing} tenue={capsuleInEdit} vetementsAffiches={vetements}
+                                closeFormCallBack={() => setOpenCapsuleForm(false)}
+                                validateFormCallBack={validateFormCallBack}
+                                deleteFormCallBack={deleteFormCallBack} />
+                                 */}
+          </Modal>
+        </>);
+    }
+  }
+
+
+  return (getPanelContent());
 }
 
 const styles = StyleSheet.create({
@@ -111,35 +117,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     zIndex: 0,
     width: '100%'
-  },
-  title: {
-    padding: 10,
-    borderColor: Colors.app.color,
-    borderTopWidth: 3,
-    borderBottomWidth: 3,
-    borderRadius: 8,
-    height: 50,
-    flexDirection: 'row',
-  },
-  body: {
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    backgroundColor: Colors.app.background,
-    padding: 5,
-  },
-  icon: {
-    marginRight: 5,
-    width: 20,
-    height: 20,
-    tintColor: 'white',
-  },
-  menuItem: {
-    flexDirection: 'row',
-    padding: 10,
-    paddingTop: 20,
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.app.backgroundLight,
-  },
+  }
 });

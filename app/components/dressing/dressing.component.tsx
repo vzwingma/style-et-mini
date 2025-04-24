@@ -96,7 +96,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
       return (
         <>
           <View style={styles.container}>
-            <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={openAddEditVetement} />
+            <DressingListComponent vetements={vetements} openAddEditVetement={openAddEditVetement} />
           </View>
 
           <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}

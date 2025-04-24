@@ -36,14 +36,24 @@ export type VetementFormComponentProps = {
 
 
 /**
- * Composant de formulaire pour ajouter ou éditer un vêtement dans le dressing.
- *
+ * Composant React représentant un formulaire pour ajouter ou éditer une tenue.
+ * 
+ * @component
  * @param {VetementFormComponentProps} props - Les propriétés du composant.
- * @param {DressingModel} props.dressing - Le dressing auquel le vêtement appartient.
- * @param {VetementModel | null} props.vetement - Le vêtement en cours d'édition, ou null pour un nouveau vêtement.
- * @param {() => void} props.onCloseForm - Fonction de rappel pour fermer le formulaire.
- *
- * @returns {React.JSX.Element} - Un élément JSX représentant le formulaire de vêtement.
+ * @param {DressingModel} props.dressing - Le dressing contenant les vêtements.
+ * @param {VetementModel[]} props.vetementsAffiches - La liste des vêtements affichés dans le formulaire.
+ * @param {TenueModel | null} props.tenue - La tenue en cours d'édition, ou null pour une nouvelle tenue.
+ * @param {() => void} props.closeFormCallBack - Fonction de rappel pour fermer le formulaire.
+ * @param {(resultat: APIResultFormTenueModel) => void} props.validateFormCallBack - Fonction de rappel pour valider le formulaire.
+ * @param {(resultDelete: APIResultFormTenueModel) => void} props.deleteFormCallBack - Fonction de rappel pour supprimer la tenue.
+ * 
+ * @returns {React.ReactElement} Un élément React représentant le formulaire de gestion des tenues.
+ * 
+ * @description
+ * Ce composant permet de gérer l'ajout, l'édition, l'archivage et la suppression d'une tenue.
+ * Il affiche une liste de vêtements groupés par type, permet de sélectionner des vêtements
+ * pour composer une tenue, et propose des actions pour valider, archiver ou supprimer la tenue.
+
  */
 export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
 
