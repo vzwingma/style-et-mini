@@ -19,7 +19,7 @@ export const Colors = {
      */
     color: '#339a9a',
 
-    secondaryColor: '#287B7B',
+    secondaryColor: '#236B6B',
 
     background: '#353636',
 
@@ -31,7 +31,6 @@ export const Colors = {
 
 export const Fonts = {
   app: {
-    size : 14,
-    color: '#339a9a',
+    size : 14
   }
 };

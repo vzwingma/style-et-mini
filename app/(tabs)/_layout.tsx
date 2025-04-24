@@ -120,8 +120,8 @@ export default function TabLayout() {
 
               {dressingSelectionne !== undefined ?
               <>
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING}    activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES}          activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES}   activeDressing={dressingSelectionne} />
                 <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE}  activeDressing={dressingSelectionne} />
               </>
                  : null

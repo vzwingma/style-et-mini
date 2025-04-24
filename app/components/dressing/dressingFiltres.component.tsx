@@ -107,6 +107,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
                     iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
+                    backgroundColor={Colors.app.modalBackground}
                     data={filtresDisponibles}
                     labelField="typeLibelle" valueField="id"
                     placeholder={'Selectionnez un ou plusieurs filtre'}

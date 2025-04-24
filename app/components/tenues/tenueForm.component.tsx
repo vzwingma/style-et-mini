@@ -19,6 +19,7 @@ import { groupeVetementByType } from '@/app/controllers/dressing/dressingList.co
 import VetementModel from '@/app/models/vetements/vetements.model';
 import AccordionItem from '../commons/accordion/AccordionItem.component';
 import { VetemenItemComponent } from '../dressing/vetementItem.component';
+import AccordionSecondaryItem from '../commons/accordion/AccordionSecondaryItem.component';
 
 
 
@@ -82,12 +83,12 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
             selectedCount > 0 ? libelle += ")" : "";
 
             groupItems.push(
-                <AccordionItem
+                <AccordionSecondaryItem
                     title={libelle}
                     icon={getTypeVetementIcon(groupe)}
                     key={"key_groupeId_" + groupe}>
                     {showPanelVetements(vetements)}
-                </AccordionItem>
+                </AccordionSecondaryItem>
             );
         });
         return groupItems;
@@ -148,7 +149,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
                     <View style={[styles.rowItems, {paddingLeft: 10}]}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Vêtements")}</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={{marginTop: 10, marginBottom: 5}}>{renderLabelMandatory("Ajouter ou retirer des vêtements")}</ThemedText>
                     </View>
                     <View style={stylesF.input}>
                         {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
