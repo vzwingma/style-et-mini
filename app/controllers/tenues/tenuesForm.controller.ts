@@ -59,18 +59,17 @@ export function addRemoveVetementForm(vetement: VetementModel, setForm: React.Di
                     : []
             }
         });
-        return;
     }
     else{
     // Si le vêtement n'est pas déjà présent dans le formulaire, on l'ajoute
     setForm((form: FormTenueModel) => {
+        let updatedVetements = form.vetements || [];
+        if (!updatedVetements.some(v => v.id === vetement.id)) {
+            updatedVetements = [...updatedVetements, vetement];
+        }
         return {
             ...form,
-            vetements: form.vetements
-            ? form.vetements.some(v => v.id === vetement.id)
-                ? form.vetements
-                : [...form.vetements, vetement]
-            : [vetement]
+            vetements: updatedVetements
         }
     });
     }

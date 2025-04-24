@@ -1,4 +1,4 @@
-import { Colors, Fonts } from "@/app/constants/Colors";
+import { Colors } from "@/app/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { PropsWithChildren, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -8,7 +8,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 type AccordionItemPros = PropsWithChildren<{
   title: string;
   icon?: any;
-  toggleAllItems?: boolean;
 }>;
 
 

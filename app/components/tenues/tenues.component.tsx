@@ -33,7 +33,7 @@ export type DressingComponentProps = {
  **/
 export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
 
-  const [openVetementForm, setOpenTenueForm] = useState(false);
+  const [openTenueForm, setOpenTenueForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [tenues, setTenues] = useState<TenueModel[]>([]);
   const [vetements, setVetements] = useState<VetementModel[]>([]);
@@ -102,7 +102,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
             <TenuesListComponent dressing={dressing} tenuesInDressing={tenues} openAddEditTenue={openAddEditTenue} />
           </View>
 
-          <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}
+          <Modal presentationStyle='overFullScreen' isVisible={openTenueForm}
             animationIn='slideInRight' animationOut='slideOutRight'
             propagateSwipe={true}
             onBackButtonPress={() => setOpenTenueForm(false)}

@@ -1,4 +1,3 @@
-import TenueModel from "../tenues/tenue.model";
 import VetementModel from "./vetements.model";
 
 /**

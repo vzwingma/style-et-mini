@@ -90,10 +90,10 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
             {tenuesInDressing.length === 0 &&
                 <TenueEmptyComponent dressing={dressing} openAddTenue={openAddEditTenue} />
             }
-            {tenuesInDressing.length > 0 && <>
+            {tenuesInDressing.length > 0 && 
                 <ScrollView contentInsetAdjustmentBehavior="automatic">
                     {showPanelTenues(tenuesInDressing)}
-                </ScrollView></>
+                </ScrollView>
             }
         </>
     );

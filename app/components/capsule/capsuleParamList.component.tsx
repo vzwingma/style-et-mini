@@ -3,9 +3,8 @@ import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, ScrollView, View } from "react-native";
 import VetementModel from "@/app/models/vetements/vetements.model";
 import { Colors } from "../../constants/Colors";
-import { groupeVetementByType } from "@/app/controllers/dressing/dressingList.controller";
 import { useState } from "react";
-import { alphanumSort, getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
+import { getTypeVetementIcon, vetementSort } from "../commons/CommonsUtils";
 
 import AccordionItem from "../commons/accordion/AccordionItem.component";
 import { styles } from "../dressing/dressingList.style";

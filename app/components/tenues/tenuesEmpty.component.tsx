@@ -1,8 +1,7 @@
-import { StyleSheet, Pressable, Image, View } from 'react-native'
+import { Pressable, Image, View } from 'react-native'
 
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import { Colors } from '../../constants/Colors';
 import { getTabOutfitIcon } from '../commons/tab/TabBarIcon';
 import DressingModel from '@/app/models/dressing.model';
 import { stylesEmptyList } from '../dressing/dressingEmpty.component';
