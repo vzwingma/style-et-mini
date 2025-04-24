@@ -20,7 +20,6 @@ type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerTitle: string;
   backendConnexionData?: BackendConfigModel;
-  setRefreshing: React.Dispatch<React.SetStateAction<boolean>>;
 }>;
 
 export default function ParallaxScrollView({
@@ -28,12 +27,10 @@ export default function ParallaxScrollView({
   headerImage,
   headerTitle,  
   backendConnexionData,
-  setRefreshing
 }: Props) {
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  let refreshing = false;
   const bottom = 0;
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -51,28 +48,18 @@ export default function ParallaxScrollView({
       ],
     };
   });
-/*
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(!refreshing);
-    refreshing = !refreshing;
-  }, [refreshing, setRefreshing]);
-*/
 
   return (
     <View style={styles.container}>
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
-        /*
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        } */
         scrollIndicatorInsets={{ bottom }}
         contentContainerStyle={{ paddingBottom: bottom }}>
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: Colors.dark.titlebackground },
+            { backgroundColor: Colors.app.background },
             headerAnimatedStyle,
           ]}>
           {headerImage}

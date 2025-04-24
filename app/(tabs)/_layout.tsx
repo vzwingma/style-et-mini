@@ -104,8 +104,7 @@ export default function TabLayout() {
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab, dressingSelectionne?.categorie)}
         headerTitle={getHeaderTitle(tab, dressingSelectionne?.libelle)}
-        backendConnexionData={backendConnexionData}
-        setRefreshing={setRefreshing}>
+        backendConnexionData={backendConnexionData}>
 
         <View style={tabStyles.titleContainer}>
           {getPanelContent()}
@@ -169,7 +168,7 @@ export const tabStyles = StyleSheet.create({
   tabsViewbox: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: Colors.dark.titlebackground,
+    backgroundColor: Colors.app.background,
     height: 60,
     padding: 5,
     margin: 1,

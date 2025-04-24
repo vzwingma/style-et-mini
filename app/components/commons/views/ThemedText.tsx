@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   italic: {
     fontStyle: 'italic',
     fontSize: Fonts.app.size,
-    color: Colors.dark.icon
+    color: Colors.dark.text
   },
   tab: {
     lineHeight: 20,

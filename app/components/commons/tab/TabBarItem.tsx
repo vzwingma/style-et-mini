@@ -79,7 +79,7 @@ const tabStyles = StyleSheet.create({
 
   tabsItem: {
     width: '20%',
-    backgroundColor: Colors.dark.titlebackground,
+    backgroundColor: Colors.app.background,
     alignItems: 'center'
   }
 });

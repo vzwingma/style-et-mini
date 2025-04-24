@@ -72,9 +72,8 @@ const styles = StyleSheet.create({
         tintColor: Colors.app.color,
         width: 20,
         height: 20,
-        borderColor: Colors.dark.icon,
         borderWidth: 0,
-        borderRadius: 15,
+        borderRadius: 2,
         backgroundColor: Colors.app.backgroundLight,
     },
     iconBig: {

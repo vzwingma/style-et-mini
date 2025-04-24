@@ -49,7 +49,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
 
     const [form, setForm] = useState<FormTenueModel>({} as FormTenueModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormTenueModel>(defaultErrorsFormTenueModel);
-    const [toggleAllItems, setToggleAllItems] = useState(false);
+
     const {
         modalDialog, setModalDialog
     } = useContext(AppContext)!;
@@ -74,11 +74,17 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
         }));
 
         vetementsByGroup.forEach((vetements, groupe) => {
+
+            const selectedCount = vetements.filter(v => form.vetements?.some(selectedVetement => selectedVetement.id === v.id)).length;
+            let libelle = vetements[0]?.type?.libelle;
+            selectedCount > 0 ? libelle += " (" + selectedCount + " sélectionné" : null;
+            libelle += selectedCount > 1 ? "s" : "";
+            selectedCount > 0 ? libelle += ")" : "";
+
             groupItems.push(
                 <AccordionItem
-                    title={vetements[0]?.type?.libelle + " (" + vetements.length + ")"}
+                    title={libelle}
                     icon={getTypeVetementIcon(groupe)}
-                    toggleAllItems={toggleAllItems}
                     key={"key_groupeId_" + groupe}>
                     {showPanelVetements(vetements)}
                 </AccordionItem>
@@ -101,8 +107,8 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
             const selected = form.vetements?.some(v => v.id === item.id) ?? false;
 
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
-                selected={selected}
-                editVetement={(vetement, selected) => addRemoveVetementForm(vetement, setForm, selected) } />);
+                                                        selected={selected}
+                                                        editVetement={(vetement, selected) => addRemoveVetementForm(vetement, setForm, selected) } />);
         });
 
         return vetementsItems;
@@ -134,7 +140,6 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
                     {imageItems.length === 0 && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[stylesF.iconBig]} />}
                 </View>
                 <View style={stylesF.form}>
-
                     <View style={[styles.rowItems, {paddingLeft: 10}]}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
@@ -209,8 +214,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
                         </Pressable>
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                             <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
-                        </Pressable>
-                    </>
+                        </Pressable></>
                     }
                 </View>
 

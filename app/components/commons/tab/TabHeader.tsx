@@ -61,12 +61,12 @@ export const tabStyles = StyleSheet.create({
     tintColor: '#808080',
     position: 'absolute',
     bottom: -20,
-    backgroundColor: Colors.dark.titlebackground,
+    backgroundColor: Colors.app.background,
   },
   domoticzLogo: {
     width: 100,
     height: 100,
     position: 'absolute',
-    backgroundColor: Colors.dark.titlebackground,
+    backgroundColor: Colors.app.background
   },
 });
