@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderStartStartRadius: 10,
         borderEndEndRadius: 10,
-        cursor: 'pointer',
         margin: 10,
     },
     // Label de formulaire

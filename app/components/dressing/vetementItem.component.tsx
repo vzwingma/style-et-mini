@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 12,
         height:40,
-        backgroundColor: Colors.app.background,
         justifyContent: 'center',
         alignContent: 'center'
     }

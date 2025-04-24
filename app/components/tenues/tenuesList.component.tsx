@@ -40,11 +40,11 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
     function showPanelTenues(tenues: TenueModel[]): React.JSX.Element[] {
 
         let tenuesItems: JSX.Element[] = [];
-        tenues.sort((a, b) => alphanumSort(a.libelle, b.libelle));
+        tenues.sort((tenue1, tenue2) => alphanumSort(tenue1.libelle, tenue2.libelle));
 
         tenues.forEach((tenue) => tenuesItems.push(
 
-            <View style={styleAccord.accordContainer}>
+            <View key={"panel"+tenue.id} style={styleAccord.accordContainer}>
                 <View style={styleAccord.accordHeaderTitre}>
                     <Text style={styleAccord.groupeLabel}>{tenue.libelle}</Text>
                     <Pressable onPress={() => openAddEditTenue(tenue)}>

@@ -4,6 +4,7 @@ import DressingModel from "../dressing.model";
 import GenericModel from "../generic.model";
 import VetementModel from "../vetements/vetements.model";
 import TenueModel from "./tenue.model";
+import TenueVetementModel from "./tenue.vetements.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -29,11 +30,7 @@ export function transformFormToTenueModel(form: FormTenueModel): TenueModel {
             return {
                 id      : vetement.id,
                 libelle : vetement.libelle,
-                image: {
-                    s3uri       : vetement.image?.s3uri,
-                    hauteur     : vetement.image?.hauteur,
-                    largeur     : vetement.image?.largeur
-                },
+                image   : vetement.image,
             }}),
         statut: form.statut,
     };
@@ -64,16 +61,11 @@ export function transformTenueToFormModel(form: FormTenueModel, tenueInEdition: 
             id              : tenueInEdition.id,
             libelle         : tenueInEdition.libelle,
             dressing        : dressing,
-            vetements       : tenueInEdition.vetements?.map((vetement: GenericModel) => {
+            vetements       : tenueInEdition.vetements?.map((vetement: TenueVetementModel) => {
                 return {
                     id      : vetement.id,
                     libelle : vetement.libelle,
-                    /*
-                    image: {
-                        s3uri       : vetement.image?.s3uri,
-                        hauteur     : vetement.image?.hauteur,
-                        largeur     : vetement.image?.largeur /
-                    }, */
+                    image   : vetement.image,
                 } as VetementModel}),
             statut          : tenueInEdition.statut ?? StatutVetementEnum.ACTIF
         }

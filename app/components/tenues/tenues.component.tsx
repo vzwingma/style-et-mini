@@ -108,9 +108,10 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
             onBackButtonPress={() => setOpenTenueForm(false)}
             onBackdropPress={() => setOpenTenueForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-              <TenueFormComponent dressing={dressing} tenue={tenueInEdit} closeFormCallBack={() => setOpenTenueForm(false)} 
-                                                                                               validateFormCallBack={validateFormCallBack}
-                                                                                               deleteFormCallBack={deleteFormCallBack}/>
+            <TenueFormComponent dressing={dressing} tenue={tenueInEdit} vetementsAffiches={vetements}
+                                closeFormCallBack={() => setOpenTenueForm(false)}
+                                validateFormCallBack={validateFormCallBack}
+                                deleteFormCallBack={deleteFormCallBack} />
           </Modal>
         </>);
     }

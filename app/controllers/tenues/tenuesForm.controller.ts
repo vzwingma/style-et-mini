@@ -7,19 +7,17 @@ import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
 import DressingModel from "@/app/models/dressing.model";
 import APIResultFormTenueModel from "@/app/models/tenues/form.result.tenue.model";
+import VetementModel from "@/app/models/vetements/vetements.model";
 
 
 export function initForm(dressing: DressingModel, vetementInEdition: TenueModel | null,
     setForm: Function) {
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
-
         setForm((form: FormTenueModel) => transformTenueToFormModel(form, vetementInEdition, dressing));
     }
     else {
-        setForm(() => {
-            return { dressing: dressing, statut: StatutVetementEnum.ACTIF }
-        });
+        setForm(() => { return { dressing: dressing, statut: StatutVetementEnum.ACTIF }});
     }
 }
 
@@ -39,6 +37,22 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
             return { ...errors, libelleInError: false }
         });
     }
+}
+
+
+
+/**
+ * Ajoute un vêtement au formulaire de tenue.
+ *
+ * @param vetement - Le modèle du vêtement à ajouter.
+ * @param setForm - Fonction permettant de mettre à jour l'état du formulaire de tenue.
+ * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire de tenue.
+ */
+export function addVetementForm(vetement: VetementModel, setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>) {
+    console.log("Ajout du vêtement au formulaire", vetement);
+    setForm((form: FormTenueModel) => {
+        return { ...form, vetements: form.vetements ? [...form.vetements, vetement] : [vetement] }
+    });
 }
 
 let errors = false;

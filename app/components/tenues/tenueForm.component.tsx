@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import { StatutVetementEnum } from '@/app/constants/AppEnum';
 import DressingModel from '@/app/models/dressing.model';
@@ -6,16 +6,20 @@ import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
-import { Colors } from '../../constants/Colors';
-import { renderLabelMandatory } from '../commons/CommonsUtils';
+import { Colors, Fonts } from '../../constants/Colors';
+import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { ThemedText } from '../commons/views/ThemedText';
 import { styles } from '../dressing/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
-import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
+import { addVetementForm, archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
 import TenueModel from '@/app/models/tenues/tenue.model';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
+import { groupeVetementByType } from '@/app/controllers/dressing/dressingList.controller';
+import VetementModel from '@/app/models/vetements/vetements.model';
+import AccordionItem from '../commons/accordion/AccordionItem.component';
+import { VetemenItemComponent } from '../dressing/vetementItem.component';
 
 
 
@@ -23,11 +27,12 @@ import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model
  * Propriétés du composant VetementFormComponent.
  */
 export type VetementFormComponentProps = {
-    dressing : DressingModel;
-    tenue : TenueModel | null;
-    closeFormCallBack() : void;
-    validateFormCallBack(resultat: APIResultFormTenueModel) : void;
-    deleteFormCallBack(resultat: APIResultFormTenueModel) : void;
+    dressing: DressingModel;
+    tenue: TenueModel | null;
+    vetementsAffiches: VetementModel[];
+    closeFormCallBack(): void;
+    validateFormCallBack(resultat: APIResultFormTenueModel): void;
+    deleteFormCallBack(resultat: APIResultFormTenueModel): void;
 };
 
 
@@ -41,11 +46,11 @@ export type VetementFormComponentProps = {
  *
  * @returns {React.JSX.Element} - Un élément JSX représentant le formulaire de vêtement.
  */
-export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
+export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormTenueModel>({} as FormTenueModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormTenueModel>(defaultErrorsFormTenueModel);
-
+    const [toggleAllItems, setToggleAllItems] = useState(false);
     const {
         modalDialog, setModalDialog
     } = useContext(AppContext)!;
@@ -57,41 +62,89 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
 
 
     /**
+     * Affiche un panneau contenant une liste de vêtements.
+     *
+     * @param {VetementModel[] | undefined} vetements - La liste des vêtements à afficher. Peut être indéfinie.
+     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+     */
+    function showPanelGroupeVetements(vetementsByGroup: Map<string, VetementModel[]>): React.JSX.Element[] {
+        let groupItems: JSX.Element[] = [];
+        // Sort par nom du groupe
+        vetementsByGroup = new Map([...vetementsByGroup.entries()].sort((a, b) => {
+            return alphanumSort(a[1][0]?.type.libelle, b[1][0]?.type.libelle);
+        }));
+
+        vetementsByGroup.forEach((vetements, groupe) => {
+            groupItems.push(
+                <AccordionItem
+                    title={vetements[0]?.type?.libelle + " (" + vetements.length + ")"}
+                    icon={getTypeVetementIcon(groupe)}
+                    toggleAllItems={toggleAllItems}
+                    key={"key_groupeId_" + groupe}>
+                    {showPanelVetements(vetements)}
+                </AccordionItem>
+            );
+        });
+        return groupItems;
+    }
+    /**
+     * Affiche un panneau contenant une liste de vêtements.
+     *
+     * @param {VetementModel[]} vetements - La liste des vêtements à afficher.
+     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+     */
+    function showPanelVetements(vetements: VetementModel[]): React.JSX.Element[] {
+
+        let vetementsItems: JSX.Element[] = [];
+        vetements.sort(vetementSort);
+        vetements.forEach((item) => {
+            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
+                editVetement={(vetement) => addVetementForm(vetement, setForm)} />);
+        });
+
+        return vetementsItems;
+    }
+
+    /**
      * 
      * @returns Formulaire de vêtement
      */
     function getPanelFormContent(): React.JSX.Element | null {
-        let renderFormImage = null as VetementImageModel | null;
-        /*
-        if (form.image) {
-            // recalcul de la taille de l'image suivant la mise en page
-            renderFormImage = resizeImage(form.image, 250);
-        }*/
+
+        let imageItems: JSX.Element[] = [];
+        form.vetements?.forEach((vetement) => {
+            const renderFormImage = vetement.image ? resizeImage(vetement.image, 150) : null;
+            if(renderFormImage) {
+                imageItems.push(<Image height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={stylesF.photo} />)
+            }
+        });
+   
 
         return (
             <View style={styles.body}>
-                <View style={styles.rowItems}>
-                    <View style={{width: '100%', alignItems: 'center'}}>
-                        <Pressable onPress={() => {}}>
-                            {renderFormImage &&
-                                <Image height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={styles.photo}  />}
-                            {!renderFormImage &&
-                                <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
-                            { /* form.petiteTaille &&
-                                <Image source={require('@/assets/icons/small-size-outline.png')} style={[styles.iconSmall]} /> */}
-                        </Pressable>
-                    </View>
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                    {imageItems.length > 0 &&
+                        <ScrollView horizontal={true} contentInsetAdjustmentBehavior="automatic">
+                            {imageItems}
+                        </ScrollView>
+                    }
+                    {imageItems.length === 0 && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[stylesF.iconBig]} />}
                 </View>
-                <View style={styles.form}>
+                <View style={stylesF.form}>
 
-                    <View style={styles.rowItems}>
+                    <View style={[styles.rowItems, {paddingLeft: 10}]}>
                         <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
                             placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la tenue' : errorsForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
-
+                    <View style={[styles.rowItems, {paddingLeft: 10}]}>
+                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Vêtements")}</ThemedText>
+                    </View>
+                    <View style={stylesF.input}>
+                        {showPanelGroupeVetements(groupeVetementByType(vetementsAffiches))}
+                    </View>
                 </View>
             </View>
         );
@@ -118,7 +171,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
     function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette tenue ?'}
-            ackModalCallback={() => archiveForm(form , validateFormCallBack)}
+            ackModalCallback={() => archiveForm(form, validateFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
     }
@@ -130,8 +183,8 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
  * @param setErrorsForm fonction de mise à jour des erreurs
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
-*/ 
-    function deleteFormModalConfirmation(form : FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+*/
+    function deleteFormModalConfirmation(form: FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette tenue ?'}
             ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
             showModal={Math.random()} />;
@@ -148,13 +201,13 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && <>
-                            <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
-                                {renderArchiveIcon()}
-                            </Pressable>
-                            <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
-                                <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
-                            </Pressable>
-                        </>
+                        <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
+                            {renderArchiveIcon()}
+                        </Pressable>
+                        <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
+                            <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
+                        </Pressable>
+                    </>
                     }
                 </View>
 
@@ -169,3 +222,35 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
         </>
     );
 }
+
+export const stylesF = StyleSheet.create({
+    form: {
+        backgroundColor: Colors.app.backgroundLight
+    },
+    input: {
+        marginTop: 5,
+        marginBottom: 5,
+        color: Colors.dark.text,
+        flex: 3,
+        fontSize: Fonts.app.size
+    },
+    iconBig: {
+        tintColor: 'gray',
+        width: 150,
+        height: 150,
+        backgroundColor: Colors.app.background,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 1,
+        borderStartStartRadius: 10,
+        borderEndEndRadius: 10,
+        margin: 10,
+    },
+    photo: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 5,
+        marginRight: 5,
+    },
+});
