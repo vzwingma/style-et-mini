@@ -17,7 +17,6 @@ import TenueModel from '@/app/models/tenues/tenue.model';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import { groupeVetementByType } from '@/app/controllers/dressing/dressingList.controller';
 import VetementModel from '@/app/models/vetements/vetements.model';
-import AccordionItem from '../commons/accordion/AccordionItem.component';
 import { VetemenItemComponent } from '../dressing/vetementItem.component';
 import AccordionSecondaryItem from '../commons/accordion/AccordionSecondaryItem.component';
 
@@ -116,19 +115,39 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
     }
 
     /**
+     * Affiche un panneau contenant les images des vêtements d'une tenue.
+     *
+     * @param vetementsTenue - Tableau des modèles de vêtements à afficher.
+     * Chaque modèle de vêtement peut contenir une image qui sera redimensionnée
+     * avant d'être affichée.
+     * 
+     * @returns Un tableau d'éléments React.JSX.Element représentant les images
+     * des vêtements redimensionnées. Si un vêtement ne contient pas d'image,
+     * il ne sera pas inclus dans le rendu.
+     */
+    function showPanelVetementsTenue(vetementsTenue: VetementModel[]): React.JSX.Element[] {
+        let imageItems: JSX.Element[] = [];
+        vetementsTenue?.forEach((vetement) => {
+            const renderFormImage = vetement.image ? resizeImage(vetement.image, 150) : null;
+            if(renderFormImage) {
+                imageItems.push(<View style={{padding: 3}} key={vetement.id}>
+                    <Image key={vetement.id} height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={stylesF.photo} />
+                    <Pressable style={stylesF.pressIcon} onPress={() => addRemoveVetementForm(vetement, setForm, false)}>
+                        <Ionicons size={24} name="close-outline" color={"white"} style={[stylesF.iconSmall]} />
+                    </Pressable>
+                    </View>)
+            }
+        });
+        return imageItems;
+    }
+
+    /**
      * 
      * @returns Formulaire de vêtement
      */
     function getPanelFormContent(): React.JSX.Element | null {
 
-        let imageItems: JSX.Element[] = [];
-        form.vetements?.forEach((vetement) => {
-            const renderFormImage = vetement.image ? resizeImage(vetement.image, 150) : null;
-            if(renderFormImage) {
-                imageItems.push(<Image key={vetement.id} height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={stylesF.photo} />)
-            }
-        });
-   
+        const imageItems: JSX.Element[] = showPanelVetementsTenue(form.vetements ?? []);
 
         return (
             <View style={styles.body}>
@@ -255,10 +274,24 @@ export const stylesF = StyleSheet.create({
         borderEndEndRadius: 10,
         margin: 10,
     },
+    iconSmall: {
+        tintColor: Colors.app.color,
+        width: 26,
+        height: 26,
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 20,
+        backgroundColor: Colors.app.backgroundLight,
+    },
+    pressIcon: {
+        position: 'absolute',
+        top: 5,
+        right: 0,
+    },
     photo: {
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 5,
-        marginRight: 5,
+        marginRight: 10,
     },
 });
