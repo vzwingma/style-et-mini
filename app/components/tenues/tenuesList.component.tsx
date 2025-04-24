@@ -46,13 +46,15 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
         tenues.forEach((tenue) => tenuesItems.push(
 
             <View key={"panel"+tenue.id} style={styleAccord.accordContainer}>
+                <Pressable onPress={() => openAddEditTenue(tenue)}>
                 <View style={styleAccord.accordHeaderTitre}>
                     <Text style={styleAccord.groupeLabel}>{tenue.libelle}</Text>
-                    <Pressable onPress={() => openAddEditTenue(tenue)}>
-                        <Ionicons size={18} name="pencil-outline" style={styleAccord.icon} />
-                    </Pressable>
+                    <Ionicons size={18} name="pencil-outline" style={styleAccord.icon} />
                 </View>
+                </Pressable>
+                <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={true} >
                 {showPanelVetementsTenue(tenue.vetements ?? [])}
+                </ScrollView>
             </View>));
 
         return tenuesItems;
@@ -77,7 +79,7 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
 
     return (
         <>
-            <View style={styles.title}>
+            <View style={[styles.title, {marginBottom: 5}]}>
                 <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{tenuesInDressing?.length} tenue{tenuesInDressing?.length > 1 ? "s" : ""}</ThemedText>
                 <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                     <Pressable onPress={() => openAddEditTenue()}>
