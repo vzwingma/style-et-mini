@@ -4,13 +4,14 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import VetementModel from "@/app/models/vetements/vetements.model";
 import { Colors } from "../../constants/Colors";
 
-import { alphanumSort, vetementSort } from "../commons/CommonsUtils";
+import { alphanumSort } from "../commons/CommonsUtils";
 import { styles } from "../dressing/dressingList.style";
 import TenueModel from "@/app/models/tenues/tenue.model";
 import { TenueEmptyComponent } from "./tenuesEmpty.component";
 import DressingModel from "@/app/models/dressing.model";
 import { styles as styleAccord } from "../commons/accordion/AccordionItem.component";
 import { VetemenItemComponent } from "../dressing/vetementItem.component";
+import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
 
 
 
@@ -64,14 +65,13 @@ export const TenuesListComponent: React.FC<DressingComponentProps> = ({ dressing
      * @param {VetementModel[]} vetements - La liste des vêtements à afficher.
      * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
      */
-    function showPanelVetementsTenue(vetements: any[]): React.JSX.Element[] {
+    function showPanelVetementsTenue(vetements: TenueVetementModel[]): React.JSX.Element[] {
 
         let vetementsItems: JSX.Element[] = [];
-        vetements.sort(vetementSort);
+        vetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
         vetements.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} editVetement={() => { }} />);
+            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item as VetementModel} />);
         });
-
         return vetementsItems;
     }
 

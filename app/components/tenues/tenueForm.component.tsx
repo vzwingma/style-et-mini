@@ -2,7 +2,6 @@ import { Image, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react
 
 import { StatutVetementEnum } from '@/app/constants/AppEnum';
 import DressingModel from '@/app/models/dressing.model';
-import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
@@ -12,7 +11,7 @@ import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { ThemedText } from '../commons/views/ThemedText';
 import { styles } from '../dressing/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
-import { addVetementForm, archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
+import { addRemoveVetementForm, archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
 import TenueModel from '@/app/models/tenues/tenue.model';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
@@ -98,8 +97,12 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
         let vetementsItems: JSX.Element[] = [];
         vetements.sort(vetementSort);
         vetements.forEach((item) => {
+
+            const selected = form.vetements?.some(v => v.id === item.id) ?? false;
+
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
-                editVetement={(vetement) => addVetementForm(vetement, setForm)} />);
+                selected={selected}
+                editVetement={(vetement, selected) => addRemoveVetementForm(vetement, setForm, selected) } />);
         });
 
         return vetementsItems;
@@ -115,7 +118,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
         form.vetements?.forEach((vetement) => {
             const renderFormImage = vetement.image ? resizeImage(vetement.image, 150) : null;
             if(renderFormImage) {
-                imageItems.push(<Image height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={stylesF.photo} />)
+                imageItems.push(<Image key={vetement.id} height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={stylesF.photo} />)
             }
         });
    

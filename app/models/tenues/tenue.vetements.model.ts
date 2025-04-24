@@ -1,4 +1,3 @@
-import DressingModel from "../dressing.model";
 import GenericModel from "../generic.model";
 import VetementImageModel from "../vetements/vetements.image.model";
 

@@ -164,8 +164,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         marginRight: 5,
         padding: 1,
-        height: 25,
-        cursor: 'pointer',
+        height: 25
     },
     selectedTextStyle: {
         fontSize: Fonts.app.size,

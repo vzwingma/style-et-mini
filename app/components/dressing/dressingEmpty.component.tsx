@@ -48,8 +48,7 @@ export const stylesEmptyList = StyleSheet.create({
     alignItems: 'center',
   },
   menuItem: {
-    padding: 10,
-    cursor: 'pointer',
+    padding: 10
   },
   icon: {
     tintColor: 'gray',

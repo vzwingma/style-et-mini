@@ -48,11 +48,32 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  * @param setForm - Fonction permettant de mettre à jour l'état du formulaire de tenue.
  * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire de tenue.
  */
-export function addVetementForm(vetement: VetementModel, setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>) {
-    console.log("Ajout du vêtement au formulaire", vetement);
+export function addRemoveVetementForm(vetement: VetementModel, setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>, selected?: boolean) {
+
+    if(!selected) {
+        setForm((form: FormTenueModel) => {
+            return {
+                ...form,
+                vetements: form.vetements
+                    ? form.vetements.filter(v => v.id !== vetement.id)
+                    : []
+            }
+        });
+        return;
+    }
+    else{
+    // Si le vêtement n'est pas déjà présent dans le formulaire, on l'ajoute
     setForm((form: FormTenueModel) => {
-        return { ...form, vetements: form.vetements ? [...form.vetements, vetement] : [vetement] }
+        return {
+            ...form,
+            vetements: form.vetements
+            ? form.vetements.some(v => v.id === vetement.id)
+                ? form.vetements
+                : [...form.vetements, vetement]
+            : [vetement]
+        }
     });
+    }
 }
 
 let errors = false;

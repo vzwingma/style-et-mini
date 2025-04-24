@@ -7,9 +7,11 @@ import VetementModel from '@/app/models/vetements/vetements.model';
 import { resizeImage } from '../commons/CommonsUtils';
 
 
+
 export type VetementItemComponentProps = {
     vetement: VetementModel;
-    editVetement: (vetement: VetementModel) => void;
+    selected?: boolean;
+    editVetement?: (vetement: VetementModel, selected?: boolean) => void;
 };
 
 /**
@@ -19,18 +21,18 @@ export type VetementItemComponentProps = {
  *
  * @component
  **/
-export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, editVetement }: VetementItemComponentProps) => {
+export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, selected, editVetement }: VetementItemComponentProps) => {
     
     const vetementImageToShow = vetement.image ? resizeImage(vetement.image, 100) : null;
 
     return (
-        <Pressable onPress={() => editVetement(vetement)}>
-            <View key={vetement.id} style={styles.body}>
+        <Pressable onPress={() => editVetement ? editVetement(vetement, !selected) : null}>
+            <View key={vetement.id} style={[styles.body, (selected ? styles.selected : null)]}>
                 <View style={[styles.photoFrame, !vetementImageToShow ? { borderColor: Colors.app.backgroundLight, borderWidth: 1, } : null]}>
-                    {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.displayUri }} style={styles.photo} width={vetementImageToShow.largeur} height={vetementImageToShow.hauteur} />}
+                    {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.displayUri }} width={vetementImageToShow.largeur} height={vetementImageToShow.hauteur} />}
                     {!vetementImageToShow   && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
                         style={[styles.iconBig]} />}
-                    {vetement.taille.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
+                    {'taille' in vetement && vetement.taille?.petite && <Image source={require('@/assets/icons/small-size-outline.png')}
                         style={[styles.iconSmall]} />}
                 </View>
                 <View style={styles.label}><ThemedText type="default">{vetement.libelle}</ThemedText></View>
@@ -51,17 +53,17 @@ const styles = StyleSheet.create({
         borderColor: Colors.app.backgroundLight,
         borderWidth: 1,
         borderStartStartRadius: 10,
-        borderEndEndRadius: 10,
-        cursor: 'pointer',
+        borderEndEndRadius: 10
+    },
+    selected: {
+        borderColor: Colors.app.color,
+        borderWidth: 2,
     },
     photoFrame: {
         width: 100,
         height: 100,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    photo: {
-        cursor: 'pointer',
     },
     iconSmall: {
         position: 'absolute',

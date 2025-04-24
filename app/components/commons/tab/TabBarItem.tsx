@@ -60,9 +60,9 @@ function getTabBarIcon({ activeTab, activeDressing, thisTab }: Readonly<TabBarIc
     case Tabs.INDEX:
       return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     case Tabs.DRESSING:
-      return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer' }} />
+      return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff')}} />
     case Tabs.TENUES:
-      return <Image source={getTabOutfitIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#808080'), cursor: 'pointer' }} />
+      return <Image source={getTabOutfitIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff') }} />
     case Tabs.CAPSULE:
       return <Image source={selectedTab ? require('@/assets/icons/closet.png') : require('@/assets/icons/closet-outline.png')} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer' }} />
     case Tabs.REGLAGES:
@@ -80,8 +80,7 @@ const tabStyles = StyleSheet.create({
   tabsItem: {
     width: '20%',
     backgroundColor: Colors.dark.titlebackground,
-    alignItems: 'center',
-    cursor: 'pointer',
+    alignItems: 'center'
   }
 });
 
