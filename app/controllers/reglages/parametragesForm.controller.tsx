@@ -1,10 +1,10 @@
-import { showToast, ToastDuration } from "../components/commons/AndroidToast";
-import { getUrlAPIParametres, SERVICES_PARAMS } from "../constants/APIconstants";
-import { ParametragesVetementEnum, TypeTailleEnum } from "../constants/AppEnum";
-import ErrorsFormParametrageModel from "../models/params/form.errors.params.model";
-import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
-import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../models/params/paramVetementsForm.model";
-import { callDELETEBackend, callPOSTBackend } from "../services/ClientHTTP.service";
+import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
+import { getUrlAPIParametres, SERVICES_PARAMS } from "../../constants/APIconstants";
+import { ParametragesVetementEnum, TypeTailleEnum } from "../../constants/AppEnum";
+import ErrorsFormParametrageModel from "../../models/params/formErrorsParams.model";
+import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
+import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../../models/params/paramVetementsForm.model";
+import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
 
 
 

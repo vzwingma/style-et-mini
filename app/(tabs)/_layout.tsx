@@ -8,7 +8,7 @@ import HomeScreen from '.';
 import connectToBackend, { getDressings } from '../controllers/index.controller';
 import DressingScreen from './dressing';
 import ReglageScreen from './reglages';
-import { getAllParamsVetements } from '../controllers/parametrages.controller';
+import { getAllParamsVetements } from '../controllers/reglages/parametrages.controller';
 import DressingModel from '../models/dressing.model';
 import { Tabs } from './../constants/TabsEnums';
 import { AppContext } from '../services/AppContextProvider';
@@ -17,6 +17,7 @@ import ParallaxScrollView from '../components/commons/views/ParallaxScrollView';
 import { getHeaderIcon, getHeaderTitle } from '../components/commons/tab/TabHeader';
 import { TabBarItems } from '../components/commons/tab/TabBarItem';
 import BackendConfigModel from '../models/backendConfig.model';
+
 
 export default function TabLayout() {
 
@@ -103,8 +104,7 @@ export default function TabLayout() {
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab, dressingSelectionne?.categorie)}
         headerTitle={getHeaderTitle(tab, dressingSelectionne?.libelle)}
-        backendConnexionData={backendConnexionData}
-        setRefreshing={setRefreshing}>
+        backendConnexionData={backendConnexionData}>
 
         <View style={tabStyles.titleContainer}>
           {getPanelContent()}
@@ -119,7 +119,12 @@ export default function TabLayout() {
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
 
               {dressingSelectionne !== undefined ?
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} /> : null
+              <>
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES}   activeDressing={dressingSelectionne} />
+               { /**  <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE}  activeDressing={dressingSelectionne} />  */}
+              </>
+                 : null
               }
 
               <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
@@ -141,12 +146,9 @@ export default function TabLayout() {
       case Tabs.INDEX:
         return <HomeScreen selectNewTab={selectNewTab} />
       case Tabs.DRESSING:
-        if (dressing === undefined) {
-          return <ThemedText type="title" style={{ color: Colors.app.color }}>Veuillez sélectionner un dressing</ThemedText>
-        }
-        else {
-          return <DressingScreen dressing={dressing} />
-        }
+        case Tabs.TENUES:        
+        case Tabs.CAPSULE:
+          return <DressingScreen tab={tab} dressing={dressing} />
       case Tabs.REGLAGES:
         return <ReglageScreen />
       default:
@@ -166,7 +168,7 @@ export const tabStyles = StyleSheet.create({
   tabsViewbox: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: Colors.dark.titlebackground,
+    backgroundColor: Colors.app.background,
     height: 60,
     padding: 5,
     margin: 1,

@@ -3,14 +3,13 @@ import DressingModel from "../dressing.model";
 import VetementCaracteristiquesModel from "./vetementCaracteristique.model";
 import VetementImageModel from "./vetements.image.model";
 import VetementPrixModel from "./vetements.prix.model";
+import GenericModel from "../generic.model";
 
 /**
  * Modèle représentant un vetement avec le backend
  */
-interface VetementModel {
-    readonly id         : string;
+interface VetementModel extends GenericModel {
     dressing            : DressingModel;
-    readonly libelle    : string;
     image?              : VetementImageModel | null;
 
     readonly type       : VetementCaracteristiquesModel;

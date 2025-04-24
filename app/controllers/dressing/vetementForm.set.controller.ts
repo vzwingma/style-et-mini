@@ -1,13 +1,13 @@
-import { alphanumSort, numSort } from "../components/commons/CommonsUtils";
-import DressingModel from "../models/dressing.model";
-import VetementModel from "../models/vetements/vetements.model";
-import ErrorsFormVetementModel from "../models/vetements/form.errors.vetements.model";
-import FormVetementModel, { transformVetementToFormModel } from "../models/vetements/form.vetements.model";
-import { VetementsFormParamsTypeProps } from "../components/dressing/vetementForm.component";
-import { SaisonVetementEnum, StatutVetementEnum } from "../constants/AppEnum";
+import { alphanumSort, numSort } from "../../components/commons/CommonsUtils";
+import DressingModel from "../../models/dressing.model";
+import VetementModel from "../../models/vetements/vetements.model";
+import ErrorsFormVetementModel from "../../models/vetements/form.errors.vetements.model";
+import FormVetementModel, { transformVetementToFormModel } from "../../models/vetements/form.vetements.model";
+import { VetementsFormParamsTypeProps } from "../../components/dressing/vetementForm.component";
+import { SaisonVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
-import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
-import { showToast, ToastDuration } from "../components/commons/AndroidToast";
+import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
+import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
 import * as ImageManipulator from 'expo-image-manipulator';
 
 // Filtre les types de vêtements en fonction de la catégorie du dressing
@@ -70,11 +70,19 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
 }
 
 
+
 /**
- * Met à jour le libellé du formulaire de vêtement.
+ * Initialise le formulaire pour un vêtement en édition ou crée un formulaire vide.
  *
- * @param libelle - Le nouveau libellé à définir dans le formulaire.
- * @param setForm - La fonction de mise à jour de l'état du formulaire.
+ * @param dressing - Le modèle de dressing contenant les informations globales.
+ * @param vetementInEdition - Le modèle de vêtement en cours d'édition, ou `null` si aucun vêtement n'est en édition.
+ * @param setForm - Fonction permettant de mettre à jour l'état du formulaire.
+ * @param params - Les paramètres nécessaires pour transformer ou initialiser le formulaire :
+ *   - `paramsTypeVetements` : Les types de vêtements disponibles.
+ *   - `paramsTaillesMesures` : Les tailles et mesures disponibles.
+ *   - `paramsUsagesVetements` : Les usages possibles des vêtements.
+ *   - `paramsEtatVetements` : Les états possibles des vêtements.
+ *   - `paramsMarquesVetements` : Les marques disponibles pour les vêtements.
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
     setForm: Function,

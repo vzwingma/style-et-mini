@@ -1,22 +1,22 @@
-import { SERVICES_PARAMS, SERVICES_URL } from "../constants/APIconstants";
+import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
-import DressingModel from "../models/dressing.model";
-import { callGETBackend } from "../services/ClientHTTP.service";
-import VetementModel from "../models/vetements/vetements.model";
+import DressingModel from "../../models/dressing.model";
+import { callGETBackend } from "../../services/ClientHTTP.service";
+import VetementModel from "../../models/vetements/vetements.model";
 
 // Propriétés de l'appel d'API pour le dressing
 type FunctionCallAPIDressingProps = {
   idDressing: string
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   setDressing: Function
   setError: React.Dispatch<React.SetStateAction<Error | null>>
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
 // Propriétés de l'appel d'APl pour les vêtements
 export type FunctionCallAPIVetementsProps = {
   idDressing: string
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
   setVetements: Function
 }
 
@@ -39,9 +39,13 @@ export type FunctionCallAPIVetementsProps = {
  * et met à jour les données du dressing ou l'erreur en fonction du résultat de la requête.
  * En cas d'erreur, un message toast est affiché pour informer l'utilisateur.
  */
-export function loadDressing({ idDressing, setIsLoading, setDressing, setError }: FunctionCallAPIDressingProps) {
+export function loadDressing({ idDressing, setDressing, setError, setIsLoading }: FunctionCallAPIDressingProps) {
 
   let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
+
+  if (setIsLoading === undefined) {
+    setIsLoading = () => { };
+  }
 
   setIsLoading(true);
   // Appel du service externe de chargement du dressing
@@ -76,13 +80,15 @@ export function loadDressing({ idDressing, setIsLoading, setDressing, setError }
  * En cas de succès, elle définit les vêtements chargés et désactive l'état de chargement.
  * En cas d'erreur, elle définit l'erreur, désactive l'état de chargement et affiche un toast d'erreur.
  */
-export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }: FunctionCallAPIVetementsProps) {
+export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }: FunctionCallAPIVetementsProps) : Promise<void> {
 
   let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
-
+  if (setIsLoading === undefined) {
+    setIsLoading = () => { };
+  }
   setIsLoading(true);
   // Appel du service externe de chargement du dressing
-  callGETBackend(SERVICES_URL.SERVICE_VETEMENTS, params)
+  return callGETBackend(SERVICES_URL.SERVICE_VETEMENTS, params)
     .then((vetements: VetementModel[]) => {
       console.log("Dressing ", vetements?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", vetements?.length, "vêtements");
       setIsLoading(false);

@@ -7,7 +7,7 @@ import { menusParametrages } from '../../constants/AppEnum';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { getAllParamsVetements } from '@/app/controllers/parametrages.controller';
+import { getAllParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -70,24 +70,19 @@ export const ReglagesComponent: React.FC = () => {
     } else {
       return <>
         <View style={styles.container}>
-          {
-            (Object.keys(menusParametrages) as (keyof typeof menusParametrages)[]).map((keyGroupe) => (
-              <View key={keyGroupe} >
-                <View style={styles.title}>
-                  <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{keyGroupe}</ThemedText>
+          <View key="param" >
+            <View style={styles.title}>
+              <ThemedText type="subtitle" style={{ color: Colors.app.color }}>Paramétrages</ThemedText>
+            </View>
+            {menusParametrages.map((itemParam) => (
+              <Pressable key={itemParam.titre} onPress={() => toggleOpen(itemParam)}>
+                <View key={itemParam.titre} style={styles.menuItem} >
+                  <Image source={itemParam.icone} style={styles.icon} />
+                  <ThemedText type='default'>{itemParam.titre}</ThemedText>
                 </View>
-                {menusParametrages[keyGroupe].map((itemParam) => (
-                  <Pressable key={itemParam.titre} onPress={() => toggleOpen(itemParam)}>
-                    <View key={itemParam.titre} style={styles.menuItem} >
-                      <Image source={itemParam.icone} style={styles.icon} />
-                      <ThemedText type='default'>{itemParam.titre}</ThemedText>
-                    </View>
-                  </Pressable>
-                ))}
-              </View>
-
-            ))
-          }
+              </Pressable>
+            ))}
+          </View>
         </View>
 
         <Modal presentationStyle='overFullScreen' isVisible={open}
