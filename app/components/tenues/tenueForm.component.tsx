@@ -2,23 +2,20 @@ import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { StatutVetementEnum } from '@/app/constants/AppEnum';
 import DressingModel from '@/app/models/dressing.model';
-import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
-import ErrorsFormVetementModel, { defaultErrorsFormVetementModel } from '@/app/models/vetements/form.errors.vetements.model';
 import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
-import FormVetementModel from '@/app/models/vetements/form.vetements.model';
 import VetementImageModel from '@/app/models/vetements/vetements.image.model';
-import VetementModel from '@/app/models/vetements/vetements.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
-import { getTypeVetementIcon, renderLabelMandatory } from '../commons/CommonsUtils';
+import { renderLabelMandatory } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { ThemedText } from '../commons/views/ThemedText';
 import { styles } from '../dressing/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
 import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.actions.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
+import TenueModel from '@/app/models/tenues/tenue.model';
 
 
 
@@ -27,21 +24,10 @@ import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/
  */
 export type VetementFormComponentProps = {
     dressing : DressingModel;
-    vetement : VetementModel | null;
+    tenue : TenueModel | null;
     closeFormCallBack() : void;
     validateFormCallBack(resultat: APIResultVetementModel) : void;
     deleteFormCallBack(resultat: APIResultVetementModel) : void;
-};
-
-/**
- * Propriétés du composant VetementFormComponent.
- */
-export type VetementsFormParamsTypeProps = {
-    paramsTypeVetements?: ParamGenericVetementsModel[];
-    paramsTaillesMesures?: ParamGenericVetementsModel[];
-    paramsUsagesVetements?: ParamGenericVetementsModel[];
-    paramsEtatVetements?: ParamGenericVetementsModel[];
-    paramsMarquesVetements?: ParamGenericVetementsModel[];
 };
 
 
@@ -55,42 +41,21 @@ export type VetementsFormParamsTypeProps = {
  *
  * @returns {React.JSX.Element} - Un élément JSX représentant le formulaire de vêtement.
  */
-export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
+export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormTenueModel>({} as FormTenueModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormTenueModel>(defaultErrorsFormTenueModel);
 
     const {
-        typeVetements: paramsTypeVetements,
-        taillesMesures: paramsTaillesMesures,
-        usages: paramsUsagesVetements,
-        etats: paramsEtatVetements,
-        marques: paramsMarquesVetements,
         modalDialog, setModalDialog
     } = useContext(AppContext)!;
 
     useEffect(() => {
-        initForm(dressing, vetementInEdition, setForm);
+        initForm(dressing, tenueInEdition, setForm);
         setModalDialog(null);
-    }, [dressing, vetementInEdition, paramsEtatVetements, paramsMarquesVetements, paramsTaillesMesures, paramsTypeVetements, paramsUsagesVetements]);
+    }, [dressing, tenueInEdition]);
 
 
-
-
-
-
-    /**
-     * Rendu d'un élément de type vêtement.
-     *
-     * @param {ParamTypeVetementsModel} item - L'élément de type vêtement à afficher.
-     * @returns {React.JSX.Element} - Un élément JSX représentant l'élément de type vêtement.
-     */
-    const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Element => (
-        <View style={[styles.listItemStyle, styles.rowItems]}>
-            <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
-            <ThemedText>{item.libelle}</ThemedText>
-        </View>
-    );
     /**
      * 
      * @returns Formulaire de vêtement
@@ -193,7 +158,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
                     }
                 </View>
 
-                <ThemedText type="subtitle">{vetementInEdition === null ? "Ajouter" : "Editer"} une tenue</ThemedText>
+                <ThemedText type="subtitle">{tenueInEdition === null ? "Ajouter" : "Editer"} une tenue</ThemedText>
                 <Pressable onPress={() => validateForm(form, setErrorsForm, validateFormCallBack)}>
                     <Ionicons size={28} name="checkmark-outline" color={Colors.dark.text} />
                 </Pressable>

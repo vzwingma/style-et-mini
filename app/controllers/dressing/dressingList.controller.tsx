@@ -1,22 +1,21 @@
 import { CaracteristiqueVetementEnum} from "../../constants/AppEnum";
-import TenueModel from "../../models/tenues/tenue.model";
 import DressingListFiltreModel from "../../models/vetements/vetementFiltre.model";
 import VetementModel from "../../models/vetements/vetements.model";
 /**
  * Groupe les vêtements par type.
  *
- * @param {VetementModel[]} tenues - La liste des vêtements à grouper.
+ * @param {VetementModel[]} vetemements - La liste des vêtements à grouper.
  * @returns {Map<VetementCaracteristiquesModel, VetementModel[]>} Une map où la clé est le type de vêtement et la valeur est un tableau de vêtements de ce type.
  */
-export function groupeVetementByType(tenues: TenueModel[]): Map<string, TenueModel[]> {
-  const map = new Map<string, TenueModel[]>();
+export function groupeVetementByType(vetemements: VetementModel[]): Map<string, VetementModel[]> {
+  const map = new Map<string, VetementModel[]>();
 
-  tenues.forEach((tenue) => {
-    const type = tenue.id;
+  vetemements.forEach((vetement) => {
+    const type = vetement.type.id;
     if (map.has(type)) {
-      map.get(type)?.push(tenue);
+      map.get(type)?.push(vetement);
     } else {
-      map.set(type, [tenue]);
+      map.set(type, [vetement]);
     }
   });
   return map;

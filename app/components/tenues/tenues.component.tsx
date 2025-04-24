@@ -5,15 +5,12 @@ import Modal from 'react-native-modal';
 import { Colors } from '../../constants/Colors';
 import DressingModel from '../../models/dressing.model';
 
-import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
 import VetementModel from '../../models/vetements/vetements.model';
 import APIResultVetementModel from '@/app/models/vetements/form.result.vetements.model';
-import { DressingListComponent } from '../dressing/dressingList.component';
 import { TenuesListComponent } from './tenuesList.component';
 import TenueModel from '@/app/models/tenues/tenue.model';
-import { loadTenuesDressing } from '@/app/controllers/tenues/tenues.controller';
+import { loadTenuesAndVetementsDressing } from '@/app/controllers/tenues/tenues.controller';
 import { TenueFormComponent } from './tenueForm.component';
-
 
 /**
  * Propriétés pour le composant DressingComponent.
@@ -41,13 +38,12 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
   const [tenues, setTenues] = useState<TenueModel[]>([]);
   const [vetements, setVetements] = useState<VetementModel[]>([]);
 
-  const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
+  const [tenueInEdit, setVetementInEdit] = useState<TenueModel | null>(null);
 
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
     setOpenTenueForm(false);
-    loadTenuesDressing({ idDressing: dressing.id, setIsLoading, setTenues });
-    loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
+    loadTenuesAndVetementsDressing({ idDressing: dressing.id, setIsLoading, setTenues, setVetements });
   }, [dressing]);
 
 
@@ -59,7 +55,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
     setOpenTenueForm(false);
     if(resultat.created && resultat.vetement !== undefined && resultat.vetement !== null) {
       // On ajoute le vetement à la liste
-      setTenues(prevVetements => [...prevVetements, resultat.vetement!]);
+      setTenues(prevVetements => [...(prevVetements), resultat.vetement!]);
     }
     else if(resultat.updated || resultat.archived) {
       setTenues(prevVetements => prevVetements.map(v => v.id === resultat.idVetement ? resultat.vetement! : v));
@@ -112,7 +108,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
             onBackButtonPress={() => setOpenTenueForm(false)}
             onBackdropPress={() => setOpenTenueForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-              <TenueFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenTenueForm(false)} 
+              <TenueFormComponent dressing={dressing} tenue={tenueInEdit} closeFormCallBack={() => setOpenTenueForm(false)} 
                                                                                                validateFormCallBack={validateFormCallBack}
                                                                                                deleteFormCallBack={deleteFormCallBack}/>
           </Modal>
