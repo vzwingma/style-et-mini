@@ -8,6 +8,9 @@ interface ErrorsFormCapsuleModel {
 
     criteresInError  : boolean;
     readonly criteresMessage  : string;
+
+    nbVetementsInError  : boolean;
+    readonly nbVetementsMessage  : string;
 }
 
 export const defaultErrorsFormCapsuleModel: ErrorsFormCapsuleModel = {
@@ -16,6 +19,9 @@ export const defaultErrorsFormCapsuleModel: ErrorsFormCapsuleModel = {
  
     criteresInError  : false,
     criteresMessage  : "Au moins un critère est obligatoire",
+
+    nbVetementsInError  : false,
+    nbVetementsMessage  : "Le nombre de vêtements est obligatoire",
 }
 
 export default ErrorsFormCapsuleModel;

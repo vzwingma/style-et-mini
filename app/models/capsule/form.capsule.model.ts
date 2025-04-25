@@ -1,4 +1,3 @@
-import { StatutVetementEnum } from "@/app/constants/AppEnum";
 import DressingModel from "../dressing.model";
 
 import GenericModel from "../generic.model";
@@ -12,7 +11,7 @@ import CapsuleCritereModel from "./capsuleCritere";
 interface FormCapsuleModel extends GenericModel {
     dressing     : DressingModel;
     criteres     : CapsuleCritereModel[];
-    statut       : StatutVetementEnum | null;
+    nbreVetements?: number;
 }
 
 
@@ -27,7 +26,10 @@ export function transformFormToCapsuleModel(form: FormCapsuleModel): CapsuleTemp
         dressing        : form.dressing,
         libelle         : form.libelle,
         criteres        : form.criteres,
-        statut          : form.statut ?? StatutVetementEnum.ACTIF,
+        nbrVetements    : {
+            capsule     : form.nbreVetements ?? 0,
+            dressing    : 0
+        }
     };
     return tenue;
 }
@@ -57,7 +59,7 @@ export function transformCapsuleToFormModel(form: FormCapsuleModel, capsuleInEdi
             libelle         : capsuleInEdition.libelle,
             dressing        : dressing,
             criteres        : capsuleInEdition.criteres ?? [],
-            statut          : capsuleInEdition.statut ?? StatutVetementEnum.ACTIF
+            nbreVetements   : capsuleInEdition.nbrVetements?.capsule ?? 0,
         }
     }
 export default FormCapsuleModel;

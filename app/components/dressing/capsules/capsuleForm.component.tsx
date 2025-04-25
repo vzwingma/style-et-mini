@@ -7,16 +7,14 @@ import { renderLabelMandatory } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { stylesForm } from '../vetements/vetementForm.styles';
-import { renderArchiveIcon } from '../vetements/vetementForm.component';
 import DressingModel from '@/app/models/dressing.model';
 import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
 import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
 import FormCapsuleModel from '@/app/models/capsule/form.capsule.model';
 import ErrorsFormCapsuleModel, { defaultErrorsFormCapsuleModel } from '@/app/models/capsule/form.errors.capsules.model';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { archiveForm, deleteForm, initForm, setCriteres, setLibelleForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
-import { StatutVetementEnum } from '@/app/constants/AppEnum';
-import { CapsuleCriteresComponent } from './capsuleCriteresForm.component';
+import { deleteForm, initForm, setCriteres, setLibelleForm, setNbVetementsForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
+import { CapsuleCriteresComponent } from './capsuleFormCriteres.component';
 import CapsuleCritereModel from '@/app/models/capsule/capsuleCritere';
 
 
@@ -76,39 +74,32 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
         return (
             <View style={stylesForm.body}>
                 <View style={stylesForm.form}>
-                    <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
+                    <View style={[stylesForm.rowItems]}>
                         <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
                             placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la capsule' : errorsForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
-                    <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
+                    <View style={[stylesForm.rowItems]}>
                         <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Critères")}</ThemedText>
                     </View>
                     <CapsuleCriteresComponent dressing={dressing} 
                                               selectedCriteres={form.criteres} 
                                               setSelectedCriteres={(criteres : CapsuleCritereModel[]) => setCriteres(criteres, setForm, setErrorsForm)} errorsForm={errorsForm}/>
+
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={[stylesForm.label, {marginRight: 10}]}>{renderLabelMandatory("Nb Vêtements")}</ThemedText>
+                        <TextInput style={errorsForm?.nbVetementsInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.nbVetementsInError ? 'red' : 'gray'}
+                            keyboardType="numeric" maxLength={3}
+                            value={form?.nbreVetements?.toString() ?? '0'}
+                            placeholder={!errorsForm?.nbVetementsInError ? 'Indiquez le nombre pour la capsule' : errorsForm?.nbVetementsMessage + ''}
+                            onChangeText={nbrVetements => setNbVetementsForm(nbrVetements, setForm, setErrorsForm)} />
+                    </View>                                              
                 </View>
                 
             </View>
         );
-    }
-
-    /**
-     * Validation du formulaire pour archivage du vêtement
-     * @param form formulaire à valider
-     * @param setForm fonction de mise à jour du formulaire
-     * @param setErrorsForm fonction de mise à jour des erreurs
-     * @param onCloseForm fonction de fermeture du formulaire
-     * @returns si le formulaire est invalide
-     */
-    function archiveFormModalConfirmation(form: FormCapsuleModel, validateFormCallBack: (resultat: APIResultFormCapsuleModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
-        const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
-        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette capsule ?'}
-            ackModalCallback={() => archiveForm(form, validateFormCallBack)}
-            showModal={Math.random()} />;
-        setModalDialog(dialog);
     }
 
     /**
@@ -136,9 +127,6 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && <>
-                        <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
-                            {renderArchiveIcon(form.statut)}
-                        </Pressable>
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                             <Image source={require('@/assets/icons/bin-outline.png')} style={stylesForm.iconMenuStyle} />
                         </Pressable></>

@@ -5,7 +5,7 @@ import { Pressable, View } from "react-native";
 import { stylesForm } from "../vetements/vetementForm.styles";
 import { stylesItem } from "../../reglages/parametrageItem.component";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
-import { renderSelectedItem, renderSelectedItemView } from "../../commons/CommonsUtils";
+import { renderSelectedItemView } from "../../commons/CommonsUtils";
 
 /**
  * @description Composant d'un item de la liste des capsules
@@ -48,7 +48,7 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
                 }
             </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="subtitle">{capsule.nombreVetements} / {capsule.nombreVetements}</ThemedText>
+                <ThemedText type="subtitle">{capsule.nbrVetements.dressing} / {capsule.nbrVetements.capsule}</ThemedText>
             </View>
             
         </View>

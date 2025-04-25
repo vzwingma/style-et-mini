@@ -1,4 +1,3 @@
-import { StatutVetementEnum } from "@/app/constants/AppEnum";
 import DressingModel from "../dressing.model";
 import GenericModel from "../generic.model";
 import CapsuleCritereModel from "./capsuleCritere";
@@ -6,7 +5,9 @@ import CapsuleCritereModel from "./capsuleCritere";
 interface CapsuleTemporelleModel extends GenericModel {
     dressing: DressingModel;
     criteres     : CapsuleCritereModel[];
-    nombreVetements?: number;
-    statut?: StatutVetementEnum;
+    nbrVetements          : {
+        capsule    : number | 0;
+        dressing   : number | 0;
+    };   
 }
 export default CapsuleTemporelleModel;

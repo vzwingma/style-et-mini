@@ -67,6 +67,29 @@ export function setCriteres(criteres: CapsuleCritereModel[], setForm: React.Disp
 }
 
 
+/**
+ * Met à jour le nombre de vêtements dans le formulaire et réinitialise les erreurs associées.
+ *
+ * @param nbVetements - Une chaîne de caractères représentant le nombre de vêtements. Si la valeur n'est pas un nombre valide ou est inférieure à 0, elle sera remplacée par 0.
+ * @param setForm - Fonction de mise à jour de l'état du formulaire (`React.Dispatch<React.SetStateAction<FormCapsuleModel>>`).
+ * @param setErrorsForm - Fonction de mise à jour de l'état des erreurs du formulaire (`React.Dispatch<React.SetStateAction<ErrorsFormCapsuleModel>>`).
+ */
+export function setNbVetementsForm(nbVetements: string, setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormCapsuleModel>>) {
+    
+    let nbVetementsInt = parseInt(nbVetements, 10);
+    if (isNaN(nbVetementsInt) || nbVetementsInt < 0) {
+        nbVetementsInt = 0
+    }
+    // Vérification que triInt est un nombre valide avant de l'utiliser
+    setForm((form: FormCapsuleModel) => {
+        return { ...form, nbreVetements: nbVetementsInt }
+    });
+    setErrorsForm((errors: ErrorsFormCapsuleModel) => {
+        return { ...errors, nbVetementsInError: false }
+    });
+}
+
+
 let errors = false;
 /**
  * Validation du formulaire
@@ -136,38 +159,6 @@ function callSaveCapsuleService(form: FormCapsuleModel) : Promise<APIResultFormC
     const url = isEdition ? SERVICES_URL.SERVICE_CAPSULES_BY_ID : SERVICES_URL.SERVICE_CAPSULES;
     //  Appel au backend pour sauvegarder la capsule
     return callPOSTBackend(url, params, capsule)
-}
-
-
-/**
- * Validation du formulaire pour archivage du vêtement
- * @param form formulaire à valider
- * @param setForm fonction de mise à jour du formulaire
- * @param setErrorsForm fonction de mise à jour des erreurs
- * @param validateFormCallBack fonction de validation du formulaire
- * @returns si le formulaire est invalide
- */
-export function archiveForm(form: FormCapsuleModel, validateFormCallBack: (resultat: APIResultFormCapsuleModel) => void) {
-
-    console.log("Validation du formulaire pour archivage", form);
-    form.statut = (form.statut === StatutVetementEnum.ACTIF ? StatutVetementEnum.ARCHIVE : StatutVetementEnum.ACTIF);
-    console.log("Archivage de la capsule", form.id, form.statut);
-    // Enregistrement du formulaire 
-
-    callSaveCapsuleService(form)
-        .then((resultat: APIResultFormCapsuleModel) => {
-            if (resultat.updated) {
-                resultat.updated = false;
-                resultat.archived = true;
-            }
-            console.log("Capsule archivée avec succès", resultat);
-            validateFormCallBack(resultat);
-        })
-        .catch((e) => {
-            console.error('Une erreur s\'est produite lors de la connexion au backend', e);
-            showToast("Erreur :" + e, ToastDuration.LONG);
-            return false;
-        });
 }
 
 
