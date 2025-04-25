@@ -112,8 +112,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
 */
     function deleteFormModalConfirmation(form: FormCapsuleModel, deleteFormCallBack: (resultDelete: APIResultFormCapsuleModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette capsule ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
-            showModal={Math.random()} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
         setModalDialog(dialog);
     }
 
@@ -126,10 +125,10 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                     <Pressable onPress={closeFormCallBack}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
-                    {form.id && <>
+                    {form.id && 
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                             <Image source={require('@/assets/icons/bin-outline.png')} style={stylesForm.iconMenuStyle} />
-                        </Pressable></>
+                        </Pressable>
                     }
                 </View>
 

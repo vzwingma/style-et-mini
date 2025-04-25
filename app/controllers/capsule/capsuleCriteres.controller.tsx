@@ -84,7 +84,7 @@ function addCaracteristiqueInCriteria(categorie : CategorieDressingEnum, dataPar
 
   dataParams
     .filter((value, index, self) => self.indexOf(value) === index)
-    .filter(data => data !== null && data !== undefined && data.categories.includes(categorie))
+    .filter(data => data !== null && data?.categories.includes(categorie))
     .forEach(data => {
       if (!criteresTypes.find(filtresTypes => filtresTypes.id === data.id)) {
         criteresTypes.push({
