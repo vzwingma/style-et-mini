@@ -11,6 +11,7 @@ import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants
 import { styles } from "./dressingList.style";
 import { calculFiltresPossibles, selectFilters as updateSelectedFilters } from "@/app/controllers/dressing/dressingFiltres.controller";
 import { Colors } from "@/app/constants/Colors";
+import { renderFilterItem, renderSelectedItem, searchQuery } from "../commons/CommonsUtils";
 
 
 export type DressingFiltresComponentProps = {
@@ -49,48 +50,6 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
         setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
     }, [selectedFiltres, setVetementsAffiches, filtresDisponibles]);
     
-    /**
-     * Rendu d'un élément de filtre dans la liste de dressing.
-     *
-     * @param {DressingListFiltreModel} filtre - L'élément de filtre à afficher.
-     * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
-     */
-    const renderFilterItem = (filtre: DressingListFiltreModel) => {
-        return (
-            <View style={[styles.listItemStyle, filtre.isType ? styles.listTypeStyle : '']}>
-                {filtre.isType 
-                    && <ThemedText type="subtitle" style={{ fontWeight: 'bold', fontSize: 14, fontStyle: 'italic', color:Colors.app.color}}> {filtre.type}</ThemedText>}
-                {!filtre.isType 
-                    && <><ThemedText>{}</ThemedText><ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{filtre.libelle}</ThemedText></>}
-            </View>
-        );
-    };
-
-    /**
-     * Rend un élément sélectionné de la liste de dressing.
-     *
-     * @param {DressingListFiltreModel} item - L'élément de la liste de dressing à afficher.
-     * @param {(item: DressingListFiltreModel) => void} unSelect - Fonction de rappel pour désélectionner l'élément.
-     * @returns {JSX.Element} - Composant Pressable affichant l'élément sélectionné avec une icône pour le désélectionner.
-     */
-    const renderSelectedItem = (item: DressingListFiltreModel, unSelect?: (item: DressingListFiltreModel) => void) => {
-        return (
-            <Pressable onPress={() => unSelect?.(item)}>
-                <View style={styles.selectedStyle}>
-                    <ThemedText type="italic" style={{fontSize:11, top:2}}> {item.type} : </ThemedText>
-                    <ThemedText type="default" style={{top:1}}>{item.libelle} </ThemedText>
-                    <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
-                </View>
-            </Pressable>
-        )};
-
-
-    /**
-     * Recherche d'un filtre dans la liste de filtres.
-     */
-    const searchQuery = (keyword: string, labelValue: string) : boolean => {
-        return !!new RegExp(keyword, 'i').exec(labelValue);
-    }
 
     /**
      * Rendu de la barre de filtres.

@@ -5,6 +5,8 @@ import VetementModel from "../../models/vetements/vetements.model";
 import { ThemedText } from "./views/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
 import { stylesForm } from "../dressing/vetements/vetementForm.styles";
+import { Colors } from "@/app/constants/Colors";
+import { styles } from "../dressing/dressingList.style";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
@@ -243,3 +245,28 @@ export const renderSelectedItem = (item: any, unSelect?: any, index?: number): R
         </View>
     </Pressable>
 );
+
+    /**
+     * Rendu d'un élément de filtre dans la liste de dressing.
+     *
+     * @param {DressingListFiltreModel} filtre - L'élément de filtre à afficher.
+     * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
+     */
+    export const renderFilterItem = (filtre: any) => {
+        return (
+            <View style={[styles.listItemStyle, filtre.isType ? styles.listTypeStyle : '']}>
+                {filtre.isType 
+                    && <ThemedText type="subtitle" style={{ fontWeight: 'bold', fontSize: 14, fontStyle: 'italic', color:Colors.app.color}}> {filtre.type}</ThemedText>}
+                {!filtre.isType 
+                    && <><ThemedText>{}</ThemedText><ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{filtre.libelle}</ThemedText></>}
+            </View>
+        );
+    };
+
+
+    /**
+     * Recherche d'un filtre dans la liste de filtres.
+     */
+    export const searchQuery = (keyword: string, labelValue: string) : boolean => {
+        return !!new RegExp(keyword, 'i').exec(labelValue);
+    }

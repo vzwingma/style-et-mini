@@ -15,7 +15,7 @@ import FormCapsuleModel from '@/app/models/capsule/form.capsule.model';
 import ErrorsFormCapsuleModel, { defaultErrorsFormCapsuleModel } from '@/app/models/capsule/form.errors.capsules.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { archiveForm, deleteForm, initForm, setCriteres, setLibelleForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
-import { CaracteristiqueVetementEnum, StatutVetementEnum } from '@/app/constants/AppEnum';
+import { StatutVetementEnum } from '@/app/constants/AppEnum';
 import { CapsuleCriteresComponent } from './capsuleCriteresForm.component';
 import CapsuleCritereModel from '@/app/models/capsule/capsuleCritere';
 

@@ -1,15 +1,15 @@
-import { Ionicons } from "@expo/vector-icons";
 
-import { Pressable, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import { MultiSelect } from "react-native-element-dropdown";
 import { useContext, useEffect, useState } from "react";
 import { Colors } from "@/app/constants/Colors";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
-import { ThemedText } from "../../commons/views/ThemedText";
 import { styles } from "../dressingList.style";
 import { addCriteresInList, selectCriteres } from "@/app/controllers/capsule/capsuleCriteres.controller";
 import { AppContext } from "@/app/services/AppContextProvider";
 import ErrorsFormCapsuleModel from "@/app/models/capsule/form.errors.capsules.model";
+import { stylesForm } from "../vetements/vetementForm.styles";
+import { renderFilterItem, renderSelectedItem, searchQuery } from "../../commons/CommonsUtils";
 
 
 export type CapsuleCriteresComponentProps = {
@@ -40,50 +40,7 @@ export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> =
         setCriteresDisponibles(addCriteresInList({paramsTypeVetements: typeVetements, paramsTaillesMesures : taillesMesures, paramsUsagesVetements : usages}));
     }, []);
 
-    
-    /**
-     * Rendu d'un élément de filtre dans la liste de dressing.
-     *
-     * @param {DressingListFiltreModel} filtre - L'élément de filtre à afficher.
-     * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
-     */
-    const renderFilterItem = (filtre: CapsuleCritereModel) => {
-        return (
-            <View style={[styles.listItemStyle, filtre.isType ? styles.listTypeStyle : '']}>
-                {filtre.isType 
-                    && <ThemedText type="subtitle" style={{ fontWeight: 'bold', fontSize: 14, fontStyle: 'italic', color:Colors.app.color}}> {filtre.type}</ThemedText>}
-                {!filtre.isType 
-                    && <><ThemedText>{}</ThemedText><ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{filtre.libelle}</ThemedText></>}
-            </View>
-        );
-    };
-
-    /**
-     * Rend un élément sélectionné de la liste de dressing.
-     *
-     * @param {DressingListFiltreModel} item - L'élément de la liste de dressing à afficher.
-     * @param {(item: DressingListFiltreModel) => void} unSelect - Fonction de rappel pour désélectionner l'élément.
-     * @returns {JSX.Element} - Composant Pressable affichant l'élément sélectionné avec une icône pour le désélectionner.
-     */
-    const renderSelectedItem = (item: CapsuleCritereModel, unSelect?: (item: CapsuleCritereModel) => void) => {
-        return (
-            <Pressable onPress={() => unSelect?.(item)}>
-                <View style={styles.selectedStyle}>
-                    <ThemedText type="italic" style={{fontSize:11, top:2}}> {item.type} : </ThemedText>
-                    <ThemedText type="default" style={{top:1}}>{item.libelle} </ThemedText>
-                    <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
-                </View>
-            </Pressable>
-        )};
-
-
-    /**
-     * Recherche d'un filtre dans la liste de filtres.
-     */
-    const searchQuery = (keyword: string, labelValue: string) : boolean => {
-        return !!new RegExp(keyword, 'i').exec(labelValue);
-    }
-
+ 
     /**
      * Rendu de la barre de filtres.
      *
@@ -95,9 +52,9 @@ export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> =
     return (
         <View style={styles.filtresBar}>
                 <MultiSelect
-                    style={!errorsForm?.criteresInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                    iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.criteresInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
-                    selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
+                    style={!errorsForm?.criteresInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                    iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.criteresInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                    selectedStyle={stylesForm.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
                     backgroundColor={Colors.app.modalBackground}
                     data={criteresDisponibles}

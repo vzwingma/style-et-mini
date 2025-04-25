@@ -160,7 +160,7 @@ export const stylesForm = StyleSheet.create({
         borderRadius: 8,
         margin: 1,
         paddingLeft: 10,
-        paddingRight: 5,
+        paddingRight: 2,
         marginTop: 5,
         marginRight: 5,
         padding: 1,
