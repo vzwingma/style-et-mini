@@ -16,7 +16,7 @@ import ErrorsFormCapsuleModel, { defaultErrorsFormCapsuleModel } from '@/app/mod
 import { AppContext } from '@/app/services/AppContextProvider';
 import { archiveForm, deleteForm, initForm, setCriteres, setLibelleForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from '@/app/constants/AppEnum';
-import { CapsuleCriteresComponent } from './capsuleCriteres.component';
+import { CapsuleCriteresComponent } from './capsuleCriteresForm.component';
 import CapsuleCritereModel from '@/app/models/capsule/capsuleCritere';
 
 
@@ -86,7 +86,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                     <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
                         <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Critères")}</ThemedText>
                     </View>
-                    <CapsuleCriteresComponent selectedCriteres={form.criteres} setSelectedCriteres={(critere : any) => setCriteres(critere, setForm)}/>
+                    <CapsuleCriteresComponent selectedCriteres={form.criteres} setSelectedCriteres={(criteres : CapsuleCritereModel[]) => setCriteres(criteres, setForm, setErrorsForm)} errorsForm={errorsForm}/>
                 </View>
                 
             </View>

@@ -7,13 +7,15 @@ import { Colors } from "@/app/constants/Colors";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { ThemedText } from "../../commons/views/ThemedText";
 import { styles } from "../dressingList.style";
-import { calculCriteresPossibles, selectCriteres } from "@/app/controllers/capsule/capsuleCriteres.controller";
+import { addCriteresInList, selectCriteres } from "@/app/controllers/capsule/capsuleCriteres.controller";
 import { AppContext } from "@/app/services/AppContextProvider";
+import ErrorsFormCapsuleModel from "@/app/models/capsule/form.errors.capsules.model";
 
 
 export type CapsuleCriteresComponentProps = {
     selectedCriteres: CapsuleCritereModel[];
-    setSelectedCriteres: React.Dispatch<React.SetStateAction<CapsuleCritereModel[]>>
+    setSelectedCriteres: Function;
+    errorsForm: ErrorsFormCapsuleModel;
 
 };
 /**
@@ -25,7 +27,7 @@ export type CapsuleCriteresComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> = ({ selectedCriteres, setSelectedCriteres }: CapsuleCriteresComponentProps) => {
+export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> = ({ selectedCriteres, setSelectedCriteres, errorsForm }: CapsuleCriteresComponentProps) => {
 
 
     const [criteresDisponibles, setCriteresDisponibles] = useState<CapsuleCritereModel[]>([]);
@@ -35,7 +37,7 @@ export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> =
 
     useEffect(() => {
         // Recalcul des filtres disponibles
-        setCriteresDisponibles(calculCriteresPossibles({paramsTypeVetements: typeVetements, paramsTaillesMesures : taillesMesures, paramsUsagesVetements : usages}));
+        setCriteresDisponibles(addCriteresInList({paramsTypeVetements: typeVetements, paramsTaillesMesures : taillesMesures, paramsUsagesVetements : usages}));
     }, []);
 
     
@@ -93,14 +95,14 @@ export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> =
     return (
         <View style={styles.filtresBar}>
                 <MultiSelect
-                    style={[styles.dropdown, {marginBottom: 3} ]} containerStyle={styles.listStyle} itemTextStyle={styles.listItemStyle}
-                    iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
+                    style={!errorsForm?.criteresInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
+                    iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.criteresInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                    selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
                     backgroundColor={Colors.app.modalBackground}
                     data={criteresDisponibles}
                     labelField="typeLibelle" valueField="id"
-                    placeholder={'Selectionnez un ou plusieurs critères'}
+                    placeholder={!errorsForm?.criteresInError ? 'Selectionnez des critères' : errorsForm?.criteresMessage + ''}
                     search={true} searchPlaceholder={'Rechercher un critère'} searchQuery={searchQuery}
                     value={selectedCriteres?.map(filtre => filtre.id)}
                     onChange={idsSelectedfiltres => selectCriteres(idsSelectedfiltres, criteresDisponibles, setSelectedCriteres)}

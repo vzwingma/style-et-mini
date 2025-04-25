@@ -26,17 +26,16 @@ export function selectCriteres(selectedIdCriteres: string[], criteresDisponibles
 
 
 /**
- * Génère une liste de filtres disponibles à partir d'une liste de vêtements.
+ * Ajoute des critères à une liste en fonction des paramètres fournis.
  *
- * @param vetements - Liste des modèles de vêtements à analyser.
- * @returns Une liste de modèles de filtres pour le dressing, triée par ordre alphabétique.
- *
- * Cette fonction effectue les opérations suivantes :
- * - Ajoute les caractéristiques des vêtements (type, taille, usages) aux filtres.
- * - Ajoute les valeurs des énumérations (statut, saisons) aux filtres.
- * - Trie les filtres par ordre alphabétique en fonction de leur type et libellé.
+ * @param {VetementsFormParamsTypeProps} params - Les paramètres pour générer les critères.
+ * @param {CaracteristiqueVetementEnum[]} params.paramsTypeVetements - Les types de vêtements à inclure dans les critères.
+ * @param {CaracteristiqueVetementEnum[]} params.paramsTaillesMesures - Les tailles et mesures à inclure dans les critères.
+ * @param {CaracteristiqueVetementEnum[]} params.paramsUsagesVetements - Les usages des vêtements à inclure dans les critères.
+ * 
+ * @returns {CapsuleCritereModel[]} Une liste de critères, comprenant les types, tailles, usages, statuts et saisons.
  */
-export function calculCriteresPossibles({ paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements }: VetementsFormParamsTypeProps): CapsuleCritereModel[] {
+export function addCriteresInList({ paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements }: VetementsFormParamsTypeProps): CapsuleCritereModel[] {
 
   let filtres: CapsuleCritereModel[] = [];
 

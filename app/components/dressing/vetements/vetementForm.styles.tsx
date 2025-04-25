@@ -185,10 +185,5 @@ export const stylesForm = StyleSheet.create({
         height: 30,
         tintColor: 'white',
         margin: 10
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: Fonts.app.size,
-        backgroundColor: 'red',
-    },
+    }
 });

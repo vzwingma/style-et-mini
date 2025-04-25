@@ -188,7 +188,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             <MultiSelect
                                 style={!errorsForm?.usageInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
                                 iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                                selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
+                                selectedStyle={stylesForm.selectedStyle}
                                 mode='modal'
                                 backgroundColor={Colors.app.modalBackground}
                                 data={getUsagesForm(paramsUsagesVetements, dressing)}
@@ -207,7 +207,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             <MultiSelect
                                 style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
                                 iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                                selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
+                                selectedStyle={stylesForm.selectedStyle}
                                 mode='modal'
                                 backgroundColor={Colors.app.modalBackground}
                                 data={Object.values(SaisonVetementEnum).map(saison => ({ id: saison, libelle: getLibelleSaisonVetementEnum(saison) }))}

@@ -51,7 +51,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                         <MultiSelect
                             style={!errorsForm?.categoriesInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
                             iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.categoriesInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                            selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
+                            selectedStyle={stylesForm.selectedStyle}
                             mode='modal'
                             backgroundColor={Colors.app.modalBackground}
                             data={Object.values(CategorieDressingEnum).map(categorie => ({ id: categorie, libelle: categorie }))}

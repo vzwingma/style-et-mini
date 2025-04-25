@@ -54,12 +54,16 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function setCriteres(criteres: CapsuleCritereModel[], setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>) {
+export function setCriteres(criteres: CapsuleCritereModel[], setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormCapsuleModel>>) {
 
     setForm((form: FormCapsuleModel) => {
         return { ...form, criteres: criteres }
     }); 
-    
+    if (criteres && criteres.length > 0) {
+        setErrorsForm((errors: ErrorsFormCapsuleModel) => {
+            return { ...errors, criteresInError: false }
+        });
+    }
 }
 
 
@@ -84,13 +88,15 @@ export function validateForm(
         errors = true;
         setErrorsForm((errors: ErrorsFormCapsuleModel) => {
             return {
-                ...errors, libelleInError: true
+                ...errors, libelleInError: true, criteresInError: true
             }
         });
         return;
     }
 
+    // Validation du formulaire
     errors = validateAttribute("libelle", form.libelle === undefined || form.libelle === "", setErrorsForm, errors);
+    errors = validateAttribute("criteres", form.criteres === undefined || form.criteres.length === 0, setErrorsForm, errors);
 
     if (!errors) {
         console.log("Formulaire valide", form);
