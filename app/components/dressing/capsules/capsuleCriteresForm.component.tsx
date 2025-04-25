@@ -5,14 +5,16 @@ import { useContext, useEffect, useState } from "react";
 import { Colors } from "@/app/constants/Colors";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { styles } from "../dressingList.style";
-import { addCriteresInList, selectCriteres } from "@/app/controllers/capsule/capsuleCriteres.controller";
+import { addCriteresInList as calculateCriteres, selectCriteres } from "@/app/controllers/capsule/capsuleCriteres.controller";
 import { AppContext } from "@/app/services/AppContextProvider";
 import ErrorsFormCapsuleModel from "@/app/models/capsule/form.errors.capsules.model";
 import { stylesForm } from "../vetements/vetementForm.styles";
 import { renderFilterItem, renderSelectedItem, searchQuery } from "../../commons/CommonsUtils";
+import DressingModel from "@/app/models/dressing.model";
 
 
 export type CapsuleCriteresComponentProps = {
+    dressing: DressingModel;
     selectedCriteres: CapsuleCritereModel[];
     setSelectedCriteres: Function;
     errorsForm: ErrorsFormCapsuleModel;
@@ -27,7 +29,7 @@ export type CapsuleCriteresComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> = ({ selectedCriteres, setSelectedCriteres, errorsForm }: CapsuleCriteresComponentProps) => {
+export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> = ({ dressing, selectedCriteres, setSelectedCriteres, errorsForm }: CapsuleCriteresComponentProps) => {
 
 
     const [criteresDisponibles, setCriteresDisponibles] = useState<CapsuleCritereModel[]>([]);
@@ -37,7 +39,7 @@ export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> =
 
     useEffect(() => {
         // Recalcul des filtres disponibles
-        setCriteresDisponibles(addCriteresInList({paramsTypeVetements: typeVetements, paramsTaillesMesures : taillesMesures, paramsUsagesVetements : usages}));
+        setCriteresDisponibles(calculateCriteres(dressing, {paramsTypeVetements: typeVetements, paramsTaillesMesures : taillesMesures, paramsUsagesVetements : usages}));
     }, []);
 
  

@@ -141,3 +141,23 @@ export enum StatutVetementEnum {
   ACTIF = 'ACTIF',
   ARCHIVE = 'ARCHIVE',
 }
+
+/**
+ * Retourne le libellé correspondant à un statut de vêtement donné.
+ *
+ * @param enumStatut - Le statut de vêtement de type `StatutVetementEnum`.
+ * @returns Le libellé du statut sous forme de chaîne de caractères :
+ *          - "Actif" pour `StatutVetementEnum.ACTIF`
+ *          - "Archivé" pour `StatutVetementEnum.ARCHIVE`
+ *          - "Inconnu" pour tout autre statut non défini.
+ */
+export function getLibelleStatutVetementEnum(enumStatut: StatutVetementEnum): string {
+  switch (enumStatut) {
+    case StatutVetementEnum.ACTIF:
+      return "Actif";
+    case StatutVetementEnum.ARCHIVE:
+      return "Archivé";
+    default:
+      return "Inconnu";
+  }
+}

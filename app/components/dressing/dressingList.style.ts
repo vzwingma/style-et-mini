@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     listTypeStyle: {
         borderBottomColor: Colors.app.color, borderBottomWidth: 1,
         borderTopColor: Colors.app.color, borderTopWidth: 1,
-        marginTop: 10,
+        marginVertical: 10,
     },
     placeholderStyle: {
         fontWeight: 'light',

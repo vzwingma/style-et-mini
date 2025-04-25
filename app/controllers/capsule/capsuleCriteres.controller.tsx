@@ -1,8 +1,9 @@
-import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
+import { CaracteristiqueVetementEnum, CategorieDressingEnum, getLibelleSaisonVetementEnum, getLibelleStatutVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import { alphanumSort } from "../../components/commons/CommonsUtils";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { VetementsFormParamsTypeProps } from "@/app/components/dressing/vetements/vetementForm.component";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
+import DressingModel from "@/app/models/dressing.model";
 
 
 /**
@@ -35,13 +36,13 @@ export function selectCriteres(selectedIdCriteres: string[], criteresDisponibles
  * 
  * @returns {CapsuleCritereModel[]} Une liste de critères, comprenant les types, tailles, usages, statuts et saisons.
  */
-export function addCriteresInList({ paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements }: VetementsFormParamsTypeProps): CapsuleCritereModel[] {
+export function addCriteresInList(dressing : DressingModel, { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements }: VetementsFormParamsTypeProps): CapsuleCritereModel[] {
 
   let filtres: CapsuleCritereModel[] = [];
 
-  const filtresTypes = addCaracteristiqueInCriteria(paramsTypeVetements, CaracteristiqueVetementEnum.TYPES);
-  const filtresTaille = addCaracteristiqueInCriteria(paramsTaillesMesures, CaracteristiqueVetementEnum.TAILLES);  
-  const filtresUsages = addCaracteristiqueInCriteria(paramsUsagesVetements, CaracteristiqueVetementEnum.USAGES);
+  const filtresTypes = addCaracteristiqueInCriteria(dressing.categorie, paramsTypeVetements, CaracteristiqueVetementEnum.TYPES);
+  const filtresTaille = addCaracteristiqueInCriteria(dressing.categorie, paramsTaillesMesures, CaracteristiqueVetementEnum.TAILLES);  
+  const filtresUsages = addCaracteristiqueInCriteria(dressing.categorie, paramsUsagesVetements, CaracteristiqueVetementEnum.USAGES);
 
   const filtresStatut = addEnumsInFilter(Object.values(StatutVetementEnum));
   const filtresSaisons = addEnumsInFilter(Object.values(SaisonVetementEnum));
@@ -74,7 +75,7 @@ export function addCriteresInList({ paramsTypeVetements, paramsTaillesMesures, p
  * @param {VetementCaracteristiquesModel[]} dataParams - La liste des caractéristiques des vêtements.
  * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
  */
-function addCaracteristiqueInCriteria(dataParams: ParamGenericVetementsModel[] | undefined, type: CaracteristiqueVetementEnum): CapsuleCritereModel[] {
+function addCaracteristiqueInCriteria(categorie : CategorieDressingEnum, dataParams: ParamGenericVetementsModel[] | undefined, type: CaracteristiqueVetementEnum): CapsuleCritereModel[] {
 
   let criteresTypes: CapsuleCritereModel[] = [];
   if (!dataParams || dataParams.length === 0) {
@@ -83,7 +84,7 @@ function addCaracteristiqueInCriteria(dataParams: ParamGenericVetementsModel[] |
 
   dataParams
     .filter((value, index, self) => self.indexOf(value) === index)
-    .filter(data => data !== null && data !== undefined)
+    .filter(data => data !== null && data !== undefined && data.categories.includes(categorie))
     .forEach(data => {
       if (!criteresTypes.find(filtresTypes => filtresTypes.id === data.id)) {
         criteresTypes.push({
@@ -121,7 +122,7 @@ function addEnumsInFilter(dataEnums: StatutVetementEnum[] | SaisonVetementEnum[]
 
       const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
       const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
-      const libelle = isStatut ? data : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
+      const libelle = isStatut ? getLibelleStatutVetementEnum(data as StatutVetementEnum) : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
       if (!filtresTypes.find(filtresTypes => filtresTypes.id === data)) {
         filtresTypes.push({
           id: data,

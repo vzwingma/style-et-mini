@@ -86,7 +86,9 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                     <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
                         <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Critères")}</ThemedText>
                     </View>
-                    <CapsuleCriteresComponent selectedCriteres={form.criteres} setSelectedCriteres={(criteres : CapsuleCritereModel[]) => setCriteres(criteres, setForm, setErrorsForm)} errorsForm={errorsForm}/>
+                    <CapsuleCriteresComponent dressing={dressing} 
+                                              selectedCriteres={form.criteres} 
+                                              setSelectedCriteres={(criteres : CapsuleCritereModel[]) => setCriteres(criteres, setForm, setErrorsForm)} errorsForm={errorsForm}/>
                 </View>
                 
             </View>

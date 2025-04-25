@@ -129,7 +129,8 @@ export const stylesForm = StyleSheet.create({
     },
     rowItems: {
         flexDirection: 'row', 
-        alignItems: 'center'},
+        alignItems: 'center'
+    },
 
     // Style de la liste déroulante d'un dropdown
     listStyle: {
@@ -166,6 +167,14 @@ export const stylesForm = StyleSheet.create({
         padding: 1,
         height: 25
     },
+    selectedViewStyle: {
+        borderColor: Colors.app.color,
+        borderWidth: 2,
+        borderRadius: 8,
+        margin: 2,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+    },    
     selectedTextStyle: {
         fontSize: Fonts.app.size,
         color: Colors.dark.text

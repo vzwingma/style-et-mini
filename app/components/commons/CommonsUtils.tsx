@@ -5,7 +5,7 @@ import VetementModel from "../../models/vetements/vetements.model";
 import { ThemedText } from "./views/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
 import { stylesForm } from "../dressing/vetements/vetementForm.styles";
-import { Colors } from "@/app/constants/Colors";
+import { Colors, Fonts } from "@/app/constants/Colors";
 import { styles } from "../dressing/dressingList.style";
 // Fonction de tri alphanumérique
 /**
@@ -245,6 +245,20 @@ export const renderSelectedItem = (item: any, unSelect?: any, index?: number): R
         </View>
     </Pressable>
 );
+
+/**
+ * Rendu d'un élément sélectionné avec une option de désélection.
+ *
+ * @param {any} item - L'élément sélectionné à afficher.
+ * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
+ * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
+ */
+export const renderSelectedItemView = (item: any, index?: number): React.JSX.Element => (
+    <View key={index} style={stylesForm.selectedViewStyle}>
+        <ThemedText type="default" style={{fontSize: Fonts.app.size}}>{item.libelle} </ThemedText>
+    </View>
+);
+
 
     /**
      * Rendu d'un élément de filtre dans la liste de dressing.

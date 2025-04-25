@@ -1,4 +1,4 @@
-import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
+import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, getLibelleStatutVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import VetementCaracteristiquesModel from "../../models/vetements/vetementCaracteristique.model";
 import VetementModel from "../../models/vetements/vetements.model";
 import { alphanumSort } from "../../components/commons/CommonsUtils";
@@ -116,7 +116,7 @@ function addEnumsInFilter(dataStatuts: StatutVetementEnum[] | SaisonVetementEnum
 
       const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
       const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
-      const libelle = isStatut ? data : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
+      const libelle = isStatut ? getLibelleStatutVetementEnum(data as StatutVetementEnum) : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
       if (!filtresTypes.find(filtresTypes => filtresTypes.id === data)) {
         filtresTypes.push({
           id: data,

@@ -4,6 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, View } from "react-native";
 import { stylesForm } from "../vetements/vetementForm.styles";
 import { stylesItem } from "../../reglages/parametrageItem.component";
+import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
+import { renderSelectedItem, renderSelectedItemView } from "../../commons/CommonsUtils";
 
 /**
  * @description Composant d'un item de la liste des capsules
@@ -38,9 +40,15 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
                     </Pressable>
                 </View>
             </View>
-            { /** Formulaire  */}
+            { /** liste des items  */}
+            <View style={[stylesForm.rowItems, { flexWrap: "wrap", paddingVertical: 10 }]}>
+                { capsule.criteres?.map((critere: CapsuleCritereModel, index: number) => {
+                    return renderSelectedItemView({ id: critere.id, libelle: critere.libelle }, index)
+                  })
+                }
+            </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="subtitle">{capsule.libelle}</ThemedText>
+                <ThemedText type="subtitle">{capsule.nombreVetements} / {capsule.nombreVetements}</ThemedText>
             </View>
             
         </View>
