@@ -311,8 +311,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (resultat: APIResultFormVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
-            ackModalCallback={() => archiveForm(form , validateFormCallBack)}
-            showModal={Math.random()} />;
+            ackModalCallback={() => archiveForm(form , validateFormCallBack)} />;
         setModalDialog(dialog);
     }
 
@@ -326,8 +325,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 */ 
     function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: APIResultFormVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
-            showModal={Math.random()} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
         setModalDialog(dialog);
     }
 

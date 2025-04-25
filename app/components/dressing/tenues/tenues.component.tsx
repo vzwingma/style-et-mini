@@ -3,7 +3,6 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from '../../../constants/Colors';
-import DressingModel from '../../../models/dressing.model';
 
 import { TenuesListComponent } from './tenuesList.component';
 import TenueModel from '@/app/models/tenues/tenue.model';

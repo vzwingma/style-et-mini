@@ -5,11 +5,9 @@ import { Colors } from "../../../constants/Colors";
 
 import { alphanumSort } from "../../commons/CommonsUtils";
 import { styles } from "../dressingList.style";
-import DressingModel from "@/app/models/dressing.model";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import { CapsuleEmptyComponent } from "./capsuleEmpty.component";
 import { CapsuleItemComponent } from "./capsuleItem.component";
-import VetementModel from "@/app/models/vetements/vetements.model";
 
 
 

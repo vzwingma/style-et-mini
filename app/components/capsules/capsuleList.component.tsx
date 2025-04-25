@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "../commons/views/ThemedText";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { Colors } from "../../constants/Colors";
 
 import { alphanumSort } from "../commons/CommonsUtils";

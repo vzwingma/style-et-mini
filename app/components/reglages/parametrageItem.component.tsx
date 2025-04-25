@@ -41,8 +41,7 @@ function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFor
         return;
     }
     const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce paramètre ?'}
-        ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
-        showModal={Math.random()} />;
+        ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
     setModalDialog(dialog);
 }
 

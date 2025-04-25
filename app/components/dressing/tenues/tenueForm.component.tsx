@@ -199,8 +199,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
     function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette tenue ?'}
-            ackModalCallback={() => archiveForm(form, validateFormCallBack)}
-            showModal={Math.random()} />;
+            ackModalCallback={() => archiveForm(form, validateFormCallBack)} />;
         setModalDialog(dialog);
     }
 
@@ -214,8 +213,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
 */
     function deleteFormModalConfirmation(form: FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette tenue ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
-            showModal={Math.random()} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
         setModalDialog(dialog);
     }
 

@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 import DressingModel from '../models/dressing.model';
 import { DressingComponent } from '../components/dressing/dressings.component';
