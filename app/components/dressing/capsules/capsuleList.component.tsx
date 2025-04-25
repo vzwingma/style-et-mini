@@ -51,31 +51,12 @@ export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dr
 
         let capsulesItems: JSX.Element[] = [];
         capsules.sort((caps1, caps2) => alphanumSort(caps1.libelle, caps2.libelle));
-
         capsules.forEach((capsule) => capsulesItems.push(
-                <CapsuleItemComponent key={capsule.id} capsule={capsule} openAddEditCapsule={openAddEditCapsule} />
-            ));
-
+            <CapsuleItemComponent key={capsule.id} capsule={capsule} openAddEditCapsule={openAddEditCapsule} />
+        ));
         return capsulesItems;
     }
 
-
-    /**
-     * Affiche un panneau contenant une liste de vêtements.
-     *
-     * @param {VetementModel[]} vetements - La liste des vêtements à afficher.
-     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
-   
-    function showPanelVetementsTenue(vetements: TenueVetementModel[]): React.JSX.Element[] {
-
-        let vetementsItems: JSX.Element[] = [];
-        vetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
-        vetements.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item as VetementModel} />);
-        });
-        return vetementsItems;
-    }
-  */
     return (
         <>
             <View style={[styles.title, { marginBottom: 5 }]}>
