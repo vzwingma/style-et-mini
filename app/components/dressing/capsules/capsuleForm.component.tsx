@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import { Colors } from '../../../constants/Colors';
 import { renderLabelMandatory } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
-import { styles } from '../vetements/vetementForm.styles';
+import { stylesForm } from '../vetements/vetementForm.styles';
 import { renderArchiveIcon } from '../vetements/vetementForm.component';
 import DressingModel from '@/app/models/dressing.model';
 import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
@@ -76,11 +76,11 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
     function getPanelFormContent(): React.JSX.Element | null {
 
         return (
-            <View style={styles.body}>
-                <View style={styles.form}>
-                    <View style={[styles.rowItems, {paddingLeft: 10}]}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
-                        <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
+            <View style={stylesForm.body}>
+                <View style={stylesForm.form}>
+                    <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
+                        <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
                             placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la capsule' : errorsForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
@@ -125,8 +125,8 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
     return (
         <>
             {modalDialog}
-            <View style={styles.title}>
-                <View style={styles.rowItems}>
+            <View style={stylesForm.title}>
+                <View style={stylesForm.rowItems}>
                     <Pressable onPress={closeFormCallBack}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
@@ -135,7 +135,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                             {renderArchiveIcon(form.statut)}
                         </Pressable>
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
-                            <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
+                            <Image source={require('@/assets/icons/bin-outline.png')} style={stylesForm.iconMenuStyle} />
                         </Pressable></>
                     }
                 </View>
@@ -151,7 +151,3 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
         </>
     );
 }
-
-export const stylesF = StyleSheet.create({
-
-});

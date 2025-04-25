@@ -1,7 +1,7 @@
 import { Colors, Fonts } from "@/app/constants/Colors";
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const stylesForm = StyleSheet.create({
     title: {
         alignItems: 'center',
         flexDirection: 'row',

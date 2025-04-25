@@ -4,7 +4,7 @@ import VetementImageModel from "../../models/vetements/vetements.image.model";
 import VetementModel from "../../models/vetements/vetements.model";
 import { ThemedText } from "./views/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "../dressing/vetements/vetementForm.styles";
+import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
@@ -233,12 +233,12 @@ export const renderLabelMandatory = (label: string): React.JSX.Element => {
 export const renderSelectedItem = (item: any, unSelect?: any, index?: number): React.JSX.Element => (
     <Pressable
         key={index}
-        style={styles.selectedStyle}
+        style={stylesForm.selectedStyle}
         onPress={() => unSelect?.(item)}>
-        <View style={styles.rowItems}>
+        <View style={stylesForm.rowItems}>
             <ThemedText type="default">{item.libelle} </ThemedText>
             {unSelect &&
-                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+                <Ionicons style={stylesForm.icon} color={'white'} name="close-circle-outline" size={18} />
             }
         </View>
     </Pressable>

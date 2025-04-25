@@ -9,7 +9,7 @@ import { Colors, Fonts } from '../../../constants/Colors';
 import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
-import { styles } from '../../dressing/vetements/vetementForm.styles';
+import { stylesForm } from '../../dressing/vetements/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
 import { addRemoveVetementForm, archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
@@ -159,7 +159,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         const imageItems: JSX.Element[] = showPanelVetementsTenue(form.vetements ?? []);
 
         return (
-            <View style={styles.body}>
+            <View style={stylesForm.body}>
                 <View style={{ width: '100%', alignItems: 'center' }}>
                     {imageItems.length > 0 &&
                         <ScrollView horizontal={true} contentInsetAdjustmentBehavior="automatic">
@@ -169,14 +169,14 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
                     {imageItems.length === 0 && <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[stylesF.iconBig]} />}
                 </View>
                 <View style={stylesF.form}>
-                    <View style={[styles.rowItems, {paddingLeft: 10}]}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
-                        <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
+                    <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
+                        <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
                             placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la tenue' : errorsForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
-                    <View style={[styles.rowItems, {paddingLeft: 10}]}>
+                    <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
                         <ThemedText type="defaultSemiBold" style={{marginTop: 10, marginBottom: 5}}>{renderLabelMandatory("Ajouter ou retirer des vêtements")}</ThemedText>
                     </View>
                     <View style={stylesF.input}>
@@ -223,8 +223,8 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
     return (
         <>
             {modalDialog}
-            <View style={styles.title}>
-                <View style={styles.rowItems}>
+            <View style={stylesForm.title}>
+                <View style={stylesForm.rowItems}>
                     <Pressable onPress={closeFormCallBack}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
@@ -233,7 +233,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
                             {renderArchiveIcon(form.statut)}
                         </Pressable>
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
-                            <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
+                            <Image source={require('@/assets/icons/bin-outline.png')} style={stylesForm.iconMenuStyle} />
                         </Pressable></>
                     }
                 </View>

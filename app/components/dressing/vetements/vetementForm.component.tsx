@@ -16,7 +16,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../../commons/CommonsUtils';
-import { styles } from './vetementForm.styles';
+import { stylesForm } from './vetementForm.styles';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { Colors } from '@/app/constants/Colors';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
@@ -51,8 +51,8 @@ export type VetementsFormParamsTypeProps = {
  * @returns {JSX.Element} Une image représentant l'icône d'archive ou de désarchivage.
  */
 export const renderArchiveIcon = (formStatut: StatutVetementEnum | null): React.JSX.Element => {
-    return (formStatut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={styles.iconMenuStyle} />
-        : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} />)
+    return (formStatut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={stylesForm.iconMenuStyle} />
+        : <Image source={require('@/assets/icons/archive-outline.png')} style={stylesForm.iconMenuStyle} />)
 }
 
 /**
@@ -62,8 +62,8 @@ export const renderArchiveIcon = (formStatut: StatutVetementEnum | null): React.
  * @returns {React.JSX.Element} - Un élément JSX représentant l'élément de type vêtement.
  */
 export const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Element => (
-    <View style={[styles.listItemStyle, styles.rowItems]}>
-        <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
+    <View style={[stylesForm.listItemStyle, stylesForm.rowItems]}>
+        <Image source={getTypeVetementIcon(item.id)} style={stylesForm.iconItemStyle} />
         <ThemedText>{item.libelle}</ThemedText>
     </View>
 );
@@ -115,34 +115,34 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         }
 
         return (
-            <View style={styles.body}>
-                <View style={styles.rowItems}>
+            <View style={stylesForm.body}>
+                <View style={stylesForm.rowItems}>
                     <View style={{width: '100%', alignItems: 'center'}}>
                         <Pressable onPress={() => pickImageForm(setForm)}>
                             {renderFormImage &&
-                                <Image height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={styles.photo}  />}
+                                <Image height={renderFormImage.hauteur} width={renderFormImage.largeur} source={{ uri: renderFormImage.displayUri }} style={stylesForm.photo}  />}
                             {!renderFormImage &&
-                                <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[styles.iconBig]} />}
+                                <Image source={require('@/assets/icons/clothes-rnd-outline.png')} style={[stylesForm.iconBig]} />}
                             {form.petiteTaille &&
-                                <Image source={require('@/assets/icons/small-size-outline.png')} style={[styles.iconSmall]} />}
+                                <Image source={require('@/assets/icons/small-size-outline.png')} style={[stylesForm.iconSmall]} />}
                         </Pressable>
                     </View>
                 </View>
-                <View style={styles.form}>
+                <View style={stylesForm.form}>
 
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Nom")}</ThemedText>
-                        <TextInput style={errorsForm?.libelleInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
+                        <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
                             placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom du vêtement' : errorsForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
 
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Type")}</ThemedText>
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Type")}</ThemedText>
                         <Dropdown
-                            style={!errorsForm?.typeInError || form?.type ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.typeInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            style={!errorsForm?.typeInError || form?.type ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.typeInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             mode='modal'
                             backgroundColor={Colors.app.modalBackground}
                             data={getTypeVetementsForm(paramsTypeVetements, dressing)}
@@ -151,16 +151,16 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             value={form?.type}
                             onChange={(type: ParamGenericVetementsModel) => setTypeForm(type, setForm)}
                             renderItem={renderTypeItem}
-                            renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-outline.png')} style={styles.icon} />}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-outline.png')} style={stylesForm.icon} />}
 
                         />
                     </View>
 
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Taille")}</ThemedText>
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Taille")}</ThemedText>
                         <Dropdown
-                            style={!errorsForm?.tailleInError || form?.taille ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            style={!errorsForm?.tailleInError || form?.taille ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             mode='modal'
                             backgroundColor={Colors.app.modalBackground}
                             data={getTaillesMesuresForm(paramsTaillesMesures, dressing, form)}
@@ -168,27 +168,27 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorsForm?.tailleInError ? 'Selectionnez une taille' : errorsForm?.tailleMessage + ''}
                             value={form?.taille}
                             onChange={(taille: ParamGenericVetementsModel) => setTailleForm(taille, setForm)}
-                            renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={styles.icon} />}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/size-outline.png')} style={stylesForm.icon} />}
                         />
                     </View>
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie
                         && TypeTailleEnum.VETEMENTS === form.type?.type
-                        && <View style={styles.rowItems}>
-                            <ThemedText type="defaultSemiBold" style={styles.label}>Petite taille</ThemedText>
+                        && <View style={stylesForm.rowItems}>
+                            <ThemedText type="defaultSemiBold" style={stylesForm.label}>Petite taille</ThemedText>
                             <BouncyCheckbox
                                 fillColor={Colors.app.color}
                                 isChecked={form?.petiteTaille}
                                 onPress={(isChecked: boolean) => setPetiteTailleForm(isChecked, setForm)} />
                         </View>
                     }
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Usage(s)")}</ThemedText>
-                        <View style={styles.filtre}><View style={{ width: '100%' }}>
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Usage(s)")}</ThemedText>
+                        <View style={stylesForm.filtre}><View style={{ width: '100%' }}>
                             <MultiSelect
-                                style={!errorsForm?.usageInError ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
-                                selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
+                                style={!errorsForm?.usageInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                                iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.usageInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                                selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
                                 mode='modal'
                                 backgroundColor={Colors.app.modalBackground}
                                 data={getUsagesForm(paramsUsagesVetements, dressing)}
@@ -196,18 +196,18 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={!errorsForm?.usageInError ? 'Selectionnez des usages' : errorsForm?.usageMessage + ''}
                                 value={form?.usagesListe}
                                 onChange={usage => setUsagesForm(usage, paramsUsagesVetements, setForm, setErrorsForm)}
-                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={styles.icon} />}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-usage-outline.png')} style={stylesForm.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
                         </View></View>
                     </View>
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Saisons</ThemedText>
-                        <View style={styles.filtre}><View style={{ width: '100%' }}>
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>Saisons</ThemedText>
+                        <View style={stylesForm.filtre}><View style={{ width: '100%' }}>
                             <MultiSelect
-                                style={styles.dropdown} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={styles.placeholderStyle} selectedTextStyle={styles.selectedTextStyle}
-                                selectedStyle={styles.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
+                                style={stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                                iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                                selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
                                 mode='modal'
                                 backgroundColor={Colors.app.modalBackground}
                                 data={Object.values(SaisonVetementEnum).map(saison => ({ id: saison, libelle: getLibelleSaisonVetementEnum(saison) }))}
@@ -215,25 +215,25 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={'(par défaut : toutes saisons)'}
                                 value={form?.saisons?.map(saison => (saison.toString())) ?? []}
                                 onChange={saisons => setSaisonForm(saisons, setForm)}
-                                renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={styles.icon} />}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/seasons-outline.png')} style={stylesForm.icon} />}
                                 renderSelectedItem={renderSelectedItem}
                             />
                         </View></View>
                     </View>
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Couleurs</ThemedText>
-                        <TextInput style={styles.input} placeholderTextColor={'gray'}
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>Couleurs</ThemedText>
+                        <TextInput style={stylesForm.input} placeholderTextColor={'gray'}
                             value={form?.couleurs ?? ''}
                             placeholder={'Indiquez les couleurs (facultatif)'}
                             onChangeText={couleurs => setCouleursForm(couleurs, setForm)} />
                     </View>
                     {
                         CategorieDressingEnum.ADULTE !== dressing.categorie &&
-                        <View style={styles.rowItems}>
-                            <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Etat")}</ThemedText>
+                        <View style={stylesForm.rowItems}>
+                            <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Etat")}</ThemedText>
                             <Dropdown
-                                style={!errorsForm?.etatInError || form?.etat ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                                iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                                style={!errorsForm?.etatInError || form?.etat ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                                iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.tailleInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                                 mode='modal'
                                 backgroundColor={Colors.app.modalBackground}
                                 maxHeight={300}
@@ -242,15 +242,15 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 placeholder={!errorsForm?.tailleInError ? 'Selectionnez un état' : errorsForm?.etatMessage + ''}
                                 value={form?.etat}
                                 onChange={(etat: ParamGenericVetementsModel) => setEtatForm(etat, setForm)}
-                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-condition-outline.png')} style={styles.icon} />}
+                                renderLeftIcon={() => <Image source={require('@/assets/icons/clothes-condition-outline.png')} style={stylesForm.icon} />}
                             />
                         </View>
                     }
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>{renderLabelMandatory("Marque")}</ThemedText>
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Marque")}</ThemedText>
                         <Dropdown
-                            style={!errorsForm?.marqueInError || form?.marque ? styles.dropdown : styles.dropdownInError} containerStyle={styles.listStyle} itemContainerStyle={styles.listItemStyle} itemTextStyle={styles.listItemStyle}
-                            iconStyle={styles.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.marqueInError ? styles.placeholderStyle : styles.placeholderErrorStyle} selectedTextStyle={styles.selectedTextStyle}
+                            style={!errorsForm?.marqueInError || form?.marque ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                            iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.marqueInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                             mode='modal'
                             backgroundColor={Colors.app.modalBackground}
                             data={getMarquesForm(paramsMarquesVetements, dressing, form)}
@@ -258,36 +258,36 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                             placeholder={!errorsForm?.marqueInError ? 'Selectionnez une marque' : errorsForm?.marqueMessage + ''}
                             value={form?.marque}
                             onChange={(marque: ParamGenericVetementsModel) => setMarqueForm(marque, setForm)}
-                            renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={styles.icon} />}
+                            renderLeftIcon={() => <Image source={require('@/assets/icons/brand-outline.png')} style={stylesForm.icon} />}
                         />
                     </View>
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Collection</ThemedText>
-                        <TextInput style={styles.input} placeholderTextColor={'gray'}
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>Collection</ThemedText>
+                        <TextInput style={stylesForm.input} placeholderTextColor={'gray'}
                             value={form?.collection ?? ''}
                             placeholder={'Indiquez la collection (facultatif)'}
                             onChangeText={collection => setCollectionForm(collection, setForm)} />
                     </View>
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Prix d'achat</ThemedText>
-                        <TextInput style={errorsForm?.prixAchatInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixAchatInError ? 'red' : 'gray'}
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>Prix d'achat</ThemedText>
+                        <TextInput style={errorsForm?.prixAchatInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.prixAchatInError ? 'red' : 'gray'}
                             value={form?.prixAchat ?? ''}
                             placeholder={!errorsForm?.prixAchatInError ? 'Saisir le prix d\'achat (facultatif)' : errorsForm?.prixAchatMessage}
                             onChangeText={prix => setPrixAchatForm(prix, setForm)} />
-                        <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.labelEuro}>€</ThemedText>
                     </View>
 
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Prix neuf</ThemedText>
-                        <TextInput style={errorsForm?.prixNeufInError ? styles.inputError : styles.input} placeholderTextColor={errorsForm?.prixNeufInError ? 'red' : 'gray'}
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>Prix neuf</ThemedText>
+                        <TextInput style={errorsForm?.prixNeufInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.prixNeufInError ? 'red' : 'gray'}
                             value={form?.prixNeuf ?? ''}
                             placeholder={!errorsForm?.prixNeufInError ? 'Saisir le prix neuf (facultatif)' : errorsForm?.prixNeufMessage}
                             onChangeText={prix => setPrixNeufForm(prix, setForm)} />
-                        <ThemedText type="defaultSemiBold" style={styles.labelEuro}>€</ThemedText>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.labelEuro}>€</ThemedText>
                     </View>
-                    <View style={styles.rowItems}>
-                        <ThemedText type="defaultSemiBold" style={styles.label}>Description</ThemedText>
-                        <TextInput style={[styles.input, { minHeight: 50 }]} placeholderTextColor={'gray'}
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>Description</ThemedText>
+                        <TextInput style={[stylesForm.input, { minHeight: 50 }]} placeholderTextColor={'gray'}
                             scrollEnabled={true}
                             value={form?.description ?? ''}
                             multiline numberOfLines={2}
@@ -335,8 +335,8 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     return (
         <>
             {modalDialog}
-            <View style={styles.title}>
-                <View style={styles.rowItems}>
+            <View style={stylesForm.title}>
+                <View style={stylesForm.rowItems}>
                     <Pressable onPress={closeFormCallBack}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
@@ -345,7 +345,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                                 {renderArchiveIcon(form.statut)}
                             </Pressable>
                             <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
-                                <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />
+                                <Image source={require('@/assets/icons/bin-outline.png')} style={stylesForm.iconMenuStyle} />
                             </Pressable>
                         </>
                     }
