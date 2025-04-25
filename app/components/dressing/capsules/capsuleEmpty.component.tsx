@@ -1,8 +1,8 @@
 import { Pressable, Image, View } from 'react-native'
 
 import React from 'react';
-import { ThemedText } from '../commons/views/ThemedText';
-import { stylesEmptyList } from '../dressing/dressingEmpty.component';
+import { ThemedText } from '../../commons/views/ThemedText';
+import { stylesEmptyList } from '../dressingEmpty.component';
 
 
 export type CapsulesComponentProps = {

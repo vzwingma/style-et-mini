@@ -1,10 +1,10 @@
 import { Pressable, Image, View } from 'react-native'
 
 import React from 'react';
-import { ThemedText } from '../commons/views/ThemedText';
-import { getTabOutfitIcon } from '../commons/tab/TabBarIcon';
+import { ThemedText } from '../../commons/views/ThemedText';
+import { getTabOutfitIcon } from '../../commons/tab/TabBarIcon';
 import DressingModel from '@/app/models/dressing.model';
-import { stylesEmptyList } from '../dressing/dressingEmpty.component';
+import { stylesEmptyList } from '../dressingEmpty.component';
 
 
 export type TenuesComponentProps = {

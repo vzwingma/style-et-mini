@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
-import { ParametragesItemComponent } from './parametragesItem.component';
+import { ParametragesItemComponent } from './parametrageItem.component';
 import { Ionicons } from '@expo/vector-icons';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort, numSort } from '../commons/CommonsUtils';

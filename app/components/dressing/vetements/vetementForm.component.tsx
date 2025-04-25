@@ -15,11 +15,11 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
-import { Colors } from '../../constants/Colors';
-import { getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../commons/CommonsUtils';
-import { ModalDialogComponent } from '../commons/views/ModalDialog';
-import { ThemedText } from '../commons/views/ThemedText';
+import { getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../../commons/CommonsUtils';
 import { styles } from './vetementForm.styles';
+import { ThemedText } from '../../commons/views/ThemedText';
+import { Colors } from '@/app/constants/Colors';
+import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 
 
 /**

@@ -1,16 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "../commons/views/ThemedText";
+import { ThemedText } from "../../commons/views/ThemedText";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import VetementModel from "@/app/models/vetements/vetements.model";
-import { Colors } from "../../constants/Colors";
+import { Colors } from "../../../constants/Colors";
 
-import { alphanumSort } from "../commons/CommonsUtils";
-import { styles } from "../dressing/dressingList.style";
+import { alphanumSort } from "../../commons/CommonsUtils";
+import { styles } from "../dressingList.style";
 import TenueModel from "@/app/models/tenues/tenue.model";
 import { TenueEmptyComponent } from "./tenuesEmpty.component";
 import DressingModel from "@/app/models/dressing.model";
-import { styles as styleAccord } from "../commons/accordion/AccordionItem.component";
-import { VetemenItemComponent } from "../vetements/vetementItem.component";
+import { styles as styleAccord } from "../../commons/accordion/AccordionItem.component";
+import { VetemenItemComponent } from "../../vetements/vetementItem.component";
 import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
 
 

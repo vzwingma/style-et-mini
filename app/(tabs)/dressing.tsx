@@ -4,8 +4,8 @@ import DressingModel from '../models/dressing.model';
 import { DressingComponent } from '../components/dressing/dressings.component';
 import { Colors } from '../constants/Colors';
 import { Tabs } from '../constants/TabsEnums';
-import { TenuesComponent } from '../components/tenues/tenues.component';
-import { CapsuleComponent } from '../components/capsules/capsules.component';
+import { TenuesComponent } from '../components/dressing/tenues/tenues.component';
+import { CapsuleComponent } from '../components/dressing/capsules/capsules.component';
 
 
 

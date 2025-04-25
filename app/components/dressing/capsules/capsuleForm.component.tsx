@@ -1,23 +1,23 @@
 import { Image, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
-import { StatutVetementEnum } from '@/app/constants/AppEnum';
-import DressingModel from '@/app/models/dressing.model';
-import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
-import { Colors } from '../../constants/Colors';
-import { renderLabelMandatory } from '../commons/CommonsUtils';
-import { ModalDialogComponent } from '../commons/views/ModalDialog';
-import { ThemedText } from '../commons/views/ThemedText';
+import { Colors } from '../../../constants/Colors';
+import { renderLabelMandatory } from '../../commons/CommonsUtils';
+import { ModalDialogComponent } from '../../commons/views/ModalDialog';
+import { ThemedText } from '../../commons/views/ThemedText';
 import { styles } from '../vetements/vetementForm.styles';
-import FormTenueModel from '@/app/models/tenues/form.tenue.model';
-import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
+import { renderArchiveIcon } from '../vetements/vetementForm.component';
+import DressingModel from '@/app/models/dressing.model';
 import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
 import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
-import { renderArchiveIcon } from '../vetements/vetementForm.component';
 import FormCapsuleModel from '@/app/models/capsule/form.capsule.model';
 import ErrorsFormCapsuleModel, { defaultErrorsFormCapsuleModel } from '@/app/models/capsule/form.errors.capsules.model';
+import { AppContext } from '@/app/services/AppContextProvider';
 import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
+import FormTenueModel from '@/app/models/tenues/form.tenue.model';
+import { StatutVetementEnum } from '@/app/constants/AppEnum';
+import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 
 
 

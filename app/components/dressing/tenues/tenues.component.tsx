@@ -2,8 +2,8 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import { Colors } from '../../constants/Colors';
-import DressingModel from '../../models/dressing.model';
+import { Colors } from '../../../constants/Colors';
+import DressingModel from '../../../models/dressing.model';
 
 import { TenuesListComponent } from './tenuesList.component';
 import TenueModel from '@/app/models/tenues/tenue.model';
@@ -11,7 +11,7 @@ import { loadTenuesAndVetementsDressing } from '@/app/controllers/tenues/tenues.
 import { TenueFormComponent } from './tenueForm.component';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import VetementModel from '@/app/models/vetements/vetements.model';
-import { DressingComponentProps } from '../dressing/dressings.component';
+import { DressingComponentProps } from '../dressings.component';
 
 
 /**

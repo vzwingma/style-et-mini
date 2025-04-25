@@ -1,14 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "../commons/views/ThemedText";
-import { Pressable, ScrollView, Text, View } from "react-native";
-import { Colors } from "../../constants/Colors";
+import { ThemedText } from "../../commons/views/ThemedText";
+import { Pressable, ScrollView, View } from "react-native";
+import { Colors } from "../../../constants/Colors";
 
-import { alphanumSort } from "../commons/CommonsUtils";
-import { styles } from "../dressing/dressingList.style";
+import { alphanumSort } from "../../commons/CommonsUtils";
+import { styles } from "../dressingList.style";
 import DressingModel from "@/app/models/dressing.model";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
-import { CapsuleItemComponent } from "../dressing/capsules/capsuleItem.component";
-import { CapsuleEmptyComponent } from "../dressing/capsules/capsuleEmpty.component";
+import { CapsuleEmptyComponent } from "./capsuleEmpty.component";
+import { CapsuleItemComponent } from "./capsuleItem.component";
 
 
 

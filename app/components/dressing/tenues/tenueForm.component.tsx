@@ -5,11 +5,11 @@ import DressingModel from '@/app/models/dressing.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
-import { Colors, Fonts } from '../../constants/Colors';
-import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../commons/CommonsUtils';
-import { ModalDialogComponent } from '../commons/views/ModalDialog';
-import { ThemedText } from '../commons/views/ThemedText';
-import { styles } from '../vetements/vetementForm.styles';
+import { Colors, Fonts } from '../../../constants/Colors';
+import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
+import { ModalDialogComponent } from '../../commons/views/ModalDialog';
+import { ThemedText } from '../../commons/views/ThemedText';
+import { styles } from '../../vetements/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
 import { addRemoveVetementForm, archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
@@ -17,9 +17,9 @@ import TenueModel from '@/app/models/tenues/tenue.model';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import { groupeVetementByType } from '@/app/controllers/dressing/dressingList.controller';
 import VetementModel from '@/app/models/vetements/vetements.model';
-import { VetemenItemComponent } from '../vetements/vetementItem.component';
-import AccordionSecondaryItem from '../commons/accordion/AccordionSecondaryItem.component';
-import { renderArchiveIcon } from '../vetements/vetementForm.component';
+import { VetemenItemComponent } from '../../vetements/vetementItem.component';
+import AccordionSecondaryItem from '../../commons/accordion/AccordionSecondaryItem.component';
+import { renderArchiveIcon } from '../../vetements/vetementForm.component';
 
 
 

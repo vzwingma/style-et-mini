@@ -3,7 +3,7 @@ import { Colors } from "@/app/constants/Colors";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, View } from "react-native";
-import { styles as stylesForm } from "../dressing/vetements/vetementForm.styles";
+import { styles as stylesForm } from "../vetements/vetementForm.styles";
 
 /**
  * @description Composant d'un item de la liste des capsules
