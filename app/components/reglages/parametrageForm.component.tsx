@@ -2,12 +2,12 @@ import { TextInput, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
 import { CategorieDressingEnum, getLibelleTypeTailleEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
-import { styles as stylesForm } from "../dressing/vetementForm.styles";
+import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm } from "@/app/controllers/reglages/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import ErrorsFormParametrageModel from "@/app/models/params/formErrorsParams.model";
-import { renderLabelMandatory, renderSelectedItem } from "../commons/CommonsUtils";
+import { renderLabelMandatory, renderSelectedItem, renderSelectedItemView } from "../commons/CommonsUtils";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 
 
@@ -45,13 +45,13 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
             <View style={[stylesForm.filtre, stylesForm.rowItems]}>
                 {!paramIsInEdition ?
                     parametrageVetements.categories?.map((categorie: CategorieDressingEnum, index: number) => {
-                        return renderSelectedItem({ id: categorie, libelle: categorie }, null, index);
+                        return renderSelectedItemView({ id: categorie, libelle: categorie }, index);
                     }) ?? ''
                     : <View style={{ width: '100%' }}>
                         <MultiSelect
                             style={!errorsForm?.categoriesInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
                             iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.categoriesInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
-                            selectedStyle={stylesForm.selectedStyle} inputSearchStyle={stylesForm.inputSearchStyle}
+                            selectedStyle={stylesForm.selectedStyle}
                             mode='modal'
                             backgroundColor={Colors.app.modalBackground}
                             data={Object.values(CategorieDressingEnum).map(categorie => ({ id: categorie, libelle: categorie }))}
@@ -69,7 +69,7 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Type") : "Type"}</ThemedText>
                 <View style={[stylesForm.filtre, stylesForm.rowItems]}>
                     {!paramIsInEdition ?
-                        renderSelectedItem({ id: parametrageVetements.type, libelle: parametrageVetements.type })
+                        renderSelectedItemView({ id: parametrageVetements.type, libelle: parametrageVetements.type })
                         :
                         <Dropdown
                             style={!errorsForm?.typeInError || form?.type ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}

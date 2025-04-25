@@ -1,4 +1,4 @@
-import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
+import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, getLibelleStatutVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import VetementCaracteristiquesModel from "../../models/vetements/vetementCaracteristique.model";
 import VetementModel from "../../models/vetements/vetements.model";
 import { alphanumSort } from "../../components/commons/CommonsUtils";
@@ -47,22 +47,22 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
   // Recalcul des filtres disponibles
   return filtres.concat(
     filtresTypes.length ? { id: CaracteristiqueVetementEnum.TYPES, libelle: '', type: CaracteristiqueVetementEnum.TYPES, typeLibelle: CaracteristiqueVetementEnum.TYPES, isType: true } : [],
-    addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPES),
+    filtresTypes,
 
     filtresTaille.length ? { id: CaracteristiqueVetementEnum.TAILLES, libelle: '', type: CaracteristiqueVetementEnum.TAILLES, typeLibelle: CaracteristiqueVetementEnum.TAILLES, isType: true } : [],
-    addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES),
+    filtresTaille,
 
     filtresUsages.length ? { id: CaracteristiqueVetementEnum.USAGES, libelle: '', type: CaracteristiqueVetementEnum.USAGES, typeLibelle: CaracteristiqueVetementEnum.USAGES, isType: true } : [],
-    addCaracteristiqueInFilter(vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES),
+    filtresUsages,
 
     filtresMarques.length ? { id: CaracteristiqueVetementEnum.MARQUES, libelle: '', type: CaracteristiqueVetementEnum.MARQUES, typeLibelle: CaracteristiqueVetementEnum.MARQUES, isType: true } : [],
-    addCaracteristiqueInFilter(vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES),
+    filtresMarques,
 
     filtresStatut.length ? { id: CaracteristiqueVetementEnum.STATUT, libelle: '', type: CaracteristiqueVetementEnum.STATUT, typeLibelle: CaracteristiqueVetementEnum.STATUT, isType: true } : [],
-    addEnumsInFilter(vetements.map(vetement => vetement.statut)),
+    filtresStatut,
 
     filtresSaisons.length ? { id: CaracteristiqueVetementEnum.SAISON, libelle: '', type: CaracteristiqueVetementEnum.SAISON, typeLibelle: CaracteristiqueVetementEnum.SAISON, isType: true } : [],
-    addEnumsInFilter(vetements.flatMap(vetement => vetement.saisons)));
+    filtresSaisons);
 }
 
 
@@ -116,7 +116,7 @@ function addEnumsInFilter(dataStatuts: StatutVetementEnum[] | SaisonVetementEnum
 
       const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
       const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
-      const libelle = isStatut ? data : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
+      const libelle = isStatut ? getLibelleStatutVetementEnum(data as StatutVetementEnum) : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
       if (!filtresTypes.find(filtresTypes => filtresTypes.id === data)) {
         filtresTypes.push({
           id: data,

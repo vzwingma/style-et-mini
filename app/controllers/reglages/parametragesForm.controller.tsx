@@ -72,9 +72,8 @@ export function setCategoriesForm(categories: string[], setForm: Function) {
 */
 export function setTriForm(tri: string, setForm: Function) {
     let triInt = parseInt(tri, 10);
-    if (isNaN(triInt)) {
-        console.error("La valeur de tri n'est pas un nombre valide :", tri);
-        triInt = 0; // ou une autre valeur par défaut si nécessaire
+    if (isNaN(triInt) || triInt < 0) {
+        triInt = 0
     }
     // Vérification que triInt est un nombre valide avant de l'utiliser
     setForm((form: ParamVetementsFormModel) => {

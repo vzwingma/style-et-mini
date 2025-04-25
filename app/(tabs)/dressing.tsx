@@ -1,11 +1,11 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import DressingModel from '../models/dressing.model';
-import { DressingComponent } from '../components/dressing/dressing.component';
+import { DressingComponent } from '../components/dressing/dressings.component';
 import { Colors } from '../constants/Colors';
 import { Tabs } from '../constants/TabsEnums';
-import { InventaireComponent } from '../components/capsule/capsuleTemporelle.component';
-import { TenuesComponent } from '../components/tenues/tenues.component';
+import { TenuesComponent } from '../components/dressing/tenues/tenues.component';
+import { CapsuleComponent } from '../components/dressing/capsules/capsules.component';
 
 
 
@@ -33,7 +33,7 @@ export default function DressingScreen({ tab, dressing }: DressingScreenProps) {
         case Tabs.TENUES:
           return <TenuesComponent dressing={dressing} />;
         case Tabs.CAPSULE:
-          return <InventaireComponent dressing={dressing} />;
+          return <CapsuleComponent dressing={dressing} />;
         default:
           return <ActivityIndicator color={Colors.app.color} size="large" />;
       }

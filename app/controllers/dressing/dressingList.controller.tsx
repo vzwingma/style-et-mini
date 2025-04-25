@@ -1,3 +1,4 @@
+import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { CaracteristiqueVetementEnum} from "../../constants/AppEnum";
 import DressingListFiltreModel from "../../models/vetements/vetementFiltre.model";
 import VetementModel from "../../models/vetements/vetements.model";
@@ -69,7 +70,7 @@ export function applyFiltresOnVetements(vetementsInDressing: VetementModel[], se
  * @param filtre - Le modèle de filtre contenant les critères de filtrage.
  * @returns `true` si le vêtement correspond aux critères de filtrage, sinon `false`.
  */
-function filtreVetementByCaracteristique(vetement: VetementModel, type: CaracteristiqueVetementEnum, filtre: DressingListFiltreModel): boolean {
+export function filtreVetementByCaracteristique(vetement: VetementModel, type: CaracteristiqueVetementEnum, filtre: DressingListFiltreModel | CapsuleCritereModel): boolean {
   if (type === CaracteristiqueVetementEnum.TYPES) {
     return vetement.type.id === filtre.id;
   } else if (type === CaracteristiqueVetementEnum.TAILLES) {
@@ -77,7 +78,7 @@ function filtreVetementByCaracteristique(vetement: VetementModel, type: Caracter
   } else if (type === CaracteristiqueVetementEnum.USAGES) {
     return vetement.usages.some(usage => usage.id === filtre.id);
   } else if (type === CaracteristiqueVetementEnum.STATUT) {
-    return vetement.statut === filtre.libelle;
+    return vetement.statut === filtre.id;
   } else if (type === CaracteristiqueVetementEnum.MARQUES) {
     return vetement.marque?.id === filtre.id;
   } else if (type === CaracteristiqueVetementEnum.SAISON) {

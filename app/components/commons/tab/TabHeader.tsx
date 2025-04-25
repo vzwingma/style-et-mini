@@ -46,7 +46,7 @@ export function getHeaderTitle(tab: Tabs, dressingName?: string) {
     case Tabs.TENUES:
       return `Les tenues d${startsWithVowel ? "'" : "e "}${dressingName}`;
     case Tabs.CAPSULE:
-      return `L'inventaire d${startsWithVowel ? "'" : "e "}${dressingName}`;
+      return `Les capsules d${startsWithVowel ? "'" : "e "}${dressingName}`;
     case Tabs.REGLAGES:
       return "Paramètres";
     default:

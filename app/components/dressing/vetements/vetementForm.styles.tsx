@@ -1,7 +1,7 @@
-import { Colors, Fonts } from "../../constants/Colors";
+import { Colors, Fonts } from "@/app/constants/Colors";
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const stylesForm = StyleSheet.create({
     title: {
         alignItems: 'center',
         flexDirection: 'row',
@@ -129,7 +129,8 @@ export const styles = StyleSheet.create({
     },
     rowItems: {
         flexDirection: 'row', 
-        alignItems: 'center'},
+        alignItems: 'center'
+    },
 
     // Style de la liste déroulante d'un dropdown
     listStyle: {
@@ -160,12 +161,20 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         margin: 1,
         paddingLeft: 10,
-        paddingRight: 5,
+        paddingRight: 2,
         marginTop: 5,
         marginRight: 5,
         padding: 1,
         height: 25
     },
+    selectedViewStyle: {
+        borderColor: Colors.app.color,
+        borderWidth: 2,
+        borderRadius: 8,
+        margin: 2,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+    },    
     selectedTextStyle: {
         fontSize: Fonts.app.size,
         color: Colors.dark.text
@@ -185,10 +194,5 @@ export const styles = StyleSheet.create({
         height: 30,
         tintColor: 'white',
         margin: 10
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: Fonts.app.size,
-        backgroundColor: 'red',
-    },
+    }
 });

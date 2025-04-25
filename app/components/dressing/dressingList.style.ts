@@ -40,6 +40,17 @@ export const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginRight: 5
     },
+    dropdownInError: {
+        marginTop: 5,
+        marginBottom: 5,
+        flex: 3,
+        padding: 10,
+        borderColor: 'red',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+        width: '100%'
+    },    
     icon: {
         marginRight: 5,
         width: 20,
@@ -64,12 +75,16 @@ export const styles = StyleSheet.create({
     listTypeStyle: {
         borderBottomColor: Colors.app.color, borderBottomWidth: 1,
         borderTopColor: Colors.app.color, borderTopWidth: 1,
-        marginTop: 10,
+        marginVertical: 10,
     },
     placeholderStyle: {
         fontWeight: 'light',
         color: 'gray',
     },
+    placeholderErrorStyle: {
+        fontSize: Fonts.app.size,
+        color: 'red',
+    },    
     // Items sélectionnés dans le dropdown filtre
     selectedStyle: {
         borderColor: Colors.app.color,
