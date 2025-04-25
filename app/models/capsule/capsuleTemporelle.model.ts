@@ -7,7 +7,7 @@ interface CapsuleTemporelleModel extends GenericModel {
     criteres     : CapsuleCritereModel[];
     nbrVetements          : {
         capsule    : number | 0;
-        dressing   : number | 0;
+        dressing?  : number | 0;
     };   
 }
 export default CapsuleTemporelleModel;

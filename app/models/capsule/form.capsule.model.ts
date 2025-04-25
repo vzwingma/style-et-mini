@@ -28,7 +28,6 @@ export function transformFormToCapsuleModel(form: FormCapsuleModel): CapsuleTemp
         criteres        : form.criteres,
         nbrVetements    : {
             capsule     : form.nbreVetements ?? 0,
-            dressing    : 0
         }
     };
     return tenue;

@@ -30,11 +30,12 @@ export type CapsuleItemComponentProps = {
  * @returns {JSX.Element} Un composant JSX affichant les détails d'une capsule avec une option d'édition.
  */
 export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ capsule, openAddEditCapsule }: CapsuleItemComponentProps) => {
+    const l = (capsule.nbrVetements.dressing ?? 0) < capsule.nbrVetements.capsule;
     return (
         <View style={[stylesItem.container]}>
             <View style={stylesItem.title}>
                 <ThemedText type="subtitle">{capsule.libelle}</ThemedText>
-                { /** Icoônes édition */}
+                { /** Icônes édition */}
                 <View style={stylesForm.rowItems}>
                     <Pressable onPress={() => openAddEditCapsule(capsule)}>
                         <Ionicons size={18} name="pencil-outline" style={stylesItem.titleIcon} />
@@ -42,14 +43,19 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
                 </View>
             </View>
             { /** liste des items  */}
-            <View style={[stylesForm.rowItems, { flexWrap: "wrap", paddingVertical: 10 }]}>
-                { capsule.criteres?.map((critere: CapsuleCritereModel, index: number) => {
-                    return renderSelectedItemView({ id: critere.id, libelle: critere.libelle }, index)
-                  })
-                }
-            </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="subtitle">{capsule.nbrVetements.dressing} / {capsule.nbrVetements.capsule}</ThemedText>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>Critères</ThemedText>
+                <View style={[{flex: 1, flexWrap: "wrap", paddingVertical: 10}, stylesForm.rowItems]}>
+                    { capsule.criteres?.map((critere: CapsuleCritereModel, index: number) => {
+                        return renderSelectedItemView({ id: critere.id, libelle: critere.libelle }, index)
+                    })
+                    }
+                </View>
+            </View>
+            { /** liste des vetements  */}
+            <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap"}]}>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>Nb vêtements</ThemedText>
+                <ThemedText type="subtitle" style={{color:(l ?'#ffb74d' : '#81c784')}}>{capsule.nbrVetements.dressing}</ThemedText><ThemedText type="subtitle"> / {capsule.nbrVetements.capsule}</ThemedText>
             </View>
             
         </View>

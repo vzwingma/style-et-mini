@@ -1,10 +1,8 @@
 import { SERVICES_PARAMS, SERVICES_URL } from "@/app/constants/APIconstants";
 import CapsuleTemporelleModel from "../../models/capsule/capsuleTemporelle.model";
-import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 import { callGETBackend } from "@/app/services/ClientHTTP.service";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import VetementModel from "@/app/models/vetements/vetements.model";
-import { loadVetementsDressing } from "../dressing/dressing.controller";
 import { CaracteristiqueVetementEnum } from "@/app/constants/AppEnum";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { filtreVetementByCaracteristique } from "../dressing/dressingList.controller";
