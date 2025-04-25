@@ -2,12 +2,10 @@ import { Pressable, Image, View } from 'react-native'
 
 import React from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
-import DressingModel from '@/app/models/dressing.model';
 import { stylesEmptyList } from '../dressing/dressingEmpty.component';
 
 
 export type CapsulesComponentProps = {
-  dressing: DressingModel;
   openAddEditCapsule: Function;
 };
 
@@ -21,7 +19,7 @@ export type CapsulesComponentProps = {
  * 
  * @returns {JSX.Element} Un composant affichant un message et une option pour ajouter une capsule.
  */
-export const CapsuleEmptyComponent : React.FC<CapsulesComponentProps> = ({ dressing, openAddEditCapsule }: CapsulesComponentProps) => {
+export const CapsuleEmptyComponent : React.FC<CapsulesComponentProps> = ({ openAddEditCapsule }: CapsulesComponentProps) => {
 
   return (
     <View style={stylesEmptyList.container}>

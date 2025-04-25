@@ -10,7 +10,7 @@ import TenueModel from "@/app/models/tenues/tenue.model";
 import { TenueEmptyComponent } from "./tenuesEmpty.component";
 import DressingModel from "@/app/models/dressing.model";
 import { styles as styleAccord } from "../commons/accordion/AccordionItem.component";
-import { VetemenItemComponent } from "../dressing/vetementItem.component";
+import { VetemenItemComponent } from "../vetements/vetementItem.component";
 import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
 
 

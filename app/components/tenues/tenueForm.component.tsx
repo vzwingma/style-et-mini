@@ -9,7 +9,7 @@ import { Colors, Fonts } from '../../constants/Colors';
 import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../commons/CommonsUtils';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
 import { ThemedText } from '../commons/views/ThemedText';
-import { styles } from '../dressing/vetementForm.styles';
+import { styles } from '../vetements/vetementForm.styles';
 import FormTenueModel from '@/app/models/tenues/form.tenue.model';
 import { addRemoveVetementForm, archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/tenues/tenuesForm.controller';
 import ErrorsFormTenueModel, { defaultErrorsFormTenueModel } from '@/app/models/tenues/form.errors.tenues.model';
@@ -17,15 +17,16 @@ import TenueModel from '@/app/models/tenues/tenue.model';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import { groupeVetementByType } from '@/app/controllers/dressing/dressingList.controller';
 import VetementModel from '@/app/models/vetements/vetements.model';
-import { VetemenItemComponent } from '../dressing/vetementItem.component';
+import { VetemenItemComponent } from '../vetements/vetementItem.component';
 import AccordionSecondaryItem from '../commons/accordion/AccordionSecondaryItem.component';
+import { renderArchiveIcon } from '../vetements/vetementForm.component';
 
 
 
 /**
  * Propriétés du composant VetementFormComponent.
  */
-export type VetementFormComponentProps = {
+export type TenueFormComponentProps = {
     dressing: DressingModel;
     tenue: TenueModel | null;
     vetementsAffiches: VetementModel[];
@@ -39,7 +40,7 @@ export type VetementFormComponentProps = {
  * Composant React représentant un formulaire pour ajouter ou éditer une tenue.
  * 
  * @component
- * @param {VetementFormComponentProps} props - Les propriétés du composant.
+ * @param {TenueFormComponentProps} props - Les propriétés du composant.
  * @param {DressingModel} props.dressing - Le dressing contenant les vêtements.
  * @param {VetementModel[]} props.vetementsAffiches - La liste des vêtements affichés dans le formulaire.
  * @param {TenueModel | null} props.tenue - La tenue en cours d'édition, ou null pour une nouvelle tenue.
@@ -55,14 +56,12 @@ export type VetementFormComponentProps = {
  * pour composer une tenue, et propose des actions pour valider, archiver ou supprimer la tenue.
 
  */
-export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
+export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: TenueFormComponentProps) => {
 
     const [form, setForm] = useState<FormTenueModel>({} as FormTenueModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormTenueModel>(defaultErrorsFormTenueModel);
 
-    const {
-        modalDialog, setModalDialog
-    } = useContext(AppContext)!;
+    const { modalDialog, setModalDialog } = useContext(AppContext)!;
 
     useEffect(() => {
         initForm(dressing, tenueInEdition, setForm);
@@ -188,15 +187,6 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
         );
     }
 
-    /**
-     * Retourne l'icône d'archive en fonction du statut du formulaire.
-     * 
-     * @returns {JSX.Element} Une image représentant l'icône d'archive ou de désarchivage.
-     */
-    function renderArchiveIcon() {
-        return (form.statut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={styles.iconMenuStyle} />
-            : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} />)
-    }
 
     /**
      * Validation du formulaire pour archivage du vêtement
@@ -240,7 +230,7 @@ export const TenueFormComponent: React.FC<VetementFormComponentProps> = ({ dress
                     </Pressable>
                     {form.id && <>
                         <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
-                            {renderArchiveIcon()}
+                            {renderArchiveIcon(form.statut)}
                         </Pressable>
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                             <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />

@@ -46,6 +46,30 @@ export type VetementsFormParamsTypeProps = {
 
 
 /**
+ * Retourne l'icône d'archive en fonction du statut du formulaire.
+ * 
+ * @returns {JSX.Element} Une image représentant l'icône d'archive ou de désarchivage.
+ */
+export const renderArchiveIcon = (formStatut: StatutVetementEnum | null): React.JSX.Element => {
+    return (formStatut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={styles.iconMenuStyle} />
+        : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} />)
+}
+
+/**
+ * Rendu d'un élément de type vêtement.
+ *
+ * @param {ParamTypeVetementsModel} item - L'élément de type vêtement à afficher.
+ * @returns {React.JSX.Element} - Un élément JSX représentant l'élément de type vêtement.
+ */
+export const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Element => (
+    <View style={[styles.listItemStyle, styles.rowItems]}>
+        <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
+        <ThemedText>{item.libelle}</ThemedText>
+    </View>
+);
+
+
+/**
  * Composant de formulaire pour ajouter ou éditer un vêtement dans le dressing.
  *
  * @param {VetementFormComponentProps} props - Les propriétés du composant.
@@ -78,19 +102,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
 
 
-
-    /**
-     * Rendu d'un élément de type vêtement.
-     *
-     * @param {ParamTypeVetementsModel} item - L'élément de type vêtement à afficher.
-     * @returns {React.JSX.Element} - Un élément JSX représentant l'élément de type vêtement.
-     */
-    const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Element => (
-        <View style={[styles.listItemStyle, styles.rowItems]}>
-            <Image source={getTypeVetementIcon(item.id)} style={styles.iconItemStyle} />
-            <ThemedText>{item.libelle}</ThemedText>
-        </View>
-    );
+    
     /**
      * 
      * @returns Formulaire de vêtement
@@ -287,15 +299,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         );
     }
 
-    /**
-     * Retourne l'icône d'archive en fonction du statut du formulaire.
-     * 
-     * @returns {JSX.Element} Une image représentant l'icône d'archive ou de désarchivage.
-     */
-    function renderArchiveIcon() {
-        return (form.statut === StatutVetementEnum.ARCHIVE ? <Image source={require('@/assets/icons/unarchive-outline.png')} style={styles.iconMenuStyle} />
-            : <Image source={require('@/assets/icons/archive-outline.png')} style={styles.iconMenuStyle} />)
-    }
 
     /**
      * Validation du formulaire pour archivage du vêtement
@@ -339,7 +342,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
                     </Pressable>
                     {form.id && <>
                             <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
-                                {renderArchiveIcon()}
+                                {renderArchiveIcon(form.statut)}
                             </Pressable>
                             <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={styles.iconMenuStyle} />

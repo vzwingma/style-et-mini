@@ -7,6 +7,7 @@ import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.
 import { CapsulesListComponent } from './capsuleList.component';
 import Modal from 'react-native-modal';
 import { loadCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
+import { CapsuleFormComponent } from './capsuleForm.component';
 
 
 /**
@@ -107,13 +108,10 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
             onBackButtonPress={() => setOpenCapsuleForm(false)}
             onBackdropPress={() => setOpenCapsuleForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-              <></>
-{ /** 
-            <TenueFormComponent dressing={dressing} tenue={capsuleInEdit} vetementsAffiches={vetements}
+            <CapsuleFormComponent dressing={dressing} capsule={capsuleInEdit} 
                                 closeFormCallBack={() => setOpenCapsuleForm(false)}
                                 validateFormCallBack={validateFormCallBack}
                                 deleteFormCallBack={deleteFormCallBack} />
-                                 */}
           </Modal>
         </>);
     }

@@ -3,7 +3,7 @@ import DressingModel from "../../models/dressing.model";
 import VetementModel from "../../models/vetements/vetements.model";
 import ErrorsFormVetementModel from "../../models/vetements/form.errors.vetements.model";
 import FormVetementModel, { transformVetementToFormModel } from "../../models/vetements/form.vetements.model";
-import { VetementsFormParamsTypeProps } from "../../components/dressing/vetementForm.component";
+import { VetementsFormParamsTypeProps } from "../../components/vetements/vetementForm.component";
 import { SaisonVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
 import * as ImagePicker from 'expo-image-picker';
 import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";

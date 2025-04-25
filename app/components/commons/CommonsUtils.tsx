@@ -4,7 +4,7 @@ import VetementImageModel from "../../models/vetements/vetements.image.model";
 import VetementModel from "../../models/vetements/vetements.model";
 import { ThemedText } from "./views/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "../dressing/vetementForm.styles";
+import { styles } from "../vetements/vetementForm.styles";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.

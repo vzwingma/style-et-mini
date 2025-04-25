@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from './../../constants/Colors';
 import DressingModel from './../../models/dressing.model';
-import { VetementFormComponent } from './vetementForm.component';
+import { VetementFormComponent } from '../vetements/vetementForm.component';
 import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';

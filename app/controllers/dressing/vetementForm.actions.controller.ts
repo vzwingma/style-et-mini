@@ -39,22 +39,22 @@ export function validateForm(
         return;
     }
 
-    validateAttribute("libelle", form.libelle === undefined || form.libelle === ""
-        , setErrorsForm);
-    validateAttribute("type", form.type === undefined || form.type === null
-        , setErrorsForm);
-    validateAttribute("taille", form.taille === undefined || form.taille === null
-        , setErrorsForm);
-    validateAttribute("usage", form.usages === undefined || form.usages === null || form.usages.length === 0
-        , setErrorsForm);
-    validateAttribute("marque", form.marque === undefined || form.marque === null
-        , setErrorsForm);
-    validateAttribute("etat", form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
-        , setErrorsForm);
-    validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
-        , setErrorsForm);
-    validateAttribute("prixNeuf", !checkPriceFormat(form.prixNeuf)
-        , setErrorsForm);
+    errors = validateAttribute("libelle", form.libelle === undefined || form.libelle === ""
+        , setErrorsForm, errors);
+    errors = validateAttribute("type", form.type === undefined || form.type === null
+        , setErrorsForm, errors);
+    errors = validateAttribute("taille", form.taille === undefined || form.taille === null
+        , setErrorsForm, errors);
+    errors = validateAttribute("usage", form.usages === undefined || form.usages === null || form.usages.length === 0
+        , setErrorsForm, errors);
+    errors = validateAttribute("marque", form.marque === undefined || form.marque === null
+        , setErrorsForm, errors);
+    errors = validateAttribute("etat", form.dressing.categorie !== CategorieDressingEnum.ADULTE && (form.etat === undefined || form.etat === null)
+        , setErrorsForm, errors);
+    errors = validateAttribute("prixAchat", !checkPriceFormat(form.prixAchat)
+        , setErrorsForm, errors);
+    errors = validateAttribute("prixNeuf", !checkPriceFormat(form.prixNeuf)
+        , setErrorsForm, errors);
 
     if (!errors) {
         // Enregistrement du formulaire 
@@ -78,14 +78,15 @@ export function validateForm(
  * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
  * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
  */
-function validateAttribute(attributeName: string, attributeCheckFail: boolean,
-    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
+export function validateAttribute(attributeName: string, attributeCheckFail: boolean,
+    setErrorsForm: React.Dispatch<React.SetStateAction<any>>, errors : boolean) : boolean {
     if (attributeCheckFail) {
         errors = true;
     }
-    setErrorsForm((errors: ErrorsFormVetementModel) => {
+    setErrorsForm((errors : any) => {
         return { ...errors, [attributeName + "InError"]: attributeCheckFail }
     });
+    return errors;
 }
 
 
