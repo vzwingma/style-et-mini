@@ -2,8 +2,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import { Colors } from '../../constants/Colors';
-import DressingModel from '../../models/dressing.model';
+import { Colors } from '../../../constants/Colors';
 
 import { TenuesListComponent } from './tenuesList.component';
 import TenueModel from '@/app/models/tenues/tenue.model';
@@ -11,26 +10,23 @@ import { loadTenuesAndVetementsDressing } from '@/app/controllers/tenues/tenues.
 import { TenueFormComponent } from './tenueForm.component';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import VetementModel from '@/app/models/vetements/vetements.model';
+import { DressingComponentProps } from '../dressings.component';
+
 
 /**
- * Propriétés pour le composant DressingComponent.
- *
- * @typedef {Object} DressingComponentProps
- * @property {DressingModel} dressing - Le modèle de dressing à afficher.
- */
-export type DressingComponentProps = {
-  readonly dressing: DressingModel;
-};
-/**
- * Composant principal pour un dressing
- *
- * @returns {JSX.Element} Le composant de l'écran 
+ * Composant React représentant la gestion des tenues d'un dressing.
  *
  * @component
- * @remarks
- * Ce composant utilise un menu latéral pour afficher différents paramètres.
- * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
- **/
+ * @param {DressingComponentProps} props - Les propriétés du composant, incluant le dressing à afficher.
+ *
+ * @description
+ * Ce composant permet d'afficher et de gérer les tenues associées à un dressing. Il inclut les fonctionnalités suivantes :
+ * - Chargement des tenues et des vêtements associés au dressing.
+ * - Ajout, modification et suppression de tenues via un formulaire modal.
+ * - Gestion de l'état de chargement et des interactions utilisateur.
+ *
+ * @returns {JSX.Element} - Le contenu du panneau des tenues, incluant la liste des tenues et le formulaire modal.
+ */
 export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
 
   const [openTenueForm, setOpenTenueForm] = useState(false);
@@ -48,8 +44,17 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
 
 
   /**
-   * 
-   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
+   * Callback pour valider le formulaire de tenue.
+   *
+   * @param resultat - Le résultat de l'opération sur le formulaire de tenue, contenant les informations
+   *                   sur la tenue créée, mise à jour ou archivée.
+   *
+   * - Si une tenue a été créée (`resultat.created` est vrai), elle est ajoutée à la liste des tenues.
+   * - Si une tenue a été mise à jour ou archivée (`resultat.updated` ou `resultat.archived` est vrai),
+   *   la liste des tenues est mise à jour en remplaçant l'élément correspondant.
+   *
+   * @remarks
+   * Cette fonction ferme également le formulaire de tenue après traitement.
    */
   function validateFormCallBack(resultat: APIResultFormTenueModel ): void {
     setOpenTenueForm(false);
@@ -63,8 +68,15 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
   }
 
   /**
-   * 
-   * @param resultDelete Vêtement validé . on mets à jour la liste des vetements sans recharger
+   * Callback pour gérer la suppression d'une tenue.
+   *
+   * @param resultDelete - Le résultat de la suppression contenant les informations
+   *                       sur la tenue supprimée.
+   *                       - `id`: Identifiant de la tenue.
+   *                       - `deleted`: Indique si la suppression a été effectuée avec succès.
+   *
+   * Cette fonction ferme le formulaire de tenue et met à jour la liste des tenues
+   * en supprimant celle correspondant à l'identifiant fourni si elle a été supprimée.
    */
   function deleteFormCallBack(resultDelete: APIResultFormTenueModel ): void {
     setOpenTenueForm(false);
@@ -73,9 +85,14 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
 
 
   /**
-   * Ouvre ou ferme le formulaire d'ajout/édition de vêtement.
+   * Ouvre le formulaire pour ajouter ou modifier une tenue.
    *
-   * @param tenue - (Optionnel) Le modèle de vêtement à éditer. Si non fourni, le formulaire sera ouvert pour ajouter un nouveau vêtement.
+   * @param tenue - (Optionnel) La tenue à éditer. Si aucune tenue n'est fournie, 
+   *                le formulaire sera ouvert pour ajouter une nouvelle tenue.
+   *                Peut être de type `TenueModel` ou `null`.
+   * 
+   * Cette fonction met à jour l'état local pour définir la tenue en cours d'édition
+   * et ouvre le formulaire correspondant.
    */
   function openAddEditTenue(tenue?: TenueModel | null): void {
     setTenueInEdit(tenue || null);
@@ -84,13 +101,16 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
 
 
   /**
-   * Retourne le contenu du panneau en fonction de l'état actuel du dressing.
+   * Génère le contenu du panneau en fonction de l'état actuel des données et du chargement.
    *
-   * @returns {JSX.Element} - Un composant JSX représentant le contenu du panneau.
-   * Si le dressing est indéfini, nul ou en cours de chargement, retourne un indicateur d'activité.
-   * Si le dressing contient des vêtements et que le formulaire de vêtement n'est pas ouvert, retourne la liste des vêtements.
-   * Sinon, retourne un composant indiquant que le dressing est vide avec une option pour ajouter un vêtement.
-   */
+   * @returns {JSX.Element} Le contenu du panneau :
+   * - Un indicateur d'activité si les données du dressing ne sont pas disponibles ou si elles sont en cours de chargement.
+   * - Une liste des tenues et un formulaire modal pour ajouter/éditer une tenue si les données sont disponibles.
+   *
+   * @remarks
+   * - Si `dressing` est `undefined` ou `null`, ou si `isLoading` est vrai, un `ActivityIndicator` est affiché.
+   * - Sinon, un composant `TenuesListComponent` est affiché avec les tenues disponibles, ainsi qu'un modal contenant le formulaire d'édition ou d'ajout de tenue.
+    */
   const getPanelContent = () => {
     if (dressing === undefined || dressing === null || isLoading) {
       return <ActivityIndicator color={Colors.app.color} size="large" />;
@@ -99,7 +119,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
       return (
         <>
           <View style={styles.container}>
-            <TenuesListComponent dressing={dressing} tenuesInDressing={tenues} openAddEditTenue={openAddEditTenue} />
+            <TenuesListComponent dressing={dressing} tenues={tenues} openAddEditTenue={openAddEditTenue} />
           </View>
 
           <Modal presentationStyle='overFullScreen' isVisible={openTenueForm}
@@ -108,6 +128,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
             onBackButtonPress={() => setOpenTenueForm(false)}
             onBackdropPress={() => setOpenTenueForm(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+
             <TenueFormComponent dressing={dressing} tenue={tenueInEdit} vetementsAffiches={vetements}
                                 closeFormCallBack={() => setOpenTenueForm(false)}
                                 validateFormCallBack={validateFormCallBack}

@@ -5,7 +5,7 @@ import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
 
 
-export type DressingComponentProps = {
+export type DressingEmptyComponentProps = {
   openAddVetement: Function;
 };
 
@@ -17,13 +17,13 @@ export type DressingComponentProps = {
  * pas encore de vêtements. Il propose également une action permettant d'ajouter
  * un nouveau vêtement.
  * 
- * @param {DressingComponentProps} props - Les propriétés du composant.
+ * @param {DressingEmptyComponentProps} props - Les propriétés du composant.
  * @param {Function} props.openAddVetement - Fonction appelée lors de l'appui sur le bouton
  * pour ajouter un vêtement. Elle reçoit `null` comme paramètre.
  * 
  * @returns {JSX.Element} Le composant visuel pour l'état vide du dressing.
  */
-export const DressingEmptyComponent : React.FC<DressingComponentProps> = ({ openAddVetement }: DressingComponentProps) => {
+export const DressingEmptyComponent : React.FC<DressingEmptyComponentProps> = ({ openAddVetement }: DressingEmptyComponentProps) => {
 
   return (
     <View style={stylesEmptyList.container}>

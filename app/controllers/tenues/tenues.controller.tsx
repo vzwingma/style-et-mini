@@ -27,21 +27,20 @@ export async function loadTenuesAndVetementsDressing({ idDressing, setIsLoading,
   ]);
   setIsLoading(false);
 }
+
+
 /**
- * Charge les vêtements d'un dressing spécifique.
+ * Charge les tenues d'un dressing spécifique et met à jour l'état correspondant.
  *
- * @param {Object} props - Les propriétés de l'appel de la fonction.
- * @param {string} props.idDressing - L'identifiant du dressing à charger.
- * @param {Function} props.setIsLoading - Fonction pour définir l'état de chargement.
- * @param {Function} props.setVetements - Fonction pour définir les vêtements chargés.
- * @param {Function} props.setError - Fonction pour définir l'erreur en cas d'échec.
+ * @param idDressing - L'identifiant unique du dressing à charger.
+ * @param setTenues - Fonction de mise à jour de l'état pour définir les tenues chargées.
+ * @returns Une promesse qui se résout une fois que les tenues sont chargées et l'état mis à jour.
  *
- * @returns {void}
+ * @remarks
+ * Cette fonction effectue un appel au backend pour récupérer les tenues associées
+ * à un dressing donné. En cas de succès, elle met à jour l'état avec les données
+ * récupérées. En cas d'erreur, un message d'erreur est affiché via un toast.
  *
- * @description Cette fonction appelle un service backend pour charger les vêtements d'un dressing spécifique.
- * Elle met à jour l'état de chargement, les vêtements et les erreurs en conséquence.
- * En cas de succès, elle définit les vêtements chargés et désactive l'état de chargement.
- * En cas d'erreur, elle définit l'erreur, désactive l'état de chargement et affiche un toast d'erreur.
  */
 export function loadTenuesDressing(idDressing : string, setTenues: React.Dispatch<React.SetStateAction<TenueModel[]>>) : Promise<void> {
 

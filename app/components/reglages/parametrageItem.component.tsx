@@ -1,11 +1,11 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Colors } from "@/app/constants/Colors";
-import { styles as stylesForm } from "../dressing/vetementForm.styles";
+import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { razAndCloseForm, initForm, validateForm, deleteForm } from "@/app/controllers/reglages/parametragesForm.controller";
-import { ParametragesFormComponent } from "./parametragesForm.component";
+import { ParametragesFormComponent } from "./parametrageForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
@@ -41,8 +41,7 @@ function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFor
         return;
     }
     const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce paramètre ?'}
-        ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
-        showModal={Math.random()} />;
+        ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
     setModalDialog(dialog);
 }
 
@@ -87,34 +86,32 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     return (
         <>
             {modalDialog}
-            <View style={[styles.container,
-            isSelected ? styles.containerSelected : null,
-            isUnselected ? styles.containerUnselected : null]}>
+            <View style={[stylesItem.container, isSelected ? stylesItem.containerSelected : null, isUnselected ? stylesItem.containerUnselected : null]}>
                 { /** Icones  */}
-                <View style={styles.title}>
+                <View style={stylesItem.title}>
                     <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
                     { /** Icoônes édition */}
                     <View style={stylesForm.rowItems}>
                         {isUnUsed &&
                             <Pressable onPress={() => deleteModalConfirmation(zeroForm, () => refreshListeParametres(zeroForm.typeParam), setModalDialog)}>
-                                <Image source={require('@/assets/icons/bin-outline.png')} style={styles.titleIcon} tintColor={'white'} />
+                                <Image source={require('@/assets/icons/bin-outline.png')} style={stylesItem.titleIcon} tintColor={'white'} />
 
                             </Pressable>}
 
                         {parametreInEdition === null && !isLibelleMarqueAutres &&
                             <Pressable onPress={() => setParametreInEdition(parametrageVetements.id)}>
-                                <Ionicons size={18} name="pencil-outline" style={styles.titleIcon} />
+                                <Ionicons size={18} name="pencil-outline" style={stylesItem.titleIcon} />
                             </Pressable>}
 
                         { /** Icônes en mode édition */}
                         {isSelected &&
                             <Pressable onPress={() => validateForm(form, setErrorsForm, setParametreInEdition, refreshListeParametres)}>
-                                <Ionicons size={20} name="checkmark-outline" style={styles.titleIcon} />
+                                <Ionicons size={20} name="checkmark-outline" style={stylesItem.titleIcon} />
                             </Pressable>
                         }
                         {isSelected &&
                             <Pressable onPress={() => razAndCloseForm(setParametreInEdition)}>
-                                <Ionicons size={20} name="close-outline" style={styles.titleIcon} />
+                                <Ionicons size={20} name="close-outline" style={stylesItem.titleIcon} />
                             </Pressable>
                         }
                     </View>
@@ -133,7 +130,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     );
 };
 
-const styles = StyleSheet.create({
+export const stylesItem = StyleSheet.create({
     container: {
         padding: 10,
         marginVertical: 5,

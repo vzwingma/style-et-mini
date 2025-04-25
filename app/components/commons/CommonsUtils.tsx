@@ -4,7 +4,9 @@ import VetementImageModel from "../../models/vetements/vetements.image.model";
 import VetementModel from "../../models/vetements/vetements.model";
 import { ThemedText } from "./views/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "../dressing/vetementForm.styles";
+import { stylesForm } from "../dressing/vetements/vetementForm.styles";
+import { Colors, Fonts } from "@/app/constants/Colors";
+import { styles } from "../dressing/dressingList.style";
 // Fonction de tri alphanumérique
 /**
  * Trie deux chaînes de caractères en utilisant un ordre alphanumérique.
@@ -233,13 +235,52 @@ export const renderLabelMandatory = (label: string): React.JSX.Element => {
 export const renderSelectedItem = (item: any, unSelect?: any, index?: number): React.JSX.Element => (
     <Pressable
         key={index}
-        style={styles.selectedStyle}
+        style={stylesForm.selectedStyle}
         onPress={() => unSelect?.(item)}>
-        <View style={styles.rowItems}>
+        <View style={stylesForm.rowItems}>
             <ThemedText type="default">{item.libelle} </ThemedText>
             {unSelect &&
-                <Ionicons style={styles.icon} color={'white'} name="close-circle-outline" size={18} />
+                <Ionicons style={stylesForm.icon} color={'white'} name="close-circle-outline" size={18} />
             }
         </View>
     </Pressable>
 );
+
+/**
+ * Rendu d'un élément sélectionné avec une option de désélection.
+ *
+ * @param {any} item - L'élément sélectionné à afficher.
+ * @param {any} unSelect - Fonction de rappel pour désélectionner l'élément.
+ * @returns {React.JSX.Element} Un élément JSX représentant l'élément sélectionné avec une icône de fermeture.
+ */
+export const renderSelectedItemView = (item: any, index?: number): React.JSX.Element => (
+    <View key={index} style={stylesForm.selectedViewStyle}>
+        <ThemedText type="default" style={{fontSize: Fonts.app.size}}>{item.libelle} </ThemedText>
+    </View>
+);
+
+
+    /**
+     * Rendu d'un élément de filtre dans la liste de dressing.
+     *
+     * @param {DressingListFiltreModel} filtre - L'élément de filtre à afficher.
+     * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
+     */
+    export const renderFilterItem = (filtre: any) => {
+        return (
+            <View style={[styles.listItemStyle, filtre.isType ? styles.listTypeStyle : '']}>
+                {filtre.isType 
+                    && <ThemedText type="subtitle" style={{ fontWeight: 'bold', fontSize: 14, fontStyle: 'italic', color:Colors.app.color}}> {filtre.type}</ThemedText>}
+                {!filtre.isType 
+                    && <><ThemedText>{}</ThemedText><ThemedText type="subtitle" style={{ fontWeight: "normal" }}>{filtre.libelle}</ThemedText></>}
+            </View>
+        );
+    };
+
+
+    /**
+     * Recherche d'un filtre dans la liste de filtres.
+     */
+    export const searchQuery = (keyword: string, labelValue: string) : boolean => {
+        return !!new RegExp(keyword, 'i').exec(labelValue);
+    }

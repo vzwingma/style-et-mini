@@ -1,10 +1,10 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import React from 'react';
-import { ThemedText } from '../commons/views/ThemedText';
-import { Colors } from '../../constants/Colors';
 import VetementModel from '@/app/models/vetements/vetements.model';
-import { resizeImage } from '../commons/CommonsUtils';
+import { resizeImage } from '../../commons/CommonsUtils';
+import { ThemedText } from '../../commons/views/ThemedText';
+import { Colors } from '@/app/constants/Colors';
 
 
 

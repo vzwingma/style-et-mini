@@ -2,13 +2,13 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import { Colors } from './../../constants/Colors';
-import DressingModel from './../../models/dressing.model';
-import { VetementFormComponent } from './vetementForm.component';
+import { Colors } from '../../constants/Colors';
+import DressingModel from '../../models/dressing.model';
 import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';
 import APIResultFormVetementModel from '@/app/models/vetements/form.result.vetements.model';
+import { VetementFormComponent } from './vetements/vetementForm.component';
 
 
 /**
@@ -96,7 +96,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
       return (
         <>
           <View style={styles.container}>
-            <DressingListComponent vetementsInDressing={vetements} openAddEditVetement={openAddEditVetement} />
+            <DressingListComponent vetements={vetements} openAddEditVetement={openAddEditVetement} />
           </View>
 
           <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}
@@ -107,7 +107,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
             <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenVetementForm(false)} 
                                                                                  validateFormCallBack={validateFormCallBack}
-                                                                                 deleteFormCallBack={deleteFormCallBack}></VetementFormComponent>
+                                                                                 deleteFormCallBack={deleteFormCallBack}/>
 
           </Modal>
         </>);

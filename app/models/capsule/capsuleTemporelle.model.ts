@@ -1,9 +1,13 @@
+import DressingModel from "../dressing.model";
 import GenericModel from "../generic.model";
+import CapsuleCritereModel from "./capsuleCritere";
 
-interface CapsuleTemporelleModel {
-    typeVetements: GenericModel;
-    taillesMesures: GenericModel;
-    usages: GenericModel;
-    nombreVetements?: number;
+interface CapsuleTemporelleModel extends GenericModel {
+    dressing: DressingModel;
+    criteres     : CapsuleCritereModel[];
+    nbrVetements          : {
+        capsule    : number;
+        dressing?  : number;
+    };   
 }
 export default CapsuleTemporelleModel;

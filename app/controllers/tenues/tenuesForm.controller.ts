@@ -8,13 +8,25 @@ import { showToast, ToastDuration } from "../../components/commons/AndroidToast"
 import DressingModel from "@/app/models/dressing.model";
 import APIResultFormTenueModel from "@/app/models/tenues/form.result.tenue.model";
 import VetementModel from "@/app/models/vetements/vetements.model";
+import { validateAttribute } from "../dressing/vetementForm.actions.controller";
 
 
-export function initForm(dressing: DressingModel, vetementInEdition: TenueModel | null,
+/**
+ * Initialise le formulaire pour une tenue en édition ou crée un formulaire par défaut.
+ *
+ * @param dressing - Le modèle de dressing contenant les informations nécessaires.
+ * @param tenueInEdition - La tenue actuellement en édition, ou `null` si aucune tenue n'est en cours d'édition.
+ * @param setForm - Fonction permettant de mettre à jour l'état du formulaire.
+ *
+ * Si une tenue est en cours d'édition (`tenueInEdition` n'est pas `null` ou `undefined`), 
+ * le formulaire est initialisé avec les données de cette tenue transformées en modèle de formulaire.
+ * Sinon, un formulaire par défaut est créé avec le dressing fourni et un statut actif.
+ */
+export function initForm(dressing: DressingModel, tenueInEdition: TenueModel | null,
     setForm: Function) {
 
-    if (vetementInEdition !== null && vetementInEdition !== undefined) {
-        setForm((form: FormTenueModel) => transformTenueToFormModel(form, vetementInEdition, dressing));
+    if (tenueInEdition !== null && tenueInEdition !== undefined) {
+        setForm((form: FormTenueModel) => transformTenueToFormModel(form, tenueInEdition, dressing));
     }
     else {
         setForm(() => { return { dressing: dressing, statut: StatutVetementEnum.ACTIF }});
@@ -102,8 +114,7 @@ export function validateForm(
         return;
     }
 
-    validateAttribute("libelle", form.libelle === undefined || form.libelle === ""
-        , setErrorsForm);
+    errors = validateAttribute("libelle", form.libelle === undefined || form.libelle === "", setErrorsForm, errors);
 
     if (!errors) {
         // Enregistrement du formulaire 
@@ -119,23 +130,7 @@ export function validateForm(
             });
     }
 }
-/**
- * Valide un attribut et met à jour les erreurs du formulaire en conséquence.
- *
- * @param attributeName - Le nom de l'attribut à valider.
- * @param attributeCheckFail - Indique si la validation de l'attribut a échoué (true si échec, false sinon).
- * @param setErrorsForm - Fonction permettant de mettre à jour l'état des erreurs du formulaire.
- * @param errorMessage - Le message d'erreur à associer à l'attribut en cas d'échec de validation.
- */
-function validateAttribute(attributeName: string, attributeCheckFail: boolean,
-    setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormTenueModel>>) {
-    if (attributeCheckFail) {
-        errors = true;
-    }
-    setErrorsForm((errors: ErrorsFormTenueModel) => {
-        return { ...errors, [attributeName + "InError"]: attributeCheckFail }
-    });
-}
+
 
 
 /**
