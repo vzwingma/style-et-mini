@@ -1,7 +1,7 @@
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
-import { DressingComponentProps } from '../dressing/dressing.component';
+import { DressingComponentProps } from '../dressing/dressings.component';
 import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
 import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
 import { CapsulesListComponent } from './capsuleList.component';

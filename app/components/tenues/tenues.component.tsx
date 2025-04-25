@@ -11,7 +11,7 @@ import { loadTenuesAndVetementsDressing } from '@/app/controllers/tenues/tenues.
 import { TenueFormComponent } from './tenueForm.component';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import VetementModel from '@/app/models/vetements/vetements.model';
-import { DressingComponentProps } from '../dressing/dressing.component';
+import { DressingComponentProps } from '../dressing/dressings.component';
 
 
 /**

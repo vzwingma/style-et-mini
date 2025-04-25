@@ -1,11 +1,11 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import DressingModel from '../models/dressing.model';
-import { DressingComponent } from '../components/dressing/dressing.component';
+import { DressingComponent } from '../components/dressing/dressings.component';
 import { Colors } from '../constants/Colors';
 import { Tabs } from '../constants/TabsEnums';
 import { TenuesComponent } from '../components/tenues/tenues.component';
-import { CapsuleComponent } from '../components/capsule/capsuleTemporelle.component';
+import { CapsuleComponent } from '../components/capsules/capsules.component';
 
 
 

@@ -5,7 +5,7 @@ import { styles as stylesForm } from "../vetements/vetementForm.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { razAndCloseForm, initForm, validateForm, deleteForm } from "@/app/controllers/reglages/parametragesForm.controller";
-import { ParametragesFormComponent } from "./parametragesForm.component";
+import { ParametragesFormComponent } from "./parametrageForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
 import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
@@ -87,9 +87,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     return (
         <>
             {modalDialog}
-            <View style={[styles.container,
-            isSelected ? styles.containerSelected : null,
-            isUnselected ? styles.containerUnselected : null]}>
+            <View style={[styles.container, isSelected ? styles.containerSelected : null, isUnselected ? styles.containerUnselected : null]}>
                 { /** Icones  */}
                 <View style={styles.title}>
                     <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>

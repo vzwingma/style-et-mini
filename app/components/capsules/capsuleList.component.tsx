@@ -1,17 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import VetementModel from "@/app/models/vetements/vetements.model";
 import { Colors } from "../../constants/Colors";
 
 import { alphanumSort } from "../commons/CommonsUtils";
 import { styles } from "../dressing/dressingList.style";
 import DressingModel from "@/app/models/dressing.model";
 import { styles as styleAccord } from "../commons/accordion/AccordionItem.component";
-import { VetemenItemComponent } from "../vetements/vetementItem.component";
-import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import { CapsuleEmptyComponent } from "./capsuleEmpty.component";
+import { CapsuleItemComponent } from "./capsuleItem.component";
 
 
 
@@ -56,18 +54,8 @@ export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dr
         capsules.sort((caps1, caps2) => alphanumSort(caps1.libelle, caps2.libelle));
 
         capsules.forEach((capsule) => capsulesItems.push(
-
-            <View key={"panel"+capsule.id} style={styleAccord.accordContainer}>
-                <Pressable onPress={() => openAddEditCapsule(capsule)}>
-                <View style={styleAccord.accordHeaderTitre}>
-                    <Text style={styleAccord.groupeLabel}>{capsule.libelle}</Text>
-                    <Ionicons size={18} name="pencil-outline" style={styleAccord.icon} />
-                </View>
-                </Pressable>
-                <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={true} >
-                {/**  showPanelVetementsTenue(capsule.vetements ?? [])  */ }
-                </ScrollView>
-            </View>));
+                <CapsuleItemComponent key={capsule.id} capsule={capsule} openAddEditCapsule={openAddEditCapsule} />
+            ));
 
         return capsulesItems;
     }
@@ -91,7 +79,7 @@ export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dr
   */
     return (
         <>
-            <View style={[styles.title, {marginBottom: 5}]}>
+            <View style={[styles.title, { marginBottom: 5 }]}>
                 <ThemedText type="subtitle" style={{ color: Colors.app.color }}>{capsules?.length} capsule{capsules?.length > 1 ? "s" : ""}</ThemedText>
                 <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
                     <Pressable onPress={() => openAddEditCapsule()}>
@@ -102,7 +90,7 @@ export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dr
             {capsules.length === 0 &&
                 <CapsuleEmptyComponent openAddEditCapsule={openAddEditCapsule} />
             }
-            {capsules.length > 0 && 
+            {capsules.length > 0 &&
                 <ScrollView contentInsetAdjustmentBehavior="automatic">
                     {showPanelCapsules(capsules)}
                 </ScrollView>
