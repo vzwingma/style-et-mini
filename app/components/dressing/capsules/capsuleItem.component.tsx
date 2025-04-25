@@ -6,6 +6,7 @@ import { stylesForm } from "../vetements/vetementForm.styles";
 import { stylesItem } from "../../reglages/parametrageItem.component";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { renderSelectedItemView } from "../../commons/CommonsUtils";
+import VetementModel from "@/app/models/vetements/vetements.model";
 
 /**
  * @description Composant d'un item de la liste des capsules

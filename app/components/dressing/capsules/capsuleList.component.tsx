@@ -9,11 +9,11 @@ import DressingModel from "@/app/models/dressing.model";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import { CapsuleEmptyComponent } from "./capsuleEmpty.component";
 import { CapsuleItemComponent } from "./capsuleItem.component";
+import VetementModel from "@/app/models/vetements/vetements.model";
 
 
 
 export type CapsulesListComponentProps = {
-    dressing: DressingModel;
     capsules: CapsuleTemporelleModel[];
     openAddEditCapsule: (capsule?: CapsuleTemporelleModel) => void;
 };
@@ -34,7 +34,7 @@ export type CapsulesListComponentProps = {
  * par un conteneur cliquable permettant d'éditer la capsule et une zone de défilement horizontal pour afficher
  * des vêtements associés (commentée dans le code).
  */
-export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dressing, capsules, openAddEditCapsule }: CapsulesListComponentProps) => {
+export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ capsules, openAddEditCapsule }: CapsulesListComponentProps) => {
 
 
     /**

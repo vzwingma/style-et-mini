@@ -120,6 +120,7 @@ export function validateForm(
     // Validation du formulaire
     errors = validateAttribute("libelle", form.libelle === undefined || form.libelle === "", setErrorsForm, errors);
     errors = validateAttribute("criteres", form.criteres === undefined || form.criteres.length === 0, setErrorsForm, errors);
+    errors = validateAttribute("nbreVetements", form.nbreVetements === undefined || isNaN(form.nbreVetements), setErrorsForm, errors);
 
     if (!errors) {
         console.log("Formulaire valide", form);

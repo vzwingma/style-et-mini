@@ -6,8 +6,10 @@ import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model
 import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
 import { CapsulesListComponent } from './capsuleList.component';
 import Modal from 'react-native-modal';
-import { loadCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
+import { evaluateNbVetementsCapsules, loadCapsulesAndVetementsDressing, loadCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
 import { CapsuleFormComponent } from './capsuleForm.component';
+import VetementModel from '@/app/models/vetements/vetements.model';
+import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
 
 
 /**
@@ -35,16 +37,30 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
 
   const [openCapsuleForm, setOpenCapsuleForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
   const [capsules, setCapsules] = useState<CapsuleTemporelleModel[]>([]);
-
+  const [vetements, setVetements] = useState<VetementModel[]>([]);
 
   const [capsuleInEdit, setCapsuleInEdit] = useState<CapsuleTemporelleModel | null>(null);
 
-  // Rechargement des vêtements si le dressing change
+  // Rechargement des capsules si le dressing change
   useEffect(() => {
     setOpenCapsuleForm(false);
-    loadCapsulesDressing(dressing.id, setCapsules, setIsLoading);
+
+    loadCapsulesAndVetementsDressing(dressing.id, setCapsules, setVetements, setIsLoading)
+    .then(() => {
+      setIsLoading(false);
+      evaluateNbVetementsCapsules(capsules, vetements);
+    });
   }, [dressing]);
+
+  
+  useEffect(() => {
+    // Recalculer les vetements disponibles pour les capsules
+    if (capsules.length > 0) {
+      evaluateNbVetementsCapsules(capsules, vetements);
+    }}
+  , [openCapsuleForm]);
 
 
   /**
@@ -99,7 +115,7 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
       return (
         <>
           <View style={styles.container}>
-            <CapsulesListComponent dressing={dressing} capsules={capsules} openAddEditCapsule={openAddEditCapsule} />
+            <CapsulesListComponent capsules={capsules} openAddEditCapsule={openAddEditCapsule} />
           </View>
 
           <Modal presentationStyle='overFullScreen' isVisible={openCapsuleForm}

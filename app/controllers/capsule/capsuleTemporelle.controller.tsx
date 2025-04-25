@@ -3,7 +3,42 @@ import CapsuleTemporelleModel from "../../models/capsule/capsuleTemporelle.model
 import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 import { callGETBackend } from "@/app/services/ClientHTTP.service";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
+import VetementModel from "@/app/models/vetements/vetements.model";
+import { loadVetementsDressing } from "../dressing/dressing.controller";
+import { CaracteristiqueVetementEnum } from "@/app/constants/AppEnum";
+import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
+import { filtreVetementByCaracteristique } from "../dressing/dressingList.controller";
 
+
+
+
+
+/**
+ * Charge les capsules et les vêtements d'un dressing spécifique et met à jour l'état correspondant.
+ *
+ * @param idDressing - L'identifiant unique du dressing à charger.
+ * @param setCapsules - Fonction de mise à jour de l'état pour définir les capsules chargées.
+ * @param setVetements - Fonction de mise à jour de l'état pour définir les vêtements chargés.
+ * @param setIsLoading - Fonction de mise à jour de l'état pour indiquer si le chargement est en cours.
+ * @returns Une promesse qui se résout une fois que les capsules et les vêtements sont chargés et l'état mis à jour.
+ *
+ * @remarks
+ * Cette fonction effectue des appels au backend pour récupérer les capsules et les vêtements associés
+ * à un dressing donné. En cas de succès, elle met à jour l'état avec les données récupérées. En cas d'erreur,
+ * un message d'erreur est affiché via un toast.
+ *
+ */
+export async function loadCapsulesAndVetementsDressing(idDressing: string,
+    setCapsules: React.Dispatch<React.SetStateAction<CapsuleTemporelleModel[]>>,
+    setVetements: React.Dispatch<React.SetStateAction<VetementModel[]>>,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>): Promise<[void, void]> {
+
+    setIsLoading(true);
+    return Promise.all([
+        loadCapsulesDressing(idDressing, setCapsules, setIsLoading),
+        loadVetementsDressing({ idDressing, setVetements })
+    ]);
+}
 
 
 /**
@@ -40,52 +75,50 @@ export function loadCapsulesDressing(idDressing : string, setCapsules: React.Dis
   
 
 
-interface ParamProps {
-    typeVetements: ParamGenericVetementsModel[];
-    taillesMesures: ParamGenericVetementsModel[];
-    usages: ParamGenericVetementsModel[];
+/**
+ * Évalue et met à jour le nombre de vêtements associés à chaque capsule temporelle.
+ *
+ * @param capsules - Liste des capsules temporelles à évaluer.
+ * @param vetements - Liste des vêtements à analyser pour déterminer leur association avec les capsules.
+ * @returns La liste des capsules temporelles mise à jour avec le nombre de vêtements associés.
+ */
+export function evaluateNbVetementsCapsules(capsules: CapsuleTemporelleModel[], vetements: VetementModel[]) : CapsuleTemporelleModel[] {
+    capsules.forEach((capsule) => {
+        capsule.nbrVetements.dressing = applyCriteresOnVetements(capsule.criteres, vetements).length;
+    });
+    return capsules;
 }
 
 
-/*
+/**
+ * Applique une liste de critères sur une collection de vêtements et retourne les vêtements filtrés.
+ *
+ * @param {CapsuleCritereModel[]} criteres - Liste des critères à appliquer. Chaque critère est associé à un type de caractéristique.
+ * @param {VetementModel[]} vetements - Liste des vêtements à filtrer.
+ * @returns {VetementModel[]} - Liste des vêtements qui correspondent aux critères spécifiés.
+ *
+ * @description
+ * Cette fonction regroupe les critères par type de caractéristique, puis applique un filtre sur les vêtements
+ * en vérifiant si au moins un critère de chaque groupe est satisfait. Si aucun critère n'est fourni, la liste
+ * originale des vêtements est retournée sans modification.
+ */
+function applyCriteresOnVetements(criteres: CapsuleCritereModel[], vetements: VetementModel[]): VetementModel[] {
+  if(criteres.length === 0) {
+    return vetements;
+  }
+  const groupedFiltres = new Map<CaracteristiqueVetementEnum, CapsuleCritereModel[]>();
 
-export function getCapsuleByParam(dressing : DressingModel, capsule: CapsuleTemporelleModel[], { typeVetements: paramTypeVetements , taillesMesures: paramTaillesMesures, usages: paramUsages }: ParamProps): CapsuleTemporelleModel[] | null {
-
-    if (!dressing) return null;
-    if (!paramTypeVetements || !paramTaillesMesures || !paramUsages) return null;
-    paramTypeVetements = paramTypeVetements.filter((type) => type.categories
-    .filter((cat) => cat === dressing.categorie)
-    .length > 0);
-
-    paramTaillesMesures = paramTaillesMesures.filter((type) => type.categories
-    .filter((cat) => cat === dressing.categorie)
-    .length > 0);
-
-    paramUsages = paramUsages.filter((type) => type.categories
-    .filter((cat) => cat === dressing.categorie)
-    .length > 0);
-
-
-    for (const paramType of paramTypeVetements) {
-        for (const paramTaille of paramTaillesMesures) {
-            for (const paramUsage of paramUsages) {
-                capsule.push({
-                    typeVetements: {
-                        id: paramType.id,
-                        libelle: paramType.libelle
-                    },
-                    taillesMesures: {
-                        id: paramTaille.id,
-                        libelle: paramTaille.libelle
-                    },
-                    usages: {
-                        id: paramUsage.id,
-                        libelle: paramUsage.libelle
-                    },
-                });
-            }
-        }
+  criteres.forEach(filtre => {
+    if (groupedFiltres.has(filtre.type)) {
+      groupedFiltres.get(filtre.type)?.push(filtre);
+    } else {
+      groupedFiltres.set(filtre.type, [filtre]);
     }
-    console.log("capsule", capsule);
-    return capsule;
-} */
+  });
+  groupedFiltres.forEach((criteres, caracteristique) => {
+    vetements = vetements.filter(vetement => {
+      return criteres.some(critere => filtreVetementByCaracteristique(vetement, caracteristique, critere));
+    });
+  });
+    return vetements;
+}
