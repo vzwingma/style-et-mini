@@ -1,28 +1,32 @@
-import { StatutVetementEnum } from "../../constants/AppEnum";
-import FormTenueModel, { transformFormToTenueModel } from "../../models/tenues/form.tenue.model";
-import ErrorsFormTenueModel from "../../models/tenues/form.errors.tenues.model";
+import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
 import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
-import TenueModel from "../../models/tenues/tenue.model";
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
 import DressingModel from "@/app/models/dressing.model";
-import APIResultFormTenueModel from "@/app/models/tenues/form.result.tenue.model";
-import VetementModel from "@/app/models/vetements/vetements.model";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import FormCapsuleModel, { transformCapsuleToFormModel, transformFormToCapsuleModel } from "@/app/models/capsule/form.capsule.model";
 import ErrorsFormCapsuleModel from "@/app/models/capsule/form.errors.capsules.model";
 import APIResultFormCapsuleModel from "@/app/models/capsule/form.result.capsule.model";
 import { validateAttribute } from "../dressing/vetementForm.actions.controller";
+import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 
 
 export function initForm(dressing: DressingModel, capsuleInEdition: CapsuleTemporelleModel | null,
     setForm: Function) {
 
     if (capsuleInEdition !== null && capsuleInEdition !== undefined) {
-        setForm((form: FormTenueModel) => transformCapsuleToFormModel(form, capsuleInEdition, dressing));
+        setForm((form: FormCapsuleModel) => transformCapsuleToFormModel(form, capsuleInEdition, dressing));
     }
     else {
-        setForm(() => { return { dressing: dressing, statut: StatutVetementEnum.ACTIF }});
+        setForm(() => { 
+            return {dressing: dressing, 
+                    criteres: [ {
+                                    id: StatutVetementEnum.ACTIF, 
+                                    libelle: StatutVetementEnum.ACTIF, 
+                                    type: CaracteristiqueVetementEnum.STATUT, 
+                                    typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF
+                                }],
+                    statut: StatutVetementEnum.ACTIF }});
     }
 }
 
@@ -42,6 +46,20 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
             return { ...errors, libelleInError: false }
         });
     }
+}
+
+/**
+ * Met à jour le libellé du formulaire.
+ *
+ * @param libelle - Le nouveau libellé à définir dans le formulaire.
+ * @param setForm - La fonction de mise à jour de l'état du formulaire.
+ */
+export function setCriteres(criteres: CapsuleCritereModel[], setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>) {
+
+    setForm((form: FormCapsuleModel) => {
+        return { ...form, criteres: criteres }
+    }); 
+    
 }
 
 

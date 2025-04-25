@@ -2,7 +2,7 @@ import { ThemedText } from "@/app/components/commons/views/ThemedText";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, View } from "react-native";
-import { stylesForm as stylesForm } from "../vetements/vetementForm.styles";
+import { stylesForm } from "../vetements/vetementForm.styles";
 import { stylesItem } from "../../reglages/parametrageItem.component";
 
 /**
@@ -42,7 +42,7 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
             <View style={stylesForm.rowItems}>
                 <ThemedText type="subtitle">{capsule.libelle}</ThemedText>
             </View>
-
+            
         </View>
     );
 };

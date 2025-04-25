@@ -1,21 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedText } from "../commons/views/ThemedText";
 
 import { Pressable, View, Image } from "react-native";
-import VetementModel from "@/app/models/vetements/vetements.model";
-import { applyFiltresOnVetements } from "@/app/controllers/dressing/dressingList.controller";
 import { MultiSelect } from "react-native-element-dropdown";
-import { useEffect, useState } from "react";
-import DressingListFiltreModel from "@/app/models/vetements/vetementFiltre.model";
-import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
-import { styles } from "./dressingList.style";
-import { calculFiltresPossibles, selectFilters as updateSelectedFilters } from "@/app/controllers/dressing/dressingFiltres.controller";
+import { useContext, useEffect, useState } from "react";
 import { Colors } from "@/app/constants/Colors";
+import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
+import { ThemedText } from "../../commons/views/ThemedText";
+import { styles } from "../dressingList.style";
+import { calculCriteresPossibles, selectCriteres } from "@/app/controllers/capsule/capsuleCriteres.controller";
+import { AppContext } from "@/app/services/AppContextProvider";
 
 
-export type DressingFiltresComponentProps = {
-    vetementsInDressing: VetementModel[];
-    setVetementsAffiches: (vetements: VetementModel[]) => void;
+export type CapsuleCriteresComponentProps = {
+    selectedCriteres: CapsuleCritereModel[];
+    setSelectedCriteres: React.Dispatch<React.SetStateAction<CapsuleCritereModel[]>>
+
 };
 /**
  * Composant principal pour un dressing
@@ -26,28 +25,19 @@ export type DressingFiltresComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = ({ vetementsInDressing, setVetementsAffiches }: DressingFiltresComponentProps) => {
+export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> = ({ selectedCriteres, setSelectedCriteres }: CapsuleCriteresComponentProps) => {
 
-    const [selectedFiltres, setSelectedFiltres] = useState<DressingListFiltreModel[]>([
-        {
-            id: StatutVetementEnum.ACTIF, 
-            libelle: StatutVetementEnum.ACTIF, 
-            type: CaracteristiqueVetementEnum.STATUT, 
-            typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF
-        },]);
-    const [filtresDisponibles, setFiltresDisponibles] = useState<DressingListFiltreModel[]>([]);
+
+    const [criteresDisponibles, setCriteresDisponibles] = useState<CapsuleCritereModel[]>([]);
+
+    const { typeVetements, taillesMesures, usages } = useContext(AppContext)!;
 
 
     useEffect(() => {
         // Recalcul des filtres disponibles
-        setFiltresDisponibles(calculFiltresPossibles(vetementsInDressing));
-    }, [vetementsInDressing]);
+        setCriteresDisponibles(calculCriteresPossibles({paramsTypeVetements: typeVetements, paramsTaillesMesures : taillesMesures, paramsUsagesVetements : usages}));
+    }, []);
 
-    
-    useEffect(() => {
-        // Mise à jour de l'affichage des vêtements en fonction des filtres sélectionnés
-        setVetementsAffiches(applyFiltresOnVetements(vetementsInDressing, selectedFiltres));
-    }, [selectedFiltres, setVetementsAffiches, filtresDisponibles]);
     
     /**
      * Rendu d'un élément de filtre dans la liste de dressing.
@@ -55,7 +45,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
      * @param {DressingListFiltreModel} filtre - L'élément de filtre à afficher.
      * @returns {JSX.Element} - Un composant View contenant les informations de l'élément de filtre.
      */
-    const renderFilterItem = (filtre: DressingListFiltreModel) => {
+    const renderFilterItem = (filtre: CapsuleCritereModel) => {
         return (
             <View style={[styles.listItemStyle, filtre.isType ? styles.listTypeStyle : '']}>
                 {filtre.isType 
@@ -73,7 +63,7 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
      * @param {(item: DressingListFiltreModel) => void} unSelect - Fonction de rappel pour désélectionner l'élément.
      * @returns {JSX.Element} - Composant Pressable affichant l'élément sélectionné avec une icône pour le désélectionner.
      */
-    const renderSelectedItem = (item: DressingListFiltreModel, unSelect?: (item: DressingListFiltreModel) => void) => {
+    const renderSelectedItem = (item: CapsuleCritereModel, unSelect?: (item: CapsuleCritereModel) => void) => {
         return (
             <Pressable onPress={() => unSelect?.(item)}>
                 <View style={styles.selectedStyle}>
@@ -108,12 +98,12 @@ export const DressingFiltreComponent: React.FC<DressingFiltresComponentProps> = 
                     inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
                     backgroundColor={Colors.app.modalBackground}
-                    data={filtresDisponibles}
+                    data={criteresDisponibles}
                     labelField="typeLibelle" valueField="id"
-                    placeholder={'Selectionnez un ou plusieurs filtres'}
-                    search={true} searchPlaceholder={'Rechercher un filtre'} searchQuery={searchQuery}
-                    value={selectedFiltres.map(filtre => filtre.id)}
-                    onChange={idsSelectedfiltres => updateSelectedFilters(idsSelectedfiltres, filtresDisponibles, setSelectedFiltres)}
+                    placeholder={'Selectionnez un ou plusieurs critères'}
+                    search={true} searchPlaceholder={'Rechercher un critère'} searchQuery={searchQuery}
+                    value={selectedCriteres?.map(filtre => filtre.id)}
+                    onChange={idsSelectedfiltres => selectCriteres(idsSelectedfiltres, criteresDisponibles, setSelectedCriteres)}
                     renderLeftIcon={() => (<Image source={require('@/assets/icons/filter.png')} style={styles.icon} />)}
                     renderItem={renderFilterItem}
                     renderSelectedItem={renderSelectedItem}

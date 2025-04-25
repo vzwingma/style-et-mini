@@ -3,6 +3,7 @@ import DressingModel from "../dressing.model";
 
 import GenericModel from "../generic.model";
 import CapsuleTemporelleModel from "./capsuleTemporelle.model";
+import CapsuleCritereModel from "./capsuleCritere";
 
 
 /**
@@ -10,6 +11,7 @@ import CapsuleTemporelleModel from "./capsuleTemporelle.model";
  */
 interface FormCapsuleModel extends GenericModel {
     dressing     : DressingModel;
+    criteres     : CapsuleCritereModel[];
     statut       : StatutVetementEnum | null;
 }
 
@@ -24,6 +26,7 @@ export function transformFormToCapsuleModel(form: FormCapsuleModel): CapsuleTemp
         id              : form.id,
         dressing        : form.dressing,
         libelle         : form.libelle,
+        criteres        : form.criteres,
         statut          : form.statut ?? StatutVetementEnum.ACTIF,
     };
     return tenue;
@@ -53,6 +56,7 @@ export function transformCapsuleToFormModel(form: FormCapsuleModel, capsuleInEdi
             id              : capsuleInEdition.id,
             libelle         : capsuleInEdition.libelle,
             dressing        : dressing,
+            criteres        : capsuleInEdition.criteres ?? [],
             statut          : capsuleInEdition.statut ?? StatutVetementEnum.ACTIF
         }
     }

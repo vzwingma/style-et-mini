@@ -14,10 +14,10 @@ import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.
 import FormCapsuleModel from '@/app/models/capsule/form.capsule.model';
 import ErrorsFormCapsuleModel, { defaultErrorsFormCapsuleModel } from '@/app/models/capsule/form.errors.capsules.model';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { archiveForm, deleteForm, initForm, setLibelleForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
-import FormTenueModel from '@/app/models/tenues/form.tenue.model';
-import { StatutVetementEnum } from '@/app/constants/AppEnum';
-import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
+import { archiveForm, deleteForm, initForm, setCriteres, setLibelleForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
+import { CaracteristiqueVetementEnum, StatutVetementEnum } from '@/app/constants/AppEnum';
+import { CapsuleCriteresComponent } from './capsuleCriteres.component';
+import CapsuleCritereModel from '@/app/models/capsule/capsuleCritere';
 
 
 
@@ -34,28 +34,28 @@ export type CapsuleFormComponentProps = {
 
 
 /**
- * Composant React représentant un formulaire pour ajouter ou éditer une tenue.
+ * Composant React représentant un formulaire pour ajouter ou éditer une capsule.
  * 
  * @component
  * @param {VetementFormComponentProps} props - Les propriétés du composant.
  * @param {DressingModel} props.dressing - Le dressing contenant les vêtements.
  * @param {VetementModel[]} props.vetementsAffiches - La liste des vêtements affichés dans le formulaire.
- * @param {TenueModel | null} props.tenue - La tenue en cours d'édition, ou null pour une nouvelle tenue.
+ * @param {capsuleModel | null} props.capsule - La capsule en cours d'édition, ou null pour une nouvelle capsule.
  * @param {() => void} props.closeFormCallBack - Fonction de rappel pour fermer le formulaire.
- * @param {(resultat: APIResultFormTenueModel) => void} props.validateFormCallBack - Fonction de rappel pour valider le formulaire.
- * @param {(resultDelete: APIResultFormTenueModel) => void} props.deleteFormCallBack - Fonction de rappel pour supprimer la tenue.
+ * @param {(resultat: APIResultFormcapsuleModel) => void} props.validateFormCallBack - Fonction de rappel pour valider le formulaire.
+ * @param {(resultDelete: APIResultFormcapsuleModel) => void} props.deleteFormCallBack - Fonction de rappel pour supprimer la capsule.
  * 
- * @returns {React.ReactElement} Un élément React représentant le formulaire de gestion des tenues.
+ * @returns {React.ReactElement} Un élément React représentant le formulaire de gestion des capsules.
  * 
  * @description
- * Ce composant permet de gérer l'ajout, l'édition, l'archivage et la suppression d'une tenue.
+ * Ce composant permet de gérer l'ajout, l'édition, l'archivage et la suppression d'une capsule.
  * Il affiche une liste de vêtements groupés par type, permet de sélectionner des vêtements
- * pour composer une tenue, et propose des actions pour valider, archiver ou supprimer la tenue.
+ * pour composer une capsule, et propose des actions pour valider, archiver ou supprimer la capsule.
 
  */
 export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dressing, capsule: capsuleInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: CapsuleFormComponentProps) => {
 
-    const [form, setForm] = useState<FormCapsuleModel>({} as FormCapsuleModel);
+    const [form, setForm] = useState<FormCapsuleModel>({ } as FormCapsuleModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormCapsuleModel>(defaultErrorsFormCapsuleModel);
 
     const {
@@ -68,13 +68,11 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
     }, [dressing, capsuleInEdition]);
 
 
-
     /**
      * 
      * @returns Formulaire de vêtement
      */
     function getPanelFormContent(): React.JSX.Element | null {
-
         return (
             <View style={stylesForm.body}>
                 <View style={stylesForm.form}>
@@ -85,7 +83,12 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                             placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la capsule' : errorsForm?.libelleMessage + ''}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
+                    <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>
+                        <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Critères")}</ThemedText>
+                    </View>
+                    <CapsuleCriteresComponent selectedCriteres={form.criteres} setSelectedCriteres={(critere : any) => setCriteres(critere, setForm)}/>
                 </View>
+                
             </View>
         );
     }
@@ -98,9 +101,9 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
      * @param onCloseForm fonction de fermeture du formulaire
      * @returns si le formulaire est invalide
      */
-    function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    function archiveFormModalConfirmation(form: FormCapsuleModel, validateFormCallBack: (resultat: APIResultFormCapsuleModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
-        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette tenue ?'}
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette capsule ?'}
             ackModalCallback={() => archiveForm(form, validateFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);
@@ -114,8 +117,8 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
  * @param onCloseForm fonction de fermeture du formulaire
  * @returns si le formulaire est invalide
 */
-    function deleteFormModalConfirmation(form: FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
-        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette tenue ?'}
+    function deleteFormModalConfirmation(form: FormCapsuleModel, deleteFormCallBack: (resultDelete: APIResultFormCapsuleModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette capsule ?'}
             ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
             showModal={Math.random()} />;
         setModalDialog(dialog);

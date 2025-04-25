@@ -1,23 +1,26 @@
 import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
-import VetementCaracteristiquesModel from "../../models/vetements/vetementCaracteristique.model";
-import VetementModel from "../../models/vetements/vetements.model";
 import { alphanumSort } from "../../components/commons/CommonsUtils";
-import VetementFiltreModel from "../../models/vetements/vetementFiltre.model";
+import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
+import { VetementsFormParamsTypeProps } from "@/app/components/dressing/vetements/vetementForm.component";
+import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 
 
 /**
- * Sélectionne les filtres disponibles en fonction des identifiants de filtres sélectionnés.
+ * Sélectionne et met à jour les critères filtrés à partir des identifiants sélectionnés.
  *
- * @param {string[]} selectedIdFiltres - Les identifiants des filtres sélectionnés.
- * @param {DressingListFiltreModel[]} filtresDisponibles - La liste des filtres disponibles.
- * @param {Function} setSelectedFiltres - La fonction pour mettre à jour les filtres sélectionnés.
- * @returns {void}
+ * @param selectedIdCriteres - Liste des identifiants des critères sélectionnés.
+ * @param criteresDisponibles - Liste des critères disponibles de type `CapsuleCritereModel`.
+ * @param setSelectedCriteres - Fonction de mise à jour pour définir les critères sélectionnés.
+ *
+ * Cette fonction filtre les critères disponibles en fonction des identifiants sélectionnés
+ * et exclut ceux qui sont de type `isType`. Les critères filtrés sont ensuite passés à la
+ * fonction `setSelectedCriteres` pour mise à jour.
  */
-export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: VetementFiltreModel[], setSelectedFiltres: Function): void {
-  const selectTypeFiltre = (filtresDisponibles
-    .filter(filtre => selectedIdFiltres.includes(filtre.id))
-    .filter(filtre => !filtre.isType));
-  setSelectedFiltres(selectTypeFiltre);
+export function selectCriteres(selectedIdCriteres: string[], criteresDisponibles: CapsuleCritereModel[], setSelectedCriteres: Function): void {
+  const selectCriteres = (criteresDisponibles
+    .filter(critere => selectedIdCriteres.includes(critere.id))
+    .filter(critere => !critere.isType));
+  setSelectedCriteres(selectCriteres);
 }
 
 
@@ -33,16 +36,16 @@ export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: V
  * - Ajoute les valeurs des énumérations (statut, saisons) aux filtres.
  * - Trie les filtres par ordre alphabétique en fonction de leur type et libellé.
  */
-export function calculFiltresPossibles(vetements: VetementModel[]): VetementFiltreModel[] {
+export function calculCriteresPossibles({ paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements }: VetementsFormParamsTypeProps): CapsuleCritereModel[] {
 
-  let filtres: VetementFiltreModel[] = [];
+  let filtres: CapsuleCritereModel[] = [];
 
-  const filtresTypes = addCaracteristiqueInFilter(vetements.map(vetement => vetement.type), CaracteristiqueVetementEnum.TYPES);
-  const filtresTaille = addCaracteristiqueInFilter(vetements.map(vetement => vetement.taille), CaracteristiqueVetementEnum.TAILLES);  
-  const filtresUsages = addCaracteristiqueInFilter(vetements.flatMap(vetement => vetement.usages), CaracteristiqueVetementEnum.USAGES);
-  const filtresMarques = addCaracteristiqueInFilter(vetements.map(vetement => vetement.marque), CaracteristiqueVetementEnum.MARQUES);
-  const filtresStatut = addEnumsInFilter(vetements.map(vetement => vetement.statut));
-  const filtresSaisons = addEnumsInFilter(vetements.flatMap(vetement => vetement.saisons));
+  const filtresTypes = addCaracteristiqueInCriteria(paramsTypeVetements, CaracteristiqueVetementEnum.TYPES);
+  const filtresTaille = addCaracteristiqueInCriteria(paramsTaillesMesures, CaracteristiqueVetementEnum.TAILLES);  
+  const filtresUsages = addCaracteristiqueInCriteria(paramsUsagesVetements, CaracteristiqueVetementEnum.USAGES);
+
+  const filtresStatut = addEnumsInFilter(Object.values(StatutVetementEnum));
+  const filtresSaisons = addEnumsInFilter(Object.values(SaisonVetementEnum));
 
   // Recalcul des filtres disponibles
   return filtres.concat(
@@ -55,14 +58,13 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
     filtresUsages.length ? { id: CaracteristiqueVetementEnum.USAGES, libelle: '', type: CaracteristiqueVetementEnum.USAGES, typeLibelle: CaracteristiqueVetementEnum.USAGES, isType: true } : [],
     filtresUsages,
 
-    filtresMarques.length ? { id: CaracteristiqueVetementEnum.MARQUES, libelle: '', type: CaracteristiqueVetementEnum.MARQUES, typeLibelle: CaracteristiqueVetementEnum.MARQUES, isType: true } : [],
-    filtresMarques,
-
     filtresStatut.length ? { id: CaracteristiqueVetementEnum.STATUT, libelle: '', type: CaracteristiqueVetementEnum.STATUT, typeLibelle: CaracteristiqueVetementEnum.STATUT, isType: true } : [],
     filtresStatut,
 
     filtresSaisons.length ? { id: CaracteristiqueVetementEnum.SAISON, libelle: '', type: CaracteristiqueVetementEnum.SAISON, typeLibelle: CaracteristiqueVetementEnum.SAISON, isType: true } : [],
-    filtresSaisons);
+    filtresSaisons
+
+    );
 }
 
 
@@ -70,18 +72,22 @@ export function calculFiltresPossibles(vetements: VetementModel[]): VetementFilt
  * Ajoute une caractéristique dans les filtres si elle n'est pas déjà présente.
  *
  * @param {VetementFiltreModel[]} filtres - La liste des filtres à mettre à jour.
- * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
+ * @param {VetementCaracteristiquesModel[]} dataParams - La liste des caractéristiques des vêtements.
  * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
  */
-function addCaracteristiqueInFilter(dataVetement: VetementCaracteristiquesModel[], type: CaracteristiqueVetementEnum): VetementFiltreModel[] {
+function addCaracteristiqueInCriteria(dataParams: ParamGenericVetementsModel[] | undefined, type: CaracteristiqueVetementEnum): CapsuleCritereModel[] {
 
-  let filtresTypes: VetementFiltreModel[] = [];
-  dataVetement
+  let criteresTypes: CapsuleCritereModel[] = [];
+  if (!dataParams || dataParams.length === 0) {
+    return criteresTypes;
+  }
+
+  dataParams
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter(data => data !== null && data !== undefined)
     .forEach(data => {
-      if (!filtresTypes.find(filtresTypes => filtresTypes.id === data.id)) {
-        filtresTypes.push({
+      if (!criteresTypes.find(filtresTypes => filtresTypes.id === data.id)) {
+        criteresTypes.push({
           id: data.id,
           libelle: data.libelle,
           type: type,
@@ -90,26 +96,26 @@ function addCaracteristiqueInFilter(dataVetement: VetementCaracteristiquesModel[
       }
     });
 
-  filtresTypes.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
-  return filtresTypes;
+  criteresTypes.sort((a, b) => alphanumSort(a.type + a.libelle, b.type + b.libelle)); // Tri par ordre alphabétique
+  return criteresTypes;
 }
 
 
 /**
  * Ajoute une caractéristique dans les filtres si elle n'est pas déjà présente.
  *
- * @param {VetementFiltreModel[]} filtres - La liste des filtres à mettre à jour.
+ * @param {CapsuleCritereModel[]} criteres - La liste des criteres à mettre à jour.
  * @param {VetementCaracteristiquesModel[]} dataVetement - La liste des caractéristiques des vêtements.
  * @param {CaracteristiqueVetementEnum} type - Le type de caractéristique de vêtement.
  */
-function addEnumsInFilter(dataStatuts: StatutVetementEnum[] | SaisonVetementEnum[]): VetementFiltreModel[] {
+function addEnumsInFilter(dataEnums: StatutVetementEnum[] | SaisonVetementEnum[]): CapsuleCritereModel[] {
 
-  if (dataStatuts.filter((value, index, self) => self.indexOf(value) === index).length <= 1) {
+  if (dataEnums.filter((value, index, self) => self.indexOf(value) === index).length <= 1) {
     return [];
   }
 
-  let filtresTypes: VetementFiltreModel[] = [];
-  dataStatuts
+  let filtresTypes: CapsuleCritereModel[] = [];
+  dataEnums
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter(data => data !== null && data !== undefined)
     .forEach(data => {
