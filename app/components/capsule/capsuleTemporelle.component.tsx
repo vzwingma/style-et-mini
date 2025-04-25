@@ -6,18 +6,30 @@ import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model
 import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
 import { CapsulesListComponent } from './capsuleList.component';
 import Modal from 'react-native-modal';
+import { loadCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
 
 
 /**
- * Composant principal pour un dressing
- *
- * @returns {JSX.Element} Le composant de l'écran 
+ * Composant React représentant une capsule temporelle dans un dressing.
  *
  * @component
+ * @param {DressingComponentProps} props - Les propriétés du composant, incluant le dressing.
+ *
+ * @description
+ * Ce composant gère l'affichage et la gestion des capsules temporelles associées à un dressing.
+ * Il permet d'ajouter, modifier, supprimer et afficher les capsules temporelles.
+ * Le contenu affiché varie en fonction de l'état du dressing (chargement, vide, ou avec des capsules).
+ *
+ * @returns {JSX.Element} - Le contenu du panneau, incluant la liste des capsules ou un indicateur d'activité.
+ *
  * @remarks
- * Ce composant utilise un menu latéral pour afficher différents paramètres.
- * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
- **/
+ * - Utilise des hooks React (`useState`, `useEffect`) pour gérer l'état local et les effets secondaires.
+ * - Inclut un formulaire modal pour l'ajout ou l'édition de capsules temporelles.
+ * - Les callbacks `validateFormCallBack` et `deleteFormCallBack` permettent de mettre à jour la liste des capsules sans recharger.
+ *
+ * @see DressingComponentProps
+ * @see CapsuleTemporelleModel
+ */
 export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
 
   const [openCapsuleForm, setOpenCapsuleForm] = useState(false);
@@ -30,7 +42,7 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
     setOpenCapsuleForm(false);
-
+    loadCapsulesDressing(dressing.id, setCapsules, setIsLoading);
   }, [dressing]);
 
 

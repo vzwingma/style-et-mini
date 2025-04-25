@@ -1,6 +1,43 @@
+import { SERVICES_PARAMS, SERVICES_URL } from "@/app/constants/APIconstants";
 import CapsuleTemporelleModel from "../../models/capsule/capsuleTemporelle.model";
-import DressingModel from "../../models/dressing.model";
 import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
+import { callGETBackend } from "@/app/services/ClientHTTP.service";
+import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
+
+
+
+/**
+ * Charge les tenues d'un dressing spécifique et met à jour l'état correspondant.
+ *
+ * @param idDressing - L'identifiant unique du dressing à charger.
+ * @param setCapsules - Fonction de mise à jour de l'état pour définir les tenues chargées.
+ * @returns Une promesse qui se résout une fois que les tenues sont chargées et l'état mis à jour.
+ *
+ * @remarks
+ * Cette fonction effectue un appel au backend pour récupérer les tenues associées
+ * à un dressing donné. En cas de succès, elle met à jour l'état avec les données
+ * récupérées. En cas d'erreur, un message d'erreur est affiché via un toast.
+ *
+ */
+export function loadCapsulesDressing(idDressing : string, setCapsules: React.Dispatch<React.SetStateAction<CapsuleTemporelleModel[]>>, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) : Promise<void> {
+
+    let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
+    setIsLoading(true);
+    // Appel du service externe de chargement du dressing
+    return callGETBackend(SERVICES_URL.SERVICE_CAPSULES, params)
+      .then((capsules: CapsuleTemporelleModel[]) => {
+        console.log("Dressing ", capsules?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", capsules?.length, "capsules");
+        setCapsules(capsules);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.error('Une erreur s\'est produite lors du chargement des capsules', e);
+        showToast("Erreur : Chargement des capsules", ToastDuration.LONG);
+        setIsLoading(false);
+      });
+  }
+
+  
 
 
 interface ParamProps {
@@ -8,6 +45,9 @@ interface ParamProps {
     taillesMesures: ParamGenericVetementsModel[];
     usages: ParamGenericVetementsModel[];
 }
+
+
+/*
 
 export function getCapsuleByParam(dressing : DressingModel, capsule: CapsuleTemporelleModel[], { typeVetements: paramTypeVetements , taillesMesures: paramTaillesMesures, usages: paramUsages }: ParamProps): CapsuleTemporelleModel[] | null {
 
@@ -48,4 +88,4 @@ export function getCapsuleByParam(dressing : DressingModel, capsule: CapsuleTemp
     }
     console.log("capsule", capsule);
     return capsule;
-}
+} */

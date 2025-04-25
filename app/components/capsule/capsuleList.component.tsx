@@ -22,27 +22,33 @@ export type CapsulesListComponentProps = {
 };
 
 /**
- * Composant React représentant une liste de tenues dans un dressing.
+ * Composant React représentant une liste de capsules temporelles.
  *
  * @param {CapsulesListComponentProps} props - Les propriétés du composant.
- * @param {DressingModel} props.dressing - Le dressing contenant les tenues.
- * @param {TenueModel[]} props.capsules - La liste des tenues à afficher dans le dressing.
- * @param {(tenue?: TenueModel) => void} props.openAddEditTenue - Fonction permettant d'ouvrir l'interface d'ajout ou d'édition d'une tenue.
+ * @param {DressingModel} props.dressing - Le dressing auquel les capsules sont associées.
+ * @param {CapsuleTemporelleModel[]} props.capsules - La liste des capsules temporelles à afficher.
+ * Chaque capsule contient des informations telles que son libellé et son identifiant.
+ * @param {(capsule?: CapsuleTemporelleModel) => void} props.openAddEditCapsule - Fonction appelée pour ouvrir
+ * le panneau d'ajout ou d'édition d'une capsule. Si une capsule est fournie, elle sera éditée, sinon une nouvelle
+ * capsule sera créée.
  *
- * @returns {React.JSX.Element} Un élément JSX affichant la liste des tenues ou un message vide si aucune tenue n'est disponible.
- *
- * @remarks
- * Ce composant affiche une liste de tenues triées par ordre alphabétique. Chaque tenue est affichée avec un bouton permettant de l'éditer.
- * Si aucune tenue n'est disponible, un composant vide est affiché avec une option pour ajouter une nouvelle tenue.
+ * @returns {React.JSX.Element} Un composant JSX affichant une liste de capsules temporelles.
+ * Si aucune capsule n'est disponible, un composant vide est affiché. Sinon, chaque capsule est représentée
+ * par un conteneur cliquable permettant d'éditer la capsule et une zone de défilement horizontal pour afficher
+ * des vêtements associés (commentée dans le code).
  */
 export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ dressing, capsules, openAddEditCapsule }: CapsulesListComponentProps) => {
 
 
     /**
-     * Affiche un panneau contenant une liste de tenues.
+     * Génère une liste d'éléments React représentant des capsules temporelles.
      *
-     * @param {VetementModel[]} tenues - La liste des tenues à afficher.
-     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+     * @param capsules - Tableau de modèles de capsules temporelles à afficher.
+     * Chaque capsule contient des informations telles que son libellé et son identifiant.
+     * 
+     * @returns Un tableau d'éléments React JSX représentant les capsules.
+     * Chaque élément inclut un conteneur avec un en-tête cliquable pour éditer la capsule
+     * et une zone de défilement horizontal pour afficher des vêtements associés (commentée dans le code).
      */
     function showPanelCapsules(capsules: CapsuleTemporelleModel[]): React.JSX.Element[] {
 
