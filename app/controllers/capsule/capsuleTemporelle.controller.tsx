@@ -11,36 +11,6 @@ import { filtreVetementByCaracteristique } from "../dressing/dressingList.contro
 
 
 
-
-
-/**
- * Charge les capsules et les vêtements d'un dressing spécifique et met à jour l'état correspondant.
- *
- * @param idDressing - L'identifiant unique du dressing à charger.
- * @param setCapsules - Fonction de mise à jour de l'état pour définir les capsules chargées.
- * @param setVetements - Fonction de mise à jour de l'état pour définir les vêtements chargés.
- * @param setIsLoading - Fonction de mise à jour de l'état pour indiquer si le chargement est en cours.
- * @returns Une promesse qui se résout une fois que les capsules et les vêtements sont chargés et l'état mis à jour.
- *
- * @remarks
- * Cette fonction effectue des appels au backend pour récupérer les capsules et les vêtements associés
- * à un dressing donné. En cas de succès, elle met à jour l'état avec les données récupérées. En cas d'erreur,
- * un message d'erreur est affiché via un toast.
- *
- */
-export async function loadCapsulesAndVetementsDressing(idDressing: string,
-    setCapsules: React.Dispatch<React.SetStateAction<CapsuleTemporelleModel[]>>,
-    setVetements: React.Dispatch<React.SetStateAction<VetementModel[]>>,
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>): Promise<[void, void]> {
-
-    setIsLoading(true);
-    return Promise.all([
-        loadCapsulesDressing(idDressing, setCapsules, setIsLoading),
-        loadVetementsDressing({ idDressing, setVetements })
-    ]);
-}
-
-
 /**
  * Charge les tenues d'un dressing spécifique et met à jour l'état correspondant.
  *
@@ -54,21 +24,19 @@ export async function loadCapsulesAndVetementsDressing(idDressing: string,
  * récupérées. En cas d'erreur, un message d'erreur est affiché via un toast.
  *
  */
-export function loadCapsulesDressing(idDressing : string, setCapsules: React.Dispatch<React.SetStateAction<CapsuleTemporelleModel[]>>, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) : Promise<void> {
+export function loadCapsulesDressing(idDressing : string) : Promise<CapsuleTemporelleModel[]> {
 
     let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
-    setIsLoading(true);
     // Appel du service externe de chargement du dressing
     return callGETBackend(SERVICES_URL.SERVICE_CAPSULES, params)
       .then((capsules: CapsuleTemporelleModel[]) => {
         console.log("Dressing ", capsules?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", capsules?.length, "capsules");
-        setCapsules(capsules);
-        setIsLoading(false);
+        return capsules;
       })
       .catch((e) => {
         console.error('Une erreur s\'est produite lors du chargement des capsules', e);
         showToast("Erreur : Chargement des capsules", ToastDuration.LONG);
-        setIsLoading(false);
+        return [] as CapsuleTemporelleModel[];
       });
   }
 

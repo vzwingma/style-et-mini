@@ -80,7 +80,7 @@ export function loadDressing({ idDressing, setDressing, setError, setIsLoading }
  * En cas de succès, elle définit les vêtements chargés et désactive l'état de chargement.
  * En cas d'erreur, elle définit l'erreur, désactive l'état de chargement et affiche un toast d'erreur.
  */
-export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }: FunctionCallAPIVetementsProps) : Promise<void> {
+export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }: FunctionCallAPIVetementsProps) : Promise<VetementModel[]> {
 
   let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
   if (setIsLoading === undefined) {
@@ -93,10 +93,12 @@ export function loadVetementsDressing({ idDressing, setIsLoading, setVetements }
       console.log("Dressing ", vetements?.at(0)?.dressing.libelle ?? idDressing, "chargé : ", vetements?.length, "vêtements");
       setIsLoading(false);
       setVetements(vetements);
+      return vetements;
     })
     .catch((e) => {
       setIsLoading(false);
       console.error('Une erreur s\'est produite lors du chargement du dressing', e);
       showToast("Erreur de chargement du dressing", ToastDuration.SHORT);
+      return []
     });
 }

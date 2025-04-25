@@ -6,7 +6,7 @@ import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model
 import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.model';
 import { CapsulesListComponent } from './capsuleList.component';
 import Modal from 'react-native-modal';
-import { evaluateNbVetementsCapsules, loadCapsulesAndVetementsDressing, loadCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
+import { evaluateNbVetementsCapsules, loadCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
 import { CapsuleFormComponent } from './capsuleForm.component';
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
@@ -43,24 +43,19 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
 
   const [capsuleInEdit, setCapsuleInEdit] = useState<CapsuleTemporelleModel | null>(null);
 
-  // Rechargement des capsules si le dressing change
+  // Rechargement des vêtements si le dressing change
   useEffect(() => {
-    setOpenCapsuleForm(false);
 
-    loadCapsulesAndVetementsDressing(dressing.id, setCapsules, setVetements, setIsLoading)
-    .then(() => {
+    Promise.all([
+      loadVetementsDressing({ idDressing : dressing.id, setVetements }),
+      loadCapsulesDressing(dressing.id)
+    ])
+    .then(([vetements, capsules]) => {
+      setCapsules(evaluateNbVetementsCapsules(capsules, vetements));
+      setOpenCapsuleForm(false);
       setIsLoading(false);
-      evaluateNbVetementsCapsules(capsules, vetements);
-    });
+    })
   }, [dressing]);
-
-  
-  useEffect(() => {
-    // Recalculer les vetements disponibles pour les capsules
-    if (capsules.length > 0) {
-      evaluateNbVetementsCapsules(capsules, vetements);
-    }}
-  , [openCapsuleForm]);
 
 
   /**
@@ -69,6 +64,7 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
    */
   function validateFormCallBack(resultat: APIResultFormCapsuleModel ): void {
     setOpenCapsuleForm(false);
+    resultat.capsule = evaluateNbVetementsCapsules([resultat.capsule!], vetements)[0];
     if(resultat.created && resultat.capsule !== undefined && resultat.capsule !== null) {
       // On ajoute le vetement à la liste
       setCapsules(prevCapsule => [...(prevCapsule), resultat.capsule!]);
