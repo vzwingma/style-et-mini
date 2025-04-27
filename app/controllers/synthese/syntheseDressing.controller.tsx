@@ -14,7 +14,7 @@ export function getDressingValue(Vetements: VetementModel[], type: "achat" | "ne
   }
 
   const totalPrice = Vetements.reduce((acc, vetement) => {
-    const price = vetement.prix?.[type] || 0;
+    const price = vetement.prix?.[type] ?? 0;
     return acc + (isNaN(price) ? 0 : price);
   }, 0);
 

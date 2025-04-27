@@ -1,14 +1,14 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
-import DressingModel from '../../models/dressing.model';
 import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
+import DressingModel from '../../models/dressing.model';
 
+import { loadNbCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
+import { loadNbTenuesDressing } from '@/app/controllers/tenues/tenues.controller';
 import VetementModel from '../../models/vetements/vetements.model';
 import { SyntheseItemComponent } from './syntheseItem.component';
-import { loadCapsulesDressing, loadNbCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
-import { loadNbTenuesDressing, loadTenuesDressing } from '@/app/controllers/tenues/tenues.controller';
 
 
 
@@ -63,7 +63,9 @@ export const SyntheseDressingComponent: React.FC<SyntheseDressingComponentProps>
     }
     else {
       return (
-        <SyntheseItemComponent dressing={dressing} vetements={vetements} tenues={tenues} capsules={capsules} />
+        <View style={styles.container}>
+          <SyntheseItemComponent dressing={dressing} vetements={vetements} tenues={tenues} capsules={capsules} />
+        </View>
       );
     }
   }
@@ -74,9 +76,6 @@ export const SyntheseDressingComponent: React.FC<SyntheseDressingComponentProps>
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    zIndex: 0,
     width: '100%'
   }
 });
