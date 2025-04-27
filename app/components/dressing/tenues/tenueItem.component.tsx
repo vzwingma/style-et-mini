@@ -51,7 +51,7 @@ export const TenueItemComponent: React.FC<TenueItemComponentProps> = ({ tenue, o
 
 
     return (
-        <View style={[stylesItem.container]}>
+        <View style={stylesItem.container}>
             <View style={stylesItem.title}>
                 <ThemedText type="subtitle">{tenue.libelle}</ThemedText>
                 { /** Icônes édition */}

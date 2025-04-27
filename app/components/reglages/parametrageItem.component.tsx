@@ -92,7 +92,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                     <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
                     { /** Icoônes édition */}
                     <View style={stylesForm.rowItems}>
-                        {isUnUsed &&
+                        {isUnUsed && !isSelected &&
                             <Pressable onPress={() => deleteModalConfirmation(zeroForm, () => refreshListeParametres(zeroForm.typeParam), setModalDialog)}>
                                 <Image source={require('@/assets/icons/bin-outline.png')} style={stylesItem.titleIcon} tintColor={'white'} />
 

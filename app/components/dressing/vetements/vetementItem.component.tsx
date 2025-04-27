@@ -25,9 +25,11 @@ export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vet
     
     const vetementImageToShow = vetement.image ? resizeImage(vetement.image, 100) : null;
 
+    const isInTenueForm = editVetement?.name === "editVetement";
+    
     return (
         <Pressable onPress={() => editVetement ? editVetement(vetement, !selected) : null}>
-            <View key={vetement.id} style={[styles.body, (selected ? styles.selected : null)]}>
+            <View key={vetement.id} style={[styles.body, (selected ? styles.selected : (isInTenueForm ? styles.unselected : null))]}>
                 <View style={[styles.photoFrame, !vetementImageToShow ? { borderColor: Colors.app.backgroundLight, borderWidth: 1, } : null]}>
                     {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.displayUri }} width={vetementImageToShow.largeur} height={vetementImageToShow.hauteur} />}
                     {!vetementImageToShow   && <Image source={require('@/assets/icons/clothes-rnd-outline.png')}
@@ -58,6 +60,9 @@ const styles = StyleSheet.create({
     selected: {
         borderColor: Colors.app.color,
         borderWidth: 2,
+    },
+    unselected: {
+        opacity: 0.5,
     },
     photoFrame: {
         width: 100,
