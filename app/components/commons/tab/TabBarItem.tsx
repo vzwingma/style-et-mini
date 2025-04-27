@@ -60,6 +60,8 @@ function getTabBarIcon({ activeTab, activeDressing, thisTab }: Readonly<TabBarIc
     case Tabs.INDEX:
       return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
     case Tabs.DRESSING:
+      return <Image source={selectedTab ? require('@/assets/icons/synth.png') : require('@/assets/icons/synth-outline.png')} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff')}} />
+    case Tabs.VETEMENTS:
       return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff')}} />
     case Tabs.TENUES:
       return <Image source={getTabOutfitIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff') }} />
@@ -78,7 +80,7 @@ function getTabBarIcon({ activeTab, activeDressing, thisTab }: Readonly<TabBarIc
 const tabStyles = StyleSheet.create({
 
   tabsItem: {
-    width: '20%',
+    width: '16%',
     backgroundColor: Colors.app.background,
     alignItems: 'center'
   }

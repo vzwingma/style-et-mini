@@ -121,8 +121,9 @@ export default function TabLayout() {
               {dressingSelectionne !== undefined ?
               <>
                 <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES}   activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE}  activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.VETEMENTS} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE} activeDressing={dressingSelectionne} />
               </>
                  : null
               }
@@ -146,6 +147,7 @@ export default function TabLayout() {
       case Tabs.INDEX:
         return <HomeScreen selectNewTab={selectNewTab} />
       case Tabs.DRESSING:
+        case Tabs.VETEMENTS:
         case Tabs.TENUES:        
         case Tabs.CAPSULE:
           return <DressingScreen tab={tab} dressing={dressing} />

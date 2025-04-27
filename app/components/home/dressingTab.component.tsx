@@ -20,7 +20,7 @@ type DressingTabComponentProps = {
   const DressingTabComponent: React.FC<DressingTabComponentProps> = ({ dressing, selectNewTab }: DressingTabComponentProps) => {
 
     return (
-      <Pressable onPress={() => selectNewTab(Tabs.DRESSING, dressing.id)}>
+      <Pressable onPress={() => selectNewTab(Tabs.VETEMENTS, dressing.id)}>
         <View style={styles.container}>
           <Image source={getHomeIcon(dressing.categorie)} style={[styles.icon]} />
           <ThemedText type="subtitle" style={{height: 35, top: 5}}>{dressing.libelle}</ThemedText>

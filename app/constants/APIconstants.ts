@@ -36,7 +36,7 @@ export const enum SERVICES_PARAMS {
 const ROOT_URI   = "api/v1";
 const GET_PARAMS = ROOT_URI+"/params/vetements/";
 
-
+export const ACTION_COUNT = "?count";
 /**
  * URLs pour différents services.
  */

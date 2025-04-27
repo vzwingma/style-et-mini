@@ -186,20 +186,20 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
 
 
   return (
-    <View style={style2s.body}>
-      <View style={style2s.title}>
+    <View style={styleParams.body}>
+      <View style={styleParams.title}>
 
         <Pressable onPress={() => closeDrawer()}>
           <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
         </Pressable>
 
         <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-          <Image source={typeParametrage.icone} style={style2s.icon} />
+          <Image source={typeParametrage.icone} style={styleParams.icon} />
           <ThemedText type="subtitle">{typeParametrage.titre}</ThemedText>
         </View>
 
         <Pressable onPress={() => setParametreInEdition(ID_NEW_ELEMENT)}>
-          <Ionicons size={20} name="add-outline" style={style2s.titleIcon} />
+          <Ionicons size={20} name="add-outline" style={styleParams.titleIcon} />
         </Pressable>
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -210,7 +210,7 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
 }
 
 
-const style2s = StyleSheet.create({
+const styleParams = StyleSheet.create({
   title: {
     alignItems: 'center',
     flexDirection: 'row',
