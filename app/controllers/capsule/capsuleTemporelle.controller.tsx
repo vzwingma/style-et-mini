@@ -1,4 +1,4 @@
-import { SERVICES_PARAMS, SERVICES_URL } from "@/app/constants/APIconstants";
+import { ACTION_COUNT, SERVICES_PARAMS, SERVICES_URL } from "@/app/constants/APIconstants";
 import CapsuleTemporelleModel from "../../models/capsule/capsuleTemporelle.model";
 import { callGETBackend } from "@/app/services/ClientHTTP.service";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
@@ -39,8 +39,18 @@ export function loadCapsulesDressing(idDressing : string) : Promise<CapsuleTempo
   }
 
   
+  /**
+   * Charge le nombre de capsules dans un dressing spécifique.
+   *
+   * @param idDressing - L'identifiant unique du dressing à interroger.
+   * @returns Une promesse qui résout avec le nombre de capsules dans le dressing.
+   */
+  export function loadNbCapsulesDressing(idDressing : string) : Promise<number> {
 
-
+    let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
+    // Appel du service externe de chargement du dressing
+    return callGETBackend((SERVICES_URL.SERVICE_CAPSULES + ACTION_COUNT) as SERVICES_URL, params);
+  }
 /**
  * Évalue et met à jour le nombre de vêtements associés à chaque capsule temporelle.
  *
