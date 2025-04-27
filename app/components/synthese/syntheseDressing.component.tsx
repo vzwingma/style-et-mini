@@ -63,7 +63,9 @@ export const SyntheseDressingComponent: React.FC<SyntheseDressingComponentProps>
     }
     else {
       return (
-        <SyntheseItemComponent dressing={dressing} vetements={vetements} tenues={tenues} capsules={capsules} />
+        <View style={styles.container}>
+          <SyntheseItemComponent dressing={dressing} vetements={vetements} tenues={tenues} capsules={capsules} />
+        </View>
       );
     }
   }
@@ -74,9 +76,6 @@ export const SyntheseDressingComponent: React.FC<SyntheseDressingComponentProps>
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    zIndex: 0,
     width: '100%'
   }
 });

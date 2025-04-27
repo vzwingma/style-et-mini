@@ -41,14 +41,18 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 <ThemedText type="subtitle" style={styles.value}>{vetements.length}</ThemedText>
             </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="default" style={styles.label2}>Valeur à l'achat</ThemedText>
-                <ThemedText type="default" style={styles.value2}>({getNbVetementsAvecPrix(vetements, 'achat')} vêtements)</ThemedText>
-                <ThemedText type="italic" style={styles.value2}>{getDressingValue(vetements, 'achat')?.toLocaleString('fr-FR')} €</ThemedText>
+                <ThemedText type="default" style={styles.label2}>- Valeur à l'achat</ThemedText>
+                <View style={[stylesForm.rowItems, {width: '60%'}]}>
+                    <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementsAvecPrix(vetements, 'achat')} vêtements)</ThemedText>
+                    <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}>{getDressingValue(vetements, 'achat')?.toLocaleString('fr-FR')} €</ThemedText>
+                </View>
             </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="default" style={styles.label2}>Valeur neuf</ThemedText>
-                <ThemedText type="default" style={styles.value2}>({getNbVetementsAvecPrix(vetements, 'neuf')} vêtements)</ThemedText>
-                <ThemedText type="italic" style={styles.value2}>{getDressingValue(vetements, 'neuf')?.toLocaleString('fr-FR')} €</ThemedText>
+                <ThemedText type="default" style={styles.label2}>- Valeur neuf</ThemedText>
+                <View style={[stylesForm.rowItems, {width: '60%'}]}>
+                    <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementsAvecPrix(vetements, 'neuf')} vêtements)</ThemedText>
+                    <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}>{getDressingValue(vetements, 'neuf')?.toLocaleString('fr-FR')} €</ThemedText>
+                </View>
             </View>                        
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de tenues</ThemedText>
@@ -88,9 +92,9 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     label2: {
-        width: '35%',
+        width: '40%',
         marginTop: 5,
-        marginLeft: 15,
+        paddingLeft: 10,
     },
     value: {
         width: '50%',
@@ -99,7 +103,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     value2: {
-        width: '30%',
         marginTop: 5,
         textAlign: 'right',
     }, 
