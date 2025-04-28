@@ -1,10 +1,13 @@
 import { ThemedText } from "@/app/components/commons/views/ThemedText";
 import { Colors } from "@/app/constants/Colors";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import DressingModel from "@/app/models/dressing.model";
 import VetementModel from "@/app/models/vetements/vetements.model";
-import {getCollections as getNbCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections as getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
+import { getCollections as getCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections as getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
+import { useState } from "react";
+import Modal from 'react-native-modal';
+import { SyntheseDetailEnum, SyntheseItemDetailComponent } from "./syntheseItemDetail.component";
 
 /**
  * @description Composant d'un item de la liste des capsules
@@ -20,6 +23,7 @@ export type SyntheseItemComponentProps = {
 };
 
 
+
 /**
  * Composant React fonctionnel représentant un élément de capsule.
  *
@@ -30,58 +34,89 @@ export type SyntheseItemComponentProps = {
  * @returns {JSX.Element} Un composant JSX affichant les détails d'une capsule avec une option d'édition.
  */
 export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dressing, vetements, tenues, capsules }: SyntheseItemComponentProps) => {
-    return (
-        <View style={[styles.container]}>
-            <View style={styles.title}>
-                <ThemedText type="subtitle">{dressing.libelle}</ThemedText>
-                <ThemedText/>
-            </View>
-            { /** VETEMENTS  */}
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de vêtements</ThemedText>
-                <ThemedText type="subtitle" style={styles.value}>{vetements.length}</ThemedText>
-            </View>
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="default" style={styles.label2}>- Valeur à l'achat</ThemedText>
-                <View style={[stylesForm.rowItems, {width: '60%'}]}>
-                    <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementsAvecPrix(vetements, 'achat')} vêtements)</ThemedText>
-                    <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}>{getDressingValue(vetements, 'achat')?.toLocaleString('fr-FR')} €</ThemedText>
-                </View>
-            </View>
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="default" style={styles.label2}>- Valeur prix neufs</ThemedText>
-                <View style={[stylesForm.rowItems, {width: '60%'}]}>
-                    <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementsAvecPrix(vetements, 'neuf')} vêtements)</ThemedText>
-                    <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}>{getDressingValue(vetements, 'neuf')?.toLocaleString('fr-FR')} €</ThemedText>
-                </View>
-            </View>
-            <View style={styles.interligne}/>
-            { /** COLLECTIONS  */}
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de collections</ThemedText>
-                <ThemedText type="subtitle" style={styles.value}>{getNbCollections(vetements)}</ThemedText>
-            </View>
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="default" style={styles.label2}>- Collections</ThemedText>
-                <View style={[stylesForm.rowItems, {width: '60%'}]}>
-                    <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementAvecCollections(vetements)} vêtements)</ThemedText>
-                    <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}></ThemedText>
-                </View>
-            </View>                     
-            <View style={styles.interligne}/>
-            { /** TENUES  */}
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de tenues</ThemedText>
-                <ThemedText type="subtitle" style={styles.value}>{tenues}</ThemedText>
-            </View>
-            <View style={styles.interligne}/>
-            { /** CAPSULES  */}
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de capsules</ThemedText>
-                <ThemedText type="subtitle" style={styles.value}>{capsules}</ThemedText>
-            </View>
 
-        </View>
+
+
+    const [open, setOpen] = useState(false);
+    const [details, setDetails] = useState<SyntheseDetailEnum>();
+
+    /** Ouverture/Fermeture du menu */
+    function toggleOpen(details: SyntheseDetailEnum): void {
+        if (vetements === null || vetements === undefined || vetements.length === 0) return;
+        setDetails(details);
+        setOpen(!open);
+    };
+
+
+    return (
+        <>
+            <View style={[styles.container]}>
+                <View style={styles.title}>
+                    <ThemedText type="subtitle">{dressing.libelle}</ThemedText>
+                    <ThemedText />
+                </View>
+                { /** VETEMENTS  */}
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de vêtements</ThemedText>
+                    <ThemedText type="subtitle" style={styles.value}>{vetements.length}</ThemedText>
+                </View>
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="default" style={styles.label2}>- Valeur à l'achat</ThemedText>
+                    <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_PRIX_ACHAT)} style={[stylesForm.rowItems, { width: '60%' }]}>
+                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>({getNbVetementsAvecPrix(vetements, 'achat')} vêtements)</ThemedText>
+                        <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}>{getDressingValue(vetements, 'achat')?.toLocaleString('fr-FR') ?? "-"} €</ThemedText>
+                    </Pressable>
+                </View>
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="default" style={styles.label2}>- Valeur prix neufs</ThemedText>
+                    <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_PRIX_NEUF)} style={[stylesForm.rowItems, { width: '60%' }]}>
+                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>({getNbVetementsAvecPrix(vetements, 'neuf')} vêtements)</ThemedText>
+                        <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}>{getDressingValue(vetements, 'neuf')?.toLocaleString('fr-FR') ?? "-"} €</ThemedText>
+                    </Pressable>
+                </View>
+                <View style={styles.interligne} />
+                { /** COLLECTIONS  */}
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de collections</ThemedText>
+                    <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.COLLECTIONS_LISTE)} style={styles.value}>
+                        <ThemedText type="subtitle" style={{ textAlign: 'right' }}>{getCollections(vetements).length}</ThemedText>
+                    </Pressable>
+                </View>
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="default" style={styles.label2}>- Collections</ThemedText>
+                    <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_COLLECTIONS)} style={[stylesForm.rowItems, { width: '60%' }]}>
+                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>({getNbVetementAvecCollections(vetements)} vêtements)</ThemedText>
+                        <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}></ThemedText>
+                    </Pressable>
+                </View>
+                <View style={styles.interligne} />
+                { /** TENUES  */}
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de tenues</ThemedText>
+                    <ThemedText type="subtitle" style={styles.value}>{tenues}</ThemedText>
+                </View>
+                <View style={styles.interligne} />
+                { /** CAPSULES  */}
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de capsules</ThemedText>
+                    <ThemedText type="subtitle" style={styles.value}>{capsules}</ThemedText>
+                </View>
+
+            </View>
+            <Modal presentationStyle='overFullScreen' isVisible={open}
+                animationIn='slideInRight' animationOut='slideOutRight'
+                propagateSwipe={true}
+                onBackButtonPress={() => setOpen(false)}
+                onBackdropPress={() => setOpen(false)}
+                style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+                {
+                    (details !== null && details !== undefined && vetements !== null && vetements !== undefined)
+                    && <SyntheseItemDetailComponent vetements={vetements} details={details}
+                        closeDrawer={() => setOpen(false)} />
+                }
+
+            </Modal> 
+            </>
     );
 };
 
@@ -111,7 +146,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderBottomWidth: 1,
         borderBottomColor: Colors.app.color,
-    },    
+    },
     label: {
         width: '50%',
         marginTop: 15,
@@ -132,7 +167,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         textAlign: 'right',
         fontStyle: 'italic',
-        color: Colors.app.secondaryColor,
-    }, 
+        color: Colors.app.color,
+    },
 }
 );
