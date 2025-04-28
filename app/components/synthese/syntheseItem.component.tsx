@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import DressingModel from "@/app/models/dressing.model";
 import VetementModel from "@/app/models/vetements/vetements.model";
-import {getDressingValue, getNbVetementsAvecPrix } from "@/app/controllers/synthese/syntheseDressing.controller";
+import {getCollections as getNbCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections as getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
 
 /**
  * @description Composant d'un item de la liste des capsules
@@ -36,6 +36,7 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 <ThemedText type="subtitle">{dressing.libelle}</ThemedText>
                 <ThemedText/>
             </View>
+            { /** VETEMENTS  */}
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de vêtements</ThemedText>
                 <ThemedText type="subtitle" style={styles.value}>{vetements.length}</ThemedText>
@@ -48,16 +49,33 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 </View>
             </View>
             <View style={stylesForm.rowItems}>
-                <ThemedText type="default" style={styles.label2}>- Valeur neuf</ThemedText>
+                <ThemedText type="default" style={styles.label2}>- Valeur prix neufs</ThemedText>
                 <View style={[stylesForm.rowItems, {width: '60%'}]}>
                     <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementsAvecPrix(vetements, 'neuf')} vêtements)</ThemedText>
                     <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}>{getDressingValue(vetements, 'neuf')?.toLocaleString('fr-FR')} €</ThemedText>
                 </View>
-            </View>                        
+            </View>
+            <View style={styles.interligne}/>
+            { /** COLLECTIONS  */}
+            <View style={stylesForm.rowItems}>
+                <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de collections</ThemedText>
+                <ThemedText type="subtitle" style={styles.value}>{getNbCollections(vetements)}</ThemedText>
+            </View>
+            <View style={stylesForm.rowItems}>
+                <ThemedText type="default" style={styles.label2}>- Collections</ThemedText>
+                <View style={[stylesForm.rowItems, {width: '60%'}]}>
+                    <ThemedText type="default" style={[styles.value2, {width: '60%'}]}>({getNbVetementAvecCollections(vetements)} vêtements)</ThemedText>
+                    <ThemedText type="italic" style={[styles.value2, {width: '40%'}]}></ThemedText>
+                </View>
+            </View>                     
+            <View style={styles.interligne}/>
+            { /** TENUES  */}
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de tenues</ThemedText>
                 <ThemedText type="subtitle" style={styles.value}>{tenues}</ThemedText>
             </View>
+            <View style={styles.interligne}/>
+            { /** CAPSULES  */}
             <View style={stylesForm.rowItems}>
                 <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de capsules</ThemedText>
                 <ThemedText type="subtitle" style={styles.value}>{capsules}</ThemedText>
@@ -86,6 +104,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Colors.app.color,
     },
+    interligne: {
+        width: '100%',
+        marginTop: 15,
+        borderColor: Colors.app.backgroundLight,
+        borderWidth: 0.5,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.app.color,
+    },    
     label: {
         width: '50%',
         marginTop: 15,
@@ -105,6 +131,8 @@ const styles = StyleSheet.create({
     value2: {
         marginTop: 5,
         textAlign: 'right',
+        fontStyle: 'italic',
+        color: Colors.app.secondaryColor,
     }, 
 }
 );

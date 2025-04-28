@@ -34,3 +34,46 @@ export function getNbVetementsAvecPrix(Vetements: VetementModel[], type: "achat"
   }
   return Vetements.filter((vetement) => vetement.prix?.[type] !== undefined && vetement.prix?.[type] !== null).length;
 }
+
+
+export function getNbVetementAvecCollections(vetements: VetementModel[]): number {
+  if (vetements.length === 0) {
+    return 0;
+  }
+  
+  const collections: Set<string> = new Set();
+  vetements
+    .filter((vetement) => vetement.collection === undefined || vetement.collection === null || vetement.collection === "")
+    .forEach((vetement) => {
+      collections.add(vetement.id + "-" + vetement.libelle);
+    });
+  
+  console.log("Vetements sans collection : ", collections);
+  return vetements.length - collections.size;
+}
+
+/**
+ * Calcule le nombre de vêtements ayant un prix défini pour un type donné.
+ *
+ * @param Vetements - Tableau des modèles de vêtements à analyser.
+ * @param type - Type de prix à vérifier ("achat" ou "neuf").
+ * @returns Le nombre de vêtements avec un prix défini pour le type donné, ou `null` si le tableau est vide.
+ */
+export function getCollections(Vetements: VetementModel[]): number {
+  if (Vetements.length === 0) {
+    return 0;
+  }
+  
+  
+  const collections: Set<string> = new Set();
+  Vetements.map((vetement) => vetement.collection)
+    .filter((collection) => collection !== undefined && collection !== null)
+    .filter((collection) => collection !== "")
+    .sort()
+    .forEach((collection) => {
+      collections.add(collection);
+    });
+  
+  console.log("Collections vetements : ", collections);
+  return collections.size;
+}
