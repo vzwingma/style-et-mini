@@ -1,4 +1,4 @@
-import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
+import { ACTION_COUNT, SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import { callGETBackend } from "../../services/ClientHTTP.service";
 import TenueModel from "../../models/tenues/tenue.model";
@@ -56,4 +56,17 @@ export function loadTenuesDressing(idDressing : string, setTenues: React.Dispatc
       console.error('Une erreur s\'est produite lors du chargement du dressing', e);
       showToast("Erreur de chargement du dressing", ToastDuration.SHORT);
     });
+}
+
+/**
+ * Charge le nombre de tenues dans un dressing spécifique.
+ *
+ * @param idDressing - L'identifiant unique du dressing à interroger.
+ * @returns Une promesse qui résout avec le nombre de tenues dans le dressing.
+ */
+export function loadNbTenuesDressing(idDressing : string) : Promise<number> {
+
+  let params = [{ key: SERVICES_PARAMS.ID_DRESSING, value: String(idDressing) }];
+  // Appel du service externe de chargement du dressing
+  return callGETBackend((SERVICES_URL.SERVICE_TENUES + ACTION_COUNT) as SERVICES_URL, params);
 }

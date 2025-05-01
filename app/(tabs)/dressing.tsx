@@ -6,6 +6,7 @@ import { Colors } from '../constants/Colors';
 import { Tabs } from '../constants/TabsEnums';
 import { TenuesComponent } from '../components/dressing/tenues/tenues.component';
 import { CapsuleComponent } from '../components/dressing/capsules/capsules.component';
+import { SyntheseDressingComponent } from '../components/synthese/syntheseDressing.component';
 
 
 
@@ -29,7 +30,9 @@ export default function DressingScreen({ tab, dressing }: DressingScreenProps) {
     else {
       switch (tab) {
         case Tabs.DRESSING:
-          return <DressingComponent dressing={dressing} />;
+          return <SyntheseDressingComponent dressing={dressing} />;
+        case Tabs.VETEMENTS:
+          return <DressingComponent dressing={dressing} />;          
         case Tabs.TENUES:
           return <TenuesComponent dressing={dressing} />;
         case Tabs.CAPSULE:

@@ -114,6 +114,8 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         vetements.forEach((item) => {
 
             const selected = form.vetements?.some(v => v.id === item.id) ?? false;
+            
+            
 
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
                                                         selected={selected}

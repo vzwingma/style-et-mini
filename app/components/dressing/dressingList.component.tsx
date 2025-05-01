@@ -16,7 +16,7 @@ import { VetemenItemComponent } from "./vetements/vetementItem.component";
 
 export type DressingComponentProps = {
     vetements: VetementModel[];
-    openAddEditVetement: (vetement?: VetementModel) => void;
+    addEditVetement: (vetement?: VetementModel) => void;
 };
 /**
  * Composant principal pour un dressing
@@ -27,7 +27,7 @@ export type DressingComponentProps = {
  * Ce composant utilise un menu latéral pour afficher différents paramètres.
  * Le menu peut être ouvert et fermé en appuyant sur les éléments de la liste.
  **/
-export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetements, openAddEditVetement }: DressingComponentProps) => {
+export const DressingListComponent: React.FC<DressingComponentProps> = ({ vetements, addEditVetement }: DressingComponentProps) => {
 
     const [vetementsAffiches, setVetementsAffiches] = useState<VetementModel[]>([]);
 
@@ -80,7 +80,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
         let vetementsItems: JSX.Element[] = [];
         vetements.sort(vetementSort);
         vetements.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} editVetement={openAddEditVetement} />);
+            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} editVetement={addEditVetement} />);
         });
 
         return vetementsItems;
@@ -93,7 +93,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
             <View style={styles.title}>
                 <ThemedText type="subtitle" style={{color: Colors.app.color}}>{vetementsAffiches?.length} vêtement{vetementsAffiches?.length > 1 ? "s" : ""}</ThemedText>
                 <View style={{flexDirection: "row", gap: 10, alignItems: "center"}}>
-                <Pressable onPress={() => openAddEditVetement()}>
+                <Pressable onPress={() => addEditVetement()}>
                     <Ionicons size={28} name="add-outline" style={styles.titleIcon} />
                 </Pressable>
                 <Pressable onPress={() => setToggleAllItems(!toggleAllItems)}>
@@ -102,7 +102,7 @@ export const DressingListComponent: React.FC<DressingComponentProps> = ({ veteme
                 </View>
             </View>
             { vetements.length === 0 && 
-                 <DressingEmptyComponent openAddVetement={() => openAddEditVetement()} />
+                 <DressingEmptyComponent openAddVetement={() => addEditVetement()} />
             }
             { vetements.length > 0 && <>
             <View>
