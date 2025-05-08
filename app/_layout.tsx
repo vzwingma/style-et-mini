@@ -12,7 +12,7 @@ import { AppContextProvider } from './services/AppContextProvider';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -30,11 +30,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <AppContextProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
       </AppContextProvider>
     </ThemeProvider>
   );

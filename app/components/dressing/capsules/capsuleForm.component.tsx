@@ -1,7 +1,7 @@
 import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors } from '../../../constants/Colors';
 import { renderLabelMandatory } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
@@ -13,7 +13,7 @@ import APIResultFormCapsuleModel from '@/app/models/capsule/form.result.capsule.
 import FormCapsuleModel from '@/app/models/capsule/form.capsule.model';
 import ErrorsFormCapsuleModel, { defaultErrorsFormCapsuleModel } from '@/app/models/capsule/form.errors.capsules.model';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { deleteForm, initForm, setCriteres, setLibelleForm, setNbVetementsForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
+import { deleteForm, initForm, setCommentaireForm, setCriteres, setLibelleForm, setNbVetementsForm, validateForm } from '@/app/controllers/capsule/capsulesForm.controller';
 import { CapsuleCriteresComponent } from './capsuleFormCriteres.component';
 import CapsuleCritereModel from '@/app/models/capsule/capsuleCritere';
 
@@ -95,7 +95,16 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                             value={form?.nbreVetements?.toString() ?? '0'}
                             placeholder={!errorsForm?.nbVetementsInError ? 'Indiquez le nombre pour la capsule' : errorsForm?.nbVetementsMessage + ''}
                             onChangeText={nbrVetements => setNbVetementsForm(nbrVetements, setForm, setErrorsForm)} />
-                    </View>                                              
+                    </View>
+                    <View style={stylesForm.rowItems}>
+                        <ThemedText type="defaultSemiBold" style={[stylesForm.label, {marginRight: 10}]}>Commentaires</ThemedText>
+                        <TextInput style={[stylesForm.input, { minHeight: 74 }]} placeholderTextColor={'gray'}
+                            scrollEnabled={true}
+                            value={form?.commentaire ?? ''}
+                            multiline numberOfLines={3}
+                            placeholder={'Indiquez un commentaire \n(facultatif)'}
+                            onChangeText={commentaire => setCommentaireForm(commentaire, setForm)} />
+                    </View>
                 </View>
                 
             </View>
