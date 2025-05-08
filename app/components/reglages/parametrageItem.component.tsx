@@ -3,7 +3,7 @@ import { ThemedText } from "../commons/views/ThemedText";
 import { Colors } from "@/app/constants/Colors";
 import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { razAndCloseForm, initForm, validateForm, deleteForm } from "@/app/controllers/reglages/parametragesForm.controller";
 import { ParametragesFormComponent } from "./parametrageForm.component";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";
@@ -165,5 +165,11 @@ export const stylesItem = StyleSheet.create({
         height: 20,
         width: 20,
     },
+    ligne: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },    
 }
 );

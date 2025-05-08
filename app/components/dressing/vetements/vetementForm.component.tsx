@@ -12,7 +12,7 @@ import VetementImageModel from '@/app/models/vetements/vetements.image.model';
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import { getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../../commons/CommonsUtils';

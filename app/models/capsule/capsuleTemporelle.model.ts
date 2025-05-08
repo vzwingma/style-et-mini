@@ -9,5 +9,6 @@ interface CapsuleTemporelleModel extends GenericModel {
         capsule    : number;
         dressing?  : number;
     };   
+    commentaire? : string;
 }
 export default CapsuleTemporelleModel;

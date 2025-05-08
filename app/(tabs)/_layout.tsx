@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { ThemedText } from '../components/commons/views/ThemedText';
@@ -100,7 +100,7 @@ export default function TabLayout() {
   }
 
   return (
-    <>
+    <View style={{ flex: 0.95}}>
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab, dressingSelectionne?.categorie)}
         headerTitle={getHeaderTitle(tab, dressingSelectionne?.libelle)}
@@ -132,7 +132,7 @@ export default function TabLayout() {
             </> : null
         }
       </View>
-    </>
+    </View>
   );
 
 
@@ -163,7 +163,6 @@ export const tabStyles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
     gap: 8,
-    height: '100%',
     backgroundColor: Colors.dark.background,
   },
 
@@ -173,6 +172,6 @@ export const tabStyles = StyleSheet.create({
     backgroundColor: Colors.app.background,
     height: 60,
     padding: 5,
-    margin: 1,
+    margin: 1
   }
 });
