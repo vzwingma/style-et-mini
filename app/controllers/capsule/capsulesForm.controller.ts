@@ -90,6 +90,18 @@ export function setNbVetementsForm(nbVetements: string, setForm: React.Dispatch<
 }
 
 
+/**
+ * Met à jour le commentaire du formulaire.
+ *
+ * @param commentaire - Le nouveau commentaire à définir dans le formulaire.
+ * @param setForm - La fonction de mise à jour de l'état du formulaire.
+ */
+export function setCommentaireForm(commentaire: string, setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>) {
+    setForm((form: FormCapsuleModel) => {
+        return { ...form, commentaire: commentaire }
+    });
+}
+
 let errors = false;
 /**
  * Validation du formulaire

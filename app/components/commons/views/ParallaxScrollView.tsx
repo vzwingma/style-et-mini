@@ -68,7 +68,7 @@ export default function ParallaxScrollView({
           </View>
           <View style={styles.titleHeader}>
             {backendConnexionData && getConnexionStatusIcon(backendConnexionData)}
-            <ThemedText type="italic" style={{marginRight: 10, marginTop: 10}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}/{backendConnexionData?.version}</ThemedText>
+            <ThemedText type="italic" style={{marginRight: 10, marginTop: 10, borderColor: Colors.app.background, borderWidth: 1}}>{APP_MOBILE_NAME} v {APP_MOBILE_VERSION}/{backendConnexionData?.version}</ThemedText>
           </View>          
         </Animated.View>
         <View style={styles.content}>{children}</View>

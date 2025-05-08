@@ -12,6 +12,7 @@ interface FormCapsuleModel extends GenericModel {
     dressing     : DressingModel;
     criteres     : CapsuleCritereModel[];
     nbreVetements?: number;
+    commentaire? : string;
 }
 
 
@@ -28,7 +29,8 @@ export function transformFormToCapsuleModel(form: FormCapsuleModel): CapsuleTemp
         criteres        : form.criteres,
         nbrVetements    : {
             capsule     : form.nbreVetements ?? 0,
-        }
+        },
+        commentaire     : form.commentaire ?? ''
     };
     return tenue;
 }
@@ -59,6 +61,7 @@ export function transformCapsuleToFormModel(form: FormCapsuleModel, capsuleInEdi
             dressing        : dressing,
             criteres        : capsuleInEdition.criteres ?? [],
             nbreVetements   : capsuleInEdition.nbrVetements?.capsule ?? 0,
+            commentaire     : capsuleInEdition.commentaire ?? ''
         }
     }
 export default FormCapsuleModel;
