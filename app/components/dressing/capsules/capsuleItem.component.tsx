@@ -67,11 +67,13 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
             </View>
 
 
-            { /** commentaire  */}
+            { /** commentaire  */
+            capsule.commentaire && 
             <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap", paddingTop: 10}]}>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>Commentaire</ThemedText>
                 <ThemedText type="default">{capsule.commentaire}</ThemedText>
             </View>            
+            }
         </View>
     );
 };

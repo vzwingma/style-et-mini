@@ -35,9 +35,10 @@ export default function HomeScreen({ selectNewTab }: HomeScreenProps) {
 
   return (
     <View style={styles.titleContainer}>
-      {backendConnexionData?.env !== "PROD"
+      { backendConnexionData?.env !== "PROD"
         && <ThemedText type="title">Environnement : {backendConnexionData?.env}</ThemedText>
       }
+      { backendConnexionData?.env === "PROD" && <ThemedText type="subtitle"/> }
       { dressings?.map(dressing => {
           return <DressingTabComponent key={"dressTab" + dressing.id} dressing={dressing} selectNewTab={selectNewTab} />
         })

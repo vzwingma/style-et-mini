@@ -100,7 +100,7 @@ export default function TabLayout() {
   }
 
   return (
-    <View style={{ flex: 0.95}}>
+    <>
       <ParallaxScrollView
         headerImage={getHeaderIcon(tab, dressingSelectionne?.categorie)}
         headerTitle={getHeaderTitle(tab, dressingSelectionne?.libelle)}
@@ -132,7 +132,7 @@ export default function TabLayout() {
             </> : null
         }
       </View>
-    </View>
+    </>
   );
 
 
