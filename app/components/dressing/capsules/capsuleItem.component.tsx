@@ -57,7 +57,11 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>Nb vêtements</ThemedText>
                 <ThemedText type="subtitle" style={{color:(l ?'#ffb74d' : '#81c784')}}>{capsule.nbrVetements.dressing}</ThemedText><ThemedText type="subtitle"> / {capsule.nbrVetements.capsule}</ThemedText>
             </View>
-            
+            { /** commentaire  */}
+            <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap"}]}>
+                <ThemedText type="defaultSemiBold" style={stylesForm.label}>Commentaire</ThemedText>
+                <ThemedText type="default">{capsule.commentaire}</ThemedText>
+            </View>            
         </View>
     );
 };
