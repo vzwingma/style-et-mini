@@ -8,12 +8,14 @@ import { styles } from "../dressingList.style";
 import CapsuleTemporelleModel from "@/app/models/capsule/capsuleTemporelle.model";
 import { CapsuleEmptyComponent } from "./capsuleEmpty.component";
 import { CapsuleItemComponent } from "./capsuleItem.component";
+import { JSX } from "react";
 
 
 
 export type CapsulesListComponentProps = {
     capsules: CapsuleTemporelleModel[];
     openAddEditCapsule: (capsule?: CapsuleTemporelleModel) => void;
+    viewVetementCapsule: (capsule: CapsuleTemporelleModel) => void;
 };
 
 /**
@@ -32,7 +34,7 @@ export type CapsulesListComponentProps = {
  * par un conteneur cliquable permettant d'éditer la capsule et une zone de défilement horizontal pour afficher
  * des vêtements associés (commentée dans le code).
  */
-export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ capsules, openAddEditCapsule }: CapsulesListComponentProps) => {
+export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ capsules, openAddEditCapsule, viewVetementCapsule }: CapsulesListComponentProps) => {
 
 
     /**
@@ -50,7 +52,7 @@ export const CapsulesListComponent: React.FC<CapsulesListComponentProps> = ({ ca
         let capsulesItems: JSX.Element[] = [];
         capsules.sort((caps1, caps2) => alphanumSort(caps1.libelle, caps2.libelle));
         capsules.forEach((capsule) => capsulesItems.push(
-            <CapsuleItemComponent key={capsule.id} capsule={capsule} openAddEditCapsule={openAddEditCapsule} />
+            <CapsuleItemComponent key={capsule.id} capsule={capsule} openAddEditCapsule={openAddEditCapsule} viewVetementCapsule={viewVetementCapsule} />
         ));
         return capsulesItems;
     }

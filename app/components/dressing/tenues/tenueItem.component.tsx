@@ -8,6 +8,7 @@ import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
 import { VetemenItemComponent } from "../vetements/vetementItem.component";
 import VetementModel from "@/app/models/vetements/vetements.model";
 import { alphanumSort } from "../../commons/CommonsUtils";
+import { JSX } from "react";
 
 /**
  * @description Composant d'un item de la liste des capsules

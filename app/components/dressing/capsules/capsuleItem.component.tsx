@@ -6,7 +6,7 @@ import { stylesForm } from "../vetements/vetementForm.styles";
 import { stylesItem } from "../../reglages/parametrageItem.component";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 import { renderSelectedItemView } from "../../commons/CommonsUtils";
-import VetementModel from "@/app/models/vetements/vetements.model";
+
 
 /**
  * @description Composant d'un item de la liste des capsules
@@ -17,6 +17,7 @@ import VetementModel from "@/app/models/vetements/vetements.model";
 export type CapsuleItemComponentProps = {
     readonly capsule: CapsuleTemporelleModel
     openAddEditCapsule: (capsule?: CapsuleTemporelleModel) => void
+    viewVetementCapsule: (capsule: CapsuleTemporelleModel) => void
 };
 
 
@@ -29,7 +30,7 @@ export type CapsuleItemComponentProps = {
  *
  * @returns {JSX.Element} Un composant JSX affichant les détails d'une capsule avec une option d'édition.
  */
-export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ capsule, openAddEditCapsule }: CapsuleItemComponentProps) => {
+export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ capsule, openAddEditCapsule, viewVetementCapsule }: CapsuleItemComponentProps) => {
     const l = (capsule.nbrVetements.dressing ?? 0) < capsule.nbrVetements.capsule;
     return (
         <View style={[stylesItem.container]}>
@@ -53,12 +54,21 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
                 </View>
             </View>
             { /** liste des vetements  */}
-            <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap"}]}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>Nb vêtements</ThemedText>
-                <ThemedText type="subtitle" style={{color:(l ?'#ffb74d' : '#81c784')}}>{capsule.nbrVetements.dressing}</ThemedText><ThemedText type="subtitle"> / {capsule.nbrVetements.capsule}</ThemedText>
+            <View style={[stylesItem.ligne]}>
+                <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap"}]}>
+                    <ThemedText type="defaultSemiBold" style={stylesForm.label}>Nb vêtements</ThemedText>
+                    <ThemedText type="subtitle" style={{ color: (l ? '#ffb74d' : '#81c784') }}>{capsule.nbrVetements.dressing}</ThemedText><ThemedText type="subtitle"> / {capsule.nbrVetements.capsule}</ThemedText>
+                </View>
+                { /** Icônes édition */}
+                <Pressable onPress={() => viewVetementCapsule(capsule)}>
+                    <Ionicons size={18} name="eye-outline" style={stylesItem.titleIcon} />
+                </Pressable>
+
             </View>
+
+
             { /** commentaire  */}
-            <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap"}]}>
+            <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap", paddingTop: 10}]}>
                 <ThemedText type="defaultSemiBold" style={stylesForm.label}>Commentaire</ThemedText>
                 <ThemedText type="default">{capsule.commentaire}</ThemedText>
             </View>            

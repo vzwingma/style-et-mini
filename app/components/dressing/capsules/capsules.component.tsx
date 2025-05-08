@@ -10,6 +10,7 @@ import { evaluateNbVetementsCapsules, loadCapsulesDressing } from '@/app/control
 import { CapsuleFormComponent } from './capsuleForm.component';
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
+import { CapsuleVetementsView } from './capsuleVetementsView.component';
 
 
 /**
@@ -36,6 +37,7 @@ import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.contr
 export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }: DressingComponentProps) => {
 
   const [openCapsuleForm, setOpenCapsuleForm] = useState(false);
+  const [openCapsuleVetementsView, setOpenCapsuleVetementsView] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
   const [capsules, setCapsules] = useState<CapsuleTemporelleModel[]>([]);
@@ -58,12 +60,14 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
   }, [dressing]);
 
 
+
   /**
    * 
-   * @param vetement Vêtement validé . on mets à jour la liste des vetements sans recharger
+   * @param resultat capsule validée . on mets à jour la liste des capsules sans recharger
    */
   function validateFormCallBack(resultat: APIResultFormCapsuleModel ): void {
     setOpenCapsuleForm(false);
+
     resultat.capsule = evaluateNbVetementsCapsules([resultat.capsule!], vetements)[0];
     if(resultat.created && resultat.capsule !== undefined && resultat.capsule !== null) {
       // On ajoute le vetement à la liste
@@ -94,6 +98,14 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
     setOpenCapsuleForm(true);
   };
 
+  /**
+   * 
+   * @param capsule - (Optionnel) Le modèle de capsule à éditer. Si non fourni, le formulaire sera ouvert pour ajouter une nouvelle capsule.
+   */
+  function viewVetementCapsule(capsule: CapsuleTemporelleModel): void {
+    setCapsuleInEdit(capsule || null);
+    setOpenCapsuleVetementsView(true);
+  };
 
   /**
    * Retourne le contenu du panneau en fonction de l'état actuel du dressing.
@@ -111,7 +123,7 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
       return (
         <>
           <View style={styles.container}>
-            <CapsulesListComponent capsules={capsules} openAddEditCapsule={openAddEditCapsule} />
+            <CapsulesListComponent capsules={capsules} openAddEditCapsule={openAddEditCapsule} viewVetementCapsule={viewVetementCapsule} />
           </View>
 
           <Modal presentationStyle='overFullScreen' isVisible={openCapsuleForm}
@@ -125,6 +137,16 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
                                 validateFormCallBack={validateFormCallBack}
                                 deleteFormCallBack={deleteFormCallBack} />
           </Modal>
+
+          <Modal presentationStyle='overFullScreen' isVisible={openCapsuleVetementsView}
+            animationIn='slideInRight' animationOut='slideOutRight'
+            propagateSwipe={true}
+            onBackButtonPress={() => setOpenCapsuleVetementsView(false)}
+            onBackdropPress={() => setOpenCapsuleVetementsView(false)}
+            style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
+            <CapsuleVetementsView dressing={dressing} capsule={capsuleInEdit} 
+                                closeFormCallBack={() => setOpenCapsuleVetementsView(false)} />
+          </Modal>         
         </>);
     }
   }

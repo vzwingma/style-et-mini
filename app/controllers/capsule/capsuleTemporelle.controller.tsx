@@ -78,7 +78,7 @@ export function evaluateNbVetementsCapsules(capsules: CapsuleTemporelleModel[], 
  * en vérifiant si au moins un critère de chaque groupe est satisfait. Si aucun critère n'est fourni, la liste
  * originale des vêtements est retournée sans modification.
  */
-function applyCriteresOnVetements(criteres: CapsuleCritereModel[], vetements: VetementModel[]): VetementModel[] {
+export function applyCriteresOnVetements(criteres: CapsuleCritereModel[], vetements: VetementModel[]): VetementModel[] {
   if(criteres.length === 0) {
     return vetements;
   }
