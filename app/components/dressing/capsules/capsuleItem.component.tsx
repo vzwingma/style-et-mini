@@ -66,7 +66,6 @@ export const CapsuleItemComponent: React.FC<CapsuleItemComponentProps> = ({ caps
 
             </View>
 
-
             { /** commentaire  */
             capsule.commentaire && 
             <View style={[stylesForm.rowItems, {alignContent: "center", flexWrap: "wrap", paddingTop: 10}]}>
