@@ -5,6 +5,7 @@ import GenericModel from "../generic.model";
 import VetementModel from "../vetements/vetements.model";
 import TenueModel from "./tenue.model";
 import TenueVetementModel from "./tenue.vetements.model";
+import TenueImageModel from "./tenue.image.model";
 
 /**
  * Modèle représentant un vetement dans le formulaire
@@ -13,6 +14,7 @@ interface FormTenueModel extends GenericModel {
     dressing     : DressingModel;
     vetements?   : VetementModel[] | null;
     statut       : StatutVetementEnum | null;
+    image?       : TenueImageModel | null;
 }
 
 
@@ -33,6 +35,7 @@ export function transformFormToTenueModel(form: FormTenueModel): TenueModel {
                 image   : vetement.image,
             }}),
         statut: form.statut,
+        image: form.image
     };
     return tenue;
 }
@@ -67,7 +70,8 @@ export function transformTenueToFormModel(form: FormTenueModel, tenueInEdition: 
                     libelle : vetement.libelle,
                     image   : vetement.image,
                 } as VetementModel}),
-            statut          : tenueInEdition.statut ?? StatutVetementEnum.ACTIF
+            statut          : tenueInEdition.statut ?? StatutVetementEnum.ACTIF,
+            image           : tenueInEdition.image
         }
     }
 export default FormTenueModel;
