@@ -5,10 +5,11 @@ import { stylesForm } from "../vetements/vetementForm.styles";
 import { stylesItem } from "../../reglages/parametrageItem.component";
 import TenueModel from "@/app/models/tenues/tenue.model";
 import TenueVetementModel from "@/app/models/tenues/tenue.vetements.model";
-import { VetemenItemComponent } from "../vetements/vetementItem.component";
 import VetementModel from "@/app/models/vetements/vetements.model";
 import { alphanumSort } from "../../commons/CommonsUtils";
 import { JSX } from "react";
+import { TenueItemImageComponent } from "./tenueItemImage.component";
+import { TenueItemVetementComponent } from "./tenueItemVetements.component";
 
 /**
  * @description Composant d'un item de la liste des capsules
@@ -45,7 +46,7 @@ export const TenueItemComponent: React.FC<TenueItemComponentProps> = ({ tenue, o
         let vetementsItems: JSX.Element[] = [];
         vetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
         vetements.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item as VetementModel} />);
+            vetementsItems.push(<TenueItemVetementComponent key={item.id} vetement={item as VetementModel} />);
         });
         return vetementsItems;
     }
@@ -62,10 +63,15 @@ export const TenueItemComponent: React.FC<TenueItemComponentProps> = ({ tenue, o
                     </Pressable>
                 </View>
             </View>
-            { /** Formulaire  */}
-            <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={true} >
+            <View style={stylesForm.rowItems}>
+            {
+                tenue.image && <TenueItemImageComponent image={tenue.image} />
+            }
+            { /** liste des vêtements de la tenue  */}
+            <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={tenue.image ? false : true} >
                 {showPanelVetementsTenue(tenue.vetements ?? [])}
             </ScrollView>
+            </View>
         </View>
     );
 };

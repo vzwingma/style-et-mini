@@ -9,6 +9,7 @@ import TenueModel from "@/app/models/tenues/tenue.model";
 import { TenueEmptyComponent } from "./tenuesEmpty.component";
 import DressingModel from "@/app/models/dressing.model";
 import { TenueItemComponent } from "./tenueItem.component";
+import { JSX } from "react";
 
 
 

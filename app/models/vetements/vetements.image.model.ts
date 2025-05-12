@@ -1,12 +1,11 @@
+import TenueImageModel from "../tenues/tenue.image.model";
+
 /**
  * Modèle représentant une image d'un vetement dans le formulaire
  */
-interface VetementImageModel {
+interface VetementImageModel extends TenueImageModel {
     localUri?           : string;
-    s3uri?              : string;
     displayUri?         : string;
-    readonly hauteur?   : number;
-    readonly largeur?   : number;
 }
 
 
