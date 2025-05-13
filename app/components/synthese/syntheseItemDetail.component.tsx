@@ -81,8 +81,8 @@ export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         {
-          detailsSynhese.map((item, index) => (
-            <View  key={index}><ThemedText type="default" style={{ color: Colors.dark.text, marginTop: 10 }}>{item}</ThemedText></View>
+          detailsSynhese.map((item: string) => (
+            <View  key={item}><ThemedText type="default" style={{ color: Colors.dark.text, marginTop: 10 }}>{item}</ThemedText></View>
           ))
         }
       </ScrollView>

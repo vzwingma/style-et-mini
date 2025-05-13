@@ -14,23 +14,32 @@ export type VetementItemComponentProps = {
     editVetement?: (vetement: VetementModel, selected?: boolean) => void;
 };
 
+
+
+
 /**
  * Composant principal pour un vêtement
  *
- * @returns {JSX.Element} Le composant de l'écran 
+ * @returns {JSX.Element} Le composant de l'écran
  *
  * @component
  **/
 export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, selected, editVetement }: VetementItemComponentProps) => {
-    
+
     const vetementImageToShow = vetement.image ? resizeImage(vetement.image, 100) : null;
 
     const isInTenueForm = editVetement?.name === "editVetement";
-    const containerStyle = selected ? styles.selected : (isInTenueForm ? styles.unselected : null);
+    
+    const getContainerStyle = (selected: boolean | undefined, isInTenueForm: boolean) => {
+        if (selected) return styles.selected;
+        if (isInTenueForm) return styles.unselected;
+        return null;
+    };
+    const containerStyle = getContainerStyle(selected, isInTenueForm);
 
     return (
         <Pressable onPress={() => editVetement ? editVetement(vetement, !selected) : null}>
-            
+
             <View key={vetement.id} style={[styles.body, containerStyle]}>
                 <View style={[styles.photoFrame, !vetementImageToShow ? { borderColor: Colors.app.backgroundLight, borderWidth: 1, } : null]}>
                     {vetementImageToShow    && <Image source={{ uri: vetementImageToShow.displayUri }} width={vetementImageToShow.largeur} height={vetementImageToShow.hauteur} />}
