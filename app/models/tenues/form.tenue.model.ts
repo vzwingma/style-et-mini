@@ -35,7 +35,10 @@ export function transformFormToTenueModel(form: FormTenueModel): TenueModel {
                 image   : vetement.image,
             }}),
         statut: form.statut,
-        image: form.image
+        image: form.image ?? {
+            hauteur: 1536,
+            largeur: 1024,
+        } as TenueImageModel
     };
     return tenue;
 }

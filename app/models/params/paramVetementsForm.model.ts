@@ -8,7 +8,7 @@ import GenericModel from "../generic.model";
 interface ParamVetementsFormModel extends GenericModel{
     readonly typeParam  : ParametragesVetementEnum;
     categories          : CategorieDressingEnum[];
-    type?               : TypeTailleEnum; 
+    types?              : TypeTailleEnum[]; 
     tri?                : number;
     isModified          : boolean;
 
@@ -33,11 +33,11 @@ export function initNewForm(typeParametrage : ParametragesVetementEnum) : ParamV
 
     switch (typeParametrage) {
         case ParametragesVetementEnum.TAILLES:
-            form = { ...form, type: TypeTailleEnum.VETEMENTS, tri: 0 };
+            form = { ...form, types: [TypeTailleEnum.VETEMENTS], tri: 0 };
             break;
         case ParametragesVetementEnum.TYPES:
         case ParametragesVetementEnum.MARQUES:
-            form = { ...form, type: TypeTailleEnum.VETEMENTS };
+            form = { ...form, types: [TypeTailleEnum.VETEMENTS] };
             break;
         case ParametragesVetementEnum.ETATS:
             form = { ...form, tri: 0 };
@@ -78,11 +78,11 @@ export function transformFormToParamVetements(form: ParamVetementsFormModel, typ
     // Complétion des éléments spécifiques au type de paramétrage
     switch (typeParametrage) {
         case ParametragesVetementEnum.TAILLES:
-            parametreVetements = { ...parametreVetements, type: form.type, tri: form.tri };
+            parametreVetements = { ...parametreVetements, types: form.types, tri: form.tri };
             break;
         case ParametragesVetementEnum.TYPES:
         case ParametragesVetementEnum.MARQUES:
-            parametreVetements = { ...parametreVetements, type: form.type };
+            parametreVetements = { ...parametreVetements, types: form.types };
             break;
         case ParametragesVetementEnum.ETATS:
             parametreVetements = { ...parametreVetements, tri: form.tri };
@@ -106,7 +106,7 @@ export function tranformParamVetementToForm(typeParametrage : ParametragesVeteme
         typeParam   : typeParametrage,
         libelle     : parametreVetements.libelle,
         categories  : parametreVetements.categories,
-        type        : parametreVetements.type,
+        types       : parametreVetements.types,
         tri         : parametreVetements.tri,
         isModified  : parametreVetements.id === ID_NEW_ELEMENT,
     } as ParamVetementsFormModel;

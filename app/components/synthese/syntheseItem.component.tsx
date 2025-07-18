@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import DressingModel from "@/app/models/dressing.model";
 import VetementModel from "@/app/models/vetements/vetements.model";
-import { getCollections as getCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections as getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
+import { getCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
 import { useState } from "react";
 import Modal from 'react-native-modal';
 import { SyntheseDetailEnum, SyntheseItemDetailComponent } from "./syntheseItemDetail.component";

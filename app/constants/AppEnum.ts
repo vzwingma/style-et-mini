@@ -85,16 +85,35 @@ export enum CategorieDressingEnum {
   ADULTE = 'ADULTE'
 }
 
+/**
+ * 
+ * @param enumCategorie - La catégorie de dressing à convertir en libellé.
+ * @returns le libellé correspondant à la catégorie de dressing.
+ */
+export function getLibelleCategorieEnum(enumCategorie: CategorieDressingEnum): string {
+  switch (enumCategorie) {
+    case CategorieDressingEnum.BEBE:
+      return "Bébé";
+    case CategorieDressingEnum.ENFANT:
+      return "Enfant";
+    case CategorieDressingEnum.ADULTE:
+      return "Adulte";
+    default:
+      return "Inconnu";
+  }
+}
 
 /**
  * Enumération représentant les différents types de tailles.
  * 
  * @enum {string}
  * @property {string} VETEMENTS - Représente les tailles pour les vêtements.
+ * @property {string} CHAUSSETTES - Représente les tailles pour les vêtements.* 
  * @property {string} CHAUSSURES - Représente les tailles pour les chaussures.
  */
 export enum TypeTailleEnum {
   VETEMENTS = 'VETEMENTS',
+  CHAUSSETTES = 'CHAUSSETTES',
   CHAUSSURES = 'CHAUSSURES'
 }
 
@@ -102,8 +121,10 @@ export function getLibelleTypeTailleEnum(enumTaille: TypeTailleEnum): string {
   switch (enumTaille) {
     case TypeTailleEnum.VETEMENTS:
       return "Vêtements";
-    case TypeTailleEnum.CHAUSSURES:
-      return "Chaussures/Chaussettes";
+    case TypeTailleEnum.CHAUSSETTES:
+      return "Chaussettes/Collants";
+      case TypeTailleEnum.CHAUSSURES:
+      return "Chaussures";
     default:
       return "Inconnu";
   }

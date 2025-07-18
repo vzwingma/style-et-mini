@@ -119,6 +119,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 { /** Formulaire  */}
                 <ParametragesFormComponent
                     key={"form_" + typeParametrage + "_" + parametrageVetements.id}
+                    typeParametrage={typeParametrage}
                     parametrageVetements={parametrageVetements}
                     paramIsInEdition={isSelected}
                     form={form}
@@ -138,7 +139,7 @@ export const stylesItem = StyleSheet.create({
         borderBottomRightRadius: 10,
         backgroundColor: Colors.app.background,
         borderColor: Colors.app.backgroundLight,
-        borderWidth: 2,
+        borderWidth: 2
     },
     containerSelected: {
         borderColor: Colors.app.color,

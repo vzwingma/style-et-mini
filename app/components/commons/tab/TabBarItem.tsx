@@ -5,6 +5,7 @@ import { getTabIcon, getTabOutfitIcon, TabBarIcon } from "./TabBarIcon";
 import { ThemedText } from "../views/ThemedText";
 import { CategorieDressingEnum } from "@/app/constants/AppEnum";
 import DressingModel from "@/app/models/dressing.model";
+import { JSX } from "react";
 
 // Propriétés des onglets
 interface TabBarItemsProps {
@@ -55,20 +56,24 @@ export function TabBarItems({ activeTab, thisTab, selectNewTab, activeDressing }
  * @returns {JSX.Element} L'élément JSX représentant l'icône de la barre d'onglets.
  */
 function getTabBarIcon({ activeTab, activeDressing, thisTab }: Readonly<TabBarIconsProps>): JSX.Element {
+
+
   const selectedTab: boolean = activeTab === thisTab;
+  const selectedColor = selectedTab ? Colors.app.color : '#ffffff';
+
   switch (thisTab) {
     case Tabs.INDEX:
-      return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
+      return <TabBarIcon name={"home" + (selectedTab ? "" : "-outline")} color={selectedColor} />
     case Tabs.DRESSING:
-      return <Image source={selectedTab ? require('@/assets/icons/synth.png') : require('@/assets/icons/synth-outline.png')} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff')}} />
+      return <Image source={selectedTab ? require('@/assets/icons/synth.png') : require('@/assets/icons/synth-outline.png')} style={{ width: 30, height: 30, tintColor: selectedColor}} />
     case Tabs.VETEMENTS:
-      return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff')}} />
+      return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: selectedColor}} />
     case Tabs.TENUES:
-      return <Image source={getTabOutfitIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff') }} />
+      return <Image source={getTabOutfitIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: selectedColor }} />
     case Tabs.CAPSULE:
-      return <Image source={selectedTab ? require('@/assets/icons/closet.png') : require('@/assets/icons/closet-outline.png')} style={{ width: 30, height: 30, tintColor: (selectedTab ? Colors.app.color : '#ffffff'), cursor: 'pointer' }} />
+      return <Image source={selectedTab ? require('@/assets/icons/closet.png') : require('@/assets/icons/closet-outline.png')} style={{ width: 30, height: 30, tintColor: selectedColor, cursor: 'pointer' }} />
     case Tabs.REGLAGES:
-      return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedTab ? Colors.app.color : '#ffffff'} />
+      return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedColor} />
     default:
       return <></>;
   }
