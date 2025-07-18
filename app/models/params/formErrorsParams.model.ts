@@ -9,8 +9,8 @@ interface ErrorsFormParametrageModel {
     categoriesInError  : boolean;
     readonly categoriesMessage  : string;
 
-    typeInError  : boolean;
-    readonly typeMessage  : string;
+    typesInError  : boolean;
+    readonly typesMessage  : string;
 
     triInError  : boolean;
     readonly triMessage  : string;
@@ -23,8 +23,8 @@ export const defaultErrorsFormParametrageModel: ErrorsFormParametrageModel = {
     categoriesInError : false,
     categoriesMessage : "Au moins une catégorie est obligatoire",
     
-    typeInError     : false,
-    typeMessage     : "Le type du paramètre est obligatoire",
+    typesInError     : false,
+    typesMessage     : "Au moins un type est obligatoire",
     
     triInError   : false,
     triMessage   : "L'ordre du paramètre est obligatoire et doit être au format numérique",

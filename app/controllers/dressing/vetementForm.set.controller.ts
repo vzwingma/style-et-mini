@@ -30,7 +30,8 @@ export function getTaillesMesuresForm(taillesMesures: ParamGenericVetementsModel
         .filter((taille) => taille.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .filter((taille) => taille.type === form.type.type)
+        .filter((taille) => (taille.types ?? [])
+                                .filter((type) => type === form.type.types?.[0]).length > 0)
         .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
 
@@ -65,7 +66,9 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
         .filter((marque: ParamGenericVetementsModel) => marque.categories
             .filter((cat) => cat === dressing.categorie)
             .length > 0)
-        .filter((marque) => marque.type === form.type.type)
+        .filter((marque) => (marque.types ?? [])
+                                .filter((type) => type === form.type.types?.[0])
+                                .length > 0)
         .sort((m1, m2) => alphanumSort(m1.libelle, m2.libelle));
 }
 
