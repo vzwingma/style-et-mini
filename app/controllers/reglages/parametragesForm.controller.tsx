@@ -42,13 +42,23 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
 
 
 /**
+ * Enregistre les types type de vêtements dans le formulaire
+ * @param types types de vêtements
+ * @param setForm  fonction de mise à jour du formulaire
+ */
+export function setTypesForm(types: string[], setForm: Function) {
+    setForm((form: ParamVetementsFormModel) => {
+        return { ...form, isModified: true, types: types }
+    });
+}
+/**
  * Enregistre le type de vêtements dans le formulaire
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypeForm(type: { id: TypeTailleEnum, libelle: string }, setForm: Function) {
+export function setTypeForm(type: string, setForm: Function) {
     setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, type: type.id }
+        return { ...form, isModified: true, types: [type] }
     });
 }
 
@@ -140,7 +150,7 @@ export function validateForm(form: ParamVetementsFormModel | null,
     validateAttribute("categories", form.categories === undefined || form.categories === null || form.categories.length === 0
         , setErrorsForm);
     if (form.typeParam === ParametragesVetementEnum.TAILLES || form.typeParam === ParametragesVetementEnum.MARQUES || form.typeParam === ParametragesVetementEnum.TYPES) {
-        validateAttribute("type", form.type === undefined || form.type === null
+        validateAttribute("types", form.types === undefined || form.types === null
             , setErrorsForm);
     };
 
