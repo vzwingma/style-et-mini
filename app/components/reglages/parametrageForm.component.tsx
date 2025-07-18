@@ -65,10 +65,11 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
             </View>
         </View>
         {((form?.types || parametrageVetements.types) && (typeParametrage === ParametragesVetementEnum.TAILLES || typeParametrage === ParametragesVetementEnum.MARQUES)) &&
-            <View style={stylesForm.rowItems}>
-                <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Types") : "Types"}</ThemedText>
-                <View style={[stylesForm.filtre, stylesForm.rowItems]}>
-                    {!paramIsInEdition ?
+        
+        <View style={stylesForm.rowItems}>
+            <ThemedText type="defaultSemiBold" style={stylesForm.label}>{paramIsInEdition ? renderLabelMandatory("Types") : "Types"}</ThemedText>
+            <View style={[stylesForm.filtre, stylesForm.rowItems]}>
+                {!paramIsInEdition ?
                     parametrageVetements.types?.map((type: TypeTailleEnum, index: number) => {
                         return renderSelectedItemView({ id: type, libelle: getLibelleTypeTailleEnum(type) }, index);
                     }) ?? ''    
@@ -84,10 +85,10 @@ export const ParametragesFormComponent: React.FC<ParametragesFormComponentProps>
                             value={form?.types?.map((typeTaille: TypeTailleEnum) => (typeTaille.toString())) ?? []}
                             onChange={item => setTypesForm(item, setForm)}
                             renderSelectedItem={renderSelectedItem}
-                        /> </View>
+                        /></View>
                     }
-                </View>
             </View>
+        </View>
         }
         {
         ((form?.types || parametrageVetements.types) && (typeParametrage === ParametragesVetementEnum.TYPES)) &&

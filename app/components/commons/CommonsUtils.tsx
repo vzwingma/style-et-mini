@@ -238,7 +238,7 @@ export const renderSelectedItem = (item: any, unSelect?: any, index?: number): R
         style={stylesForm.selectedStyle}
         onPress={() => unSelect?.(item)}>
         <View style={stylesForm.rowItems}>
-            <ThemedText type="default">{item.libelle}</ThemedText>
+            <ThemedText type="default">{item.libelle} </ThemedText>
             {unSelect &&
                 <Ionicons style={stylesForm.icon} color={'white'} name="close-circle-outline" size={18} />
             }
