@@ -129,7 +129,7 @@ export const stylesForm = StyleSheet.create({
     },
     rowItems: {
         flexDirection: 'row', 
-        alignItems: 'center'
+        alignItems: 'center'        
     },
 
     // Style de la liste déroulante d'un dropdown

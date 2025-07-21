@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import BackendConfigModel from "../models/backendConfig.model";
 import DressingModel from "../models/dressing.model";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
