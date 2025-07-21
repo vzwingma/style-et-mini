@@ -33,7 +33,7 @@ export function getNbVetementsAvecPrix(Vetements: VetementModel[], type: "achat"
   if (Vetements.length === 0) {
     return 0;
   }
-  return Vetements.filter((vetement) => vetement.prix?.[type] !== undefined && vetement.prix?.[type] !== null).length;
+  return Vetements.filter((vetement) => vetement.prix?.[type] !== undefined && vetement.prix?.[type] !== null).length
 }
 
 
@@ -44,13 +44,12 @@ export function getNbVetementsAvecPrix(Vetements: VetementModel[], type: "achat"
  * @param type - Type de prix à vérifier ("achat" ou "neuf").
  * @returns Le nombre de vêtements avec un prix défini pour le type donné, ou `null` si le tableau est vide.
  */
-export function getVetementsSansPrix(Vetements: VetementModel[], type: "achat" | "neuf"): string[] {
+export function getVetementsSansPrix(Vetements: VetementModel[], type: "achat" | "neuf"): VetementModel[] {
   if (Vetements.length === 0) {
     return [];
   }
   return Vetements.filter((vetement) => vetement.prix?.[type] === undefined || vetement.prix?.[type] === null || vetement.prix?.[type] === 0 )
-                  .map((vetement) => vetement.libelle)
-                  .sort(alphanumSort);
+                  .sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
 }
 
 /**
@@ -68,9 +67,7 @@ export function getNbVetementAvecCollections(vetements: VetementModel[]): number
   if (vetements.length === 0) {
     return 0;
   }
-  
-  const sansCollection = getLibelleVetementsSansCollections(vetements);
-  return vetements.length - sansCollection.length;
+  return vetements.length - getLibelleVetementsSansCollections(vetements).length;
 }
 
 
@@ -81,18 +78,32 @@ export function getNbVetementAvecCollections(vetements: VetementModel[]): number
  * @param vetements - Tableau des modèles de vêtements à analyser.
  * @returns Une liste triée et sans doublons des libellés des vêtements n'ayant pas de collection.
  */
-export function getLibelleVetementsSansCollections(vetements: VetementModel[]): string[] {
+export function getLibelleVetementsSansCollections(vetements: VetementModel[]): VetementModel[] {
   if (vetements.length === 0) {
     return [];
   }
   
   return vetements.filter((vetement) => vetement.collection === undefined || vetement.collection === null || vetement.collection === "")
-                  .map((vetement) => vetement.libelle)
-                  .filter((libelle, index, self) => self.indexOf(libelle) === index) // Filtre les doublons
-                  .sort(alphanumSort);
+                  .filter((vetement, index, self) => self.indexOf(vetement) === index) // Filtre les doublons
+                  .sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
 };
 
-
+/**
+ * Retourne les derniers ajouts de vêtements.
+ * 
+ * @param vetements - Tableau des modèles de vêtements à analyser.
+ * @param nbVetements - Nombre de vêtements à retourner.
+ * @returns Une liste triée et sans doublons des libellés des vêtements n'ayant pas de collection.
+ */
+export function getDerniersAjoutsVetements(vetements: VetementModel[], nbVetements: number): VetementModel[] {
+  if (vetements.length === 0) {
+    return [];
+  }
+  // return vetements.slice(vetements.length - nbVetements, vetements.length);
+  return vetements
+        .filter((vetement) => vetement.dateCreation !== undefined && vetement.dateCreation !== null)
+        .sort((a, b) => new Date(b.dateCreation??0).getTime() - new Date(a.dateCreation??0).getTime()).slice(0, nbVetements);
+}
 
 /**
  * Calcule le nombre de vêtements ayant un prix défini pour un type donné.

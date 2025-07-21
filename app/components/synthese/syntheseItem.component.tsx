@@ -5,10 +5,13 @@ import { stylesForm } from "../dressing/vetements/vetementForm.styles";
 import DressingModel from "@/app/models/dressing.model";
 import VetementModel from "@/app/models/vetements/vetements.model";
 import { getCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from 'react-native-modal';
 import { SyntheseDetailEnum, SyntheseItemDetailComponent } from "./syntheseItemDetail.component";
-
+import { getHeaderTitle } from '@/app/components/commons/tab/TabHeader';
+import { Tabs } from "@/app/constants/TabsEnums";
+import { Ionicons } from "@expo/vector-icons";
+import { stylesItem } from "../reglages/parametrageItem.component";
 /**
  * @description Composant d'un item de la liste des capsules
  * @param {ParametragesItemComponentProps} props - Propriétés du composant
@@ -47,12 +50,16 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
         setOpen(!open);
     };
 
-
+    const nbVetements = vetements.length;
+    const nbVetementsAvecPrixAchat = getNbVetementsAvecPrix(vetements, 'achat');
+    const nbVetementsSansPrixAchat = nbVetements - (nbVetementsAvecPrixAchat??0);
+    const nbVetementsAvecPrixNeuf = getNbVetementsAvecPrix(vetements, 'neuf');
+    const nbVetementsSansPrixNeuf = nbVetements - (nbVetementsAvecPrixNeuf??0);
     return (
         <>
             <View style={[styles.container]}>
                 <View style={styles.title}>
-                    <ThemedText type="subtitle">{dressing.libelle}</ThemedText>
+                    <ThemedText type="subtitle">{ getHeaderTitle(Tabs.VETEMENTS, dressing.libelle) }</ThemedText>
                     <ThemedText />
                 </View>
                 { /** VETEMENTS  */}
@@ -63,14 +70,14 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 <View style={stylesForm.rowItems}>
                     <ThemedText type="default" style={styles.label2}>- Valeur à l'achat</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_PRIX_ACHAT)} style={[stylesForm.rowItems, { width: '60%' }]}>
-                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>({getNbVetementsAvecPrix(vetements, 'achat')} vêtements)</ThemedText>
+                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>{nbVetementsAvecPrixAchat} vêtements (-{nbVetementsSansPrixAchat})</ThemedText>
                         <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}>{getDressingValue(vetements, 'achat')?.toLocaleString('fr-FR') ?? "-"} €</ThemedText>
                     </Pressable>
                 </View>
                 <View style={stylesForm.rowItems}>
-                    <ThemedText type="default" style={styles.label2}>- Valeur prix neufs</ThemedText>
+                    <ThemedText type="default" style={styles.label2}>- Valeur neuf</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_PRIX_NEUF)} style={[stylesForm.rowItems, { width: '60%' }]}>
-                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>({getNbVetementsAvecPrix(vetements, 'neuf')} vêtements)</ThemedText>
+                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>{nbVetementsAvecPrixNeuf} vêtements (-{nbVetementsSansPrixNeuf})</ThemedText>
                         <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}>{getDressingValue(vetements, 'neuf')?.toLocaleString('fr-FR') ?? "-"} €</ThemedText>
                     </Pressable>
                 </View>
@@ -85,7 +92,7 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 <View style={stylesForm.rowItems}>
                     <ThemedText type="default" style={styles.label2}>- Collections</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_COLLECTIONS)} style={[stylesForm.rowItems, { width: '60%' }]}>
-                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>({getNbVetementAvecCollections(vetements)} vêtements)</ThemedText>
+                        <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>{getNbVetementAvecCollections(vetements)} vêtements</ThemedText>
                         <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}></ThemedText>
                     </Pressable>
                 </View>
@@ -101,7 +108,17 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                     <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de capsules</ThemedText>
                     <ThemedText type="subtitle" style={styles.value}>{capsules}</ThemedText>
                 </View>
-
+                { /** Derniers ajouts  */}
+                <View style={styles.interligne} />
+         
+                <View style={stylesForm.rowItems}>
+                    <ThemedText type="defaultSemiBold" style={styles.label}>Derniers ajouts</ThemedText>
+                    <ThemedText type="subtitle" style={styles.value}>
+                        <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.DERNIERS_AJOUTS)}>
+                            <Ionicons size={18} name="eye-outline" style={stylesItem.titleIcon} />
+                        </Pressable>
+                    </ThemedText>
+                </View>
             </View>
             <Modal presentationStyle='overFullScreen' isVisible={open}
                 animationIn='slideInRight' animationOut='slideOutRight'

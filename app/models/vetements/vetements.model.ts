@@ -26,5 +26,6 @@ interface VetementModel extends GenericModel {
     readonly prix?       : VetementPrixModel;
     readonly description?: string | null;
     statut               : StatutVetementEnum;
+    dateCreation?        : Date;
 }
 export default VetementModel;
