@@ -78,8 +78,7 @@ export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({
 
         let vetementsItems: JSX.Element[] = [];
         detailsSynthese.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item as VetementModel} />);
-        });
+            vetementsItems.push(<VetemenItemComponent key={"synthese" + item.id} vetement={item as VetementModel} />)});
         return vetementsItems;
     }
 

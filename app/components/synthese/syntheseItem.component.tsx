@@ -63,18 +63,18 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                     <ThemedText />
                 </View>
                 { /** VETEMENTS  */}
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de vêtements</ThemedText>
                     <ThemedText type="subtitle" style={styles.value}>{vetements.length}</ThemedText>
                 </View>
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="default" style={styles.label2}>- Valeur à l'achat</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_PRIX_ACHAT)} style={[stylesForm.rowItems, { width: '60%' }]}>
                         <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>{nbVetementsAvecPrixAchat} vêtements (-{nbVetementsSansPrixAchat})</ThemedText>
                         <ThemedText type="italic" style={[styles.value2, { width: '40%' }]}>{getDressingValue(vetements, 'achat')?.toLocaleString('fr-FR') ?? "-"} €</ThemedText>
                     </Pressable>
                 </View>
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="default" style={styles.label2}>- Valeur neuf</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_PRIX_NEUF)} style={[stylesForm.rowItems, { width: '60%' }]}>
                         <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>{nbVetementsAvecPrixNeuf} vêtements (-{nbVetementsSansPrixNeuf})</ThemedText>
@@ -83,13 +83,13 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 </View>
                 <View style={styles.interligne} />
                 { /** COLLECTIONS  */}
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de collections</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.COLLECTIONS_LISTE)} style={styles.value}>
                         <ThemedText type="subtitle" style={{ textAlign: 'right' }}>{getCollections(vetements).length}</ThemedText>
                     </Pressable>
                 </View>
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="default" style={styles.label2}>- Collections</ThemedText>
                     <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.NO_COLLECTIONS)} style={[stylesForm.rowItems, { width: '60%' }]}>
                         <ThemedText type="default" style={[styles.value2, { width: '60%' }]}>{getNbVetementAvecCollections(vetements)} vêtements</ThemedText>
@@ -98,24 +98,24 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
                 </View>
                 <View style={styles.interligne} />
                 { /** TENUES  */}
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de tenues</ThemedText>
                     <ThemedText type="subtitle" style={styles.value}>{tenues}</ThemedText>
                 </View>
                 <View style={styles.interligne} />
                 { /** CAPSULES  */}
-                <View style={stylesForm.rowItems}>
+                <View style={styles.rowItems}>
                     <ThemedText type="defaultSemiBold" style={styles.label}>Nombre de capsules</ThemedText>
                     <ThemedText type="subtitle" style={styles.value}>{capsules}</ThemedText>
                 </View>
-                { /** Derniers ajouts  */}
-                <View style={styles.interligne} />
-         
-                <View style={stylesForm.rowItems}>
+            </View>         
+            { /** Derniers ajouts  */}
+            <View style={[styles.container]}>
+                <View style={styles.rowItems}>
                     <ThemedText type="defaultSemiBold" style={styles.label}>Derniers ajouts</ThemedText>
                     <ThemedText type="subtitle" style={styles.value}>
                         <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.DERNIERS_AJOUTS)}>
-                            <Ionicons size={18} name="eye-outline" style={stylesItem.titleIcon} />
+                            <Ionicons size={18} name="eye-outline" style={styles.eyeIcon} />
                         </Pressable>
                     </ThemedText>
                 </View>
@@ -150,41 +150,59 @@ const styles = StyleSheet.create({
     title: {
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
         width: '100%',
-        marginBottom: 5,
+        marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colors.app.color,
+    },
+    rowItems: { 
+        flexDirection: 'row',
     },
     interligne: {
         width: '100%',
         marginTop: 15,
+        marginBottom: 10,
         borderColor: Colors.app.backgroundLight,
-        borderWidth: 0.5,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.app.color,
+        borderWidth: 1,
     },
     label: {
         width: '50%',
-        marginTop: 15,
-        marginBottom: 5
+        height: 22,
+        marginTop: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
     },
     label2: {
         width: '40%',
-        marginTop: 5,
+        marginTop: 3,
         paddingLeft: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+
     },
     value: {
         width: '50%',
-        marginTop: 15,
-        marginBottom: 5,
+        marginTop: 5,
         textAlign: 'right',
+
     },
     value2: {
-        marginTop: 5,
+        marginTop: 3,
         textAlign: 'right',
         fontStyle: 'italic',
         color: Colors.app.color,
+
     },
+    eyeIcon: {
+        color: Colors.dark.text,
+        borderColor: 'white',
+        borderWidth: 0,
+        borderRadius: 2,
+        margin: 5,
+        height: 20,
+        width: 20,
+    },    
 }
 );
