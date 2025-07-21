@@ -4,7 +4,10 @@ import VetementModel from '@/app/models/vetements/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
-import { getCollections, getLibelleVetementsSansCollections, getVetementsSansPrix } from '@/app/controllers/synthese/syntheseDressing.controller';
+import { getCollections, getDerniersAjoutsVetements, getLibelleVetementsSansCollections, getVetementsSansPrix } from '@/app/controllers/synthese/syntheseDressing.controller';
+import { JSX } from 'react';
+import { alphanumSort } from '../commons/CommonsUtils';
+import { VetemenItemComponent } from '../dressing/vetements/vetementItem.component';
 
 
 
@@ -19,6 +22,7 @@ export enum SyntheseDetailEnum {
   NO_PRIX_NEUF = "vêtements sans prix neuf",
   NO_COLLECTIONS = "vêtements sans collection",
   COLLECTIONS_LISTE = "collections",
+  DERNIERS_AJOUTS = "vêtements ajoutés ce mois",
 }
 
 
@@ -33,7 +37,7 @@ export enum SyntheseDetailEnum {
  *   - `SyntheseDetailEnum.COLLECTIONS_LISTE` : Retourne la liste des collections.
  * @returns Une liste de chaînes de caractères correspondant aux détails demandés, ou une liste vide si aucun détail ne correspond.
  */
-function getDetailSynthese(vetements: VetementModel[], detail: SyntheseDetailEnum): string[] {
+function getDetailSynthese(vetements: VetementModel[], detail: SyntheseDetailEnum): VetementModel[] | string[]{
   switch (detail) {
     case SyntheseDetailEnum.NO_PRIX_ACHAT:
       return getVetementsSansPrix(vetements, 'achat');
@@ -43,6 +47,8 @@ function getDetailSynthese(vetements: VetementModel[], detail: SyntheseDetailEnu
       return getLibelleVetementsSansCollections(vetements) ?? [];
     case SyntheseDetailEnum.COLLECTIONS_LISTE:
       return getCollections(vetements);
+    case SyntheseDetailEnum.DERNIERS_AJOUTS:
+      return getDerniersAjoutsVetements(vetements, 15);      
     default:
       return [];
   }
@@ -64,34 +70,50 @@ function getDetailSynthese(vetements: VetementModel[], detail: SyntheseDetailEnu
  */
 export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({ vetements, details, closeDrawer }: SyntheseItemDetailProps) => {
 
-  const detailsSynhese = getDetailSynthese(vetements, details);
+  let detailsSynthese = getDetailSynthese(vetements, details)
+  /**
+   * Calcule les détails de synthèse en fonction du type de détail spécifié.
+   */
+  function showPanelVetementsSynthese(detailsSynthese: VetementModel[]): React.JSX.Element[] {
+
+        let vetementsItems: JSX.Element[] = [];
+        detailsSynthese.forEach((item) => {
+            vetementsItems.push(<VetemenItemComponent key={"synthese" + item.id} vetement={item as VetementModel} />)});
+        return vetementsItems;
+    }
+
+
+
 
   return (
-    <View style={styleParams.body}>
-      <View style={styleParams.title}>
+    <View style={styleSynthese.body}>
+      <View style={styleSynthese.title}>
 
         <Pressable onPress={() => closeDrawer()}>
           <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
         </Pressable>
 
         <View style={{ flexDirection: "row", gap: 10, paddingRight: 10, alignItems: "center" }}>
-          <ThemedText type="subtitle">{detailsSynhese.length} {details}</ThemedText>
+          <ThemedText type="subtitle">{detailsSynthese.length} {details}</ThemedText>
         </View>
 
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {
-          detailsSynhese.map((item: string) => (
+        <View style={styleSynthese.syntheseVetementsScroll}>
+        {typeof detailsSynthese[0] === 'object' && showPanelVetementsSynthese(detailsSynthese as VetementModel[])}
+        {typeof detailsSynthese[0] === 'string' && 
+          (detailsSynthese as string[]).map((item : string) => (
             <View  key={item}><ThemedText type="default" style={{ color: Colors.dark.text, marginTop: 10 }}>{item}</ThemedText></View>
           ))
         }
+        </View>
       </ScrollView>
     </View>
   );
 }
 
 
-const styleParams = StyleSheet.create({
+const styleSynthese = StyleSheet.create({
   title: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -124,4 +146,9 @@ const styleParams = StyleSheet.create({
     borderRadius: 20,
     margin: 5,
   },
+  syntheseVetementsScroll: {
+        flexDirection: 'row',
+        flex: 1,
+        flexWrap: 'wrap',
+    }
 });
