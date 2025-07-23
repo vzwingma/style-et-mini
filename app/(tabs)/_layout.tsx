@@ -25,10 +25,7 @@ export default function TabLayout() {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  // navigations
-  const [tab, setTab] = useState(Tabs.INDEX);
-
-  // Infos métiers
+    // Infos métiers
   const { 
     backendConnexionData, setBackendConnexionData,
     dressings, setDressings,
@@ -36,7 +33,8 @@ export default function TabLayout() {
     setTaillesMesures,
     setUsages,
     setEtats,
-    setMarques } = useContext(AppContext)!;
+    setMarques,
+    activeTab, setActiveTab } = useContext(AppContext)!;
   // Identifiant du dressing sélectionné
     const [dressingSelectionne, setDressingSelectionne] = useState<DressingModel | undefined>(undefined);
 
@@ -46,7 +44,7 @@ export default function TabLayout() {
    */
   function selectNewTab(newTab: Tabs, _id?: string) {
     setRefreshing(!refreshing);
-    setTab(newTab);
+    setActiveTab(newTab);
     if (_id) {
       setDressingSelectionne(dressings?.find(d => d.id === _id));
     }
@@ -58,7 +56,7 @@ export default function TabLayout() {
  * */
   useEffect(() => {
     setError(null);
-    if(tab === Tabs.INDEX) {
+    if(activeTab === Tabs.INDEX) {
       console.log("(Re)Chargement de l'application...");
       connectToBackend({ setIsLoading, storeConnexionData, setError });
     }
@@ -69,7 +67,7 @@ export default function TabLayout() {
    */
   useEffect(() => {
     setError(null);
-    if(tab === Tabs.INDEX && isLoading === false) {
+    if(activeTab === Tabs.INDEX && isLoading === false) {
       console.log("(Re)Chargement de la configuration...");
       getAllParamsVetements ({ setTypeVetements, setTaillesMesures, setUsages, setEtats, setMarques,  setError, setIsLoading });
   
@@ -95,15 +93,15 @@ export default function TabLayout() {
     } else if (error !== null) {
       return <><ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText><ThemedText type="italic">{error.stack}</ThemedText></>
     } else {
-      return showPanel(tab, dressingSelectionne);
+      return showPanel(activeTab, dressingSelectionne);
     }
   }
 
   return (
     <>
       <ParallaxScrollView
-        headerImage={getHeaderIcon(tab, dressingSelectionne?.categorie)}
-        headerTitle={getHeaderTitle(tab, dressingSelectionne?.libelle)}
+        headerImage={getHeaderIcon(activeTab, dressingSelectionne?.categorie)}
+        headerTitle={getHeaderTitle(activeTab, dressingSelectionne?.libelle)}
         backendConnexionData={backendConnexionData}>
 
         <View style={tabStyles.titleContainer}>
@@ -116,19 +114,19 @@ export default function TabLayout() {
         {
           (!isLoading && error === null) ?
             <>
-              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
+              <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
 
               {dressingSelectionne !== undefined ?
               <>
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.VETEMENTS} activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES} activeDressing={dressingSelectionne} />
-                <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULE} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.VETEMENTS} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES} activeDressing={dressingSelectionne} />
+                <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULES} activeDressing={dressingSelectionne} />
               </>
                  : null
               }
 
-              <TabBarItems activeTab={tab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
+              <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
             </> : null
         }
       </View>
@@ -149,7 +147,7 @@ export default function TabLayout() {
       case Tabs.DRESSING:
         case Tabs.VETEMENTS:
         case Tabs.TENUES:        
-        case Tabs.CAPSULE:
+        case Tabs.CAPSULES:
           return <DressingScreen tab={tab} dressing={dressing} />
       case Tabs.REGLAGES:
         return <ReglageScreen />

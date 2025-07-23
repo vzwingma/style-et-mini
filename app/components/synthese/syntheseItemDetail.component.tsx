@@ -5,9 +5,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
 import { getCollections, getDerniersAjoutsVetements, getLibelleVetementsSansCollections, getVetementsSansPrix } from '@/app/controllers/synthese/syntheseDressing.controller';
-import { JSX } from 'react';
-import { alphanumSort } from '../commons/CommonsUtils';
+import { JSX, useContext } from 'react';
 import { VetemenItemComponent } from '../dressing/vetements/vetementItem.component';
+import { AppContext } from '@/app/services/AppContextProvider';
+import { Tabs } from '@/app/constants/TabsEnums';
 
 
 
@@ -70,18 +71,33 @@ function getDetailSynthese(vetements: VetementModel[], detail: SyntheseDetailEnu
  */
 export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({ vetements, details, closeDrawer }: SyntheseItemDetailProps) => {
 
-  let detailsSynthese = getDetailSynthese(vetements, details)
+  const { setVetementInEdit, setActiveTab } = useContext(AppContext)!;
+
+    
   /**
    * Calcule les détails de synthèse en fonction du type de détail spécifié.
    */
+  let detailsSynthese = getDetailSynthese(vetements, details);
+
   function showPanelVetementsSynthese(detailsSynthese: VetementModel[]): React.JSX.Element[] {
 
         let vetementsItems: JSX.Element[] = [];
         detailsSynthese.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={"synthese" + item.id} vetement={item as VetementModel} />)});
+            vetementsItems.push(
+              <VetemenItemComponent key={"synthese" + item.id} vetement={item} selected={false} editVetement={() => editVetement(item) } />
+        )});
         return vetementsItems;
     }
 
+
+    /**
+     * fonction permettant d'éditer un vêtement en ouvrant le formulaire d'édition
+     * @param vetement - Le modèle de vêtement à éditer.
+     */
+  function editVetement(vetement : VetementModel) {
+    setVetementInEdit(vetement);
+    setActiveTab(Tabs.VETEMENTS);
+  }
 
 
 

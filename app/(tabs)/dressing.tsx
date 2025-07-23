@@ -35,7 +35,7 @@ export default function DressingScreen({ tab, dressing }: DressingScreenProps) {
           return <DressingComponent dressing={dressing} />;          
         case Tabs.TENUES:
           return <TenuesComponent dressing={dressing} />;
-        case Tabs.CAPSULE:
+        case Tabs.CAPSULES:
           return <CapsuleComponent dressing={dressing} />;
         default:
           return <ActivityIndicator color={Colors.app.color} size="large" />;

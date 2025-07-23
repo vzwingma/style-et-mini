@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from '../../constants/Colors';
 import DressingModel from '../../models/dressing.model';
@@ -9,6 +9,7 @@ import { DressingListComponent } from './dressingList.component';
 import VetementModel from '../../models/vetements/vetements.model';
 import APIResultFormVetementModel from '@/app/models/vetements/form.result.vetements.model';
 import { VetementFormComponent } from './vetements/vetementForm.component';
+import { AppContext } from '@/app/services/AppContextProvider';
 
 
 /**
@@ -35,11 +36,11 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
   const [openVetementForm, setOpenVetementForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [vetements, setVetements] = useState<VetementModel[]>([]);
-  const [vetementInEdit, setVetementInEdit] = useState<VetementModel | null>(null);
+  const {vetementInEdit, setVetementInEdit} = useContext(AppContext)!;
 
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
-    setOpenVetementForm(false);
+    setOpenVetementForm(vetementInEdit !== null);
     loadVetementsDressing({ idDressing: dressing.id, setIsLoading, setVetements });
   }, [dressing]);
 
