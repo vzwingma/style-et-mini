@@ -70,7 +70,7 @@ function getTabBarIcon({ activeTab, activeDressing, thisTab }: Readonly<TabBarIc
       return <Image source={getTabIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: selectedColor}} />
     case Tabs.TENUES:
       return <Image source={getTabOutfitIcon(selectedTab, activeDressing?.categorie)} style={{ width: 30, height: 30, tintColor: selectedColor }} />
-    case Tabs.CAPSULE:
+    case Tabs.CAPSULES:
       return <Image source={selectedTab ? require('@/assets/icons/closet.png') : require('@/assets/icons/closet-outline.png')} style={{ width: 30, height: 30, tintColor: selectedColor, cursor: 'pointer' }} />
     case Tabs.REGLAGES:
       return <TabBarIcon name={"construct" + (selectedTab ? "" : "-outline")} color={selectedColor} />

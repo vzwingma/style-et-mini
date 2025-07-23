@@ -2,6 +2,7 @@ import React, { JSX, useState } from "react";
 import BackendConfigModel from "../models/backendConfig.model";
 import DressingModel from "../models/dressing.model";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
+import { Tabs } from "../constants/TabsEnums";
 
 
 /**
@@ -31,6 +32,9 @@ type AppContextType = {
 
     modalDialog: JSX.Element | null;
     setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
+
+    activeTab: Tabs;
+    setActiveTab: React.Dispatch<React.SetStateAction<Tabs>>;
 };
 
 
@@ -43,6 +47,7 @@ export const AppContext = React.createContext<AppContextType | null>(null);
  */
 export function AppContextProvider({ children }: Readonly<{ children: React.ReactNode }>) : JSX.Element {
     const [backendConnexionData,    setBackendConnexionData]   = useState<BackendConfigModel>();  // State to store the response data
+
     const [typeVetements,           setTypeVetements]          = useState<ParamGenericVetementsModel[]>([]);
     const [taillesMesures,          setTaillesMesures]         = useState<ParamGenericVetementsModel[]>([]);
     const [usages,                  setUsages]                 = useState<ParamGenericVetementsModel[]>([]);
@@ -52,6 +57,7 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
     const [dressings, setDressings]                             = useState<DressingModel[]>([]);
 
     const [modalDialog, setModalDialog]                         = useState<JSX.Element | null>(null);
+    const [activeTab, setActiveTab]                             = useState<Tabs>(Tabs.INDEX);
 
     const contextValue = React.useMemo(() => ({
         backendConnexionData,
@@ -68,8 +74,11 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         setUsages,
         etats,
         setEtats,
+
         modalDialog,
-        setModalDialog
+        setModalDialog,
+        activeTab,
+        setActiveTab
     }), [
         backendConnexionData,
         typeVetements,
@@ -79,6 +88,7 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         dressings,
         etats,
         modalDialog,
+        activeTab
     ]);
 
     return (
