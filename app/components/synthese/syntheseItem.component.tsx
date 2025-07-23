@@ -42,7 +42,7 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
 
     const [open, setOpen] = useState(false);
     const [details, setDetails] = useState<SyntheseDetailEnum>();
-    const {  activeTab, setActiveTab } = useContext(AppContext)!;
+    const { setActiveTab } = useContext(AppContext)!;
     /** Ouverture/Fermeture du menu */
     function toggleOpen(details: SyntheseDetailEnum): void {
         if (vetements === null || vetements === undefined || vetements.length === 0) return;

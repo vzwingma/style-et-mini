@@ -132,6 +132,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
 
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
                                                         selected={selected}
+                                                        isInTenueForm={true}
                                                         editVetement={(vetement, selected) => addRemoveVetementForm(vetement, setForm, selected) } />);
         });
 
