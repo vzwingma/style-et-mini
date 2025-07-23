@@ -99,9 +99,6 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     }, [dressing, vetementInEdition, paramsEtatVetements, paramsMarquesVetements, paramsTaillesMesures, paramsTypeVetements, paramsUsagesVetements]);
 
 
-
-
-
     
     /**
      * 

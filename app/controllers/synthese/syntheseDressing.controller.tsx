@@ -99,7 +99,6 @@ export function getDerniersAjoutsVetements(vetements: VetementModel[], nbVetemen
   if (vetements.length === 0) {
     return [];
   }
-  // return vetements.slice(vetements.length - nbVetements, vetements.length);
   return vetements
         .filter((vetement) => vetement.dateCreation !== undefined && vetement.dateCreation !== null)
         .sort((a, b) => new Date(b.dateCreation??0).getTime() - new Date(a.dateCreation??0).getTime()).slice(0, nbVetements);

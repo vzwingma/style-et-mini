@@ -2,6 +2,8 @@ import React, { JSX, useState } from "react";
 import BackendConfigModel from "../models/backendConfig.model";
 import DressingModel from "../models/dressing.model";
 import ParamGenericVetementsModel from "../models/params/paramGenericVetements.model";
+import { Tabs } from "../constants/TabsEnums";
+import VetementModel from "../models/vetements/vetements.model";
 
 
 /**
@@ -29,8 +31,14 @@ type AppContextType = {
     dressings: DressingModel[] | []; 
     setDressings: React.Dispatch<React.SetStateAction<DressingModel[] | []>>;
 
+    vetementInEdit : VetementModel | null;
+    setVetementInEdit : React.Dispatch<React.SetStateAction<VetementModel | null>>;
+
     modalDialog: JSX.Element | null;
     setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
+
+    activeTab: Tabs;
+    setActiveTab: React.Dispatch<React.SetStateAction<Tabs>>;
 };
 
 
@@ -43,6 +51,7 @@ export const AppContext = React.createContext<AppContextType | null>(null);
  */
 export function AppContextProvider({ children }: Readonly<{ children: React.ReactNode }>) : JSX.Element {
     const [backendConnexionData,    setBackendConnexionData]   = useState<BackendConfigModel>();  // State to store the response data
+
     const [typeVetements,           setTypeVetements]          = useState<ParamGenericVetementsModel[]>([]);
     const [taillesMesures,          setTaillesMesures]         = useState<ParamGenericVetementsModel[]>([]);
     const [usages,                  setUsages]                 = useState<ParamGenericVetementsModel[]>([]);
@@ -50,14 +59,19 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
     const [etats,                   setEtats]                  = useState<ParamGenericVetementsModel[]>([]);
 
     const [dressings, setDressings]                             = useState<DressingModel[]>([]);
+    const [vetementInEdit, setVetementInEdit]                   = useState<VetementModel | null>(null);
 
     const [modalDialog, setModalDialog]                         = useState<JSX.Element | null>(null);
+    const [activeTab, setActiveTab]                             = useState<Tabs>(Tabs.INDEX);
 
     const contextValue = React.useMemo(() => ({
         backendConnexionData,
         setBackendConnexionData,
         dressings,
         setDressings,
+        vetementInEdit,
+        setVetementInEdit,
+
         typeVetements,
         setTypeVetements,
         taillesMesures,
@@ -68,17 +82,25 @@ export function AppContextProvider({ children }: Readonly<{ children: React.Reac
         setUsages,
         etats,
         setEtats,
+
         modalDialog,
-        setModalDialog
+        setModalDialog,
+        activeTab,
+        setActiveTab
     }), [
         backendConnexionData,
+        dressings,
+        vetementInEdit,
+
         typeVetements,
         taillesMesures,
         marques,
         usages,
-        dressings,
         etats,
+
         modalDialog,
+        
+        activeTab
     ]);
 
     return (

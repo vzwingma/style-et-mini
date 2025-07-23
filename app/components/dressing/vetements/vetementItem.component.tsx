@@ -11,6 +11,7 @@ import { Colors } from '@/app/constants/Colors';
 export type VetementItemComponentProps = {
     vetement: VetementModel;
     selected?: boolean;
+    isInTenueForm?: boolean;
     editVetement?: (vetement: VetementModel, selected?: boolean) => void;
 };
 
@@ -24,13 +25,10 @@ export type VetementItemComponentProps = {
  *
  * @component
  **/
-export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, selected, editVetement }: VetementItemComponentProps) => {
+export const VetemenItemComponent: React.FC<VetementItemComponentProps> = ({ vetement, selected, isInTenueForm, editVetement }: VetementItemComponentProps) => {
 
     const vetementImageToShow = vetement.image ? resizeImage(vetement.image, 100) : null;
-
-    const isInTenueForm = editVetement?.name === "editVetement";
-    
-    const getContainerStyle = (selected: boolean | undefined, isInTenueForm: boolean) => {
+    const getContainerStyle = (selected: boolean | undefined, isInTenueForm?: boolean) => {
         if (selected) return styles.selected;
         if (isInTenueForm) return styles.unselected;
         return null;
