@@ -6,7 +6,6 @@ import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
 import { getCollections, getDerniersAjoutsVetements, getLibelleVetementsSansCollections, getVetementsSansPrix } from '@/app/controllers/synthese/syntheseDressing.controller';
 import { JSX } from 'react';
-import { alphanumSort } from '../commons/CommonsUtils';
 import { VetemenItemComponent } from '../dressing/vetements/vetementItem.component';
 
 
@@ -78,7 +77,7 @@ export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({
 
         let vetementsItems: JSX.Element[] = [];
         detailsSynthese.forEach((item) => {
-            vetementsItems.push(<VetemenItemComponent key={"synthese" + item.id} vetement={item as VetementModel} />)});
+            vetementsItems.push(<VetemenItemComponent key={"synthese" + item.id} vetement={item} />)});
         return vetementsItems;
     }
 

@@ -11,7 +11,6 @@ import { SyntheseDetailEnum, SyntheseItemDetailComponent } from "./syntheseItemD
 import { getHeaderTitle } from '@/app/components/commons/tab/TabHeader';
 import { Tabs } from "@/app/constants/TabsEnums";
 import { Ionicons } from "@expo/vector-icons";
-import { stylesItem } from "../reglages/parametrageItem.component";
 /**
  * @description Composant d'un item de la liste des capsules
  * @param {ParametragesItemComponentProps} props - Propriétés du composant

@@ -4,7 +4,7 @@ import { StatutVetementEnum } from '@/app/constants/AppEnum';
 import DressingModel from '@/app/models/dressing.model';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors, Fonts } from '../../../constants/Colors';
 import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
@@ -83,24 +83,37 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         }));
 
         vetementsByGroup.forEach((vetements, groupe) => {
+            groupItems.push(addItemPanelGroupe(vetements, groupe));
+        });
+        return groupItems;
 
+    }
+
+
+    /**
+     * Ajoute un panneau pour un groupe de vêtements.
+     * @param vetements - Tableau de modèles de vêtements à afficher dans le panneau.
+     * @param groupe - Identifiant du groupe de vêtements.
+     * @returns Un élément JSX représentant le panneau pour le groupe de vêtements.
+     */
+    function addItemPanelGroupe(vetements: VetementModel[], groupe : string): React.JSX.Element {
+        
             const selectedCount = vetements.filter(v => form.vetements?.some(selectedVetement => selectedVetement.id === v.id)).length;
             let libelle = vetements[0]?.type?.libelle;
             if(selectedCount > 0){
                 const plural = selectedCount > 1 ? "s" : "";
                 libelle += " (" + selectedCount + " sélectionné" + plural + ")";
             }
-            groupItems.push(
-                <AccordionSecondaryItem
+            
+            return (    <AccordionSecondaryItem
                     title={libelle}
                     icon={getTypeVetementIcon(groupe)}
                     key={"key_groupeId_" + groupe}>
                     {showPanelVetements(vetements)}
                 </AccordionSecondaryItem>
             );
-        });
-        return groupItems;
-    }
+        }
+
     /**
      * Affiche un panneau contenant une liste de vêtements.
      *

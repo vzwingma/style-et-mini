@@ -68,7 +68,7 @@ export const TenueItemComponent: React.FC<TenueItemComponentProps> = ({ tenue, o
                 tenue.image && <TenueItemImageComponent image={tenue.image} />
             }
             { /** liste des vêtements de la tenue  */}
-            <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={tenue.image ? false : true} >
+            <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={!tenue.image} >
                 {showPanelVetementsTenue(tenue.vetements ?? [])}
             </ScrollView>
             </View>
