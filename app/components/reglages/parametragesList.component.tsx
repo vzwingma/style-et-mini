@@ -1,6 +1,6 @@
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { useContext, useEffect, useState } from 'react';
+import { JSX, useContext, useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';

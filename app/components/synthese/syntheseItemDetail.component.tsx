@@ -18,12 +18,14 @@ export type SyntheseItemDetailProps = {
   closeDrawer: () => void;
 };
 
+const NB_DERNIERS_AJOUTS = 30;
+
 export enum SyntheseDetailEnum {
   NO_PRIX_ACHAT = "vêtements sans prix d'achat",
   NO_PRIX_NEUF = "vêtements sans prix neuf",
   NO_COLLECTIONS = "vêtements sans collection",
   COLLECTIONS_LISTE = "collections",
-  DERNIERS_AJOUTS = "vêtements ajoutés ce mois",
+  DERNIERS_AJOUTS = NB_DERNIERS_AJOUTS + " derniers vêtements ajoutés",
 }
 
 
@@ -49,7 +51,7 @@ function getDetailSynthese(vetements: VetementModel[], detail: SyntheseDetailEnu
     case SyntheseDetailEnum.COLLECTIONS_LISTE:
       return getCollections(vetements);
     case SyntheseDetailEnum.DERNIERS_AJOUTS:
-      return getDerniersAjoutsVetements(vetements, 15);      
+      return getDerniersAjoutsVetements(vetements, NB_DERNIERS_AJOUTS);      
     default:
       return [];
   }
@@ -119,7 +121,10 @@ export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({
         {typeof detailsSynthese[0] === 'object' && showPanelVetementsSynthese(detailsSynthese as VetementModel[])}
         {typeof detailsSynthese[0] === 'string' && 
           (detailsSynthese as string[]).map((item : string) => (
-            <View  key={item}><ThemedText type="default" style={{ color: Colors.dark.text, marginTop: 10 }}>{item}</ThemedText></View>
+            <View  key={item} style={{ flexDirection: "row", alignItems: "center", gap: 5, width: '95%', borderColor: Colors.app.color, borderWidth: 1, borderRadius: 8, padding: 5, margin: 5   }}>
+              <Ionicons size={20} name="shirt-outline" color={Colors.dark.text} />
+              <ThemedText type="default" style={{ color: Colors.dark.text, padding: 5 }}>{item}</ThemedText>
+            </View>
           ))
         }
         </View>
