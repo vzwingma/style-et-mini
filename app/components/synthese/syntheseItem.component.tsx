@@ -115,14 +115,12 @@ export const SyntheseItemComponent: React.FC<SyntheseItemComponentProps> = ({ dr
             </View>         
             { /** Derniers ajouts  */}
             <View style={[styles.container]}>
-                <View style={[styles.rowItems, { width: '100%' }]}>
+                <Pressable style={[styles.rowItems, { width: '100%' }]} onPress={() => toggleOpen(SyntheseDetailEnum.DERNIERS_AJOUTS)}>
                     <ThemedText type="defaultSemiBold" style={styles.label}>Derniers ajouts</ThemedText>
                     <ThemedText type="subtitle" style={styles.value}>
-                        <Pressable onPress={() => toggleOpen(SyntheseDetailEnum.DERNIERS_AJOUTS)}>
                             <Ionicons size={18} name="eye-outline" style={styles.eyeIcon} />
-                        </Pressable>
                     </ThemedText>
-                </View>
+                </Pressable>
             </View>
             <Modal presentationStyle='overFullScreen' isVisible={open}
                 animationIn='slideInRight' animationOut='slideOutRight'

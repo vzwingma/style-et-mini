@@ -298,6 +298,25 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 
 
     /**
+     * Validation du formulaire pour fermerture du formulaire
+     * @param form formulaire à valider
+     * @param setForm fonction de mise à jour du formulaire
+     * @param setErrorsForm fonction de mise à jour des erreurs
+     * @param onCloseForm fonction de fermeture du formulaire
+     * @returns si le formulaire est invalide
+     */
+    function closeFormModalConfirmation(form: FormVetementModel, closeFormCallBack: () => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+            ackModalCallback={closeFormCallBack} />;
+            if(form.edited){
+                setModalDialog(dialog);
+            }
+            else{
+                closeFormCallBack();
+            }
+    }
+
+    /**
      * Validation du formulaire pour archivage du vêtement
      * @param form formulaire à valider
      * @param setForm fonction de mise à jour du formulaire
@@ -332,7 +351,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             {modalDialog}
             <View style={stylesForm.title}>
                 <View style={stylesForm.rowItems}>
-                    <Pressable onPress={closeFormCallBack}>
+                    <Pressable onPress={() => closeFormModalConfirmation(form, closeFormCallBack, setModalDialog)}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && <>

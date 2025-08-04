@@ -4,6 +4,6 @@
     DRESSING    = 'Dressing',
     VETEMENTS   = 'Vêtements',
     TENUES      = 'Tenues',
-    CAPSULES     = 'Capsule',
+    CAPSULES     = 'Capsules',
     REGLAGES    = 'Réglages',
   }

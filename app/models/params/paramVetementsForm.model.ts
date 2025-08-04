@@ -10,8 +10,8 @@ interface ParamVetementsFormModel extends GenericModel{
     categories          : CategorieDressingEnum[];
     types?              : TypeTailleEnum[]; 
     tri?                : number;
+    // Nouveau paramètre ? oui si l'id est égal à ID_NEW_ELEMENT
     isModified          : boolean;
-
 }
 
 

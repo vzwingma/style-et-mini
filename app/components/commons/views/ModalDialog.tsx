@@ -7,6 +7,7 @@ import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 export type ModalDialogComponentProps = {
     text: string;
     ackModalCallback: () => void;
+    keyModal?: string;
 };
 
 /**
@@ -28,7 +29,7 @@ export type ModalDialogComponentProps = {
  * Le composant gère l'état de visibilité de la boîte de dialogue via le hook `useState`.
  * L'effet `useEffect` est utilisé pour afficher la boîte de dialogue lorsque la propriété `showModal` change.
  */
-export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text, ackModalCallback }: ModalDialogComponentProps) => {
+export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text, ackModalCallback, keyModal }: ModalDialogComponentProps) => {
 
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -44,11 +45,13 @@ export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text
 
     useEffect(() => {
         setModalVisible(true);
-    }, []);
+    }, [keyModal]);
 
 
     return (
-        <Modal animationType="slide"
+        <Modal 
+            keyModal={keyModal}
+            animationType="slide"
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {

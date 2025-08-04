@@ -1,6 +1,6 @@
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { useContext, useEffect, useState } from 'react';
+import { JSX, useContext, useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
 import { ThemedText } from '../commons/views/ThemedText';
 import ParamGenericVetementsModel from '@/app/models/params/paramGenericVetements.model';
@@ -19,6 +19,7 @@ import { initNewForm } from '@/app/models/params/paramVetementsForm.model';
 export type ParametragesVetements = {
   readonly typeParametrage: MenuParametragesModel;
   closeDrawer: () => void;
+  setParametreIsModified: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 /**
@@ -34,11 +35,12 @@ export type ParametragesVetements = {
  * @returns {React.FC<ParametragesVetements>} Un composant React fonctionnel affichant la liste des paramètres.
  * 
  */
-export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer }: ParametragesVetements) => {
+export const ParametragesListComponent: React.FC<ParametragesVetements> = ({ typeParametrage, closeDrawer, setParametreIsModified }: ParametragesVetements) => {
 
   const [parametreInEdition, setParametreInEdition] = useState<string | null>(null);
+  
   const { etats, setEtats, typeVetements, setTypeVetements, taillesMesures, setTaillesMesures, marques, setMarques, usages, setUsages } = useContext(AppContext)!;
-
+  
 
   /** Reinit au moment des types de paramétrages */
   useEffect(() => {
@@ -166,6 +168,7 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
             typeParametrage={typeParametrage.class}
             parametrageVetements={initNewForm(typeParametrage.class)}
             setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition}
+            setParametreIsModified={setParametreIsModified}
             refreshListeParametresCallback= {refreshListeParametres}/>
         );
       }
@@ -177,6 +180,7 @@ function getParametresForRefresh(typeParametrage: ParametragesVetementEnum): { u
             typeParametrage={typeParametrage.class}
             parametrageVetements={parametrage}
             setParametreInEdition={setParametreInEdition} parametreInEdition={parametreInEdition}
+            setParametreIsModified={setParametreIsModified}
             refreshListeParametresCallback= {refreshListeParametres}/>
         );
       });

@@ -12,6 +12,8 @@ import { VetementsFormParamsTypeProps } from "@/app/components/dressing/vetement
  * Modèle représentant un vetement dans le formulaire
  */
 interface FormVetementModel extends GenericModel {
+    edited       : boolean,
+
     dressing     : DressingModel;
     image?       : VetementImageModel | null;
     
