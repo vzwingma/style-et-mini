@@ -54,17 +54,19 @@ function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFor
 * @param onCloseForm fonction de fermeture du formulaire
 * @returns si le formulaire est invalide
 */
-function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeFormCallBack: (idParametreToEdit: string | null) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+
+    setModalDialog(null);
     if (form === null) {
         return;
     }
     if(form.isModified){
     const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
-        ackModalCallback={() => closeFormCallBack} />;
+        ackModalCallback={() => closeFormCallBack()} />;
         setModalDialog(dialog);
     }
     else {
-        closeFormCallBack;
+        closeFormCallBack();
     }
 }
 
@@ -112,7 +114,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 { /** Icones  */}
                 <View style={stylesItem.title}>
                     <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
-                    { /** Icoônes édition */}
+                    { /** Icônes édition */}
                     <View style={stylesForm.rowItems}>
                         {isUnUsed && !isSelected &&
                             <Pressable onPress={() => deleteModalConfirmation(zeroForm, () => refreshListeParametres(zeroForm.typeParam), setModalDialog)}>
