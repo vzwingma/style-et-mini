@@ -121,7 +121,7 @@ export const SyntheseItemDetailComponent: React.FC<SyntheseItemDetailProps> = ({
         {typeof detailsSynthese[0] === 'object' && showPanelVetementsSynthese(detailsSynthese as VetementModel[])}
         {typeof detailsSynthese[0] === 'string' && 
           (detailsSynthese as string[]).map((item : string) => (
-            <View  key={item} style={{ flexDirection: "row", alignItems: "center", gap: 5, width: '95%', borderColor: Colors.app.color, borderWidth: 1, borderRadius: 8, padding: 5, margin: 5   }}>
+            <View key={item} style={{ flexDirection: "row", alignItems: "center", gap: 5, width: '95%', borderColor: Colors.app.color, borderWidth: 1, borderRadius: 8, padding: 5, margin: 5   }}>
               <Ionicons size={20} name="shirt-outline" color={Colors.dark.text} />
               <ThemedText type="default" style={{ color: Colors.dark.text, padding: 5 }}>{item}</ThemedText>
             </View>

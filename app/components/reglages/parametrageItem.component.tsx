@@ -12,7 +12,6 @@ import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetement
 import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/formErrorsParams.model";
 import { ModalDialogComponent } from "../commons/views/ModalDialog";
 
-
 /**
  * * @description Composant d'un item de la liste des paramètres
  * @param {ParametragesItemComponentProps} props - Propriétés du composant
@@ -22,20 +21,18 @@ import { ModalDialogComponent } from "../commons/views/ModalDialog";
 export type ParametragesItemComponentProps = {
     readonly parametrageVetements: ParamGenericVetementsModel
     readonly typeParametrage: ParametragesVetementEnum
-    setParametreInEdition: (idParametreToEdit: string | null) => void
+    setParametreInEdition: (parametreToEdit: string | null) => void
     parametreInEdition: string | null,
+    setParametreIsModified: React.Dispatch<React.SetStateAction<boolean>>
     refreshListeParametresCallback: (typeParam: ParametragesVetementEnum) => void
 };
 
-
 /**
-* Validation du formulaire pour archivage du vêtement
-* @param form formulaire à valider
-* @param setForm fonction de mise à jour du formulaire
-* @param setErrorsForm fonction de mise à jour des erreurs
-* @param onCloseForm fonction de fermeture du formulaire
-* @returns si le formulaire est invalide
-*/
+ * Affiche une boîte de dialogue de confirmation pour la suppression d'un paramètre
+ * @param form Le formulaire associé au paramètre à supprimer
+ * @param deleteFormCallBack Fonction de rappel pour rafraîchir la liste après suppression
+ * @param setModalDialog Fonction pour définir le dialogue modal à afficher
+ */
 function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFormCallBack: () => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
     if (form === null) {
         return;
@@ -45,24 +42,21 @@ function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFor
     setModalDialog(dialog);
 }
 
-
 /**
-* Validation du formulaire pour archivage du vêtement
-* @param form formulaire à valider
-* @param setForm fonction de mise à jour du formulaire
-* @param setErrorsForm fonction de mise à jour des erreurs
-* @param onCloseForm fonction de fermeture du formulaire
-* @returns si le formulaire est invalide
+* Gère la fermeture du formulaire avec confirmation si des modifications non sauvegardées existent
+* @param form Le formulaire à fermer
+* @param closeFormCallBack Fonction de rappel pour fermer le formulaire
+* @param setModalDialog Fonction pour définir le dialogue modal à afficher
 */
 function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
 
-    setModalDialog(null);
     if (form === null) {
         return;
     }
     if(form.isModified){
-    const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
-        ackModalCallback={() => closeFormCallBack()} />;
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+        ackModalCallback={() => closeFormCallBack()} 
+        keyModal={Math.random().toString()} />;
         setModalDialog(dialog);
     }
     else {
@@ -71,13 +65,12 @@ function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeF
 }
 
 /**
- * 
+ *
  * @param param0 : ParametragesItemComponentProps
  * @returns Composant d'un item de la liste des paramètres
  */
 export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage,
-    setParametreInEdition, parametreInEdition, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
-
+    setParametreInEdition, parametreInEdition, setParametreIsModified, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
 
     const zeroForm: ParamVetementsFormModel = {
         id: parametrageVetements.id,
@@ -90,7 +83,6 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     const [errorsForm, setErrorsForm] = useState<ErrorsFormParametrageModel>(defaultErrorsFormParametrageModel);
     const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
-
     useEffect(() => {
         if (parametreInEdition !== null) {
             initForm(typeParametrage, parametrageVetements, setForm)
@@ -101,6 +93,12 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
         setModalDialog(null);
     }, [parametreInEdition]);
 
+
+    useEffect(() => {
+        if (form !== null) {
+            setParametreIsModified(form.isModified);
+        }
+    }, [form]);
 
     const isSelected = parametreInEdition !== null && parametreInEdition === parametrageVetements.id;
     const isUnselected = parametreInEdition !== null && parametreInEdition !== parametrageVetements.id;
@@ -194,7 +192,6 @@ export const stylesItem = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
-    },    
-}
-);
+        width: '100%'
+    }
+});
