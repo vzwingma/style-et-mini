@@ -47,6 +47,28 @@ function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFor
 
 
 /**
+* Validation du formulaire pour archivage du vêtement
+* @param form formulaire à valider
+* @param setForm fonction de mise à jour du formulaire
+* @param setErrorsForm fonction de mise à jour des erreurs
+* @param onCloseForm fonction de fermeture du formulaire
+* @returns si le formulaire est invalide
+*/
+function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeFormCallBack: (idParametreToEdit: string | null) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    if (form === null) {
+        return;
+    }
+    if(form.isModified){
+    const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+        ackModalCallback={() => closeFormCallBack} />;
+        setModalDialog(dialog);
+    }
+    else {
+        closeFormCallBack;
+    }
+}
+
+/**
  * 
  * @param param0 : ParametragesItemComponentProps
  * @returns Composant d'un item de la liste des paramètres
@@ -110,7 +132,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                             </Pressable>
                         }
                         {isSelected &&
-                            <Pressable onPress={() => razAndCloseForm(setParametreInEdition)}>
+                            <Pressable onPress={() => closeFormModalConfirmation(form, () => razAndCloseForm(setParametreInEdition), setModalDialog)}>
                                 <Ionicons size={20} name="close-outline" style={stylesItem.titleIcon} />
                             </Pressable>
                         }
