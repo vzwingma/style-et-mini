@@ -20,6 +20,7 @@ export function initForm(dressing: DressingModel, capsuleInEdition: CapsuleTempo
     else {
         setForm(() => { 
             return {dressing: dressing, 
+                    isModified: false,
                     criteres: [ {
                                     id: StatutVetementEnum.ACTIF, 
                                     libelle: StatutVetementEnum.ACTIF, 
@@ -39,7 +40,7 @@ export function initForm(dressing: DressingModel, capsuleInEdition: CapsuleTempo
  */
 export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormCapsuleModel>>) {
     setForm((form: FormCapsuleModel) => {
-        return { ...form, libelle: libelle }
+        return { ...form, isModified: true, libelle: libelle }
     });
     if (libelle) {
         setErrorsForm((errors: ErrorsFormCapsuleModel) => {
@@ -57,7 +58,7 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
 export function setCriteres(criteres: CapsuleCritereModel[], setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormCapsuleModel>>) {
 
     setForm((form: FormCapsuleModel) => {
-        return { ...form, criteres: criteres }
+        return { ...form, isModified: true, criteres: criteres }
     }); 
     if (criteres && criteres.length > 0) {
         setErrorsForm((errors: ErrorsFormCapsuleModel) => {
@@ -82,7 +83,7 @@ export function setNbVetementsForm(nbVetements: string, setForm: React.Dispatch<
     }
     // Vérification que triInt est un nombre valide avant de l'utiliser
     setForm((form: FormCapsuleModel) => {
-        return { ...form, nbreVetements: nbVetementsInt }
+        return { ...form, isModified: true, nbreVetements: nbVetementsInt }
     });
     setErrorsForm((errors: ErrorsFormCapsuleModel) => {
         return { ...errors, nbVetementsInError: false }
@@ -98,7 +99,7 @@ export function setNbVetementsForm(nbVetements: string, setForm: React.Dispatch<
  */
 export function setCommentaireForm(commentaire: string, setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>) {
     setForm((form: FormCapsuleModel) => {
-        return { ...form, commentaire: commentaire }
+        return { ...form, isModified: true, commentaire: commentaire }
     });
 }
 

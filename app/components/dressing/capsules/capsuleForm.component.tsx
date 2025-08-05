@@ -28,6 +28,7 @@ export type CapsuleFormComponentProps = {
     closeFormCallBack(): void;
     validateFormCallBack(resultat: APIResultFormCapsuleModel): void;
     deleteFormCallBack(resultat: APIResultFormCapsuleModel): void;
+    setCapsuleIsModified: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 
@@ -51,7 +52,7 @@ export type CapsuleFormComponentProps = {
  * pour composer une capsule, et propose des actions pour valider, archiver ou supprimer la capsule.
 
  */
-export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dressing, capsule: capsuleInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: CapsuleFormComponentProps) => {
+export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dressing, capsule: capsuleInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack, setCapsuleIsModified }: CapsuleFormComponentProps) => {
 
     const [form, setForm] = useState<FormCapsuleModel>({ } as FormCapsuleModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormCapsuleModel>(defaultErrorsFormCapsuleModel);
@@ -65,6 +66,10 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
         setModalDialog(null);
     }, [dressing, capsuleInEdition]);
 
+
+    useEffect(() => {
+        setCapsuleIsModified(form.isModified);
+    }, [form])
 
     /**
      * 
@@ -131,7 +136,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
             {modalDialog}
             <View style={stylesForm.title}>
                 <View style={stylesForm.rowItems}>
-                    <Pressable onPress={closeFormCallBack}>
+                    <Pressable onPress={() => closeFormCallBack()}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && 

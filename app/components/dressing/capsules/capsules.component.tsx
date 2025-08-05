@@ -1,5 +1,5 @@
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors } from '../../../constants/Colors';
 import { DressingComponentProps } from '../dressings.component';
 import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
@@ -11,6 +11,9 @@ import { CapsuleFormComponent } from './capsuleForm.component';
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
 import { CapsuleVetementsView } from './capsuleVetementsView.component';
+import { AppContext } from '@/app/services/AppContextProvider';
+import { getKeyModal } from '../../commons/CommonsUtils';
+import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 
 
 /**
@@ -44,6 +47,9 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
   const [vetements, setVetements] = useState<VetementModel[]>([]);
 
   const [capsuleInEdit, setCapsuleInEdit] = useState<CapsuleTemporelleModel | null>(null);
+  const [capsuleIsModified, setCapsuleIsModified] = useState(false);
+  
+  const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
@@ -108,6 +114,25 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
   };
 
   /**
+  * Gère la fermeture du formulaire avec confirmation si des modifications non sauvegardées existent
+  * @param form Le formulaire à fermer
+  * @param closeFormCallBack Fonction de rappel pour fermer le formulaire
+  * @param setModalDialog Fonction pour définir le dialogue modal à afficher
+  */
+  function closeFormModalConfirmation(closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+    if (capsuleIsModified) {
+      const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+        ackModalCallback={() => closeFormCallBack()}
+        keyModal={getKeyModal()} />;
+        setModalDialog(dialog);
+    }
+    else {
+      closeFormCallBack();
+    }
+  }
+
+
+  /**
    * Retourne le contenu du panneau en fonction de l'état actuel du dressing.
    *
    * @returns {JSX.Element} - Un composant JSX représentant le contenu du panneau.
@@ -122,6 +147,7 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
     else {
       return (
         <>
+          {modalDialog}
           <View style={styles.container}>
             <CapsulesListComponent capsules={capsules} openAddEditCapsule={openAddEditCapsule} viewVetementCapsule={viewVetementCapsule} />
           </View>
@@ -129,13 +155,14 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
           <Modal presentationStyle='overFullScreen' isVisible={openCapsuleForm}
             animationIn='slideInRight' animationOut='slideOutRight'
             propagateSwipe={true}
-            onBackButtonPress={() => setOpenCapsuleForm(false)}
-            onBackdropPress={() => setOpenCapsuleForm(false)}
+            onBackButtonPress={() => closeFormModalConfirmation(() => setOpenCapsuleForm(false), setModalDialog)}
+            onBackdropPress={() => closeFormModalConfirmation(() => setOpenCapsuleForm(false), setModalDialog)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
             <CapsuleFormComponent dressing={dressing} capsule={capsuleInEdit} 
-                                closeFormCallBack={() => setOpenCapsuleForm(false)}
+                                closeFormCallBack={() => closeFormModalConfirmation(() => setOpenCapsuleForm(false), setModalDialog)}
                                 validateFormCallBack={validateFormCallBack}
-                                deleteFormCallBack={deleteFormCallBack} />
+                                deleteFormCallBack={deleteFormCallBack} 
+                                setCapsuleIsModified={setCapsuleIsModified}/>
           </Modal>
 
           <Modal presentationStyle='overFullScreen' isVisible={openCapsuleVetementsView}
@@ -145,7 +172,8 @@ export const CapsuleComponent: React.FC<DressingComponentProps> = ({ dressing }:
             onBackdropPress={() => setOpenCapsuleVetementsView(false)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
             <CapsuleVetementsView dressing={dressing} capsule={capsuleInEdit} 
-                                closeFormCallBack={() => setOpenCapsuleVetementsView(false)} />
+                                  closeFormCallBack={() => setOpenCapsuleVetementsView(false)}
+                                 />
           </Modal>         
         </>);
     }
