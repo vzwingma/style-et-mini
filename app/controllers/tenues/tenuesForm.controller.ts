@@ -29,7 +29,7 @@ export function initForm(dressing: DressingModel, tenueInEdition: TenueModel | n
         setForm((form: FormTenueModel) => transformTenueToFormModel(form, tenueInEdition, dressing));
     }
     else {
-        setForm(() => { return { dressing: dressing, statut: StatutVetementEnum.ACTIF }});
+        setForm(() => { return { dressing: dressing, isModified : false, statut: StatutVetementEnum.ACTIF }});
     }
 }
 
@@ -42,7 +42,7 @@ export function initForm(dressing: DressingModel, tenueInEdition: TenueModel | n
  */
 export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormTenueModel>>) {
     setForm((form: FormTenueModel) => {
-        return { ...form, libelle: libelle }
+        return { ...form, isModified : true, libelle: libelle }
     });
     if (libelle) {
         setErrorsForm((errors: ErrorsFormTenueModel) => {
@@ -66,6 +66,7 @@ export function addRemoveVetementForm(vetement: VetementModel, setForm: React.Di
         setForm((form: FormTenueModel) => {
             return {
                 ...form,
+                isModified : true, 
                 vetements: form.vetements
                     ? form.vetements.filter(v => v.id !== vetement.id)
                     : []
@@ -81,6 +82,7 @@ export function addRemoveVetementForm(vetement: VetementModel, setForm: React.Di
         }
         return {
             ...form,
+            isModified : true, 
             vetements: updatedVetements
         }
     });

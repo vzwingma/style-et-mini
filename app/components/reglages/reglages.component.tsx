@@ -1,6 +1,6 @@
 import { StyleSheet, View, Image, ActivityIndicator, Pressable } from 'react-native'
 import Modal from 'react-native-modal';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import { ThemedText } from '../commons/views/ThemedText';
 import { Colors } from '../../constants/Colors';
 import { menusParametrages } from '../../constants/AppEnum';
@@ -8,6 +8,8 @@ import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { getAllParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
+import { ModalDialogComponent } from '../commons/views/ModalDialog';
+import { getKeyModal } from '../commons/CommonsUtils';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -29,7 +31,8 @@ export const ReglagesComponent: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const { setEtats, setTypeVetements, setTaillesMesures, setMarques, setUsages } = useContext(AppContext)!;
 
-
+  const [parametreIsModified, setParametreIsModified] = useState<boolean>(true);
+  const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
   /**
  *  A l'initialisation, lance la connexion au backend pour récupérer les types de vêtements
@@ -46,6 +49,25 @@ export const ReglagesComponent: React.FC = () => {
     setOpen(!open);
   };
 
+
+/**
+* Gère la fermeture du formulaire avec confirmation si des modifications non sauvegardées existent
+* @param form Le formulaire à fermer
+* @param closeFormCallBack Fonction de rappel pour fermer le formulaire
+* @param setModalDialog Fonction pour définir le dialogue modal à afficher
+*/
+function closeFormModalConfirmation(closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+
+    if(parametreIsModified){
+    const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+        ackModalCallback={() => closeFormCallBack()} 
+        keyModal={getKeyModal()} />;
+        setModalDialog(dialog);
+    }
+    else {
+        closeFormCallBack();
+    }
+}
 
 
   /**
@@ -69,6 +91,7 @@ export const ReglagesComponent: React.FC = () => {
       return <ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText>
     } else {
       return <>
+        {modalDialog}
         <View style={styles.container}>
           <View key="param" >
             <View style={styles.title}>
@@ -88,13 +111,14 @@ export const ReglagesComponent: React.FC = () => {
         <Modal presentationStyle='overFullScreen' isVisible={open}
           animationIn='slideInRight' animationOut='slideOutRight'
           propagateSwipe={true}
-          onBackButtonPress={() => setOpen(false)}
-          onBackdropPress={() => setOpen(false)}
+          onBackButtonPress={() => closeFormModalConfirmation(() =>setOpen(false), setModalDialog)}
+          onBackdropPress={() => closeFormModalConfirmation(() =>setOpen(false), setModalDialog)}
           style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
           {
             (menu !== null && menu !== undefined)
             && <ParametragesListComponent typeParametrage={menu}
-              closeDrawer={() => setOpen(false)} />
+              closeDrawer={() => closeFormModalConfirmation(() =>setOpen(false), setModalDialog)}
+              setParametreIsModified={setParametreIsModified} />
           }
 
         </Modal>

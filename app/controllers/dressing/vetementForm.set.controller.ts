@@ -98,7 +98,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF }
+            return { edited: false, dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF }
         });
     }
 }
@@ -161,7 +161,8 @@ export function setImageForm(image: any, setForm: React.Dispatch<React.SetStateA
                 localUri: image.uri,
                 largeur: image.width,
                 hauteur: image.height
-            }
+            },
+            edited: true
         }
     });
 }
@@ -175,7 +176,7 @@ export function setImageForm(image: any, setForm: React.Dispatch<React.SetStateA
  */
 export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: Function) {
     setForm((form: FormVetementModel) => {
-        return { ...form, libelle: libelle }
+        return { ...form, edited: true, libelle: libelle }
     });
     if (libelle) {
         setErrorsForm((errors: ErrorsFormVetementModel) => {
@@ -191,7 +192,7 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  */
 export function setTypeForm(type: ParamGenericVetementsModel, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, type: type }
+        return { ...form, edited: true, type: type }
     });
 }
 
@@ -202,7 +203,7 @@ export function setTypeForm(type: ParamGenericVetementsModel, setForm: React.Dis
  */
 export function setTailleForm(taille: ParamGenericVetementsModel, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, taille: taille }
+        return { ...form, edited: true, taille: taille }
     });
 }
 
@@ -215,7 +216,7 @@ export function setTailleForm(taille: ParamGenericVetementsModel, setForm: React
  */
 export function setPetiteTailleForm(petiteTaille: boolean, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, petiteTaille: petiteTaille }
+        return { ...form, edited: true, petiteTaille: petiteTaille }
     });
 }
 
@@ -240,7 +241,7 @@ export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: Pa
     }
     );
     setForm((form: FormVetementModel) => {
-        return { ...form, usagesListe: usageIdsListe, usages: usages }
+        return { ...form, edited: true, usagesListe: usageIdsListe, usages: usages }
     });
 }
 
@@ -251,7 +252,7 @@ export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: Pa
  */
 export function setEtatForm(etat: ParamGenericVetementsModel, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, etat: etat }
+        return { ...form, edited: true, etat: etat }
     });
 }
 
@@ -270,7 +271,7 @@ export function setSaisonForm(saisonsString: string[], setForm: React.Dispatch<R
         }
     });
     setForm((form: FormVetementModel) => {
-        return { ...form, saisons: saisons }
+        return { ...form, edited: true, saisons: saisons }
     })
 }
 
@@ -281,7 +282,7 @@ export function setSaisonForm(saisonsString: string[], setForm: React.Dispatch<R
  */
 export function setCouleursForm(couleurs: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, couleurs: couleurs }
+        return { ...form, edited: true, couleurs: couleurs }
     }
     );
 }
@@ -293,7 +294,7 @@ export function setCouleursForm(couleurs: string, setForm: React.Dispatch<React.
  */
 export function setDescriptionForm(description: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, description: description }
+        return { ...form, edited: true, description: description }
     });
 }
 
@@ -305,7 +306,7 @@ export function setDescriptionForm(description: string, setForm: React.Dispatch<
  */
 export function setMarqueForm(marque: ParamGenericVetementsModel, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, marque: marque }
+        return { ...form, edited: true, marque: marque }
     });
 }
 
@@ -316,7 +317,7 @@ export function setMarqueForm(marque: ParamGenericVetementsModel, setForm: React
  */
 export function setCollectionForm(collection: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, collection: collection }
+        return { ...form, edited: true, collection: collection }
     });
 }
 
@@ -327,7 +328,7 @@ export function setCollectionForm(collection: string, setForm: React.Dispatch<Re
  */
 export function setPrixNeufForm(prix: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, prixNeuf: prix?.replace(",", ".") }
+        return { ...form, edited: true, prixNeuf: prix?.replace(",", ".") }
     });
 }
 
@@ -338,6 +339,6 @@ export function setPrixNeufForm(prix: string, setForm: React.Dispatch<React.SetS
  */
 export function setPrixAchatForm(prix: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>) {
     setForm((form: FormVetementModel) => {
-        return { ...form, prixAchat: prix?.replace(",", ".") }
+        return { ...form, edited: true, prixAchat: prix?.replace(",", ".") }
     });
 }

@@ -6,7 +6,7 @@ import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors, Fonts } from '../../../constants/Colors';
-import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
+import { alphanumSort, getKeyModal, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { stylesForm } from '../../dressing/vetements/vetementForm.styles';
@@ -33,6 +33,7 @@ export type TenueFormComponentProps = {
     closeFormCallBack(): void;
     validateFormCallBack(resultat: APIResultFormTenueModel): void;
     deleteFormCallBack(resultat: APIResultFormTenueModel): void;
+    setTenueIsModified : React.Dispatch<React.SetStateAction<boolean>>
 };
 
 
@@ -56,7 +57,7 @@ export type TenueFormComponentProps = {
  * pour composer une tenue, et propose des actions pour valider, archiver ou supprimer la tenue.
 
  */
-export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: TenueFormComponentProps) => {
+export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack, setTenueIsModified }: TenueFormComponentProps) => {
 
     const [form, setForm] = useState<FormTenueModel>({} as FormTenueModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormTenueModel>(defaultErrorsFormTenueModel);
@@ -68,6 +69,9 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         setModalDialog(null);
     }, [dressing, tenueInEdition]);
 
+    useEffect(() => {
+        setTenueIsModified(form.isModified);
+    }, [form]);
 
     /**
      * Affiche un panneau contenant une liste de vêtements.
@@ -127,8 +131,6 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         vetements.forEach((item) => {
 
             const selected = form.vetements?.some(v => v.id === item.id) ?? false;
-            
-            
 
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
                                                         selected={selected}
@@ -215,7 +217,8 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
     function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette tenue ?'}
-            ackModalCallback={() => archiveForm(form, validateFormCallBack)} />;
+            ackModalCallback={() => archiveForm(form, validateFormCallBack)} 
+            keyModal={getKeyModal()}/>;
         setModalDialog(dialog);
     }
 
@@ -229,7 +232,8 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
 */
     function deleteFormModalConfirmation(form: FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette tenue ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
+            keyModal={getKeyModal()} />;
         setModalDialog(dialog);
     }
 

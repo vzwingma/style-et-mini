@@ -11,6 +11,7 @@ import TenueImageModel from "./tenue.image.model";
  * Modèle représentant un vetement dans le formulaire
  */
 interface FormTenueModel extends GenericModel {
+    isModified   : boolean;
     dressing     : DressingModel;
     vetements?   : VetementModel[] | null;
     statut       : StatutVetementEnum | null;
@@ -64,6 +65,7 @@ export function transformTenueToFormModel(form: FormTenueModel, tenueInEdition: 
 
         return {
             ...form,
+            isModified      : false,
             id              : tenueInEdition.id,
             libelle         : tenueInEdition.libelle,
             dressing        : dressing,

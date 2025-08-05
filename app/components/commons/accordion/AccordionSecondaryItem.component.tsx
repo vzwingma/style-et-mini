@@ -1,6 +1,6 @@
 import { Colors } from "@/app/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { PropsWithChildren, useState } from "react";
+import { JSX, PropsWithChildren, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 

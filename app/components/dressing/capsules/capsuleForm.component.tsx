@@ -3,7 +3,7 @@ import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors } from '../../../constants/Colors';
-import { renderLabelMandatory } from '../../commons/CommonsUtils';
+import { getKeyModal, renderLabelMandatory } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { stylesForm } from '../vetements/vetementForm.styles';
@@ -28,6 +28,7 @@ export type CapsuleFormComponentProps = {
     closeFormCallBack(): void;
     validateFormCallBack(resultat: APIResultFormCapsuleModel): void;
     deleteFormCallBack(resultat: APIResultFormCapsuleModel): void;
+    setCapsuleIsModified: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 
@@ -51,7 +52,7 @@ export type CapsuleFormComponentProps = {
  * pour composer une capsule, et propose des actions pour valider, archiver ou supprimer la capsule.
 
  */
-export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dressing, capsule: capsuleInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: CapsuleFormComponentProps) => {
+export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dressing, capsule: capsuleInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack, setCapsuleIsModified }: CapsuleFormComponentProps) => {
 
     const [form, setForm] = useState<FormCapsuleModel>({ } as FormCapsuleModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormCapsuleModel>(defaultErrorsFormCapsuleModel);
@@ -65,6 +66,10 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
         setModalDialog(null);
     }, [dressing, capsuleInEdition]);
 
+
+    useEffect(() => {
+        setCapsuleIsModified(form.isModified);
+    }, [form])
 
     /**
      * 
@@ -121,7 +126,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
 */
     function deleteFormModalConfirmation(form: FormCapsuleModel, deleteFormCallBack: (resultDelete: APIResultFormCapsuleModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette capsule ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} keyModal={getKeyModal()}/>;
         setModalDialog(dialog);
     }
 
@@ -131,7 +136,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
             {modalDialog}
             <View style={stylesForm.title}>
                 <View style={stylesForm.rowItems}>
-                    <Pressable onPress={closeFormCallBack}>
+                    <Pressable onPress={() => closeFormCallBack()}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && 

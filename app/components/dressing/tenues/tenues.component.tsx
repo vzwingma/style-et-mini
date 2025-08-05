@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from '../../../constants/Colors';
 
@@ -11,6 +11,8 @@ import { TenueFormComponent } from './tenueForm.component';
 import APIResultFormTenueModel from '@/app/models/tenues/form.result.tenue.model';
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { DressingComponentProps } from '../dressings.component';
+import { ModalDialogComponent } from '../../commons/views/ModalDialog';
+import { getKeyModal } from '../../commons/CommonsUtils';
 
 
 /**
@@ -35,7 +37,8 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
   const [vetements, setVetements] = useState<VetementModel[]>([]);
 
   const [tenueInEdit, setTenueInEdit] = useState<TenueModel | null>(null);
-
+  const [tenueIsModified, setTenueIsModified] = useState(false);
+  const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
     setOpenTenueForm(false);
@@ -99,7 +102,23 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
     setOpenTenueForm(true);
   };
 
-
+  /**
+  * Gère la fermeture du formulaire avec confirmation si des modifications non sauvegardées existent
+  * @param form Le formulaire à fermer
+  * @param closeFormCallBack Fonction de rappel pour fermer le formulaire
+  * @param setModalDialog Fonction pour définir le dialogue modal à afficher
+  */
+  function closeFormModalConfirmation(closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+      if(tenueIsModified){
+      const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+          ackModalCallback={() => closeFormCallBack()} 
+          keyModal={getKeyModal()}/>;
+          setModalDialog(dialog);
+      }
+      else {
+          closeFormCallBack();
+      }
+  }
   /**
    * Génère le contenu du panneau en fonction de l'état actuel des données et du chargement.
    *
@@ -118,6 +137,7 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
     else {
       return (
         <>
+          {modalDialog}
           <View style={styles.container}>
             <TenuesListComponent dressing={dressing} tenues={tenues} openAddEditTenue={openAddEditTenue} />
           </View>
@@ -125,14 +145,15 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
           <Modal presentationStyle='overFullScreen' isVisible={openTenueForm}
             animationIn='slideInRight' animationOut='slideOutRight'
             propagateSwipe={true}
-            onBackButtonPress={() => setOpenTenueForm(false)}
-            onBackdropPress={() => setOpenTenueForm(false)}
+            onBackButtonPress={() => closeFormModalConfirmation(() => setOpenTenueForm(false), setModalDialog)}
+            onBackdropPress={() => closeFormModalConfirmation(() => setOpenTenueForm(false), setModalDialog)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
 
             <TenueFormComponent dressing={dressing} tenue={tenueInEdit} vetementsAffiches={vetements}
-                                closeFormCallBack={() => setOpenTenueForm(false)}
+                                closeFormCallBack={() => closeFormModalConfirmation(() => setOpenTenueForm(false), setModalDialog)}
                                 validateFormCallBack={validateFormCallBack}
-                                deleteFormCallBack={deleteFormCallBack} />
+                                deleteFormCallBack={deleteFormCallBack}
+                                setTenueIsModified={setTenueIsModified} />
           </Modal>
         </>);
     }

@@ -11,7 +11,7 @@ import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/formErrorsParams.model";
 import { ModalDialogComponent } from "../commons/views/ModalDialog";
-
+import { getKeyModal } from "../commons/CommonsUtils";
 
 /**
  * * @description Composant d'un item de la liste des paramètres
@@ -22,38 +22,56 @@ import { ModalDialogComponent } from "../commons/views/ModalDialog";
 export type ParametragesItemComponentProps = {
     readonly parametrageVetements: ParamGenericVetementsModel
     readonly typeParametrage: ParametragesVetementEnum
-    setParametreInEdition: (idParametreToEdit: string | null) => void
+    setParametreInEdition: (parametreToEdit: string | null) => void
     parametreInEdition: string | null,
+    setParametreIsModified: React.Dispatch<React.SetStateAction<boolean>>
     refreshListeParametresCallback: (typeParam: ParametragesVetementEnum) => void
 };
 
-
 /**
-* Validation du formulaire pour archivage du vêtement
-* @param form formulaire à valider
-* @param setForm fonction de mise à jour du formulaire
-* @param setErrorsForm fonction de mise à jour des erreurs
-* @param onCloseForm fonction de fermeture du formulaire
-* @returns si le formulaire est invalide
-*/
+ * Affiche une boîte de dialogue de confirmation pour la suppression d'un paramètre
+ * @param form Le formulaire associé au paramètre à supprimer
+ * @param deleteFormCallBack Fonction de rappel pour rafraîchir la liste après suppression
+ * @param setModalDialog Fonction pour définir le dialogue modal à afficher
+ */
 function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFormCallBack: () => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
     if (form === null) {
         return;
     }
     const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce paramètre ?'}
-        ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+        ackModalCallback={() => deleteForm(form, deleteFormCallBack)} keyModal={getKeyModal()}/>;
     setModalDialog(dialog);
 }
 
+/**
+* Gère la fermeture du formulaire avec confirmation si des modifications non sauvegardées existent
+* @param form Le formulaire à fermer
+* @param closeFormCallBack Fonction de rappel pour fermer le formulaire
+* @param setModalDialog Fonction pour définir le dialogue modal à afficher
+*/
+function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+
+    if (form === null) {
+        return;
+    }
+    if(form.isModified){
+        const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+        ackModalCallback={() => closeFormCallBack()} 
+        keyModal={getKeyModal()} />;
+        setModalDialog(dialog);
+    }
+    else {
+        closeFormCallBack();
+    }
+}
 
 /**
- * 
+ *
  * @param param0 : ParametragesItemComponentProps
  * @returns Composant d'un item de la liste des paramètres
  */
 export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps> = ({ parametrageVetements, typeParametrage,
-    setParametreInEdition, parametreInEdition, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
-
+    setParametreInEdition, parametreInEdition, setParametreIsModified, refreshListeParametresCallback: refreshListeParametres }: ParametragesItemComponentProps) => {
 
     const zeroForm: ParamVetementsFormModel = {
         id: parametrageVetements.id,
@@ -66,7 +84,6 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     const [errorsForm, setErrorsForm] = useState<ErrorsFormParametrageModel>(defaultErrorsFormParametrageModel);
     const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
-
     useEffect(() => {
         if (parametreInEdition !== null) {
             initForm(typeParametrage, parametrageVetements, setForm)
@@ -77,6 +94,12 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
         setModalDialog(null);
     }, [parametreInEdition]);
 
+
+    useEffect(() => {
+        if (form !== null) {
+            setParametreIsModified(form.isModified);
+        }
+    }, [form]);
 
     const isSelected = parametreInEdition !== null && parametreInEdition === parametrageVetements.id;
     const isUnselected = parametreInEdition !== null && parametreInEdition !== parametrageVetements.id;
@@ -90,7 +113,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                 { /** Icones  */}
                 <View style={stylesItem.title}>
                     <ThemedText type="subtitle">{parametrageVetements.libelle}</ThemedText>
-                    { /** Icoônes édition */}
+                    { /** Icônes édition */}
                     <View style={stylesForm.rowItems}>
                         {isUnUsed && !isSelected &&
                             <Pressable onPress={() => deleteModalConfirmation(zeroForm, () => refreshListeParametres(zeroForm.typeParam), setModalDialog)}>
@@ -110,7 +133,7 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
                             </Pressable>
                         }
                         {isSelected &&
-                            <Pressable onPress={() => razAndCloseForm(setParametreInEdition)}>
+                            <Pressable onPress={() => closeFormModalConfirmation(form, () => razAndCloseForm(setParametreInEdition), setModalDialog)}>
                                 <Ionicons size={20} name="close-outline" style={stylesItem.titleIcon} />
                             </Pressable>
                         }
@@ -170,7 +193,6 @@ export const stylesItem = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
-    },    
-}
-);
+        width: '100%'
+    }
+});
