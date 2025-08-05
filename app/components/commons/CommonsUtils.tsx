@@ -287,5 +287,4 @@ export const renderSelectedItemView = (item: any, index?: number): React.JSX.Ele
 
     export const getKeyModal = () : string => {
         return new Date().getTime().toString();
-        // return Math.random().toString();
     };
