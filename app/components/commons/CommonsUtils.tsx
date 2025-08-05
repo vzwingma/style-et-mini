@@ -284,3 +284,8 @@ export const renderSelectedItemView = (item: any, index?: number): React.JSX.Ele
     export const searchQuery = (keyword: string, labelValue: string) : boolean => {
         return !!new RegExp(keyword, 'i').exec(labelValue);
     }
+
+    export const getKeyModal = () : string => {
+        return new Date().getTime().toString();
+        // return Math.random().toString();
+    };

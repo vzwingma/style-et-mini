@@ -3,7 +3,7 @@ import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors } from '../../../constants/Colors';
-import { renderLabelMandatory } from '../../commons/CommonsUtils';
+import { getKeyModal, renderLabelMandatory } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { stylesForm } from '../vetements/vetementForm.styles';
@@ -121,7 +121,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
 */
     function deleteFormModalConfirmation(form: FormCapsuleModel, deleteFormCallBack: (resultDelete: APIResultFormCapsuleModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette capsule ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} keyModal={getKeyModal()}/>;
         setModalDialog(dialog);
     }
 

@@ -9,6 +9,7 @@ import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { getAllParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
 import { ModalDialogComponent } from '../commons/views/ModalDialog';
+import { getKeyModal } from '../commons/CommonsUtils';
 
 /**
  * Composant principal pour l'écran de réglages.
@@ -60,7 +61,7 @@ function closeFormModalConfirmation(closeFormCallBack: Function, setModalDialog:
     if(parametreIsModified){
     const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
         ackModalCallback={() => closeFormCallBack()} 
-        keyModal={Math.random().toString()}/>;
+        keyModal={getKeyModal()} />;
         setModalDialog(dialog);
     }
     else {

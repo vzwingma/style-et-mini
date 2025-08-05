@@ -6,7 +6,7 @@ import { AppContext } from '@/app/services/AppContextProvider';
 import { Ionicons } from '@expo/vector-icons';
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Colors, Fonts } from '../../../constants/Colors';
-import { alphanumSort, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
+import { alphanumSort, getKeyModal, getTypeVetementIcon, renderLabelMandatory, resizeImage, vetementSort } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { stylesForm } from '../../dressing/vetements/vetementForm.styles';
@@ -215,7 +215,8 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
     function archiveFormModalConfirmation(form: FormTenueModel, validateFormCallBack: (resultat: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' cette tenue ?'}
-            ackModalCallback={() => archiveForm(form, validateFormCallBack)} />;
+            ackModalCallback={() => archiveForm(form, validateFormCallBack)} 
+            keyModal={getKeyModal()}/>;
         setModalDialog(dialog);
     }
 
@@ -229,7 +230,8 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
 */
     function deleteFormModalConfirmation(form: FormTenueModel, deleteFormCallBack: (resultDelete: APIResultFormTenueModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer cette tenue ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)}
+            keyModal={getKeyModal()} />;
         setModalDialog(dialog);
     }
 

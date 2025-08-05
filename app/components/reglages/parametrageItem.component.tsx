@@ -11,6 +11,7 @@ import { ParametragesVetementEnum } from "@/app/constants/AppEnum";
 import ParamGenericVetementsModel from "@/app/models/params/paramGenericVetements.model";
 import ErrorsFormParametrageModel, { defaultErrorsFormParametrageModel } from "@/app/models/params/formErrorsParams.model";
 import { ModalDialogComponent } from "../commons/views/ModalDialog";
+import { getKeyModal } from "../commons/CommonsUtils";
 
 /**
  * * @description Composant d'un item de la liste des paramètres
@@ -38,7 +39,7 @@ function deleteModalConfirmation(form: ParamVetementsFormModel | null, deleteFor
         return;
     }
     const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce paramètre ?'}
-        ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+        ackModalCallback={() => deleteForm(form, deleteFormCallBack)} keyModal={getKeyModal()}/>;
     setModalDialog(dialog);
 }
 
@@ -56,7 +57,7 @@ function closeFormModalConfirmation(form: ParamVetementsFormModel | null, closeF
     if(form.isModified){
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
         ackModalCallback={() => closeFormCallBack()} 
-        keyModal={Math.random().toString()} />;
+        keyModal={getKeyModal()} />;
         setModalDialog(dialog);
     }
     else {
