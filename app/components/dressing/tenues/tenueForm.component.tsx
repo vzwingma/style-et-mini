@@ -33,6 +33,7 @@ export type TenueFormComponentProps = {
     closeFormCallBack(): void;
     validateFormCallBack(resultat: APIResultFormTenueModel): void;
     deleteFormCallBack(resultat: APIResultFormTenueModel): void;
+    setTenueIsModified : React.Dispatch<React.SetStateAction<boolean>>
 };
 
 
@@ -56,7 +57,7 @@ export type TenueFormComponentProps = {
  * pour composer une tenue, et propose des actions pour valider, archiver ou supprimer la tenue.
 
  */
-export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: TenueFormComponentProps) => {
+export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing, vetementsAffiches, tenue: tenueInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack, setTenueIsModified }: TenueFormComponentProps) => {
 
     const [form, setForm] = useState<FormTenueModel>({} as FormTenueModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormTenueModel>(defaultErrorsFormTenueModel);
@@ -68,6 +69,9 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         setModalDialog(null);
     }, [dressing, tenueInEdition]);
 
+    useEffect(() => {
+        setTenueIsModified(form.isModified);
+    }, [form]);
 
     /**
      * Affiche un panneau contenant une liste de vêtements.
@@ -127,8 +131,6 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
         vetements.forEach((item) => {
 
             const selected = form.vetements?.some(v => v.id === item.id) ?? false;
-            
-            
 
             vetementsItems.push(<VetemenItemComponent key={item.id} vetement={item} 
                                                         selected={selected}
