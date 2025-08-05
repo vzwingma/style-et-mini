@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
-import { getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../../commons/CommonsUtils';
+import { getKeyModal, getTypeVetementIcon, renderLabelMandatory, renderSelectedItem, resizeImage } from '../../commons/CommonsUtils';
 import { stylesForm } from './vetementForm.styles';
 import { ThemedText } from '../../commons/views/ThemedText';
 import { Colors } from '@/app/constants/Colors';
@@ -31,6 +31,7 @@ export type VetementFormComponentProps = {
     closeFormCallBack() : void;
     validateFormCallBack(resultat: APIResultFormVetementModel) : void;
     deleteFormCallBack(resultat: APIResultFormVetementModel) : void;
+    setVetementIsModified : React.Dispatch<React.SetStateAction<boolean>>
 };
 
 /**
@@ -79,7 +80,7 @@ export const renderTypeItem = (item: ParamGenericVetementsModel): React.JSX.Elem
  *
  * @returns {React.JSX.Element} - Un élément JSX représentant le formulaire de vêtement.
  */
-export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack }: VetementFormComponentProps) => {
+export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dressing, vetement: vetementInEdition, closeFormCallBack, validateFormCallBack, deleteFormCallBack, setVetementIsModified }: VetementFormComponentProps) => {
 
     const [form, setForm] = useState<FormVetementModel>({} as FormVetementModel);
     const [errorsForm, setErrorsForm] = useState<ErrorsFormVetementModel>(defaultErrorsFormVetementModel);
@@ -98,7 +99,11 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
         setModalDialog(null);
     }, [dressing, vetementInEdition, paramsEtatVetements, paramsMarquesVetements, paramsTaillesMesures, paramsTypeVetements, paramsUsagesVetements]);
 
+    useEffect(() => {
+        setVetementIsModified(form.edited);
+    }, [form]);
 
+    
     
     /**
      * 
@@ -307,7 +312,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
      */
     function closeFormModalConfirmation(form: FormVetementModel, closeFormCallBack: () => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
-            ackModalCallback={closeFormCallBack} />;
+            ackModalCallback={closeFormCallBack} keyModal={getKeyModal()} />;
             if(form.edited){
                 setModalDialog(dialog);
             }
@@ -327,7 +332,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
     function archiveFormModalConfirmation(form: FormVetementModel, validateFormCallBack: (resultat: APIResultFormVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const commande: string = form.statut === StatutVetementEnum.ARCHIVE ? 'désarchiver' : 'archiver';
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous ' + commande + ' ce vêtement ?'}
-            ackModalCallback={() => archiveForm(form , validateFormCallBack)} />;
+            ackModalCallback={() => archiveForm(form , validateFormCallBack)} keyModal={getKeyModal()}/>;
         setModalDialog(dialog);
     }
 
@@ -341,7 +346,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
 */ 
     function deleteFormModalConfirmation(form : FormVetementModel, deleteFormCallBack: (resultDelete: APIResultFormVetementModel) => void, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
         const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous supprimer ce vêtement ?'}
-            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} />;
+            ackModalCallback={() => deleteForm(form, deleteFormCallBack)} keyModal={getKeyModal()}/>;
         setModalDialog(dialog);
     }
 
@@ -351,7 +356,7 @@ export const VetementFormComponent: React.FC<VetementFormComponentProps> = ({ dr
             {modalDialog}
             <View style={stylesForm.title}>
                 <View style={stylesForm.rowItems}>
-                    <Pressable onPress={() => closeFormModalConfirmation(form, closeFormCallBack, setModalDialog)}>
+                    <Pressable onPress={() => closeFormCallBack()}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
                     {form.id && <>

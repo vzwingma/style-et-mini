@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import { Colors } from '../../constants/Colors';
 import DressingModel from '../../models/dressing.model';
@@ -10,6 +10,8 @@ import VetementModel from '../../models/vetements/vetements.model';
 import APIResultFormVetementModel from '@/app/models/vetements/form.result.vetements.model';
 import { VetementFormComponent } from './vetements/vetementForm.component';
 import { AppContext } from '@/app/services/AppContextProvider';
+import { ModalDialogComponent } from '../commons/views/ModalDialog';
+import { getKeyModal } from '../commons/CommonsUtils';
 
 
 /**
@@ -37,6 +39,10 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
   const [isLoading, setIsLoading] = useState(true);
   const [vetements, setVetements] = useState<VetementModel[]>([]);
   const {vetementInEdit, setVetementInEdit} = useContext(AppContext)!;
+
+
+  const [vetementIsModified, setVetementIsModified] = useState<boolean>(true);
+  const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
   // Rechargement des vêtements si le dressing change
   useEffect(() => {
@@ -80,6 +86,24 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
     setOpenVetementForm(true);
   };
 
+  /**
+  * Gère la fermeture du formulaire avec confirmation si des modifications non sauvegardées existent
+  * @param form Le formulaire à fermer
+  * @param closeFormCallBack Fonction de rappel pour fermer le formulaire
+  * @param setModalDialog Fonction pour définir le dialogue modal à afficher
+  */
+  function closeFormModalConfirmation(closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
+
+      if(vetementIsModified){
+      const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
+          ackModalCallback={() => closeFormCallBack()} 
+          keyModal={getKeyModal()}/>;
+          setModalDialog(dialog);
+      }
+      else {
+          closeFormCallBack();
+      }
+  }
 
   /**
    * Retourne le contenu du panneau en fonction de l'état actuel du dressing.
@@ -96,6 +120,7 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
     else {
       return (
         <>
+          {modalDialog}
           <View style={styles.container}>
             <DressingListComponent vetements={vetements} addEditVetement={openAddEditVetement} />
           </View>
@@ -103,12 +128,13 @@ export const DressingComponent: React.FC<DressingComponentProps> = ({ dressing }
           <Modal presentationStyle='overFullScreen' isVisible={openVetementForm}
             animationIn='slideInRight' animationOut='slideOutRight'
             propagateSwipe={true}
-            onBackButtonPress={() => setOpenVetementForm(false)}
-            onBackdropPress={() => setOpenVetementForm(false)}
+            onBackButtonPress={() => closeFormModalConfirmation(() => setOpenVetementForm(false), setModalDialog)}
+            onBackdropPress={() => closeFormModalConfirmation(() => setOpenVetementForm(false), setModalDialog)}
             style={{ margin: 2, justifyContent: 'flex-end', backgroundColor: Colors.app.background }}>
-            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => setOpenVetementForm(false)} 
+            <VetementFormComponent dressing={dressing} vetement={vetementInEdit} closeFormCallBack={() => closeFormModalConfirmation(() => setOpenVetementForm(false), setModalDialog)} 
                                                                                  validateFormCallBack={validateFormCallBack}
-                                                                                 deleteFormCallBack={deleteFormCallBack}/>
+                                                                                 deleteFormCallBack={deleteFormCallBack}
+                                                                                 setVetementIsModified={setVetementIsModified}/>
 
           </Modal>
         </>);

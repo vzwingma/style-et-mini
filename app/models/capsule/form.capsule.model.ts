@@ -9,6 +9,7 @@ import CapsuleCritereModel from "./capsuleCritere";
  * Modèle représentant un vetement dans le formulaire
  */
 interface FormCapsuleModel extends GenericModel {
+    isModified   : boolean,
     dressing     : DressingModel;
     criteres     : CapsuleCritereModel[];
     nbreVetements?: number;
@@ -56,6 +57,7 @@ export function transformCapsuleToFormModel(form: FormCapsuleModel, capsuleInEdi
 
         return {
             ...form,
+            isModified      : false,
             id              : capsuleInEdition.id,
             libelle         : capsuleInEdition.libelle,
             dressing        : dressing,

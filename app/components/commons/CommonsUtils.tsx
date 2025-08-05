@@ -284,3 +284,14 @@ export const renderSelectedItemView = (item: any, index?: number): React.JSX.Ele
     export const searchQuery = (keyword: string, labelValue: string) : boolean => {
         return !!new RegExp(keyword, 'i').exec(labelValue);
     }
+
+    /**
+     * Génère une clé unique basée sur le timestamp actuel.
+     * @returns {string} La clé générée.
+     * @example
+     * const key = getKeyModal(); // Exemple d'utilisation
+     * console.log(key); // Affiche la clé générée
+     */
+    export const getKeyModal = () : string => {
+        return new Date().getTime().toString();
+    };
