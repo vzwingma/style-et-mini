@@ -109,8 +109,6 @@ export const TenuesComponent: React.FC<DressingComponentProps> = ({ dressing }: 
   * @param setModalDialog Fonction pour définir le dialogue modal à afficher
   */
   function closeFormModalConfirmation(closeFormCallBack: Function, setModalDialog: React.Dispatch<React.SetStateAction<JSX.Element | null>>) {
-
-    console.log("closeFormModalConfirmation", tenueIsModified);
       if(tenueIsModified){
       const dialog: JSX.Element = <ModalDialogComponent text={'Voulez vous quitter le formulaire ?\n Attention, vous allez perdre votre saisie'}
           ackModalCallback={() => closeFormCallBack()} 
