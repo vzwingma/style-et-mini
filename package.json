@@ -46,7 +46,7 @@
     "react-native-web": "~0.21.1",
     "react-native-webview": "13.16.0",
     "style-and-mini": "file:",
-    "uuid": "^11.1.0"
+    "uuid": "^12.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
