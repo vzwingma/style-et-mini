@@ -23,7 +23,7 @@
       },
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "preview",
-        "NODE_ENV":"QUA"
+        "NODE_ENV":"TEST"
       },
       "environment": "preview"
     },
