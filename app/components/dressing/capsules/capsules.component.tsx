@@ -1,5 +1,5 @@
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
-import React, { JSX, useContext, useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { Colors } from '../../../constants/Colors';
 import { DressingComponentProps } from '../dressings.component';
 import CapsuleTemporelleModel from '@/app/models/capsule/capsuleTemporelle.model';
@@ -11,7 +11,6 @@ import { CapsuleFormComponent } from './capsuleForm.component';
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
 import { CapsuleVetementsView } from './capsuleVetementsView.component';
-import { AppContext } from '@/app/services/AppContextProvider';
 import { getKeyModal } from '../../commons/CommonsUtils';
 import { ModalDialogComponent } from '../../commons/views/ModalDialog';
 

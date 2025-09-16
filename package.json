@@ -13,6 +13,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~6.1.2",
     "@expo/vector-icons": "^15.0.2",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/native": "^7.1.8",
@@ -45,6 +46,7 @@
     "react-native-screens": "~4.16.0",
     "react-native-web": "~0.21.1",
     "react-native-webview": "13.15.0",
+    "react-native-worklet": "^0.0.0",
     "style-and-mini": "file:",
     "uuid": "^13.0.0"
   },
@@ -55,7 +57,7 @@
     "@types/react-test-renderer": "^19.1.0",
     "eslint": "^9.34.0",
     "eslint-config-expo": "~10.0.0",
-    "jest": "~29.7.0",
+    "jest": "~30.1.0",
     "jest-expo": "~54.0.11",
     "react-test-renderer": "19.1.0",
     "typescript": "~5.9.2"
