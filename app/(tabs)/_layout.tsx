@@ -168,7 +168,7 @@ export const tabStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     backgroundColor: Colors.app.background,
-    height: 60,
+    height: 100,
     padding: 5,
     margin: 1
   }
