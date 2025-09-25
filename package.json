@@ -43,7 +43,7 @@
     "react-native-web": "~0.21.1",
     "react-native-webview": "13.16.0",
     "react-native-worklet": "^0.0.0",
-    "react-native-worklets": "0.5.1",
+    "react-native-worklets": "0.6.0",
     "style-and-mini": "file:",
     "uuid": "^13.0.0"
   },
