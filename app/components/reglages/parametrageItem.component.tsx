@@ -85,11 +85,11 @@ export const ParametragesItemComponent: React.FC<ParametragesItemComponentProps>
     const [modalDialog, setModalDialog] = useState<JSX.Element | null>(null);
 
     useEffect(() => {
-        if (parametreInEdition !== null) {
-            initForm(typeParametrage, parametrageVetements, setForm)
+        if (parametreInEdition === null) {
+            setForm(null);
         }
         else {
-            setForm(null);
+            initForm(typeParametrage, parametrageVetements, setForm)
         }
         setModalDialog(null);
     }, [parametreInEdition]);

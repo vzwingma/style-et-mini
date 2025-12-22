@@ -14,8 +14,7 @@ import { VetementsFormParamsTypeProps } from "@/app/components/dressing/vetement
 export function getTypeVetementsForm(typeVetements: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
     return typeVetements
         .filter((type) => type.categories
-            .filter((cat) => cat === dressing.categorie)
-            .length > 0)
+            .includes(dressing.categorie))
         .sort((t1, t2) => alphanumSort(t1.libelle, t2.libelle));
 }
 
@@ -26,12 +25,12 @@ export function getTaillesMesuresForm(taillesMesures: ParamGenericVetementsModel
     if (form?.type === undefined || form?.type === null) {
         return [];
     }
+    const typeVetement = form.type.types?.[0];
     return taillesMesures
         .filter((taille) => taille.categories
-            .filter((cat) => cat === dressing.categorie)
-            .length > 0)
-        .filter((taille) => (taille.types ?? [])
-                                .filter((type) => type === form.type.types?.[0]).length > 0)
+            .includes(dressing.categorie))
+        .filter((taille) => typeVetement !== undefined && (taille.types ?? [])
+                                .includes(typeVetement))
         .sort((t1, t2) => numSort(t1.tri, t2.tri));
 }
 
@@ -40,8 +39,7 @@ export function getTaillesMesuresForm(taillesMesures: ParamGenericVetementsModel
 export function getUsagesForm(usages: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
     return usages
         .filter((usage: ParamGenericVetementsModel) => usage.categories
-            .filter((cat) => cat === dressing.categorie)
-            .length > 0)
+            .includes(dressing.categorie))
         .sort((u1, u2) => alphanumSort(u1.libelle, u2.libelle));
 }
 
@@ -51,8 +49,7 @@ export function getUsagesForm(usages: ParamGenericVetementsModel[], dressing: Dr
 export function getEtatsForm(etats: ParamGenericVetementsModel[], dressing: DressingModel): ParamGenericVetementsModel[] {
     return etats
         .filter((etat: ParamGenericVetementsModel) => etat.categories
-            .filter((cat) => cat === dressing.categorie)
-            .length > 0)
+            .includes(dressing.categorie))
         .sort((e1, e2) => numSort(e1.tri, e2.tri));
 }
 
@@ -62,13 +59,12 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
     if (form?.type === undefined || form?.type === null) {
         return [];
     }
+    const typeVetement = form.type.types?.[0];
     return marques
         .filter((marque: ParamGenericVetementsModel) => marque.categories
-            .filter((cat) => cat === dressing.categorie)
-            .length > 0)
-        .filter((marque) => (marque.types ?? [])
-                                .filter((type) => type === form.type.types?.[0])
-                                .length > 0)
+            .includes(dressing.categorie))
+        .filter((marque) => typeVetement !== undefined && (marque.types ?? [])
+                                .includes(typeVetement))
         .sort((m1, m2) => alphanumSort(m1.libelle, m2.libelle));
 }
 

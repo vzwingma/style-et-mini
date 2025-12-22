@@ -191,7 +191,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
                         <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
-                            placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la tenue' : errorsForm?.libelleMessage + ''}
+                            placeholder={errorsForm?.libelleInError ? errorsForm?.libelleMessage + '' : 'Indiquez le nom de la tenue'}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
                     <View style={[stylesForm.rowItems, {paddingLeft: 10}]}>

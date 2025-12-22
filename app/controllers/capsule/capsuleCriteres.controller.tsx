@@ -86,7 +86,7 @@ function addCaracteristiqueInCriteria(categorie : CategorieDressingEnum, dataPar
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter(data => data?.categories.includes(categorie))
     .forEach(data => {
-      if (!criteresTypes.find(filtresTypes => filtresTypes.id === data.id)) {
+      if (!criteresTypes.some(filtresTypes => filtresTypes.id === data.id)) {
         criteresTypes.push({
           id: data.id,
           libelle: data.libelle,
@@ -123,7 +123,7 @@ function addEnumsInFilter(dataEnums: StatutVetementEnum[] | SaisonVetementEnum[]
       const isStatut = Object.values(StatutVetementEnum).includes(data as StatutVetementEnum);
       const type = isStatut ? CaracteristiqueVetementEnum.STATUT : CaracteristiqueVetementEnum.SAISON;
       const libelle = isStatut ? getLibelleStatutVetementEnum(data as StatutVetementEnum) : getLibelleSaisonVetementEnum(data as SaisonVetementEnum);
-      if (!filtresTypes.find(filtresTypes => filtresTypes.id === data)) {
+      if (!filtresTypes.some(filtresTypes => filtresTypes.id === data)) {
         filtresTypes.push({
           id: data,
           libelle: libelle,
