@@ -23,6 +23,23 @@ export type TenueItemComponentProps = {
 };
 
 
+
+/**
+ * Affiche un panneau contenant une liste de vêtements.
+ *
+ * @param {VetementModel[]} vetements - La liste des vêtements à afficher.
+ * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
+ */
+function showPanelVetementsTenue(vetements: TenueVetementModel[]): React.JSX.Element[] {
+
+    let vetementsItems: JSX.Element[] = [];
+    vetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
+    vetements.forEach((item) => {
+        vetementsItems.push(<TenueItemVetementComponent key={item.id} vetement={item as VetementModel} />);
+    });
+    return vetementsItems;
+}
+
 /**
  * Composant React fonctionnel représentant un élément de capsule.
  *
@@ -34,22 +51,6 @@ export type TenueItemComponentProps = {
  */
 export const TenueItemComponent: React.FC<TenueItemComponentProps> = ({ tenue, openAddEditTenue }: TenueItemComponentProps) => {
 
-
-    /**
-     * Affiche un panneau contenant une liste de vêtements.
-     *
-     * @param {VetementModel[]} vetements - La liste des vêtements à afficher.
-     * @returns {React.JSX.Element} Un élément JSX contenant les vêtements sous forme de texte thématisé.
-     */
-    function showPanelVetementsTenue(vetements: TenueVetementModel[]): React.JSX.Element[] {
-
-        let vetementsItems: JSX.Element[] = [];
-        vetements.sort((v1, v2) => alphanumSort(v1.libelle, v2.libelle));
-        vetements.forEach((item) => {
-            vetementsItems.push(<TenueItemVetementComponent key={item.id} vetement={item as VetementModel} />);
-        });
-        return vetementsItems;
-    }
 
 
     return (
@@ -64,13 +65,13 @@ export const TenueItemComponent: React.FC<TenueItemComponentProps> = ({ tenue, o
                 </View>
             </View>
             <View style={stylesForm.rowItems}>
-            {
-                tenue.image && <TenueItemImageComponent image={tenue.image} />
-            }
-            { /** liste des vêtements de la tenue  */}
-            <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={!tenue.image} >
-                {showPanelVetementsTenue(tenue.vetements ?? [])}
-            </ScrollView>
+                {
+                    tenue.image && <TenueItemImageComponent image={tenue.image} />
+                }
+                { /** liste des vêtements de la tenue  */}
+                <ScrollView contentInsetAdjustmentBehavior="automatic" horizontal={!tenue.image} >
+                    {showPanelVetementsTenue(tenue.vetements ?? [])}
+                </ScrollView>
             </View>
         </View>
     );

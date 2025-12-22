@@ -24,7 +24,7 @@ export const TenueItemVetementComponent: React.FC<TenueItemVetementComponentProp
 
     return (
         <View key={vetement.id} style={[styles.body]}>
-            <View style={[styles.photoFrame, !vetementImageToShow ? { borderColor: Colors.app.backgroundLight, borderWidth: 1, } : null]}>
+            <View style={[styles.photoFrame, vetementImageToShow ? null : { borderColor: Colors.app.backgroundLight, borderWidth: 1, }]}>
                 {vetementImageToShow && <Image source={{ uri: vetementImageToShow.displayUri }} width={vetementImageToShow.largeur} height={vetementImageToShow.hauteur} />}
             </View>
         </View>

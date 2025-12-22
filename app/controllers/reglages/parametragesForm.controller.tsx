@@ -81,8 +81,8 @@ export function setCategoriesForm(categories: string[], setForm: Function) {
 * @param setForm  fonction de mise à jour du formulaire
 */
 export function setTriForm(tri: string, setForm: Function) {
-    let triInt = parseInt(tri, 10);
-    if (isNaN(triInt) || triInt < 0) {
+    let triInt = Number.parseInt(tri, 10);
+    if (Number.isNaN(triInt) || triInt < 0) {
         triInt = 0
     }
     // Vérification que triInt est un nombre valide avant de l'utiliser
@@ -155,7 +155,7 @@ export function validateForm(form: ParamVetementsFormModel | null,
     };
 
     if (form.typeParam === ParametragesVetementEnum.TAILLES || form.typeParam === ParametragesVetementEnum.ETATS) {
-        validateAttribute("tri", form.tri === null || isNaN(form.tri ?? NaN)
+        validateAttribute("tri", form.tri === null || Number.isNaN(form.tri ?? Number.NaN)
             , setErrorsForm);
     }
     if (!errors) {

@@ -137,8 +137,8 @@ export function transformVetementToFormModel(form: FormVetementModel, vetementIn
             collection      : vetementInEdition.collection,
             etat            : paramsEtatVetements?.find((etat) => etat.id === vetementInEdition.etat?.id) ?? null,
 
-            prixAchat       : vetementInEdition.prix?.achat != null ? vetementInEdition.prix.achat.toString() : null,
-            prixNeuf        : vetementInEdition.prix?.neuf != null ? vetementInEdition.prix.neuf.toString() : null,
+            prixAchat       : vetementInEdition.prix?.achat == null ? null : vetementInEdition.prix.achat.toString(),
+            prixNeuf        : vetementInEdition.prix?.neuf == null ? null : vetementInEdition.prix.neuf.toString(),
             description     : vetementInEdition.description ?? null,
 
             statut          : vetementInEdition.statut ?? StatutVetementEnum.ACTIF
