@@ -57,7 +57,7 @@ export function numSort(a: number | undefined, b: number | undefined) {
  */
 export function checkPriceFormat(prix: string | null | undefined): boolean {
     const prixFormat = getPriceValue(prix);
-    return prixFormat === null || !isNaN(prixFormat);
+    return prixFormat === null || !Number.isNaN(prixFormat);
 }
 
 
@@ -74,7 +74,7 @@ export function getPriceValue(prix: string | null | undefined): number | null {
     if (prix === undefined || prix === null || prix?.trim() === "") {
         return null;
     }
-    return parseFloat(parseFloat(prix).toFixed(2));
+    return Number.parseFloat(Number.parseFloat(prix).toFixed(2));
 }
 
 
@@ -293,5 +293,5 @@ export const renderSelectedItemView = (item: any, index?: number): React.JSX.Ele
      * console.log(key); // Affiche la clé générée
      */
     export const getKeyModal = () : string => {
-        return new Date().getTime().toString();
+        return Date.now().toString();
     };

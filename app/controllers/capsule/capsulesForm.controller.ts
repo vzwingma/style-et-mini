@@ -77,8 +77,8 @@ export function setCriteres(criteres: CapsuleCritereModel[], setForm: React.Disp
  */
 export function setNbVetementsForm(nbVetements: string, setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormCapsuleModel>>) {
     
-    let nbVetementsInt = parseInt(nbVetements, 10);
-    if (isNaN(nbVetementsInt) || nbVetementsInt < 0) {
+    let nbVetementsInt = Number.parseInt(nbVetements, 10);
+    if (Number.isNaN(nbVetementsInt) || nbVetementsInt < 0) {
         nbVetementsInt = 0
     }
     // Vérification que triInt est un nombre valide avant de l'utiliser
@@ -133,7 +133,7 @@ export function validateForm(
     // Validation du formulaire
     errors = validateAttribute("libelle", form.libelle === undefined || form.libelle === "", setErrorsForm, errors);
     errors = validateAttribute("criteres", form.criteres === undefined || form.criteres.length === 0, setErrorsForm, errors);
-    errors = validateAttribute("nbreVetements", form.nbreVetements === undefined || isNaN(form.nbreVetements), setErrorsForm, errors);
+    errors = validateAttribute("nbreVetements", form.nbreVetements === undefined || Number.isNaN(form.nbreVetements), setErrorsForm, errors);
 
     if (!errors) {
         console.log("Formulaire valide", form);
