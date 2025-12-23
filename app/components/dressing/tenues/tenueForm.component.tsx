@@ -246,7 +246,7 @@ export const TenueFormComponent: React.FC<TenueFormComponentProps> = ({ dressing
                     <Pressable onPress={closeFormCallBack}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
-                    {form.id && <>
+                    {!!form.id && <>
                         <Pressable onPress={() => archiveFormModalConfirmation(form, validateFormCallBack, setModalDialog)}>
                             {renderArchiveIcon(form.statut)}
                         </Pressable>
