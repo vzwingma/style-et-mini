@@ -83,7 +83,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                         <ThemedText type="defaultSemiBold" style={stylesForm.label}>{renderLabelMandatory("Nom")}</ThemedText>
                         <TextInput style={errorsForm?.libelleInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.libelleInError ? 'red' : 'gray'}
                             value={form?.libelle ?? ''}
-                            placeholder={!errorsForm?.libelleInError ? 'Indiquez le nom de la capsule' : errorsForm?.libelleMessage + ''}
+                            placeholder={errorsForm?.libelleInError ? errorsForm?.libelleMessage + '' : 'Indiquez le nom de la capsule'}
                             onChangeText={libelle => setLibelleForm(libelle, setForm, setErrorsForm)} />
                     </View>
                     <View style={[stylesForm.rowItems]}>
@@ -98,7 +98,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                         <TextInput style={errorsForm?.nbVetementsInError ? stylesForm.inputError : stylesForm.input} placeholderTextColor={errorsForm?.nbVetementsInError ? 'red' : 'gray'}
                             keyboardType="numeric" maxLength={3}
                             value={form?.nbreVetements?.toString() ?? '0'}
-                            placeholder={!errorsForm?.nbVetementsInError ? 'Indiquez le nombre pour la capsule' : errorsForm?.nbVetementsMessage + ''}
+                            placeholder={errorsForm?.nbVetementsInError ? errorsForm?.nbVetementsMessage + '' : 'Indiquez le nombre pour la capsule'}
                             onChangeText={nbrVetements => setNbVetementsForm(nbrVetements, setForm, setErrorsForm)} />
                     </View>
                     <View style={stylesForm.rowItems}>
@@ -139,7 +139,7 @@ export const CapsuleFormComponent: React.FC<CapsuleFormComponentProps> = ({ dres
                     <Pressable onPress={() => closeFormCallBack()}>
                         <Ionicons size={28} name="arrow-undo-circle-outline" color={Colors.dark.text} />
                     </Pressable>
-                    {form.id && 
+                    {!!(form.id) && 
                         <Pressable onPress={() => deleteFormModalConfirmation(form, deleteFormCallBack, setModalDialog)}>
                             <Image source={require('@/assets/icons/bin-outline.png')} style={stylesForm.iconMenuStyle} />
                         </Pressable>

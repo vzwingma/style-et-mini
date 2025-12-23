@@ -1,5 +1,5 @@
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
-import { CaracteristiqueVetementEnum} from "../../constants/AppEnum";
+import { CaracteristiqueVetementEnum, SaisonVetementEnum} from "../../constants/AppEnum";
 import DressingListFiltreModel from "../../models/vetements/vetementFiltre.model";
 import VetementModel from "../../models/vetements/vetements.model";
 /**
@@ -82,7 +82,7 @@ export function filtreVetementByCaracteristique(vetement: VetementModel, type: C
   } else if (type === CaracteristiqueVetementEnum.MARQUES) {
     return vetement.marque?.id === filtre.id;
   } else if (type === CaracteristiqueVetementEnum.SAISON) {
-    return vetement.saisons?.some(saison => saison === filtre.id) || vetement.saisons === undefined || vetement.saisons?.length < 1;
+    return vetement.saisons?.includes(filtre.id as SaisonVetementEnum) || vetement.saisons === undefined || vetement.saisons?.length < 1;
   }
   return false;
   }

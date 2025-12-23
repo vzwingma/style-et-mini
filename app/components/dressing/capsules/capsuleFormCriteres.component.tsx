@@ -54,14 +54,14 @@ export const CapsuleCriteresComponent: React.FC<CapsuleCriteresComponentProps> =
     return (
         <View style={styles.filtresBar}>
                 <MultiSelect
-                    style={!errorsForm?.criteresInError ? stylesForm.dropdown : stylesForm.dropdownInError} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
-                    iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={!errorsForm?.criteresInError ? stylesForm.placeholderStyle : stylesForm.placeholderErrorStyle} selectedTextStyle={stylesForm.selectedTextStyle}
+                    style={errorsForm?.criteresInError ? stylesForm.dropdownInError : stylesForm.dropdown} containerStyle={stylesForm.listStyle} itemContainerStyle={stylesForm.listItemStyle} itemTextStyle={stylesForm.listItemStyle}
+                    iconStyle={stylesForm.iconStyle} activeColor={Colors.app.color} placeholderStyle={errorsForm?.criteresInError ? stylesForm.placeholderErrorStyle : stylesForm.placeholderStyle} selectedTextStyle={stylesForm.selectedTextStyle}
                     selectedStyle={stylesForm.selectedStyle} inputSearchStyle={styles.inputSearchStyle}
                     mode='modal'
                     backgroundColor={Colors.app.modalBackground}
                     data={criteresDisponibles}
                     labelField="typeLibelle" valueField="id"
-                    placeholder={!errorsForm?.criteresInError ? 'Selectionnez des critères' : errorsForm?.criteresMessage + ''}
+                    placeholder={errorsForm?.criteresInError ? errorsForm?.criteresMessage + '' : 'Selectionnez des critères'}
                     search={true} searchPlaceholder={'Rechercher un critère'} searchQuery={searchQuery}
                     value={selectedCriteres?.map(filtre => filtre.id)}
                     onChange={idsSelectedfiltres => selectCriteres(idsSelectedfiltres, criteresDisponibles, setSelectedCriteres)}

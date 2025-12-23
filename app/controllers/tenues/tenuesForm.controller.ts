@@ -62,18 +62,7 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  */
 export function addRemoveVetementForm(vetement: VetementModel, setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>, selected?: boolean) {
 
-    if(!selected) {
-        setForm((form: FormTenueModel) => {
-            return {
-                ...form,
-                isModified : true, 
-                vetements: form.vetements
-                    ? form.vetements.filter(v => v.id !== vetement.id)
-                    : []
-            }
-        });
-    }
-    else{
+    if(selected) {
     // Si le vêtement n'est pas déjà présent dans le formulaire, on l'ajoute
     setForm((form: FormTenueModel) => {
         let updatedVetements = form.vetements || [];
@@ -86,6 +75,17 @@ export function addRemoveVetementForm(vetement: VetementModel, setForm: React.Di
             vetements: updatedVetements
         }
     });
+    }
+    else{
+        setForm((form: FormTenueModel) => {
+            return {
+                ...form,
+                isModified : true, 
+                vetements: form.vetements
+                    ? form.vetements.filter(v => v.id !== vetement.id)
+                    : []
+            }
+        });
     }
 }
 

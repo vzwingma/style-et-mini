@@ -28,7 +28,7 @@ function evaluateURL(path: string, params?: KeyValueParams[]): string {
  * Début du watch de la réponse
  */
 export function startWatch(): void {
-    storageWatch = new Date().getTime();
+    storageWatch = Date.now();
 }
 /**
  * 
@@ -44,7 +44,7 @@ const getAuthHeader = () => {
  * @returns temps de réponse en ms
  */
 export function stopWatch(traceId: string, res: Response): number {
-    let responseTime = new Date().getTime() - storageWatch;
+    let responseTime = Date.now() - storageWatch;
     console.log("[WS traceId=" + traceId + "] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "][t:" + responseTime + "ms]");
     return responseTime;
 }

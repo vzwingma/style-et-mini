@@ -90,10 +90,10 @@ export default function TabLayout() {
   function getPanelContent() {
     if (isLoading) {
       return <ActivityIndicator size={'large'} color={Colors.app.color} />
-    } else if (error !== null) {
-      return <><ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText><ThemedText type="italic">{error.stack}</ThemedText></>
-    } else {
+    } else if (error === null) {
       return showPanel(activeTab, dressingSelectionne);
+    } else {
+      return <><ThemedText type="subtitle" style={{ color: 'red', marginTop: 50 }}>Erreur : {error.message}</ThemedText><ThemedText type="italic">{error.stack}</ThemedText></>
     }
   }
 
@@ -116,14 +116,14 @@ export default function TabLayout() {
             <>
               <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.INDEX} />
 
-              {dressingSelectionne !== undefined ?
-              <>
+              {dressingSelectionne === undefined ?
+              null
+                 : <>
                 <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.DRESSING} activeDressing={dressingSelectionne} />
                 <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.VETEMENTS} activeDressing={dressingSelectionne} />
                 <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.TENUES} activeDressing={dressingSelectionne} />
                 <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.CAPSULES} activeDressing={dressingSelectionne} />
               </>
-                 : null
               }
 
               <TabBarItems activeTab={activeTab} selectNewTab={selectNewTab} thisTab={Tabs.REGLAGES} />
@@ -168,7 +168,7 @@ export const tabStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     backgroundColor: Colors.app.background,
-    height: 60,
+    height: 100,
     padding: 5,
     margin: 1
   }
