@@ -2,11 +2,11 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import VetementModel from '@/app/models/vetements/vetements.model';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '../../constants/Colors';
-import { ThemedText } from '../commons/views/ThemedText';
+import { Colors } from '@/app/constants/Colors';
+import { ThemedText } from '@/app/components/commons/views/ThemedText';
 import { getCollections, getDerniersAjoutsVetements, getLibelleVetementsSansCollections, getVetementsSansPrix } from '@/app/controllers/synthese/syntheseDressing.controller';
 import { JSX, useContext } from 'react';
-import { VetemenItemComponent } from '../dressing/vetements/vetementItem.component';
+import { VetemenItemComponent } from '@/app/components/dressing/vetements/vetementItem.component';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { Tabs } from '@/app/constants/TabsEnums';
 

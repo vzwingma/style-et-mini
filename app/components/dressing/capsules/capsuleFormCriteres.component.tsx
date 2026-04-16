@@ -16,7 +16,7 @@ import DressingModel from "@/app/models/dressing.model";
 export type CapsuleCriteresComponentProps = {
     dressing: DressingModel;
     selectedCriteres: CapsuleCritereModel[];
-    setSelectedCriteres: Function;
+    setSelectedCriteres: React.Dispatch<React.SetStateAction<CapsuleCritereModel[]>>;
     errorsForm: ErrorsFormCapsuleModel;
 
 };

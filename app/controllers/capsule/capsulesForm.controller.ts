@@ -1,3 +1,4 @@
+import React from 'react';
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
 import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
@@ -12,7 +13,7 @@ import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
 
 
 export function initForm(dressing: DressingModel, capsuleInEdition: CapsuleTemporelleModel | null,
-    setForm: Function) {
+    setForm: React.Dispatch<React.SetStateAction<FormCapsuleModel>>) {
 
     if (capsuleInEdition !== null && capsuleInEdition !== undefined) {
         setForm((form: FormCapsuleModel) => transformCapsuleToFormModel(form, capsuleInEdition, dressing));
@@ -27,7 +28,7 @@ export function initForm(dressing: DressingModel, capsuleInEdition: CapsuleTempo
                                     type: CaracteristiqueVetementEnum.STATUT, 
                                     typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF
                                 }],
-                    statut: StatutVetementEnum.ACTIF }});
+                    statut: StatutVetementEnum.ACTIF } as FormCapsuleModel});
     }
 }
 

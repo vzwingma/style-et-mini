@@ -1,3 +1,4 @@
+import React from 'react';
 import { alphanumSort, numSort } from "../../components/commons/CommonsUtils";
 import DressingModel from "../../models/dressing.model";
 import VetementModel from "../../models/vetements/vetements.model";
@@ -84,7 +85,7 @@ export function getMarquesForm(marques: ParamGenericVetementsModel[], dressing: 
  *   - `paramsMarquesVetements` : Les marques disponibles pour les vêtements.
  */
 export function initForm(dressing: DressingModel, vetementInEdition: VetementModel | null,
-    setForm: Function,
+    setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>,
     { paramsTypeVetements, paramsTaillesMesures, paramsUsagesVetements, paramsEtatVetements, paramsMarquesVetements }: VetementsFormParamsTypeProps) {
 
     if (vetementInEdition !== null && vetementInEdition !== undefined) {
@@ -94,7 +95,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { edited: false, dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF }
+            return { edited: false, dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF } as FormVetementModel
         });
     }
 }
@@ -170,7 +171,7 @@ export function setImageForm(image: any, setForm: React.Dispatch<React.SetStateA
  * @param libelle - Le nouveau libellé à définir dans le formulaire.
  * @param setForm - La fonction de mise à jour de l'état du formulaire.
  */
-export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: Function) {
+export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
     setForm((form: FormVetementModel) => {
         return { ...form, edited: true, libelle: libelle }
     });
@@ -223,7 +224,7 @@ export function setPetiteTailleForm(petiteTaille: boolean, setForm: React.Dispat
  * @param paramsUsagesVetements liste des usages de vêtements
  * @param setForm formulaire à mettre à jour
  */
-export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamGenericVetementsModel[], setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: Function) {
+export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: ParamGenericVetementsModel[], setForm: React.Dispatch<React.SetStateAction<FormVetementModel>>, setErrorsForm: React.Dispatch<React.SetStateAction<ErrorsFormVetementModel>>) {
 
     let usages: ParamGenericVetementsModel[] = [];
     usageIdsListe.forEach((usageId) => {
@@ -231,7 +232,7 @@ export function setUsagesForm(usageIdsListe: string[], paramsUsagesVetements: Pa
         if (usageModel !== undefined) {
             usages.push(usageModel);
             setErrorsForm((errors: ErrorsFormVetementModel) => {
-                return { ...errors, usageInError: false, usageMessage: null }
+                return { ...errors, usageInError: false }
             });
         }
     }

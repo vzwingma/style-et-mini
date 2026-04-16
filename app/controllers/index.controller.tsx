@@ -1,3 +1,4 @@
+import React from 'react';
 import BackendConfigModel from "@/app/models/backendConfig.model";
 import { SERVICES_URL } from "../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
@@ -7,7 +8,7 @@ import { callGETBackend } from "../services/ClientHTTP.service";
 // Propriétés de l'écran d'accueil'
 type FunctionConnectToDomoticzProps = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  storeConnexionData: Function
+  storeConnexionData: (config: BackendConfigModel) => void
   setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 
@@ -15,7 +16,7 @@ type FunctionConnectToDomoticzProps = {
 // Propriétés du changement des dressings
 type FunctionGetDressingsProps = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  setDressings: Function
+  setDressings: React.Dispatch<React.SetStateAction<DressingModel[]>>
   setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 
