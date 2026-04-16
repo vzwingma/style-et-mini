@@ -1,6 +1,7 @@
+import React from 'react';
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
 import { getUrlAPIParametres, SERVICES_PARAMS } from "../../constants/APIconstants";
-import { ParametragesVetementEnum } from "../../constants/AppEnum";
+import { CategorieDressingEnum, ParametragesVetementEnum, TypeTailleEnum } from "../../constants/AppEnum";
 import ErrorsFormParametrageModel from "../../models/params/formErrorsParams.model";
 import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../../models/params/paramVetementsForm.model";
@@ -46,20 +47,16 @@ export function setLibelleForm(libelle: string, setForm: React.Dispatch<React.Se
  * @param types types de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypesForm(types: string[], setForm: Function) {
-    setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, types: types }
-    });
+export function setTypesForm(types: string[], setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+    setForm(form => form ? { ...form, isModified: true, types: types as TypeTailleEnum[] } : form);
 }
 /**
  * Enregistre le type de vêtements dans le formulaire
  * @param type type de vêtements
  * @param setForm  fonction de mise à jour du formulaire
  */
-export function setTypeForm(type: string, setForm: Function) {
-    setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, types: [type] }
-    });
+export function setTypeForm(type: string, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+    setForm(form => form ? { ...form, isModified: true, types: [type] as TypeTailleEnum[] } : form);
 }
 
 /**
@@ -67,11 +64,8 @@ export function setTypeForm(type: string, setForm: Function) {
  * @param categories : tableau de catégories
  * @param setForm fonction de mise à jour du formulaire
  */
-export function setCategoriesForm(categories: string[], setForm: Function) {
-
-    setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, categories: categories }
-    });
+export function setCategoriesForm(categories: string[], setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
+    setForm(form => form ? { ...form, isModified: true, categories: categories as CategorieDressingEnum[] } : form);
 }
 
 
@@ -80,15 +74,13 @@ export function setCategoriesForm(categories: string[], setForm: Function) {
 * @param type type de vêtements
 * @param setForm  fonction de mise à jour du formulaire
 */
-export function setTriForm(tri: string, setForm: Function) {
+export function setTriForm(tri: string, setForm: React.Dispatch<React.SetStateAction<ParamVetementsFormModel | null>>) {
     let triInt = Number.parseInt(tri, 10);
     if (Number.isNaN(triInt) || triInt < 0) {
         triInt = 0
     }
     // Vérification que triInt est un nombre valide avant de l'utiliser
-    setForm((form: ParamVetementsFormModel) => {
-        return { ...form, isModified: true, tri: triInt }
-    });
+    setForm(form => form ? { ...form, isModified: true, tri: triInt } : form);
 }
 
 

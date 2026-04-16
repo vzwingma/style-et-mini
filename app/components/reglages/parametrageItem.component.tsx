@@ -1,7 +1,7 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
 import { Colors } from "@/app/constants/Colors";
-import { stylesForm } from "../dressing/vetements/vetementForm.styles";
+import { stylesForm } from "@/app/components/dressing/vetements/vetementForm.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { JSX, useEffect, useState } from "react";
 import { razAndCloseForm, initForm, validateForm, deleteForm } from "@/app/controllers/reglages/parametragesForm.controller";

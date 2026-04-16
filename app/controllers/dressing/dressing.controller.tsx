@@ -1,3 +1,4 @@
+import React from 'react';
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
 import DressingModel from "../../models/dressing.model";
@@ -7,7 +8,7 @@ import VetementModel from "../../models/vetements/vetements.model";
 // Propriétés de l'appel d'API pour le dressing
 type FunctionCallAPIDressingProps = {
   idDressing: string
-  setDressing: Function
+  setDressing: React.Dispatch<React.SetStateAction<DressingModel | undefined>>
   setError: React.Dispatch<React.SetStateAction<Error | null>>
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -17,7 +18,7 @@ type FunctionCallAPIDressingProps = {
 export type FunctionCallAPIVetementsProps = {
   idDressing: string
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
-  setVetements: Function
+  setVetements: React.Dispatch<React.SetStateAction<VetementModel[]>>
 }
 
 

@@ -1,9 +1,9 @@
 import DressingModel from "@/app/models/dressing.model";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { ThemedText } from "../commons/views/ThemedText";
-import { Tabs } from "../../constants/TabsEnums";
-import { getHomeIcon } from "../commons/tab/TabBarIcon";
-import { Colors } from "../../constants/Colors";
+import { ThemedText } from "@/app/components/commons/views/ThemedText";
+import { Tabs } from "@/app/constants/TabsEnums";
+import { getHomeIcon } from "@/app/components/commons/tab/TabBarIcon";
+import { Colors } from "@/app/constants/Colors";
 
 
 

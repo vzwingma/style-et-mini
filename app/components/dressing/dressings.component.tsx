@@ -2,16 +2,16 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import { Colors } from '../../constants/Colors';
-import DressingModel from '../../models/dressing.model';
-import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
+import { Colors } from '@/app/constants/Colors';
+import DressingModel from '@/app/models/dressing.model';
+import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
 import { DressingListComponent } from './dressingList.component';
-import VetementModel from '../../models/vetements/vetements.model';
+import VetementModel from '@/app/models/vetements/vetements.model';
 import APIResultFormVetementModel from '@/app/models/vetements/form.result.vetements.model';
 import { VetementFormComponent } from './vetements/vetementForm.component';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { ModalDialogComponent } from '../commons/views/ModalDialog';
-import { getKeyModal } from '../commons/CommonsUtils';
+import { ModalDialogComponent } from '@/app/components/commons/views/ModalDialog';
+import { getKeyModal } from '@/app/components/commons/CommonsUtils';
 
 
 /**

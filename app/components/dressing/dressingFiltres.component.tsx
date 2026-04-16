@@ -7,8 +7,8 @@ import VetementModel from "@/app/models/vetements/vetements.model";
 import { useEffect, useState } from "react";
 import { Image, View } from "react-native";
 import { MultiSelect } from "react-native-element-dropdown";
-import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
-import { renderFilterItem, renderSelectedItem, searchQuery } from "../commons/CommonsUtils";
+import { CaracteristiqueVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
+import { renderFilterItem, renderSelectedItem, searchQuery } from "@/app/components/commons/CommonsUtils";
 import { styles } from "./dressingList.style";
 
 

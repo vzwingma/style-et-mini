@@ -1,3 +1,4 @@
+import React from 'react';
 import { StatutVetementEnum } from "../../constants/AppEnum";
 import FormTenueModel, { transformFormToTenueModel, transformTenueToFormModel } from "../../models/tenues/form.tenue.model";
 import ErrorsFormTenueModel from "../../models/tenues/form.errors.tenues.model";
@@ -23,13 +24,13 @@ import { validateAttribute } from "../dressing/vetementForm.actions.controller";
  * Sinon, un formulaire par défaut est créé avec le dressing fourni et un statut actif.
  */
 export function initForm(dressing: DressingModel, tenueInEdition: TenueModel | null,
-    setForm: Function) {
+    setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>) {
 
     if (tenueInEdition !== null && tenueInEdition !== undefined) {
         setForm((form: FormTenueModel) => transformTenueToFormModel(form, tenueInEdition, dressing));
     }
     else {
-        setForm(() => { return { dressing: dressing, isModified : false, statut: StatutVetementEnum.ACTIF }});
+        setForm(() => { return { dressing: dressing, isModified : false, statut: StatutVetementEnum.ACTIF } as FormTenueModel});
     }
 }
 

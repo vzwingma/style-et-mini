@@ -1,3 +1,4 @@
+import React from 'react';
 import { CaracteristiqueVetementEnum, getLibelleSaisonVetementEnum, getLibelleStatutVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import VetementCaracteristiquesModel from "../../models/vetements/vetementCaracteristique.model";
 import VetementModel from "../../models/vetements/vetements.model";
@@ -13,7 +14,7 @@ import VetementFiltreModel from "../../models/vetements/vetementFiltre.model";
  * @param {Function} setSelectedFiltres - La fonction pour mettre à jour les filtres sélectionnés.
  * @returns {void}
  */
-export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: VetementFiltreModel[], setSelectedFiltres: Function): void {
+export function selectFilters(selectedIdFiltres: string[], filtresDisponibles: VetementFiltreModel[], setSelectedFiltres: (filtres: VetementFiltreModel[]) => void): void {
   const selectTypeFiltre = (filtresDisponibles
     .filter(filtre => selectedIdFiltres.includes(filtre.id))
     .filter(filtre => !filtre.isType));

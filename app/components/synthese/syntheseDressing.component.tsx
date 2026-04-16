@@ -1,13 +1,13 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Colors } from '../../constants/Colors';
-import { loadVetementsDressing } from '../../controllers/dressing/dressing.controller';
-import DressingModel from '../../models/dressing.model';
+import { Colors } from '@/app/constants/Colors';
+import { loadVetementsDressing } from '@/app/controllers/dressing/dressing.controller';
+import DressingModel from '@/app/models/dressing.model';
 
 import { loadNbCapsulesDressing } from '@/app/controllers/capsule/capsuleTemporelle.controller';
 import { loadNbTenuesDressing } from '@/app/controllers/tenues/tenues.controller';
-import VetementModel from '../../models/vetements/vetements.model';
+import VetementModel from '@/app/models/vetements/vetements.model';
 import { SyntheseItemComponent } from './syntheseItem.component';
 
 
