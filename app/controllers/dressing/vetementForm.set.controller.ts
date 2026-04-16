@@ -95,7 +95,7 @@ export function initForm(dressing: DressingModel, vetementInEdition: VetementMod
     }
     else {
         setForm(() => {
-            return { edited: false, dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF } as FormVetementModel
+            return { edited: false, dressing: dressing, usagesListe: [], saisons: [], statut: StatutVetementEnum.ACTIF } as unknown as FormVetementModel
         });
     }
 }

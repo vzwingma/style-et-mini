@@ -28,7 +28,7 @@ export function initForm(dressing: DressingModel, capsuleInEdition: CapsuleTempo
                                     type: CaracteristiqueVetementEnum.STATUT, 
                                     typeLibelle: CaracteristiqueVetementEnum.STATUT+StatutVetementEnum.ACTIF
                                 }],
-                    statut: StatutVetementEnum.ACTIF } as FormCapsuleModel});
+                    statut: StatutVetementEnum.ACTIF } as unknown as FormCapsuleModel});
     }
 }
 
