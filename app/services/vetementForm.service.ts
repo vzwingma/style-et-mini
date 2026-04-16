@@ -110,7 +110,9 @@ function saveVetementAttributs(vetement: VetementModel, params: { key: SERVICES_
     console.log((isEdition ? "Mise à jour" : "Création") + " du vêtement", vetement);
     const url = isEdition ? SERVICES_URL.SERVICE_VETEMENTS_BY_ID : SERVICES_URL.SERVICE_VETEMENTS;
     //  Appel au backend pour sauvegarder le vêtement
-    return callPOSTBackend(url, params, vetement)
+    return isEdition
+        ? callPUTBackend(url, params, vetement)
+        : callPOSTBackend(url, params, vetement)
 }
 
 

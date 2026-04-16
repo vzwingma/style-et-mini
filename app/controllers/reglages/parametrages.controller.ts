@@ -1,23 +1,23 @@
 import { callGETBackend } from "../../services/ClientHTTP.service";
 import { SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "@/app/components/commons/AndroidToast";
-import { SetStateAction } from "react";
+import React, { SetStateAction } from "react";
 import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 
 // Propriétés de l'écran des équipements
 type FunctionCallAPIAllParamsVetementsProps = {
-  setTypeVetements: Function
-  setMarques: Function
-  setTaillesMesures: Function
-  setUsages: Function
-  setEtats: Function
+  setTypeVetements: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[]>>
+  setMarques: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[]>>
+  setTaillesMesures: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[]>>
+  setUsages: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[]>>
+  setEtats: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[]>>
   setError: React.Dispatch<React.SetStateAction<Error | null>>
   setIsLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 type FunctionCallAPIParamVetementsProps = {
   urlAPIParams: SERVICES_URL
-  setParams: Function,
+  setParams: React.Dispatch<React.SetStateAction<ParamGenericVetementsModel[]>>,
   setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 

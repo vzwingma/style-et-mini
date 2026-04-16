@@ -1,3 +1,4 @@
+import React from 'react';
 import { CaracteristiqueVetementEnum, CategorieDressingEnum, getLibelleSaisonVetementEnum, getLibelleStatutVetementEnum, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
 import { alphanumSort } from "../../components/commons/CommonsUtils";
 import CapsuleCritereModel from "@/app/models/capsule/capsuleCritere";
@@ -17,7 +18,7 @@ import DressingModel from "@/app/models/dressing.model";
  * et exclut ceux qui sont de type `isType`. Les critères filtrés sont ensuite passés à la
  * fonction `setSelectedCriteres` pour mise à jour.
  */
-export function selectCriteres(selectedIdCriteres: string[], criteresDisponibles: CapsuleCritereModel[], setSelectedCriteres: Function): void {
+export function selectCriteres(selectedIdCriteres: string[], criteresDisponibles: CapsuleCritereModel[], setSelectedCriteres: (criteres: CapsuleCritereModel[]) => void): void {
   const selectCriteres = (criteresDisponibles
     .filter(critere => selectedIdCriteres.includes(critere.id))
     .filter(critere => !critere.isType));

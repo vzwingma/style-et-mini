@@ -16,7 +16,7 @@ import DressingModel from "@/app/models/dressing.model";
 export type CapsuleCriteresComponentProps = {
     dressing: DressingModel;
     selectedCriteres: CapsuleCritereModel[];
-    setSelectedCriteres: Function;
+    setSelectedCriteres: (criteres: CapsuleCritereModel[]) => void;
     errorsForm: ErrorsFormCapsuleModel;
 
 };

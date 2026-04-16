@@ -1,4 +1,4 @@
-import { Colors } from "./../../../../app/constants/Colors";
+import { Colors } from "@/app/constants/Colors";
 import { useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -50,7 +50,6 @@ export const ModalDialogComponent: React.FC<ModalDialogComponentProps> = ({ text
 
     return (
         <Modal 
-            keyModal={keyModal}
             animationType="slide"
             transparent={true}
             visible={modalVisible}

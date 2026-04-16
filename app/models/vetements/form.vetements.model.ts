@@ -1,6 +1,7 @@
 import DressingModel from "../dressing.model";
 import VetementModel from "./vetements.model";
-import { ID_MARQUE_AUTRES, SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
+import { SaisonVetementEnum, StatutVetementEnum } from "@/app/constants/AppEnum";
+import { ID_MARQUE_AUTRES } from "@/app/constants/AppConstants";
 import VetementImageModel from "./vetements.image.model";
 
 import { getPriceValue } from "../../components/commons/CommonsUtils";

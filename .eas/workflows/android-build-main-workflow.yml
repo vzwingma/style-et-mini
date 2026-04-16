@@ -1,0 +1,14 @@
+name: Build on Branch Push
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build_android_preview:
+    name: Build Android App
+    type: build
+    params:
+      platform: android
+      profile: preview

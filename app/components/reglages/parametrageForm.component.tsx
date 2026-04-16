@@ -2,7 +2,7 @@ import { TextInput, View } from "react-native";
 import { ThemedText } from "../commons/views/ThemedText";
 import { CategorieDressingEnum, getLibelleCategorieEnum, getLibelleTypeTailleEnum, ParametragesVetementEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
 import { Colors } from "@/app/constants/Colors";
-import { stylesForm } from "../dressing/vetements/vetementForm.styles";
+import { stylesForm } from "@/app/components/dressing/vetements/vetementForm.styles";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { setCategoriesForm, setLibelleForm, setTriForm, setTypeForm, setTypesForm } from "@/app/controllers/reglages/parametragesForm.controller";
 import ParamVetementsFormModel from "@/app/models/params/paramVetementsForm.model";

@@ -1,15 +1,15 @@
 import { StyleSheet, View, Image, ActivityIndicator, Pressable } from 'react-native'
 import Modal from 'react-native-modal';
 import React, { JSX, useContext, useEffect, useState } from 'react';
-import { ThemedText } from '../commons/views/ThemedText';
-import { Colors } from '../../constants/Colors';
-import { menusParametrages } from '../../constants/AppEnum';
+import { ThemedText } from '@/app/components/commons/views/ThemedText';
+import { Colors } from '@/app/constants/Colors';
+import { menusParametrages } from '@/app/constants/reglages.constants';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';
 import { getAllParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
-import { ModalDialogComponent } from '../commons/views/ModalDialog';
-import { getKeyModal } from '../commons/CommonsUtils';
+import { ModalDialogComponent } from '@/app/components/commons/views/ModalDialog';
+import { getKeyModal } from '@/app/components/commons/CommonsUtils';
 
 /**
  * Composant principal pour l'écran de réglages.

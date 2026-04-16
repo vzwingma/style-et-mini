@@ -1,7 +1,8 @@
+import React from 'react';
 import { StatutVetementEnum } from "../../constants/AppEnum";
 import FormTenueModel, { transformFormToTenueModel, transformTenueToFormModel } from "../../models/tenues/form.tenue.model";
 import ErrorsFormTenueModel from "../../models/tenues/form.errors.tenues.model";
-import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBackend } from "../../services/ClientHTTP.service";
 import TenueModel from "../../models/tenues/tenue.model";
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
@@ -23,13 +24,13 @@ import { validateAttribute } from "../dressing/vetementForm.actions.controller";
  * Sinon, un formulaire par défaut est créé avec le dressing fourni et un statut actif.
  */
 export function initForm(dressing: DressingModel, tenueInEdition: TenueModel | null,
-    setForm: Function) {
+    setForm: React.Dispatch<React.SetStateAction<FormTenueModel>>) {
 
     if (tenueInEdition !== null && tenueInEdition !== undefined) {
         setForm((form: FormTenueModel) => transformTenueToFormModel(form, tenueInEdition, dressing));
     }
     else {
-        setForm(() => { return { dressing: dressing, isModified : false, statut: StatutVetementEnum.ACTIF }});
+        setForm(() => { return { dressing: dressing, isModified : false, statut: StatutVetementEnum.ACTIF } as FormTenueModel});
     }
 }
 
@@ -155,7 +156,9 @@ function callSaveTenueService(form: FormTenueModel) {
     ];
     const url = isEdition ? SERVICES_URL.SERVICE_TENUES_BY_ID : SERVICES_URL.SERVICE_TENUES;
     //  Appel au backend pour sauvegarder le vêtement
-    return callPOSTBackend(url, params, tenue)
+    return isEdition
+        ? callPUTBackend(url, params, tenue)
+        : callPOSTBackend(url, params, tenue)
 }
 
 

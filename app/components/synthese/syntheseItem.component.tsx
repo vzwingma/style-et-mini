@@ -1,7 +1,7 @@
 import { ThemedText } from "@/app/components/commons/views/ThemedText";
 import { Colors } from "@/app/constants/Colors";
 import { Pressable, StyleSheet, View } from "react-native";
-import { stylesForm } from "../dressing/vetements/vetementForm.styles";
+import { stylesForm } from "@/app/components/dressing/vetements/vetementForm.styles";
 import DressingModel from "@/app/models/dressing.model";
 import VetementModel from "@/app/models/vetements/vetements.model";
 import { getCollections, getDressingValue, getNbVetementsAvecPrix, getNbVetementAvecCollections } from "@/app/controllers/synthese/syntheseDressing.controller";
