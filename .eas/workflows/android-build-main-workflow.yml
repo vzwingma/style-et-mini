@@ -7,6 +7,7 @@ on:
 
 jobs:
   build_android_preview:
+    name: Build Android App
     type: build
     params:
       platform: android
