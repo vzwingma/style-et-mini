@@ -74,7 +74,7 @@
     "@types/react-test-renderer": "^19.1.0",
     "eslint": "^10.0.0",
     "eslint-config-expo": "~55.0.0",
-    "expo-module-scripts": "^5.0.8",
+    "expo-module-scripts": "^55.0.0",
     "react-test-renderer": "19.1.0",
     "typescript": "~5.9.2"
   },
