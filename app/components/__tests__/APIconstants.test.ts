@@ -18,7 +18,8 @@ import {
   SERVICES_URL,
   SERVICES_PARAMS,
 } from '../../constants/APIconstants';
-import { ParametragesVetementEnum, ID_NEW_ELEMENT } from '../../constants/AppEnum';
+import { ParametragesVetementEnum } from '../../constants/AppEnum';
+import { ID_NEW_ELEMENT } from '../../constants/AppConstants';
 import ParamVetementsFormModel from '../../models/params/paramVetementsForm.model';
 
 // ─── getUrlAPIParametres ──────────────────────────────────────────────────────

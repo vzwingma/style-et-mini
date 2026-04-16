@@ -1,4 +1,5 @@
-import { CategorieDressingEnum, ID_NEW_ELEMENT, ParametragesVetementEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
+import { CategorieDressingEnum, ParametragesVetementEnum, TypeTailleEnum } from "@/app/constants/AppEnum";
+import { ID_NEW_ELEMENT } from "@/app/constants/AppConstants";
 import ParamGenericVetementsModel from "./paramGenericVetements.model";
 import GenericModel from "../generic.model";
 

@@ -3,7 +3,7 @@ import Modal from 'react-native-modal';
 import React, { JSX, useContext, useEffect, useState } from 'react';
 import { ThemedText } from '@/app/components/commons/views/ThemedText';
 import { Colors } from '@/app/constants/Colors';
-import { menusParametrages } from '@/app/constants/AppEnum';
+import { menusParametrages } from '@/app/constants/reglages.constants';
 import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { ParametragesListComponent } from './parametragesList.component';
 import { AppContext } from '@/app/services/AppContextProvider';

@@ -1,12 +1,3 @@
-import Constants from 'expo-constants';
-import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
-
-export const APP_MOBILE_VERSION = Constants.expoConfig?.version ?? "0.0.0";
-export const APP_MOBILE_NAME = "Style et Mini";
-
-
-export const ID_NEW_ELEMENT = "-1::NEW"; // ID d'un nouvel élément à ajouter
-export const ID_MARQUE_AUTRES = '67ee890c60546911d1e17c54'; // ID d'une marque "... Autres"
 /**
  * Enumération représentant les différentes caractéristiques d'un vêtement.
  * 
@@ -46,35 +37,7 @@ export enum ParametragesVetementEnum {
   DRESSING = 'DRESSING'
 }
 
-// Enumération des menus de l'application
-export const menusParametrages: MenuParametragesModel[] =
-  [
-    {
-      titre: 'Type de vêtements',
-      icone: require('@/assets/icons/clothes-outline.png'),
-      class: ParametragesVetementEnum.TYPES
-    },
-    {
-      titre: 'Tailles et Mesures',
-      icone: require('@/assets/icons/size-outline.png'),
-      class: ParametragesVetementEnum.TAILLES
-    },
-    {
-      titre: 'Usages',
-      icone: require('@/assets/icons/clothes-usage-outline.png'),
-      class: ParametragesVetementEnum.USAGES
-    },
-    {
-      titre: 'Etats',
-      icone: require('@/assets/icons/clothes-condition-outline.png'),
-      class: ParametragesVetementEnum.ETATS
-    },
-    {
-      titre: 'Marques',
-      icone: require('@/assets/icons/brand-outline.png'),
-      class: ParametragesVetementEnum.MARQUES
-    }
-  ];
+
 
 
 

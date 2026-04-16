@@ -1,5 +1,6 @@
 import ParamVetementsFormModel from "../models/params/paramVetementsForm.model";
-import { ID_NEW_ELEMENT, ParametragesVetementEnum } from "./AppEnum";
+import { ParametragesVetementEnum } from "./AppEnum";
+import { ID_NEW_ELEMENT } from "./AppConstants";
 
 
 /**
