@@ -87,8 +87,11 @@ export function callPOSTBackend(path: SERVICES_URL | null, params?: KeyValuePara
  * @param {any} [body] - Le corps de la requête à envoyer.
  * @returns {Promise<any>} - Une promesse qui se résout avec la réponse du backend.
  */
-export function callPUTBackend(path: SERVICES_URL, params?: KeyValueParams[]): Promise<any> {
-    return callBackend(API_VERBS.PUT, path, params);
+export function callPUTBackend(path: SERVICES_URL | null, params?: KeyValueParams[], body?: any): Promise<any> {
+    if (path === null) {
+        throw new Error("Le chemin est null");
+    }
+    return callBackend(API_VERBS.PUT, path, params, body);
 }
 
 

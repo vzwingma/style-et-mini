@@ -5,7 +5,7 @@ import { CategorieDressingEnum, ParametragesVetementEnum, TypeTailleEnum } from 
 import ErrorsFormParametrageModel from "../../models/params/formErrorsParams.model";
 import ParamGenericVetementsModel from "../../models/params/paramGenericVetements.model";
 import ParamVetementsFormModel, { tranformParamVetementToForm, transformFormToParamVetements } from "../../models/params/paramVetementsForm.model";
-import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBackend } from "../../services/ClientHTTP.service";
 
 
 
@@ -203,7 +203,9 @@ function saveParametresVetement(form: ParamVetementsFormModel): Promise<Parametr
         params = [{ key: SERVICES_PARAMS.ID_PARAM, value: String(paramVetement.id) }];
     }
     //  Appel au backend pour sauvegarder le vêtement
-    return callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
+    return isEdition
+        ? callPUTBackend(getUrlAPIParametres(form), params, paramVetement)
+        : callPOSTBackend(getUrlAPIParametres(form), params, paramVetement)
         .then((response) => {
             console.log("Paramètrage ", form.typeParam, " de vêtements enregistrés avec succès", response);
             showToast("Paramètre " + form.typeParam + " enregistré avec succès", ToastDuration.SHORT);

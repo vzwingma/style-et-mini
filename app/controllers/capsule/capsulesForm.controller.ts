@@ -1,6 +1,6 @@
 import React from 'react';
 import { CaracteristiqueVetementEnum, StatutVetementEnum } from "../../constants/AppEnum";
-import { callDELETEBackend, callPOSTBackend } from "../../services/ClientHTTP.service";
+import { callDELETEBackend, callPOSTBackend, callPUTBackend } from "../../services/ClientHTTP.service";
 import { SERVICES_PARAMS, SERVICES_URL } from "../../constants/APIconstants";
 import { showToast, ToastDuration } from "../../components/commons/AndroidToast";
 import DressingModel from "@/app/models/dressing.model";
@@ -173,7 +173,9 @@ function callSaveCapsuleService(form: FormCapsuleModel) : Promise<APIResultFormC
     ];
     const url = isEdition ? SERVICES_URL.SERVICE_CAPSULES_BY_ID : SERVICES_URL.SERVICE_CAPSULES;
     //  Appel au backend pour sauvegarder la capsule
-    return callPOSTBackend(url, params, capsule)
+    return isEdition
+        ? callPUTBackend(url, params, capsule)
+        : callPOSTBackend(url, params, capsule)
 }
 
 
