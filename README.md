@@ -51,6 +51,7 @@ npx expo start            # Démarrer en mode développement
 npx expo start --android  # Démarrer sur émulateur Android
 npx expo start --web      # Démarrer dans le navigateur
 npm run lint              # Vérifier le code (ESLint)
+npm test                  # Lancer les tests unitaires
 ```
 
 
@@ -137,7 +138,14 @@ constants/             → Enums, URLs API, couleurs, définitions des onglets
 
 ## Tests
 
-### Frontend
-- Framework : `react-test-renderer` (configuré mais sous-utilisé)
-- Fichiers tests : dossier `__tests__/` à côté des composants, suffixe `-test.tsx`
-- Commande : non définie dans `package.json` (à ajouter)
+```bash
+npm test
+```
+
+Framework : Jest + `react-test-renderer`. Les tests sont dans `app/components/__tests__/`.
+
+| Suite | Description |
+|-------|-------------|
+| `AppEnum.test.ts` | Fonctions utilitaires `getLibelleXxx()` — catégories, saisons, statuts, tailles (16 tests) |
+| `APIconstants.test.ts` | Fonction `getUrlAPIParametres()` — tous types + edge cases (8 tests) |
+| `ThemedText-test.tsx` | Snapshot du composant ThemedText (1 test) |
