@@ -10,7 +10,8 @@ import MenuParametragesModel from '@/app/models/params/menuParametrage.model';
 import { alphanumSort, numSort } from '@/app/components/commons/CommonsUtils';
 import { getParamsVetements } from '@/app/controllers/reglages/parametrages.controller';
 import { AppContext } from '@/app/services/AppContextProvider';
-import { ID_NEW_ELEMENT, ParametragesVetementEnum } from '@/app/constants/AppEnum';
+import { ParametragesVetementEnum } from '@/app/constants/AppEnum';
+import { ID_NEW_ELEMENT } from '@/app/constants/AppConstants';
 import { SERVICES_URL } from '@/app/constants/APIconstants';
 import { initNewForm } from '@/app/models/params/paramVetementsForm.model';
 
