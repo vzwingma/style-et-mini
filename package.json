@@ -4,7 +4,13 @@
   "version": "1.5.0",
   "scripts": {
     "start": "expo start",
+    "start:local": "dotenv -e .env.local -- expo start",
+    "start:qua": "dotenv -e .env.qua -- expo start",
+    "start:prod": "dotenv -e .env.prod -- expo start",
     "android": "expo start --android",
+    "android:local": "dotenv -e .env.local -- expo start --android",
+    "android:qua": "dotenv -e .env.qua -- expo start --android",
+    "android:prod": "dotenv -e .env.prod -- expo start --android",
     "web": "expo start --web",
     "lint": "expo lint",
     "test": "jest --passWithNoTests"
@@ -72,6 +78,7 @@
     "@babel/core": "^7.28.3",
     "@types/react": "~19.2.10",
     "@types/react-test-renderer": "^19.1.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.34.0",
     "eslint-config-expo": "~55.0.0",
     "expo-module-scripts": "^55.0.0",
