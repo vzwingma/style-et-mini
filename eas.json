@@ -10,8 +10,7 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "development",
-        "NODE_ENV":"DEV"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "development"
       },
       "environment": "development"
     },
@@ -22,8 +21,7 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview",
-        "NODE_ENV":"test"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "preview"
       },
       "environment": "preview"
     },
@@ -34,8 +32,7 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
-        "NODE_ENV":"PROD"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
       },
       "environment": "production"
     },    
@@ -44,8 +41,7 @@
         "image": "latest"
       },
       "env": {
-        "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
-        "NODE_ENV":"PROD"
+        "EXPO_PUBLIC_MY_ENVIRONMENT": "production"
       },
       "environment": "production"
     }

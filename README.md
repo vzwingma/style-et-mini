@@ -142,7 +142,7 @@ constants/             → Enums, URLs API, couleurs, définitions des onglets
 npm test
 ```
 
-Framework : Jest + `react-test-renderer`. Les tests sont dans `app/components/__tests__/`.
+Framework : Jest + `react-test-renderer`. Les tests sont dans `app/components/__tests__/`..
 
 | Suite | Description |
 |-------|-------------|
