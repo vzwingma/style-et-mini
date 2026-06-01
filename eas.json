@@ -11,7 +11,7 @@
       },
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "development",
-        "NODE_ENV":"DEV"
+        "NODE_ENV": "development"
       },
       "environment": "development"
     },
@@ -23,7 +23,7 @@
       },
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "preview",
-        "NODE_ENV":"test"
+        "NODE_ENV": "test"
       },
       "environment": "preview"
     },
@@ -35,7 +35,7 @@
       },
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
-        "NODE_ENV":"PROD"
+        "NODE_ENV": "production"
       },
       "environment": "production"
     },    
@@ -45,7 +45,7 @@
       },
       "env": {
         "EXPO_PUBLIC_MY_ENVIRONMENT": "production",
-        "NODE_ENV":"PROD"
+        "NODE_ENV": "production"
       },
       "environment": "production"
     }
