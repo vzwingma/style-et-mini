@@ -79,7 +79,7 @@
     "@types/react": "~19.2.10",
     "@types/react-test-renderer": "^19.1.0",
     "dotenv-cli": "^11.0.0",
-    "eslint": "^9.34.0",
+    "eslint": "^10.0.0",
     "eslint-config-expo": "~55.0.1",
     "expo-module-scripts": "^55.0.0",
     "react-test-renderer": "19.1.0",
